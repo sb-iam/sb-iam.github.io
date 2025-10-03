@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shakthi Bachala - Computer Science Researcher</title>
+    <title>Shakthi Bachala - Ph.D. Researcher | Principal Cloud Engineer - AI</title>
     <style>
         * {
             margin: 0;
@@ -155,21 +155,6 @@
             background-color: #95a5a6;
         }
 
-        .research-areas {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .research-area {
-            background-color: #ecf0f1;
-            padding: 8px 15px;
-            border-radius: 20px;
-            color: #34495e;
-            font-size: 0.95em;
-        }
-
         footer {
             text-align: center;
             padding: 30px 0;
@@ -204,7 +189,7 @@
         <div class="container">
             <div class="header-content">
                 <h1>Shakthi Bachala</h1>
-                <p>Computer Science Researcher</p>
+                <p>Ph.D. Researcher | Principal Cloud Engineer - AI</p>
             </div>
         </div>
     </header>
@@ -213,7 +198,8 @@
         <div class="container">
             <ul>
                 <li><a href="#about">About</a></li>
-                <li><a href="#research">Research</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#iam">IAM Platform</a></li>
                 <li><a href="#publications">Publications</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -223,33 +209,43 @@
     <div class="container">
         <section id="about">
             <h2>About Me</h2>
-            <p>I am a computer science researcher specializing in program analysis, Android security, and software engineering. My work focuses on developing innovative approaches to detect and analyze security vulnerabilities in mobile applications, particularly in the Android ecosystem.</p>
-            
-            <div class="research-areas">
-                <span class="research-area">Android Security</span>
-                <span class="research-area">Program Analysis</span>
-                <span class="research-area">Mobile Computing</span>
-                <span class="research-area">Software Engineering</span>
-                <span class="research-area">Malware Detection</span>
-                <span class="research-area">Static & Dynamic Analysis</span>
+            <p>I am a Doctoral Researcher at the University of Nebraska-Lincoln specializing in Interpretable AI Infrastructure, with extensive experience in cloud engineering, ML infrastructure, and compiler optimizations. My career journey spans from leading large-scale engineering teams at Bank of Montreal to focusing on cutting-edge AI research as a Principal Cloud Engineer - AI.</p>
+            <p style="margin-top: 15px;">My vision is to create an LLVM-equivalent for AI interpretability - a modular, extensible, production-ready platform that makes neural networks as analyzable and debuggable as traditional software. This will enable safer AI deployment through systematic understanding of model behaviors and failure modes.</p>
+        </section>
+
+        <section id="experience">
+            <h2>Professional Experience</h2>            
+            <div class="publication">
+                <div class="publication-title">Engineering Leadership → Principal Cloud Engineer - AI (IC)</div>
+                <div class="publication-authors">Bank of Montreal (BMO) | Cloud & AI Infrastructure</div>
+                <div class="publication-venue">
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Led team of 50+ Cloud Engineers in enterprise-scale transformations</li>
+                        <li>Orchestrated 20+ PB data migration for Bank of the West acquisition</li>
+                        <li>Delivered MLOps platform from sandbox to production in 15 business days on AWS</li>
+                        <li>Pioneered GenAI infrastructure deployment for Azure in 2 weeks</li>
+                        <li>Created Cloud Adoption Assist program, reducing deployment time by 60%</li>
+                        <li>Transitioned to Principal Cloud Engineer - AI (IC) role to focus on hands-on AI/ML infrastructure and research</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
-        <section id="research">
-            <h2>Research Interests</h2>
-            <p>My research focuses on developing scalable and efficient program analysis techniques for mobile platforms, with particular emphasis on:</p>
-            <ul style="margin-left: 30px; margin-top: 15px; line-height: 1.8;">
-                <li><strong>Android Application Security:</strong> Developing novel techniques to detect malicious behaviors and vulnerabilities in Android applications</li>
-                <li><strong>Hybrid Program Analysis:</strong> Combining static and dynamic analysis approaches for more comprehensive security assessment</li>
-                <li><strong>Reflection Analysis:</strong> Uncovering and analyzing reflective code patterns in Android applications</li>
-                <li><strong>Graph-Based Detection Methods:</strong> Utilizing graph structures to identify malicious network behaviors in mobile applications</li>
-                <li><strong>Scalable Analysis Frameworks:</strong> Building efficient and robust tools for analyzing large-scale mobile application ecosystems</li>
+        <section id="iam">
+            <h2>IAM Platform - Ph.D. Dissertation</h2>
+            <p>IAM (Interpretable AI with MLIR) is my Ph.D. dissertation project that brings compiler-grade abstractions to neural network analysis. This research demonstrates how treating neural networks as programs with analyzable IR can enable systematic interpretability at scale.</p>
+            
+            <h3>Key Contributions</h3>
+            <ul style="margin-left: 30px; margin-top: 15px;">
+                <li>Custom MLIR dialect for interpretability operations</li>
+                <li>Sparse autoencoder/transcoder architecture with TPU optimization</li>
+                <li>Compiler techniques (SSA, taint analysis, slicing) for neural networks</li>
+                <li>End-to-end observability and tracing infrastructure</li>
             </ul>
-
+            
             <div class="links">
-                <a href="/research_statement.pdf" class="broken" onclick="alert('Research statement not yet available'); return false;">Research Statement</a>
-                <a href="https://www.linkedin.com/in/shakthi-bachala-09401510a/" target="_blank">LinkedIn Profile</a>
-                <a href="https://dblp.org/pid/200/1146.html" target="_blank">DBLP Profile</a>
+                <a href="/research_statement_shakthi_bachala.pdf" class="broken" onclick="alert('Research statement not yet available'); return false;">Research Statement</a>
+                <a href="https://github.com/shakthibachala/iam" target="_blank">GitHub Repository</a>
             </div>
         </section>
 
@@ -280,22 +276,29 @@
                 <div class="publication-venue">ICSE 2017: 324-334</div>
             </div>
 
-            <p style="margin-top: 20px;">For a complete list of publications, please visit my <a href="https://dblp.org/pid/200/1146.html" target="_blank" style="color: #3498db;">DBLP profile</a>.</p>
+            <p style="margin-top: 20px;">For more details of the papers please go to <a href="https://dblp.org/pid/200/1146.html" target="_blank" style="color: #3498db;">DBLP</a>.</p>
         </section>
 
         <section id="contact">
             <h2>Contact & Links</h2>
+            
+            <h3>Contact Information</h3>
+            <ul style="margin-left: 30px; line-height: 1.8;">
+                <li><strong>Email:</strong> <a href="mailto:shakthi.bachala@huskers.unl.edu" style="color: #3498db;">shakthi.bachala@huskers.unl.edu</a></li>
+                <li><strong>Location:</strong> Toronto, Ontario, Canada</li>
+            </ul>
+            
+            <h3>Affiliations</h3>
+            <ul style="margin-left: 30px; line-height: 1.8;">
+                <li>University of Nebraska-Lincoln (Ph.D. Researcher)</li>
+                <li>Bank of Montreal (Principal Cloud Engineer - AI)</li>
+            </ul>
+            
             <h3>Professional Profiles</h3>
             <ul style="margin-left: 30px; line-height: 1.8;">
                 <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/shakthi-bachala-09401510a/" target="_blank" style="color: #3498db;">linkedin.com/in/shakthi-bachala-09401510a</a></li>
                 <li><strong>DBLP:</strong> <a href="https://dblp.org/pid/200/1146.html" target="_blank" style="color: #3498db;">dblp.org/pid/200/1146</a></li>
                 <li><strong>GitHub:</strong> <a href="https://github.com/shakthibachala" target="_blank" style="color: #3498db;">github.com/shakthibachala</a></li>
-            </ul>
-
-            <h3>Collaborative Distances</h3>
-            <ul style="margin-left: 30px; line-height: 1.8;">
-                <li><strong>Dijkstra Number:</strong> 4</li>
-                <li><strong>Erdős Number:</strong> 4</li>
             </ul>
         </section>
     </div>
