@@ -219,6 +219,138 @@ button:focus-visible {
   box-shadow: inset 7px 0 0 #070b0e;
 }
 
+.home-columns {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.95fr) minmax(360px, 1.15fr) minmax(260px, 0.78fr);
+  gap: 1px;
+  border-bottom: 1px solid var(--line);
+  background: var(--line);
+}
+
+.home-column {
+  min-width: 0;
+  padding: 32px;
+  background: var(--bg);
+}
+
+.column-block {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.column-block:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.home-columns .intro-block {
+  padding-top: 4px;
+}
+
+.home-columns h1 {
+  max-width: none;
+  margin-bottom: 1rem;
+  font-size: 3.2rem;
+  line-height: 1.02;
+}
+
+.home-columns h2 {
+  max-width: none;
+  margin-bottom: 1rem;
+  font-size: 1.9rem;
+  line-height: 1.08;
+}
+
+.home-columns h3 {
+  margin-bottom: 0.45rem;
+  font-size: 1rem;
+}
+
+.home-columns .eyebrow {
+  margin-bottom: 0.75rem;
+}
+
+.home-columns .role-line {
+  margin-bottom: 0.9rem;
+  font-size: 1.05rem;
+}
+
+.home-columns .dek,
+.home-columns p {
+  max-width: none;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.home-columns .dek {
+  margin-bottom: 1.2rem;
+}
+
+.home-columns .hero-actions {
+  gap: 0.65rem;
+}
+
+.home-columns .button {
+  min-height: 40px;
+  padding: 0 0.85rem;
+  font-size: 0.92rem;
+}
+
+.home-columns .about-columns {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  max-width: none;
+}
+
+.home-columns .about-columns article {
+  padding-top: 0.85rem;
+}
+
+.home-columns .content-panel {
+  padding: 1rem;
+}
+
+.home-columns .simple-list {
+  gap: 0.45rem;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
+.home-columns .publication-list,
+.home-columns .blog-thread-list {
+  grid-template-columns: 1fr;
+}
+
+.home-columns .publication-list article {
+  min-height: auto;
+  padding: 1rem;
+}
+
+.home-columns .publication-list h3 {
+  font-size: 1rem;
+  line-height: 1.22;
+}
+
+.home-columns .publication-list p,
+.home-columns .section-note {
+  font-size: 0.92rem;
+}
+
+.home-columns .publication-links {
+  margin-top: 0.75rem;
+}
+
+.home-columns .text-link {
+  margin-top: 0.75rem;
+}
+
+.contact-compact .contact-list {
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
 .hero {
   position: relative;
   display: grid;
@@ -923,6 +1055,7 @@ h3 {
   }
 
   .hero,
+  .home-columns,
   .feature-split,
   .section-heading,
   .research-grid,
@@ -974,6 +1107,15 @@ h3 {
   .site-nav {
     justify-content: flex-start;
     gap: 0.85rem;
+  }
+
+  .home-column {
+    padding: 28px 20px;
+  }
+
+  .home-columns h1 {
+    width: min(320px, calc(100vw - 40px));
+    max-width: min(320px, calc(100vw - 40px));
   }
 
   .hero-copy,
