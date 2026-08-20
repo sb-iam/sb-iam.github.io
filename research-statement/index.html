@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Research statement by Shakthi Bachala: hybrid program analysis, VerifyD Platform, and compiler-integrated interpretability.">
+  <meta property="og:title" content="Research Statement - Shakthi Bachala">
+  <meta property="og:description" content="Hybrid program analysis and interpretable AI infrastructure.">
+  <title>Research Statement - Shakthi Bachala</title>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem("sb-theme");
+        document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
+      } catch (error) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="../styles.css?v=20260820m">
+</head>
+<body>
+  <a class="skip-link" href="#statement">Skip to statement</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Shakthi Bachala home">
+        <span class="brand-mark">SB</span>
+        <span>Shakthi Bachala</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/#about">About</a>
+        <a href="/#experience">Experience</a>
+        <a href="/#platform">VerifyD Platform</a>
+        <a href="/#publications">Publications</a>
+        <a href="/#blog">Blog</a>
+        <a href="/research-statement/" aria-current="page">Research</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to white theme" aria-pressed="false">
+        <span class="theme-swatch" aria-hidden="true"></span>
+        <span data-theme-label>White</span>
+      </button>
+    </header>
+
+    <main id="statement">
+      <article>
+        <header class="hero article-hero simple-article-hero">
+          <div class="signal-grid" aria-hidden="true"></div>
+          <div class="hero-copy">
+            <div class="article-meta">
+              <span>Research Statement</span>
+              <span>Updated Aug 20, 2026</span>
+            </div>
+            <h1>Hybrid Program Analysis and Interpretable AI Infrastructure</h1>
+            <p class="dek">A concise research statement connecting Android hybrid analysis, the VerifyD Platform, compiler infrastructure, and interpretable AI systems.</p>
+          </div>
+        </header>
+
+        <div class="article-layout">
+          <aside class="article-rail">
+            <nav aria-label="On this page">
+              <p>On this page</p>
+              <ol>
+                <li><a href="#abstract">Abstract</a></li>
+                <li><a href="#lineage">Android Lineage</a></li>
+                <li><a href="#platform">VerifyD Platform</a></li>
+                <li><a href="#direction">Current Direction</a></li>
+                <li><a href="#publications">Publications</a></li>
+              </ol>
+            </nav>
+          </aside>
+
+          <div class="article-body">
+            <section id="abstract">
+              <div class="statement-abstract">
+                <p class="lead">My research is in hybrid program analysis: combining static analysis, dynamic analysis, compiler infrastructure, and runtime evidence to understand software systems that cannot be explained by a single analysis technique.</p>
+                <dl class="statement-facts">
+                  <div>
+                    <dt>Research Area</dt>
+                    <dd>Hybrid program analysis</dd>
+                  </div>
+                  <div>
+                    <dt>Advisor</dt>
+                    <dd>Dr. Witawas Srisa-an</dd>
+                  </div>
+                  <div>
+                    <dt>Status</dt>
+                    <dd>Ph.D. candidate, currently on sabbatical from BMO</dd>
+                  </div>
+                </dl>
+              </div>
+              <p>I came to this work through Android program analysis, enterprise cloud systems, ML infrastructure, and compiler-integrated interpretability. The common thread is practical: real systems mix source code, generated code, runtime behavior, configuration, libraries, and human intent. Analysis needs to follow that mixture instead of pretending the system is closed and static.</p>
+            </section>
+
+            <section id="lineage">
+              <h2>Android Lineage</h2>
+              <p>Jitana and ReHAna are the foundation of my research lineage. Jitana addressed scalable hybrid analysis for interacting Android applications. ReHAna focused on reflective code, where runtime behavior intentionally hides important targets from ordinary static analysis.</p>
+              <p>Those projects shaped how I think about software analysis. Static facts are necessary but incomplete. Runtime observations are necessary but incomplete. Useful analysis comes from composing them carefully and keeping track of what each method can and cannot claim.</p>
+            </section>
+
+            <section id="platform">
+              <h2>VerifyD Platform</h2>
+              <p>VerifyD is my current platform work for hybrid analysis of AI-assisted software development. The goal is to make software changes easier to inspect, test, explain, and review using static checks, dynamic checks, compiler-aware evidence, and provenance.</p>
+              <p>The platform builds on my research background in Android hybrid analysis and compiler-integrated interpretability, but it is framed around practical software-engineering workflows rather than a standalone interpretability system.</p>
+            </section>
+
+            <section id="direction">
+              <h2>Current Direction</h2>
+              <p>My current direction keeps the hybrid-analysis core and applies it to modern AI-assisted software work. I am interested in how static analysis, dynamic checks, compiler IR, and model-facing tools can help engineers understand code that is written, modified, or explained by AI systems.</p>
+              <p>The point is not to claim that a model can replace analysis. The point is to use each tool for what it is good at: models for search and explanation, static analysis for structure, dynamic analysis for behavior, compilers for semantics, and humans for judgment.</p>
+            </section>
+
+            <section id="publications">
+              <h2>Publication Lineage</h2>
+              <ul>
+                <li>IAM: Interpretable AI with MLIR - A Compiler-Integrated Framework for Trustworthy Code Generation. ICSE 2026 Doctoral Symposium.</li>
+                <li>ReHAna: An Efficient Program Analysis Framework to Uncover Reflective Code in Android. MobiQuitous 2021.</li>
+                <li>Jitana: A Modern Hybrid Program Analysis Framework for Android Platforms. Journal of Computer Languages, 2019.</li>
+                <li>GranDroid: Graph-Based Detection of Malicious Network Behaviors in Android Applications. SecureComm 2018.</li>
+                <li>An Efficient, Robust, and Scalable Approach for Analyzing Interacting Android Apps. ICSE 2017.</li>
+              </ul>
+              <p><a class="text-link on-paper" href="../shakthi_bachala_research_statement.pdf" target="_blank" rel="noreferrer">Open previous PDF archive</a></p>
+            </section>
+          </div>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <span>Shakthi Bachala</span>
+      <span>Research Statement</span>
+      <span>2026</span>
+    </footer>
+  </div>
+  <script src="/theme.js?v=20260820m" defer></script>
+</body>
+</html>

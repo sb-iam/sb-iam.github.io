@@ -1,311 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shakthi Bachala - Ph.D. Researcher | Principal Cloud Engineer - AI</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 40px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-content h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-
-        .header-content p {
-            font-size: 1.2em;
-            color: #ecf0f1;
-            font-style: italic;
-        }
-
-        nav {
-            background-color: #34495e;
-            padding: 15px 0;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        nav ul li {
-            margin: 0 20px;
-        }
-
-        nav ul li a {
-            color: #ecf0f1;
-            text-decoration: none;
-            font-size: 1.1em;
-            transition: color 0.3s;
-        }
-
-        nav ul li a:hover {
-            color: #3498db;
-        }
-
-        section {
-            background: white;
-            margin-bottom: 30px;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-        }
-
-        h3 {
-            color: #34495e;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .publication {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-left: 4px solid #3498db;
-            border-radius: 4px;
-        }
-
-        .publication-title {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-
-        .publication-authors {
-            color: #555;
-            margin-bottom: 5px;
-        }
-
-        .publication-venue {
-            color: #7f8c8d;
-            font-style: italic;
-        }
-
-        .links {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .links a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .links a:hover {
-            background-color: #2980b9;
-        }
-
-        .links a.broken {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-        }
-
-        .links a.broken:hover {
-            background-color: #95a5a6;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            color: #7f8c8d;
-            background-color: #ecf0f1;
-            margin-top: 50px;
-        }
-
-        @media (max-width: 768px) {
-            header .container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            nav ul li {
-                margin: 5px 0;
-            }
-
-            .links {
-                flex-direction: column;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shakthi Bachala - Ph.D. candidate in hybrid program analysis at the University of Nebraska-Lincoln, currently on sabbatical from BMO.">
+  <meta property="og:title" content="Shakthi Bachala">
+  <meta property="og:description" content="Ph.D. candidate in hybrid program analysis, interpretable AI infrastructure, and cloud AI systems.">
+  <title>Shakthi Bachala</title>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem("sb-theme");
+        document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
+      } catch (error) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css?v=20260820m">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <h1>Shakthi Bachala</h1>
-                <p>Ph.D. Researcher | Principal Cloud Engineer - AI</p>
-            </div>
-        </div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Shakthi Bachala home">
+        <span class="brand-mark">SB</span>
+        <span>Shakthi Bachala</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#platform">VerifyD Platform</a>
+        <a href="#publications">Publications</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to white theme" aria-pressed="false">
+        <span class="theme-swatch" aria-hidden="true"></span>
+        <span data-theme-label>White</span>
+      </button>
     </header>
 
-    <nav>
-        <div class="container">
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#iam">IAM Platform</a></li>
-                <li><a href="#publications">Publications</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+    <main id="main">
+      <section class="hero hero-home profile-hero" aria-labelledby="home-title">
+        <div class="signal-grid" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <p class="eyebrow">Ph.D. candidate in hybrid program analysis</p>
+          <h1 id="home-title">Shakthi Bachala</h1>
+          <p class="role-line">Ph.D. Researcher | Principal Cloud Engineer - AI</p>
+          <p class="dek">I am a Ph.D. candidate in Computer Science at the University of Nebraska-Lincoln, advised by Dr. Witawas Srisa-an. My research focuses on hybrid program analysis, interpretable AI infrastructure, and compiler-aware systems. I am currently on sabbatical from BMO.</p>
+          <div class="hero-actions" aria-label="Primary links">
+            <a class="button primary" href="#publications">Selected Publications</a>
+            <a class="button secondary" href="/research-statement/">Research Statement</a>
+          </div>
         </div>
-    </nav>
+      </section>
 
-    <div class="container">
-        <section id="about">
-            <h2>About Me</h2>
-            <p>I am a Doctoral Researcher in the Computer Science Department at the University of Nebraska-Lincoln under the guidance of Dr. Witawas Srisa-an, specializing in Interpretable AI Infrastructure, with extensive experience in cloud engineering, ML infrastructure, and compiler optimizations.</p>
-            <p style="margin-top: 15px;">My vision is to create an LLVM-equivalent for AI interpretability - a modular, extensible, production-ready platform that makes neural networks as analyzable and debuggable as traditional software. This will enable safer AI deployment through systematic understanding of model behaviors and failure modes.</p>
-        </section>
-        <section id="experience">
-            <h2>Professional Experience</h2>            
-            <div class="publication">
-                <div class="publication-title">Engineering Leadership → Principal Cloud Engineer - AI (IC)</div>
-                <div class="publication-authors">Bank of Montreal (BMO) | Cloud & AI Infrastructure</div>
-                <div class="publication-venue">
-                    <ul style="margin-left: 20px; margin-top: 10px;">
-                        <li>Led team of 50+ Cloud Engineers in enterprise-scale transformations</li>
-                        <li>Orchestrated 20+ PB data migration for Bank of the West acquisition</li>
-                        <li>Delivered MLOps platform from sandbox to production in 15 business days on AWS</li>
-                        <li>Pioneered GenAI infrastructure deployment for Azure in 2 weeks</li>
-                        <li>Created Cloud Adoption Assist program, reducing deployment time by 60%</li>
-                        <li>Transitioned to Principal Cloud Engineer - AI (IC) role to focus on hands-on AI/ML infrastructure and research</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+      <section id="about" class="section-band paper-band" aria-labelledby="about-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">About</p>
+          <h2 id="about-title">About Me</h2>
+        </div>
+        <div class="reading-column">
+          <p>I am a doctoral researcher in the Computer Science Department at the University of Nebraska-Lincoln under the guidance of Dr. Witawas Srisa-an. My work is in hybrid program analysis: combining static analysis, dynamic analysis, compiler infrastructure, and runtime evidence to understand real software systems.</p>
+          <p>I also have industry experience in cloud engineering, ML infrastructure, and AI systems. At BMO, I worked as Principal Cloud Engineer - AI after leading large cloud engineering programs. I am currently on sabbatical from BMO while focusing on my Ph.D. research.</p>
+        </div>
+      </section>
 
-        <section id="iam">
-            <h2>IAM Platform - Ph.D. Dissertation</h2>
-            <p>IAM (Interpretable AI with MLIR) is my Ph.D. dissertation project that brings compiler-grade abstractions to neural network analysis. This research demonstrates how treating neural networks as programs with analyzable IR can enable systematic interpretability at scale.</p>
-            
-            <h3>Key Contributions</h3>
-            <ul style="margin-left: 30px; margin-top: 15px;">
-                <li>Custom MLIR dialect for interpretability operations</li>
-                <li>Sparse autoencoder/transcoder architecture with TPU optimization</li>
-                <li>Compiler techniques (SSA, taint analysis, slicing) for neural networks</li>
-                <li>End-to-end observability and tracing infrastructure</li>
-            </ul>
-            
-            <div class="links">
-                <a href="/shakthi_bachala_research_statement.pdf" target="_blank">Research Statement</a>
-                <a href="https://github.com/shakthibachala/iam" target="_blank">GitHub Repository</a>
-            </div>
-        </section>
+      <section id="experience" class="section-band dark-band" aria-labelledby="experience-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">Experience</p>
+          <h2 id="experience-title">Professional Experience</h2>
+        </div>
+        <article class="content-panel">
+          <h3>Engineering Leadership to Principal Cloud Engineer - AI (IC)</h3>
+          <p class="meta-line">Bank of Montreal (BMO) | Cloud &amp; AI Infrastructure</p>
+          <ul class="simple-list">
+            <li>Led a team of 50+ cloud engineers in enterprise-scale transformations.</li>
+            <li>Orchestrated 20+ PB data migration for the Bank of the West acquisition.</li>
+            <li>Delivered an MLOps platform from sandbox to production in 15 business days on AWS.</li>
+            <li>Pioneered GenAI infrastructure deployment for Azure in 2 weeks.</li>
+            <li>Created Cloud Adoption Assist, reducing deployment time by 60%.</li>
+            <li>Transitioned to Principal Cloud Engineer - AI to focus on hands-on AI and ML infrastructure work.</li>
+          </ul>
+        </article>
+      </section>
 
-        <section id="publications">
-            <h2>Selected Publications</h2>
-            
-            <div class="publication">
-                <div class="publication-title">ReHAna: An Efficient Program Analysis Framework to Uncover Reflective Code in Android</div>
-                <div class="publication-authors">Shakthi Bachala, Yutaka Tsutano, Witawas Srisa-an, Gregg Rothermel, Jackson Dinh, Yuanjiu Hu</div>
-                <div class="publication-venue">MobiQuitous 2021: 347-374</div>
-            </div>
+      <section id="platform" class="section-band paper-band" aria-labelledby="platform-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">Current platform</p>
+          <h2 id="platform-title">VerifyD Platform</h2>
+        </div>
+        <div class="reading-column">
+          <p>VerifyD is my current platform work for hybrid analysis of AI-assisted software development. It focuses on making software changes easier to inspect, test, explain, and review.</p>
+          <p>The platform direction connects my program-analysis background with practical developer tooling: static checks, dynamic checks, compiler-aware evidence, provenance, and human review.</p>
+        </div>
+        <div class="content-panel">
+          <h3>Key Contributions</h3>
+          <ul class="simple-list">
+            <li>Hybrid static and dynamic analysis for AI-assisted code changes.</li>
+            <li>Compiler-aware evidence for understanding what changed and why.</li>
+            <li>Runtime validation and trace collection for generated or modified software.</li>
+            <li>Review-oriented summaries that keep human judgment in the loop.</li>
+            <li>Research lineage from Android hybrid analysis and compiler-integrated interpretability.</li>
+          </ul>
+          <div class="hero-actions">
+            <a class="button primary" href="/research-statement/">Research Statement</a>
+            <a class="button secondary" href="https://github.com/shakthibachala" target="_blank" rel="noreferrer">GitHub Profile</a>
+          </div>
+        </div>
+      </section>
 
-            <div class="publication">
-                <div class="publication-title">Jitana: A modern hybrid program analysis framework for android platforms</div>
-                <div class="publication-authors">Yutaka Tsutano, Shakthi Bachala, Witawas Srisa-an, Gregg Rothermel, Jackson Dinh</div>
-                <div class="publication-venue">Journal of Computer Languages, Volume 52: 55-71 (2019)</div>
-            </div>
+      <section id="publications" class="section-band paper-band" aria-labelledby="pub-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">Selected publications</p>
+          <h2 id="pub-title">Selected Publications</h2>
+        </div>
+        <div class="publication-list">
+          <article>
+            <h3>IAM: Interpretable AI with MLIR - A Compiler-Integrated Framework for Trustworthy Code Generation</h3>
+            <p>Shakthi Bachala, Witawas Srisa-an. ICSE 2026 Doctoral Symposium.</p>
+          </article>
+          <article>
+            <h3>ReHAna: An Efficient Program Analysis Framework to Uncover Reflective Code in Android</h3>
+            <p>Shakthi Bachala, Yutaka Tsutano, Witawas Srisa-an, Gregg Rothermel, Jackson Dinh, Yuanjiu Hu. MobiQuitous 2021: 347-374.</p>
+          </article>
+          <article>
+            <h3>Jitana: A Modern Hybrid Program Analysis Framework for Android Platforms</h3>
+            <p>Yutaka Tsutano, Shakthi Bachala, Witawas Srisa-an, Gregg Rothermel, Jackson Dinh. Journal of Computer Languages, Volume 52: 55-71 (2019).</p>
+          </article>
+          <article>
+            <h3>GranDroid: Graph-Based Detection of Malicious Network Behaviors in Android Applications</h3>
+            <p>Zhiqiang Li, Jun Sun, Qiben Yan, Witawas Srisa-an, Shakthi Bachala. SecureComm (1) 2018: 264-280.</p>
+          </article>
+          <article>
+            <h3>An Efficient, Robust, and Scalable Approach for Analyzing Interacting Android Apps</h3>
+            <p>Yutaka Tsutano, Shakthi Bachala, Witawas Srisa-an, Gregg Rothermel, Jackson Dinh. ICSE 2017: 324-334.</p>
+          </article>
+        </div>
+        <p class="section-note">For more details of the papers, see <a href="https://dblp.org/pid/200/1146.html" target="_blank" rel="noreferrer">DBLP</a>.</p>
+      </section>
 
-            <div class="publication">
-                <div class="publication-title">GranDroid: Graph-Based Detection of Malicious Network Behaviors in Android Applications</div>
-                <div class="publication-authors">Zhiqiang Li, Jun Sun, Qiben Yan, Witawas Srisa-an, Shakthi Bachala</div>
-                <div class="publication-venue">SecureComm (1) 2018: 264-280</div>
-            </div>
+      <section id="blog" class="section-band dark-band" aria-labelledby="blog-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">Blog</p>
+          <h2 id="blog-title">Writing Threads</h2>
+        </div>
+        <div class="blog-thread-list">
+          <article class="content-panel">
+            <h3>Open Ecosystem</h3>
+            <p>Notes on open infrastructure, AI systems, compilers, tools, and developer workflows.</p>
+            <a class="text-link" href="/writing/golden-era-open-ecosystem/">Read the first essay</a>
+          </article>
+          <article class="content-panel">
+            <h3>Hybrid Analysis</h3>
+            <p>Notes on static analysis, dynamic analysis, Android analysis, compiler IR, and runtime evidence.</p>
+          </article>
+          <article class="content-panel">
+            <h3>Future of Software Engineering</h3>
+            <p>Notes on how software engineering changes when models, tools, and compilers work together.</p>
+          </article>
+        </div>
+      </section>
 
-            <div class="publication">
-                <div class="publication-title">An efficient, robust, and scalable approach for analyzing interacting android apps</div>
-                <div class="publication-authors">Yutaka Tsutano, Shakthi Bachala, Witawas Srisa-an, Gregg Rothermel, Jackson Dinh</div>
-                <div class="publication-venue">ICSE 2017: 324-334</div>
-            </div>
-
-            <p style="margin-top: 20px;">For more details of the papers please go to <a href="https://dblp.org/pid/200/1146.html" target="_blank" style="color: #3498db;">DBLP</a>.</p>
-        </section>
-
-        <section id="contact">
-            <h2>Contact & Links</h2>
-            
+      <section id="contact" class="contact-band" aria-labelledby="contact-title">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2 id="contact-title">Contact &amp; Links</h2>
+        </div>
+        <div class="contact-columns">
+          <div>
             <h3>Contact Information</h3>
-            <ul style="margin-left: 30px; line-height: 1.8;">
-                <li><strong>Email:</strong> <a href="mailto:shakthi.bachala@huskers.unl.edu" style="color: #3498db;">shakthi.bachala@huskers.unl.edu</a></li>
-                <li><strong>Location:</strong> Toronto, Ontario, Canada</li>
+            <ul class="contact-list">
+              <li><a href="mailto:shakthi.bachala@huskers.unl.edu">shakthi.bachala@huskers.unl.edu</a></li>
+              <li>Toronto, Ontario, Canada</li>
             </ul>
-            
+          </div>
+          <div>
             <h3>Affiliations</h3>
-            <ul style="margin-left: 30px; line-height: 1.8;">
-                <li>University of Nebraska-Lincoln (Ph.D. Researcher)</li>
-                <li>Bank of Montreal (Principal Cloud Engineer - AI)</li>
+            <ul class="contact-list">
+              <li>University of Nebraska-Lincoln (Ph.D. Researcher)</li>
+              <li>Bank of Montreal (Principal Cloud Engineer - AI, currently on sabbatical)</li>
             </ul>
-            
+          </div>
+          <div>
             <h3>Professional Profiles</h3>
-            <ul style="margin-left: 30px; line-height: 1.8;">
-                <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/shakthi-bachala-09401510a/" target="_blank" style="color: #3498db;">linkedin.com/in/shakthi-bachala-09401510a</a></li>
-                <li><strong>DBLP:</strong> <a href="https://dblp.org/pid/200/1146.html" target="_blank" style="color: #3498db;">dblp.org/pid/200/1146</a></li>
-                <li><strong>GitHub:</strong> <a href="https://github.com/shakthibachala" target="_blank" style="color: #3498db;">github.com/shakthibachala</a></li>
+            <ul class="contact-list">
+              <li><a href="https://www.linkedin.com/in/shakthi-bachala-09401510a/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+              <li><a href="https://dblp.org/pid/200/1146.html" target="_blank" rel="noreferrer">DBLP</a></li>
+              <li><a href="https://github.com/shakthibachala" target="_blank" rel="noreferrer">GitHub</a></li>
             </ul>
-        </section>
-    </div>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Shakthi Bachala. All rights reserved.</p>
+          </div>
         </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>&copy; 2026 Shakthi Bachala. All rights reserved.</span>
     </footer>
+  </div>
+  <script src="/theme.js?v=20260820m" defer></script>
 </body>
 </html>
