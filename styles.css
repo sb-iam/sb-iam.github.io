@@ -420,6 +420,24 @@ h3 {
   font-size: 1.05rem;
 }
 
+.about-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+  max-width: 1120px;
+}
+
+.about-columns article {
+  padding-top: 1rem;
+  border-top: 1px solid #c8d2d7;
+}
+
+.about-columns p {
+  margin-bottom: 0;
+  color: var(--paper-muted);
+  font-size: 1.05rem;
+}
+
 .content-panel {
   padding: 1.4rem;
   border: 1px solid var(--line);
@@ -959,6 +977,7 @@ h3 {
 
   .plane-grid,
   .blog-thread-list,
+  .about-columns,
   .contact-columns,
   .publication-list,
   .article-layout {
