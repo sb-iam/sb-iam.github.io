@@ -1,60 +1,64 @@
 :root {
-  --bg: #070b0e;
-  --bg-deep: #030608;
-  --ink: #f3f5f2;
-  --muted: #a8b1b5;
-  --faint: #69757b;
-  --line: #344047;
+  --bg: #000000;
+  --bg-deep: #000000;
+  --ink: #f6f8f7;
+  --muted: #b0b8bc;
+  --faint: #7d878c;
+  --line: #243038;
   --line-soft: rgba(154, 177, 187, 0.18);
   --cyan: #66d9ff;
-  --cyan-strong: #0d85ad;
-  --paper: #f4f0e8;
-  --paper-ink: #181b1f;
-  --paper-muted: #5b6670;
+  --cyan-strong: #66d9ff;
+  --paper: #000000;
+  --paper-ink: #f6f8f7;
+  --paper-muted: #b0b8bc;
   --red: #c44a37;
   --gold: #c78307;
   --purple: #7458a6;
-  --surface: #0b1115;
-  --surface-2: #101820;
-  --body-grid-x: rgba(102, 217, 255, 0.06);
-  --body-grid-y: rgba(102, 217, 255, 0.05);
+  --surface: #050607;
+  --surface-2: #090c0f;
+  --paper-line: #243038;
+  --paper-body-text: #c4ccd1;
+  --body-grid-x: rgba(102, 217, 255, 0.05);
+  --body-grid-y: rgba(102, 217, 255, 0.04);
   --signal-grid-x: rgba(102, 217, 255, 0.08);
   --signal-grid-y: rgba(102, 217, 255, 0.07);
-  --header-bg: rgba(7, 11, 14, 0.94);
-  --hero-overlay-start: rgba(7, 11, 14, 0.56);
-  --hero-overlay-end: rgba(7, 11, 14, 0.08);
-  --caption-bg: rgba(3, 6, 8, 0.82);
+  --header-bg: rgba(0, 0, 0, 0.95);
+  --hero-overlay-start: rgba(0, 0, 0, 0.7);
+  --hero-overlay-end: rgba(0, 0, 0, 0.18);
+  --caption-bg: rgba(0, 0, 0, 0.86);
   --button-primary-ink: #031014;
   --skip-ink: #021015;
   --radius: 8px;
 }
 
 [data-theme="light"] {
-  --bg: #f4f0e8;
-  --bg-deep: #ebe5da;
-  --ink: #181b1f;
-  --muted: #5b6670;
-  --faint: #74808a;
-  --line: #b8c4ca;
+  --bg: #ffffff;
+  --bg-deep: #ffffff;
+  --ink: #101418;
+  --muted: #4c5862;
+  --faint: #6e7780;
+  --line: #d8e0e4;
   --line-soft: rgba(24, 27, 31, 0.14);
   --cyan: #0d85ad;
   --cyan-strong: #08779d;
-  --paper: #fffaf1;
-  --paper-ink: #181b1f;
-  --paper-muted: #5b6670;
+  --paper: #ffffff;
+  --paper-ink: #101418;
+  --paper-muted: #4c5862;
   --red: #c44a37;
   --gold: #b97800;
   --purple: #7054a2;
-  --surface: #f8f4ec;
-  --surface-2: #fffaf1;
-  --body-grid-x: rgba(13, 133, 173, 0.11);
-  --body-grid-y: rgba(13, 133, 173, 0.08);
-  --signal-grid-x: rgba(13, 133, 173, 0.14);
-  --signal-grid-y: rgba(13, 133, 173, 0.11);
-  --header-bg: rgba(244, 240, 232, 0.94);
-  --hero-overlay-start: rgba(244, 240, 232, 0.72);
-  --hero-overlay-end: rgba(244, 240, 232, 0.1);
-  --caption-bg: rgba(255, 250, 241, 0.9);
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --paper-line: #d8e0e4;
+  --paper-body-text: #35414a;
+  --body-grid-x: rgba(13, 133, 173, 0.08);
+  --body-grid-y: rgba(13, 133, 173, 0.06);
+  --signal-grid-x: rgba(13, 133, 173, 0.1);
+  --signal-grid-y: rgba(13, 133, 173, 0.08);
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --hero-overlay-start: rgba(255, 255, 255, 0.72);
+  --hero-overlay-end: rgba(255, 255, 255, 0.1);
+  --caption-bg: rgba(255, 255, 255, 0.92);
   --button-primary-ink: #031014;
   --skip-ink: #021015;
   color-scheme: light;
@@ -429,7 +433,7 @@ h3 {
 
 .about-columns article {
   padding-top: 1rem;
-  border-top: 1px solid #c8d2d7;
+  border-top: 1px solid var(--paper-line);
 }
 
 .about-columns p {
@@ -446,7 +450,7 @@ h3 {
 
 .paper-band .content-panel {
   margin-top: 1.5rem;
-  border-color: #c8d2d7;
+  border-color: var(--paper-line);
   background: var(--paper);
 }
 
@@ -557,7 +561,7 @@ h3 {
 
 .feature-art {
   min-height: 100%;
-  border-right: 1px solid #c8d2d7;
+  border-right: 1px solid var(--paper-line);
   overflow: hidden;
 }
 
@@ -635,8 +639,8 @@ h3 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
-  border: 1px solid #c8d2d7;
-  background: #c8d2d7;
+  border: 1px solid var(--paper-line);
+  background: var(--paper-line);
 }
 
 .publication-list article {
@@ -740,7 +744,7 @@ h3 {
 
 .article-rail {
   padding: 44px 34px;
-  border-right: 1px solid #c8d2d7;
+  border-right: 1px solid var(--paper-line);
 }
 
 .article-rail nav {
@@ -794,7 +798,7 @@ h3 {
 
 .article-body p,
 .article-body li {
-  color: #3f4a52;
+  color: var(--paper-body-text);
   font-size: 1.05rem;
 }
 
@@ -834,8 +838,8 @@ h3 {
   align-items: start;
   margin: 0 0 3rem;
   padding: 2rem;
-  border: 1px solid #c8d2d7;
-  background: #fffaf1;
+  border: 1px solid var(--paper-line);
+  background: var(--surface-2);
 }
 
 .statement-abstract p {
@@ -850,7 +854,7 @@ h3 {
 }
 
 .statement-facts div {
-  border-top: 1px solid #c8d2d7;
+  border-top: 1px solid var(--paper-line);
   padding-top: 0.8rem;
 }
 
@@ -898,7 +902,7 @@ h3 {
   .feature-art {
     min-height: 390px;
     border-right: 0;
-    border-bottom: 1px solid #c8d2d7;
+    border-bottom: 1px solid var(--paper-line);
   }
 
   .contact-band {
@@ -999,7 +1003,7 @@ h3 {
     padding: 32px 20px;
     overflow: hidden;
     border-right: 0;
-    border-bottom: 1px solid #c8d2d7;
+    border-bottom: 1px solid var(--paper-line);
   }
 
   .article-rail nav {
