@@ -71,109 +71,110 @@
 </blockquote>
 <p>That is the law of leaky abstractions in the agent loop, and there is a datum for how leaky. The Cordis paper, whose runtime returns in §3, surveyed the top 100 VS Code extensions: 87 need a host restart to be removed, and cross-extension exports are typed <code>any</code> by default. Nothing was committed at load time, so nothing can be unwound at unload time. An agent harness is the same shape of platform, with a model at the keyboard.</p>
 <figure class="article-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 532" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" stroke="currentColor" width="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 550" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" stroke="currentColor" width="100%">
   <title id="f1-title">Leaky pipeline versus typed-task pipeline</title>
   <desc id="f1-desc">Two vertical pipelines. Left, today's leaky flow: prompt, agent, Markdown handoff, agent, shell, filesystem, prose summary, with four leaks marked in red: ambient permission, untyped handoff, invisible effect, summary-as-evidence. Right, the typed-task flow: intent, Phi, a fork into obligations and policy that rejoins, typed handoff, effect-checked execution, evidence packet, acceptance, with four checks marked in cyan: bounded authority, typed interface, recorded and revertible effect, classed evidence.</desc>
   <defs>
-    <marker id="f1-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f1-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
   </defs>
 
   <!-- Headers -->
-  <g font-size="16" font-weight="600" text-anchor="middle" stroke="none">
-    <text x="258" y="28">Today: leaky</text>
-    <text x="502" y="28">Typed task: checked</text>
+  <g font-size="18" font-weight="600" text-anchor="middle" stroke="none">
+    <text x="266" y="25">Today: leaky</text>
+    <text x="497" y="25">Typed task: checked</text>
   </g>
-  <line x1="211" y1="38" x2="305" y2="38" stroke="#c44a37" stroke-width="2"/>
-  <line x1="425" y1="38" x2="579" y2="38" stroke="#1fa8d6" stroke-width="2"/>
+  <line x1="206" y1="35" x2="326" y2="35" stroke="#c44a37" stroke-width="2"/>
+  <line x1="403" y1="35" x2="591" y2="35" stroke="#1fa8d6" stroke-width="2"/>
 
-  <!-- ===== LEFT PIPELINE ===== -->
+  <!-- ===== LEFT PIPELINE (box x 178..354, centre 266) ===== -->
   <g stroke-width="1.2">
     <!-- boxes -->
-    <rect x="170" y="53"  width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
-    <rect x="170" y="123" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
-    <rect x="170" y="193" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
-    <rect x="170" y="263" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
-    <rect x="170" y="333" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
-    <rect x="170" y="403" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
-    <rect x="170" y="473" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="178" y="48"  width="176" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="178" y="120" width="176" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="178" y="194" width="176" height="36" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="178" y="268" width="176" height="36" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="178" y="349" width="176" height="36" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="178" y="430" width="176" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="178" y="502" width="176" height="36" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
     <!-- arrows -->
-    <line x1="258" y1="87"  x2="258" y2="122" marker-end="url(#f1-arr)" stroke-width="1.5"/>
-    <line x1="258" y1="157" x2="258" y2="192" marker-end="url(#f1-arr)" stroke-dasharray="4 3" stroke-width="1.5"/>
-    <line x1="258" y1="227" x2="258" y2="262" marker-end="url(#f1-arr)" stroke-dasharray="4 3" stroke-width="1.5"/>
-    <line x1="258" y1="297" x2="258" y2="332" marker-end="url(#f1-arr)" stroke-width="1.5"/>
-    <line x1="258" y1="367" x2="258" y2="402" marker-end="url(#f1-arr)" stroke-width="1.5"/>
-    <line x1="258" y1="437" x2="258" y2="472" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="266" y1="84"  x2="266" y2="119" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="266" y1="156" x2="266" y2="193" marker-end="url(#f1-arr)" stroke-dasharray="4 3" stroke-width="1.5"/>
+    <line x1="266" y1="230" x2="266" y2="267" marker-end="url(#f1-arr)" stroke-dasharray="4 3" stroke-width="1.5"/>
+    <line x1="266" y1="304" x2="266" y2="348" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="266" y1="385" x2="266" y2="429" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="266" y1="466" x2="266" y2="501" marker-end="url(#f1-arr)" stroke-width="1.5"/>
   </g>
-  <g font-size="13" text-anchor="middle" stroke="none">
-    <text x="258" y="75">prompt</text>
-    <text x="258" y="145">agent</text>
-    <text x="258" y="215">Markdown handoff</text>
-    <text x="258" y="285">agent</text>
-    <text x="258" y="355">shell</text>
-    <text x="258" y="425">filesystem</text>
-    <text x="258" y="495">prose summary</text>
+  <g font-size="15" text-anchor="middle" stroke="none">
+    <text x="266" y="71">prompt</text>
+    <text x="266" y="143">agent</text>
+    <text x="266" y="217">Markdown handoff</text>
+    <text x="266" y="291">agent</text>
+    <text x="266" y="372">shell</text>
+    <text x="266" y="453">filesystem</text>
+    <text x="266" y="525">prose summary</text>
   </g>
   <!-- leak markers -->
   <g fill="#c44a37" stroke="none">
-    <circle cx="158" cy="210" r="5"/>
-    <circle cx="158" cy="280" r="5"/>
-    <circle cx="158" cy="350" r="5"/>
-    <circle cx="158" cy="490" r="5"/>
+    <circle cx="164" cy="212" r="5"/>
+    <circle cx="164" cy="286" r="5"/>
+    <circle cx="164" cy="367" r="5"/>
+    <circle cx="164" cy="520" r="5"/>
   </g>
-  <g font-size="12" text-anchor="end" stroke="none">
-    <text x="146" y="214">untyped handoff</text>
-    <text x="146" y="284">ambient permission</text>
-    <text x="146" y="354">invisible effect</text>
-    <text x="146" y="494">summary-as-evidence</text>
+  <g font-size="14" text-anchor="end" stroke="none" opacity="0.78">
+    <text x="150" y="217">untyped handoff</text>
+    <text x="150" y="291">ambient permission</text>
+    <text x="150" y="372">invisible effect</text>
+    <text x="150" y="525">summary-as-evidence</text>
   </g>
 
-  <!-- ===== RIGHT PIPELINE ===== -->
+  <!-- ===== RIGHT PIPELINE (box x 384..610, centre 497) ===== -->
   <g stroke-width="1.2" fill="none">
     <!-- boxes -->
-    <rect x="414" y="53"  width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
-    <rect x="414" y="123" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
-    <rect x="412" y="193" width="82"  height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
-    <rect x="510" y="193" width="82"  height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
-    <rect x="414" y="263" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
-    <rect x="414" y="333" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
-    <rect x="414" y="403" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
-    <rect x="414" y="473" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
-    <!-- trunk arrows -->
-    <line x1="502" y1="87"  x2="502" y2="122" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <rect x="384" y="48"  width="226" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="384" y="120" width="226" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="384" y="194" width="112" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="530" y="194" width="80"  height="36" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="384" y="268" width="226" height="36" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="384" y="340" width="226" height="54" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="384" y="430" width="226" height="36" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="384" y="502" width="226" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <!-- trunk arrow -->
+    <line x1="497" y1="84"  x2="497" y2="119" marker-end="url(#f1-arr)" stroke-width="1.5"/>
     <!-- fork -->
-    <path d="M502,157 V170 H453 V192" marker-end="url(#f1-arr)" stroke-width="1.5"/>
-    <path d="M502,157 V170 H551 V192" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <path d="M497,156 V174 H440 V193" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <path d="M497,156 V174 H570 V193" marker-end="url(#f1-arr)" stroke-width="1.5"/>
     <!-- rejoin -->
-    <path d="M453,227 V244 H551 V227" stroke-width="1.5"/>
-    <line x1="502" y1="244" x2="502" y2="262" marker-end="url(#f1-arr)" stroke-width="1.5"/>
-    <line x1="502" y1="297" x2="502" y2="332" marker-end="url(#f1-arr)" stroke-width="1.5"/>
-    <line x1="502" y1="367" x2="502" y2="402" marker-end="url(#f1-arr)" stroke-width="1.5"/>
-    <line x1="502" y1="437" x2="502" y2="472" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <path d="M440,230 V248 H570 V230" stroke-width="1.5"/>
+    <line x1="497" y1="248" x2="497" y2="267" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="497" y1="304" x2="497" y2="339" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="497" y1="394" x2="497" y2="429" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="497" y1="466" x2="497" y2="501" marker-end="url(#f1-arr)" stroke-width="1.5"/>
   </g>
-  <g font-size="13" text-anchor="middle" stroke="none">
-    <text x="502" y="75">intent</text>
-    <text x="502" y="146" font-size="16" font-weight="600">Φ</text>
-    <text x="453" y="215">obligations</text>
-    <text x="502" y="215">∥</text>
-    <text x="551" y="215">policy</text>
-    <text x="502" y="285">typed handoff</text>
-    <text x="502" y="355">effect-checked execution</text>
-    <text x="502" y="425">evidence packet</text>
-    <text x="502" y="495">acceptance</text>
+  <g font-size="15" text-anchor="middle" stroke="none">
+    <text x="497" y="71">intent</text>
+    <text x="497" y="144" font-size="18" font-weight="600">Φ</text>
+    <text x="440" y="217">obligations</text>
+    <text x="513" y="217" font-size="14" opacity="0.78">and</text>
+    <text x="570" y="217">policy</text>
+    <text x="497" y="291">typed handoff</text>
+    <text x="497" y="362">effect-checked</text>
+    <text x="497" y="380">execution</text>
+    <text x="497" y="453">evidence packet</text>
+    <text x="497" y="525">acceptance</text>
   </g>
   <!-- check markers -->
   <g fill="#1fa8d6" stroke="none">
-    <circle cx="604" cy="210" r="5"/>
-    <circle cx="604" cy="280" r="5"/>
-    <circle cx="604" cy="350" r="5"/>
-    <circle cx="604" cy="420" r="5"/>
+    <circle cx="624" cy="212" r="5"/>
+    <circle cx="624" cy="286" r="5"/>
+    <circle cx="624" cy="367" r="5"/>
+    <circle cx="624" cy="448" r="5"/>
   </g>
-  <g font-size="12" text-anchor="start" stroke="none">
-    <text x="616" y="214">bounded authority</text>
-    <text x="616" y="284">typed interface</text>
-    <text x="616" y="347">recorded +</text>
-    <text x="616" y="361">revertible effect</text>
-    <text x="616" y="424">classed evidence</text>
+  <g font-size="14" text-anchor="start" stroke="none" opacity="0.78">
+    <text x="637" y="217">bounded authority</text>
+    <text x="637" y="291">typed interface</text>
+    <text x="637" y="362">recorded +</text>
+    <text x="637" y="379">revertible effect</text>
+    <text x="637" y="453">classed evidence</text>
   </g>
 </svg>
 <figcaption><strong>F1</strong> One task through an untyped pipeline (left) and a checked one (right); every leak on the left has its check on the right.</figcaption>
@@ -192,60 +193,57 @@ Evidence  what must be produced for acceptance
 </code></pre></div>
 <p><strong>Φ is the type.</strong> A model can draft it from a sentence; nothing admits it on the model's word. A handoff between agents is a signature in it rather than a paragraph, and everything downstream is one of four projections.</p>
 <figure class="article-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 476" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f2-title">Φ and its four projections</title>
-  <desc id="f2-desc">The typed task object Φ = ⟨Pre, Post, Inv, Cap, Effects, Evidence⟩ sits at the centre. Four arrows project its components outward: Cap and Effects become an authorization policy in Cedar where forbid overrides permit; Pre, Post and Inv become obligations discharged by tests, static analysis or proof; Effects become a runtime effect check in the harness that records and reverts; Evidence becomes the witness packet labelled proved, tested, observed, judged or assumed. Caption: authorization and verification are two projections of one typed object.</desc>
+  <desc id="f2-desc">The typed task object Φ = (Pre, Post, Inv, Cap, Effects, Evidence) sits at the centre. Four arrows project its components outward: Cap and Effects become an authorization policy in Cedar where forbid overrides permit; Pre, Post and Inv become obligations discharged by tests, static analysis or proof; Effects become a runtime effect check in the harness that records and reverts; Evidence becomes the witness packet labelled proved, tested, observed, judged or assumed. Authorization and verification are two projections of one typed object.</desc>
   <defs>
-    <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
   </defs>
 
   <!-- projection boxes -->
   <g stroke="currentColor" stroke-width="1.2" fill="rgba(128,128,128,0.12)">
-    <rect x="20" y="20" width="320" height="78" rx="6"/>
-    <rect x="420" y="20" width="320" height="78" rx="6"/>
-    <rect x="20" y="352" width="320" height="78" rx="6"/>
-    <rect x="420" y="352" width="320" height="78" rx="6"/>
+    <rect x="12" y="12" width="350" height="96" rx="6"/>
+    <rect x="398" y="12" width="350" height="96" rx="6"/>
+    <rect x="12" y="368" width="350" height="96" rx="6"/>
+    <rect x="398" y="368" width="350" height="96" rx="6"/>
   </g>
 
   <!-- centre: Φ -->
-  <rect x="180" y="198" width="400" height="58" rx="6" stroke="#1fa8d6" stroke-width="1.6" fill="rgba(31,168,214,0.16)"/>
-  <text x="380" y="233" font-size="16" font-weight="600" text-anchor="middle">Φ = ⟨Pre, Post, Inv, Cap, Effects, Evidence⟩</text>
+  <rect x="150" y="208" width="460" height="62" rx="6" stroke="#1fa8d6" stroke-width="1.6" fill="rgba(31,168,214,0.16)"/>
+  <text x="380" y="245" font-size="18" font-weight="600" text-anchor="middle">Φ = (Pre, Post, Inv, Cap, Effects, Evidence)</text>
 
   <!-- arrows -->
   <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#f2-arrow)">
-    <line x1="240" y1="198" x2="198" y2="102"/>
-    <line x1="520" y1="198" x2="562" y2="102"/>
-    <line x1="240" y1="256" x2="198" y2="348"/>
-    <line x1="520" y1="256" x2="562" y2="348"/>
+    <line x1="240" y1="208" x2="200" y2="112"/>
+    <line x1="520" y1="208" x2="560" y2="112"/>
+    <line x1="240" y1="270" x2="200" y2="364"/>
+    <line x1="520" y1="270" x2="560" y2="364"/>
   </g>
 
   <!-- arrow labels: which components project -->
-  <g font-size="13">
-    <text x="236" y="154">Cap + Effects</text>
-    <text x="524" y="154" text-anchor="end">Pre, Post, Inv</text>
-    <text x="236" y="308">Effects</text>
-    <text x="524" y="308" text-anchor="end">Evidence</text>
+  <g font-size="15">
+    <text x="238" y="166">Cap + Effects</text>
+    <text x="522" y="166" text-anchor="end">Pre, Post, Inv</text>
+    <text x="238" y="322">Effects</text>
+    <text x="522" y="322" text-anchor="end">Evidence</text>
   </g>
 
   <!-- top-left: Authorization -->
-  <text x="180" y="50" font-size="15" font-weight="600" text-anchor="middle">Authorization</text>
-  <text x="180" y="76" font-size="13" text-anchor="middle">Cedar policy · forbid overrides permit</text>
+  <text x="187" y="50" font-size="18" font-weight="600" text-anchor="middle">Authorization</text>
+  <text x="187" y="80" font-size="14" opacity="0.78" text-anchor="middle">Cedar policy · forbid overrides permit</text>
 
   <!-- top-right: Obligations -->
-  <text x="580" y="50" font-size="15" font-weight="600" text-anchor="middle">Obligations</text>
-  <text x="580" y="76" font-size="13" text-anchor="middle">tests · static analysis · proof</text>
+  <text x="573" y="50" font-size="18" font-weight="600" text-anchor="middle">Obligations</text>
+  <text x="573" y="80" font-size="14" opacity="0.78" text-anchor="middle">tests · static analysis · proof</text>
 
   <!-- bottom-left: Runtime effect check -->
-  <text x="180" y="382" font-size="15" font-weight="600" text-anchor="middle">Runtime effect check</text>
-  <text x="180" y="408" font-size="13" text-anchor="middle">harness records + reverts</text>
+  <text x="187" y="406" font-size="18" font-weight="600" text-anchor="middle">Runtime effect check</text>
+  <text x="187" y="436" font-size="14" opacity="0.78" text-anchor="middle">harness records + reverts</text>
 
   <!-- bottom-right: Witness -->
-  <text x="580" y="378" font-size="15" font-weight="600" text-anchor="middle">Witness</text>
-  <text x="580" y="399" font-size="13" text-anchor="middle">evidence packet:</text>
-  <text x="580" y="418" font-size="13" text-anchor="middle">proved · tested · observed · judged · assumed</text>
-
-  <!-- caption -->
-  <text x="380" y="458" font-size="13" font-style="italic" text-anchor="middle">Authorization and verification are two projections of one typed object.</text>
+  <text x="573" y="398" font-size="18" font-weight="600" text-anchor="middle">Witness</text>
+  <text x="573" y="426" font-size="14" opacity="0.78" text-anchor="middle">evidence packet: proved, tested,</text>
+  <text x="573" y="448" font-size="14" opacity="0.78" text-anchor="middle">observed, judged or assumed</text>
 </svg>
 <figcaption><strong>F2</strong> Φ at the centre; everything downstream consumes one of its four projections.</figcaption>
 </figure>
@@ -280,20 +278,20 @@ behavior(before)   ≈  behavior(after)
 <h2 id="3-progressive-commitment-the-layer-cake">3. Progressive commitment: the layer cake</h2>
 <p>Compilers solved this shape of problem decades ago: parse tree, typed representation, IR, lowering, codegen, and each stage makes some ambiguity impossible and some invariant checkable. The layer cake is that pipeline lifted above the code, with Φ as the object being lowered. Goldilocks decides how much each layer must commit; open-versus-closed decides who may inspect it.</p>
 <figure class="article-figure hero-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 648" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f3-title">The AI layer cake for agentic software</title>
   <desc id="f3-desc">Six layers from human intent down to evidence, each stating what it commits, its open reference, and whether it must be open or may be closed; a vertical arrow marks progressive commitment; a shaded band below marks cloud, chips and energy as out of scope.</desc>
   <defs>
-    <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
-      .t  { font-size: 16px; font-weight: 600; }
-      .h  { font-size: 12px; font-weight: 600; opacity: 0.6; letter-spacing: 0.04em; }
-      .n  { font-size: 13px; font-weight: 600; }
-      .c  { font-size: 13px; }
-      .r  { font-size: 12px; opacity: 0.78; }
-      .p  { font-size: 12px; text-anchor: middle; }
-      .g  { font-size: 12px; opacity: 0.8; text-anchor: middle; }
-      .b  { font-size: 13px; opacity: 0.85; text-anchor: middle; }
+      .t  { font-size: 18px; font-weight: 600; }
+      .h  { font-size: 13.5px; font-weight: 600; opacity: 0.78; letter-spacing: 0.08em; }
+      .n  { font-size: 16px; font-weight: 600; }
+      .c  { font-size: 15px; }
+      .r  { font-size: 15px; opacity: 0.78; }
+      .p  { font-size: 13.5px; text-anchor: middle; }
+      .g  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
+      .b  { font-size: 15px; opacity: 0.78; text-anchor: middle; }
       .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
       .open  { fill: rgba(31,168,214,0.16); stroke: #1fa8d6; stroke-width: 1.2; }
       .either{ fill: rgba(199,131,7,0.16);  stroke: #c78307; stroke-width: 1.2; }
@@ -302,83 +300,92 @@ behavior(before)   ≈  behavior(after)
   </defs>
 
   <!-- title -->
-  <text class="t" x="34" y="30">The AI layer cake for agentic software</text>
+  <text class="t" x="42" y="25">The AI layer cake for agentic software</text>
 
   <!-- column headers -->
-  <text class="h" x="46"  y="58">LAYER</text>
-  <text class="h" x="188" y="58">COMMITS</text>
-  <text class="h" x="411" y="58">OPEN REFERENCE</text>
-  <text class="h" x="744" y="58" text-anchor="end">OPENNESS</text>
-  <line class="rule" x1="34" y1="64" x2="754" y2="64"/>
+  <text class="h" x="54"  y="56">LAYER</text>
+  <text class="h" x="178" y="56">COMMITS</text>
+  <text class="h" x="372" y="56">OPEN REFERENCE</text>
+  <text class="h" x="738" y="56" text-anchor="end">OPENNESS</text>
+  <line class="rule" x1="42" y1="64" x2="750" y2="64"/>
 
   <!-- left gutter: progressive commitment -->
-  <line x1="24" y1="72" x2="24" y2="466" stroke="currentColor" stroke-width="1.5" marker-end="url(#f3-arrow)"/>
-  <text class="g" transform="rotate(-90 14 270)" x="14" y="270">progressive commitment</text>
+  <line x1="32" y1="74" x2="32" y2="584" stroke="currentColor" stroke-width="1.5" marker-end="url(#f3-arrow)"/>
+  <text class="g" transform="rotate(-90 22 329)" x="22" y="329">progressive commitment</text>
 
-  <!-- L1 Human intent: y=70 -->
-  <rect class="band" x="34" y="70" width="720" height="60" rx="6"/>
-  <text class="n" x="46" y="104.5">Human intent</text>
-  <text class="c" x="188" y="104.5">what was asked; who accepts risk</text>
-  <text class="r" x="411" y="104.5">—</text>
-  <rect class="either" x="682" y="89" width="62" height="22" rx="11"/>
-  <text class="p" x="713" y="104.3">either</text>
+  <!-- L1 Human intent: y=74 -->
+  <rect class="band" x="42" y="74" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="119.5">Human intent</text>
+  <text class="c" x="178" y="110">what was asked;</text>
+  <text class="c" x="178" y="128">who accepts risk</text>
+  <text class="r" x="372" y="119">—</text>
+  <rect class="either" x="670" y="103" width="68" height="22" rx="11"/>
+  <text class="p" x="704" y="118.8">either</text>
 
-  <!-- L2 Formal intent & policy: y=138 -->
-  <rect class="band" x="34" y="138" width="720" height="60" rx="6"/>
-  <text class="n" x="46" y="163">Formal intent</text>
-  <text class="n" x="46" y="180">&amp; policy</text>
-  <text class="c" x="188" y="163">Φ: authority bounded,</text>
-  <text class="c" x="188" y="180">obligations stated</text>
-  <text class="r" x="411" y="172.5">Cedar · autoformalization · CSLib</text>
-  <rect class="open" x="644" y="157" width="100" height="22" rx="11"/>
-  <text class="p" x="694" y="172.3">must be open</text>
+  <!-- L2 Formal intent & policy: y=160 -->
+  <rect class="band" x="42" y="160" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="196">Formal intent</text>
+  <text class="n" x="54" y="215">&amp; policy</text>
+  <text class="c" x="178" y="196">Φ: authority bounded,</text>
+  <text class="c" x="178" y="214">obligations stated</text>
+  <text class="r" x="372" y="196">Cedar · autoformalization ·</text>
+  <text class="r" x="372" y="214">CSLib</text>
+  <rect class="open" x="626" y="189" width="112" height="22" rx="11"/>
+  <text class="p" x="682" y="204.8">must be open</text>
 
-  <!-- L3 Agent harness: y=206 -->
-  <rect class="band" x="34" y="206" width="720" height="60" rx="6"/>
-  <text class="n" x="46" y="231">Agent harness</text>
-  <text class="n" x="46" y="248">(runtime)</text>
-  <text class="c" x="188" y="231">effects recorded with inverses;</text>
-  <text class="c" x="188" y="248">model-visible ⇒ logged</text>
-  <text class="r" x="411" y="231">DeepSeek Harness ·</text>
-  <text class="r" x="411" y="247">Cordis · ACP</text>
-  <rect class="open" x="636" y="212" width="108" height="22" rx="11"/>
-  <text class="p" x="690" y="227.3">interface open</text>
-  <rect class="either" x="589" y="238" width="155" height="22" rx="11"/>
-  <text class="p" x="666.5" y="253.3">implementation either</text>
+  <!-- L3 Agent harness: y=246 -->
+  <rect class="band" x="42" y="246" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="282">Agent harness</text>
+  <text class="n" x="54" y="301">(runtime)</text>
+  <text class="c" x="178" y="273">effects recorded</text>
+  <text class="c" x="178" y="291">with inverses;</text>
+  <text class="c" x="178" y="309">model-visible → logged</text>
+  <text class="r" x="372" y="282">DeepSeek Harness ·</text>
+  <text class="r" x="372" y="300">Cordis · ACP</text>
+  <rect class="open" x="612" y="254" width="126" height="22" rx="11"/>
+  <text class="p" x="675" y="269.8">interface open</text>
+  <rect class="either" x="612" y="282" width="126" height="36" rx="8"/>
+  <text class="p" x="675" y="297.2">implementation</text>
+  <text class="p" x="675" y="312.2">either</text>
 
-  <!-- L4 Compiler & language: y=274 -->
-  <rect class="band" x="34" y="274" width="720" height="60" rx="6"/>
-  <text class="n" x="46" y="299">Compiler</text>
-  <text class="n" x="46" y="316">&amp; language</text>
-  <text class="c" x="188" y="299">structure checked;</text>
-  <text class="c" x="188" y="316">analysis hooks before lowering</text>
-  <text class="r" x="411" y="308.5">Mojo · MLIR · LLVM</text>
-  <rect class="open" x="636" y="280" width="108" height="22" rx="11"/>
-  <text class="p" x="690" y="295.3">interface open</text>
-  <rect class="either" x="589" y="306" width="155" height="22" rx="11"/>
-  <text class="p" x="666.5" y="321.3">implementation either</text>
+  <!-- L4 Compiler & language: y=332 -->
+  <rect class="band" x="42" y="332" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="368">Compiler</text>
+  <text class="n" x="54" y="387">&amp; language</text>
+  <text class="c" x="178" y="359">structure checked;</text>
+  <text class="c" x="178" y="377">analysis hooks</text>
+  <text class="c" x="178" y="395">before lowering</text>
+  <text class="r" x="372" y="377">Mojo · MLIR · LLVM</text>
+  <rect class="open" x="612" y="340" width="126" height="22" rx="11"/>
+  <text class="p" x="675" y="355.8">interface open</text>
+  <rect class="either" x="612" y="368" width="126" height="36" rx="8"/>
+  <text class="p" x="675" y="383.2">implementation</text>
+  <text class="p" x="675" y="398.2">either</text>
 
-  <!-- L5 Executable system: y=342 -->
-  <rect class="band" x="34" y="342" width="720" height="60" rx="6"/>
-  <text class="n" x="46" y="376.5">Executable system</text>
-  <text class="c" x="188" y="367">behaviour observed;</text>
-  <text class="c" x="188" y="384">traces produced</text>
-  <text class="r" x="411" y="376.5">Zed as control plane · CLI</text>
-  <rect class="either" x="682" y="361" width="62" height="22" rx="11"/>
-  <text class="p" x="713" y="376.3">either</text>
+  <!-- L5 Executable system: y=418 -->
+  <rect class="band" x="42" y="418" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="454">Executable</text>
+  <text class="n" x="54" y="473">system</text>
+  <text class="c" x="178" y="454">behaviour observed;</text>
+  <text class="c" x="178" y="472">traces produced</text>
+  <text class="r" x="372" y="463">Zed as control plane · CLI</text>
+  <rect class="either" x="670" y="447" width="68" height="22" rx="11"/>
+  <text class="p" x="704" y="462.8">either</text>
 
-  <!-- L6 Evidence / witness: y=410 -->
-  <rect class="band" x="34" y="410" width="720" height="60" rx="6"/>
-  <text class="n" x="46" y="444.5">Evidence / witness</text>
-  <text class="c" x="188" y="435">proved · tested · observed ·</text>
-  <text class="c" x="188" y="452">judged · assumed</text>
-  <text class="r" x="411" y="444.5">portable formats</text>
-  <rect class="open" x="644" y="429" width="100" height="22" rx="11"/>
-  <text class="p" x="694" y="444.3">must be open</text>
+  <!-- L6 Evidence / witness: y=504 -->
+  <rect class="band" x="42" y="504" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="540">Evidence /</text>
+  <text class="n" x="54" y="559">witness</text>
+  <text class="c" x="178" y="531">proved · tested ·</text>
+  <text class="c" x="178" y="549">observed · judged ·</text>
+  <text class="c" x="178" y="567">assumed</text>
+  <text class="r" x="372" y="549">portable formats</text>
+  <rect class="open" x="626" y="533" width="112" height="22" rx="11"/>
+  <text class="p" x="682" y="548.8">must be open</text>
 
   <!-- below the boundary -->
-  <rect x="34" y="488" width="720" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="4 3"/>
-  <text class="b" x="394" y="510.5">cloud · chips · energy — below this series' boundary</text>
+  <rect x="42" y="598" width="708" height="38" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="4 3"/>
+  <text class="b" x="396" y="622">cloud · chips · energy — below this series' boundary</text>
 </svg>
 <figcaption><strong>F3</strong> One row per layer: what it commits, its open reference, and whether it must be open, can be closed, or either.</figcaption>
 </figure>
@@ -395,61 +402,60 @@ behavior(before)   ≈  behavior(after)
 <h2 id="4-calibration">4. Calibration</h2>
 <p>A typed object is what makes calibration possible. You cannot tune the rigor of a prose handoff, but you can decide how much of Φ a task must discharge. The failure corners are symmetric. On rigor, too little is ambient permissions and summary-as-evidence; too much is a proof for every edit and ceremony outrunning signal. On openness, too little is the closed vertical; too much is fragmentation: source exists, nothing composes, dialects drift, adoption happens by fork.</p>
 <figure class="article-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="currentColor" width="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 510" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" fill="currentColor" width="100%">
   <title id="f4-title">The Goldilocks zone</title>
-  <desc id="f4-desc">A square two-axis chart. The horizontal axis is rigor, from prompt-only on the left to proof for every edit on the right. The vertical axis is openness, from closed vertical at the bottom to fragmented at the top. A cyan zone in the centre is labelled Goldilocks zone: typed intent, open connective layers, evidence proportional to risk. The four corners are labelled supervising a demo (bottom-left), locked-in ceremony (bottom-right), nothing composes nothing checks (top-left), and formal islands (top-right). Below the chart a gold gradient bar shows evidence proportional to risk, from a docs edit through a parser refactor to auth and payments.</desc>
+  <desc id="f4-desc">A two-axis chart. The horizontal axis is rigor, from prompt-only on the left to proof for every edit on the right. The vertical axis is openness, from closed vertical at the bottom to fragmented at the top. A cyan zone in the centre is labelled Goldilocks zone: typed intent, open connective layers, evidence scales with risk. The four corners are labelled supervising a demo (bottom-left), locked-in ceremony (bottom-right), nothing composes nothing checks (top-left), and formal islands (top-right). Below the chart a gold gradient bar shows evidence scaling with risk, from a docs edit through a parser refactor to auth and payments.</desc>
   <defs>
-    <marker id="f4-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f4-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <linearGradient id="f4-risk" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#c78307" stop-opacity="0.18"/>
       <stop offset="1" stop-color="#c78307" stop-opacity="0.90"/>
     </linearGradient>
   </defs>
-  <g transform="translate(62 0)">
 
   <!-- plot frame: dashed top/right, solid axes with arrowheads -->
-  <path d="M150 20 H560 V430" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="4 3"/>
-  <line x1="150" y1="430" x2="576" y2="430" stroke="currentColor" stroke-width="1.5" marker-end="url(#f4-arr)"/>
-  <line x1="150" y1="430" x2="150" y2="6" stroke="currentColor" stroke-width="1.5" marker-end="url(#f4-arr)"/>
+  <path d="M128 26 H732 V400" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="128" y1="400" x2="748" y2="400" stroke="currentColor" stroke-width="1.5" marker-end="url(#f4-arr)"/>
+  <line x1="128" y1="400" x2="128" y2="11" stroke="currentColor" stroke-width="1.5" marker-end="url(#f4-arr)"/>
 
   <!-- y axis labels -->
-  <text x="140" y="26" text-anchor="end" fill="currentColor">fragmented</text>
-  <text x="140" y="434" text-anchor="end" fill="currentColor">closed vertical</text>
-  <text transform="translate(64 225) rotate(-90)" text-anchor="middle" fill="currentColor" font-weight="600">openness</text>
+  <text x="118" y="31" text-anchor="end" fill="currentColor" fill-opacity="0.78">fragmented</text>
+  <text x="118" y="394" text-anchor="end" fill="currentColor" fill-opacity="0.78">closed</text>
+  <text x="118" y="412" text-anchor="end" fill="currentColor" fill-opacity="0.78">vertical</text>
+  <text transform="translate(20 213) rotate(-90)" text-anchor="middle" fill="currentColor" font-weight="600">openness</text>
 
   <!-- x axis labels -->
-  <text x="150" y="450" fill="currentColor">prompt-only</text>
-  <text x="355" y="450" text-anchor="middle" fill="currentColor" font-weight="600">rigor</text>
-  <text x="560" y="450" text-anchor="end" fill="currentColor">proof for every edit</text>
+  <text x="128" y="421" fill="currentColor" fill-opacity="0.78">prompt-only</text>
+  <text x="430" y="421" text-anchor="middle" fill="currentColor" font-weight="600">rigor</text>
+  <text x="732" y="421" text-anchor="end" fill="currentColor" fill-opacity="0.78">proof for every edit</text>
 
   <!-- zone halo + zone -->
-  <rect x="200" y="125" width="310" height="200" rx="28" fill="rgba(31,168,214,0.16)" fill-opacity="0.5" stroke="#1fa8d6" stroke-opacity="0.55" stroke-width="1.2" stroke-dasharray="4 3"/>
-  <rect x="235" y="160" width="240" height="130" rx="16" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
-  <text x="355" y="192" text-anchor="middle" fill="currentColor" font-size="15" font-weight="600">Goldilocks zone</text>
-  <text x="355" y="218" text-anchor="middle" fill="currentColor" font-size="13">typed intent</text>
-  <text x="355" y="240" text-anchor="middle" fill="currentColor" font-size="13">open connective layers</text>
-  <text x="355" y="262" text-anchor="middle" fill="currentColor" font-size="13">evidence ∝ risk</text>
+  <rect x="265" y="121" width="330" height="186" rx="28" fill="rgba(31,168,214,0.16)" fill-opacity="0.5" stroke="#1fa8d6" stroke-opacity="0.55" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <rect x="300" y="156" width="260" height="116" rx="16" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="430" y="182" text-anchor="middle" fill="currentColor" font-size="18" font-weight="600">Goldilocks zone</text>
+  <text x="430" y="207" text-anchor="middle" fill="currentColor">typed intent</text>
+  <text x="430" y="229" text-anchor="middle" fill="currentColor">open connective layers</text>
+  <text x="430" y="251" text-anchor="middle" fill="currentColor">evidence scales with risk</text>
 
   <!-- corner tags (too little = red, too much = purple) -->
-  <rect x="162" y="33" width="236" height="22" rx="11" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
-  <text x="280" y="48.3" text-anchor="middle" fill="currentColor" font-size="13">nothing composes, nothing checks</text>
+  <rect x="140" y="40" width="284" height="26" rx="13" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+  <text x="282" y="58.3" text-anchor="middle" fill="currentColor">nothing composes, nothing checks</text>
 
-  <rect x="432" y="33" width="116" height="22" rx="11" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
-  <text x="490" y="48.3" text-anchor="middle" fill="currentColor" font-size="13">formal islands</text>
+  <rect x="584" y="40" width="136" height="26" rx="13" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
+  <text x="652" y="58.3" text-anchor="middle" fill="currentColor">formal islands</text>
 
-  <rect x="162" y="393" width="144" height="22" rx="11" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
-  <text x="234" y="408.3" text-anchor="middle" fill="currentColor" font-size="13">supervising a demo</text>
+  <rect x="140" y="363" width="170" height="26" rx="13" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+  <text x="225" y="381.3" text-anchor="middle" fill="currentColor">supervising a demo</text>
 
-  <rect x="404" y="393" width="144" height="22" rx="11" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
-  <text x="476" y="408.3" text-anchor="middle" fill="currentColor" font-size="13">locked-in ceremony</text>
+  <rect x="550" y="363" width="170" height="26" rx="13" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
+  <text x="635" y="381.3" text-anchor="middle" fill="currentColor">locked-in ceremony</text>
 
-  <!-- evidence ∝ risk gradient bar along the rigor axis -->
-  <text x="150" y="477" fill="#c78307" font-size="13" font-weight="600">evidence proportional to risk</text>
-  <rect x="150" y="484" width="410" height="10" rx="5" fill="url(#f4-risk)" stroke="#c78307" stroke-opacity="0.6" stroke-width="1"/>
-  <text x="150" y="514" fill="currentColor">docs edit</text>
-  <text x="355" y="514" text-anchor="middle" fill="currentColor">parser refactor</text>
-  <text x="560" y="514" text-anchor="end" fill="currentColor">auth / payments</text>
-  </g>
+  <!-- evidence-scales-with-risk gradient bar along the rigor axis -->
+  <text x="128" y="455" fill="#c78307" font-weight="600">evidence scales with risk</text>
+  <rect x="128" y="462" width="604" height="12" rx="6" fill="url(#f4-risk)" stroke="#c78307" stroke-opacity="0.6" stroke-width="1"/>
+  <text x="128" y="496" fill="currentColor">docs edit</text>
+  <text x="430" y="496" text-anchor="middle" fill="currentColor">parser refactor</text>
+  <text x="732" y="496" text-anchor="end" fill="currentColor">auth / payments</text>
 </svg>
 <figcaption><strong>F4</strong> Rigor by openness, with the zone bounded on all four sides.</figcaption>
 </figure>
@@ -470,89 +476,89 @@ behavior(before)   ≈  behavior(after)
 <p><strong>A model may propose. Only a verifier admits.</strong> The reason is structural: the approximate representation that makes a model a strong proposer disqualifies it as an admitter.</p>
 <p>If the verifier refutes the claim, the counterexample becomes a regression fixture. If it cannot decide, the claim stays unadmitted. A model's output is advisory until a deterministic check, a proof, a policy decision, or a human promotes it, and the promotion is recorded in the witness with its evidence class attached.</p>
 <figure class="article-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" role="img" aria-labelledby="f5-title f5-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 606" role="img" aria-labelledby="f5-title f5-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f5-title">From intent to acceptance</title>
   <desc id="f5-desc">Top-to-bottom graph: human intent becomes a natural-language task, is autoformalized, forks into an authorization policy (who may do what) and semantic obligations (what must remain true), rejoins in the agent harness with typed context, tools and effects, produces a repository mutation checked by compiler, analyzer and tests, yields evidence (proof, trace, test result, review packet, counterexample) and ends in human acceptance. A single feedback edge returns a refuted counterexample to autoformalization as a regression fixture.</desc>
   <defs>
-    <marker id="f5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
-    <marker id="f5-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+    <marker id="f5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f5-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
   </defs>
 
   <!-- main flow edges -->
   <g fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#f5-arrow)">
-    <line x1="340" y1="48" x2="340" y2="71"/>
-    <line x1="340" y1="104" x2="340" y2="127"/>
-    <line x1="340" y1="306" x2="340" y2="331"/>
-    <line x1="340" y1="364" x2="340" y2="387"/>
-    <line x1="340" y1="420" x2="340" y2="443"/>
-    <line x1="340" y1="492" x2="340" y2="517"/>
+    <line x1="300" y1="48" x2="300" y2="71"/>
+    <line x1="300" y1="108" x2="300" y2="131"/>
+    <line x1="300" y1="336" x2="300" y2="359"/>
+    <line x1="300" y1="396" x2="300" y2="419"/>
+    <line x1="300" y1="456" x2="300" y2="479"/>
+    <line x1="300" y1="534" x2="300" y2="557"/>
     <!-- fork -->
-    <path d="M340,160 V173 H215 V185"/>
-    <path d="M340,160 V173 H465 V185"/>
+    <path d="M300,168 V182 H170 V195"/>
+    <path d="M300,168 V182 H430 V195"/>
     <!-- rejoin -->
-    <path d="M215,232 V246 H340 V259"/>
-    <path d="M465,232 V246 H340 V259"/>
+    <path d="M170,252 V266 H300 V279"/>
+    <path d="M430,252 V266 H300 V279"/>
   </g>
 
   <!-- feedback edge: counterexample -> autoformalization -->
-  <path d="M562,468 H610 V144 H461" fill="none" stroke="#c44a37" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#f5-arrow-red)"/>
-  <text x="618" y="298" font-size="13" font-weight="600" fill="#c44a37">
-    <tspan x="618" dy="0">refuted →</tspan>
-    <tspan x="618" dy="17">regression fixture</tspan>
+  <path d="M574,507 H616 V150 H421" fill="none" stroke="#c44a37" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#f5-arrow-red)"/>
+  <text x="624" y="323" font-size="14" font-weight="600" fill="#c44a37">
+    <tspan x="624" dy="0">refuted →</tspan>
+    <tspan x="624" dy="18">regression fixture</tspan>
   </text>
 
   <!-- 1 human intent -->
-  <rect x="250" y="16" width="180" height="32" rx="16" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-  <text x="340" y="37" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">human intent</text>
+  <rect x="210" y="12" width="180" height="36" rx="18" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="35.5" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">human intent</text>
 
   <!-- 2 natural-language task -->
-  <rect x="220" y="72" width="240" height="32" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-  <text x="340" y="93" font-size="13" text-anchor="middle" fill="currentColor">natural-language task</text>
+  <rect x="180" y="72" width="240" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="95.5" font-size="15" text-anchor="middle" fill="currentColor">natural-language task</text>
 
   <!-- 3 autoformalization -->
-  <rect x="220" y="128" width="240" height="32" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
-  <text x="340" y="149" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">autoformalization</text>
+  <rect x="180" y="132" width="240" height="36" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="300" y="155.5" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">autoformalization</text>
 
   <!-- 4 fork -->
-  <rect x="110" y="186" width="210" height="46" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
-  <text x="215" y="205" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">authorization policy</text>
-  <text x="215" y="223" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.8">who may do what</text>
+  <rect x="60" y="196" width="220" height="56" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="170" y="219" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">authorization policy</text>
+  <text x="170" y="239" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">who may do what</text>
 
-  <rect x="360" y="186" width="210" height="46" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
-  <text x="465" y="205" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">semantic obligations</text>
-  <text x="465" y="223" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.8">what must remain true</text>
+  <rect x="320" y="196" width="220" height="56" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="430" y="219" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">semantic obligations</text>
+  <text x="430" y="239" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">what must remain true</text>
 
   <!-- 5 agent harness -->
-  <rect x="200" y="260" width="280" height="46" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-  <text x="340" y="279" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">agent harness</text>
-  <text x="340" y="297" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.8">typed context · tools · effects</text>
+  <rect x="155" y="280" width="290" height="56" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="303" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">agent harness</text>
+  <text x="300" y="323" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">typed context · tools · effects</text>
 
   <!-- 6 repository mutation -->
-  <rect x="220" y="332" width="240" height="32" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-  <text x="340" y="353" font-size="13" text-anchor="middle" fill="currentColor">repository mutation</text>
+  <rect x="180" y="360" width="240" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="383.5" font-size="15" text-anchor="middle" fill="currentColor">repository mutation</text>
 
   <!-- 7 compiler · analyzer · tests -->
-  <rect x="220" y="388" width="240" height="32" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-  <text x="340" y="409" font-size="13" text-anchor="middle" fill="currentColor">compiler · analyzer · tests</text>
+  <rect x="170" y="420" width="260" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="443.5" font-size="15" text-anchor="middle" fill="currentColor">compiler · analyzer · tests</text>
 
   <!-- 8 evidence -->
-  <rect x="110" y="444" width="460" height="48" rx="6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
-  <g font-size="12" text-anchor="middle" fill="currentColor">
-    <rect x="122" y="457" width="50" height="22" rx="11" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-    <text x="147" y="472.3">proof</text>
-    <rect x="182" y="457" width="50" height="22" rx="11" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-    <text x="207" y="472.3">trace</text>
-    <rect x="242" y="457" width="90" height="22" rx="11" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-    <text x="287" y="472.3">test result</text>
-    <rect x="342" y="457" width="102" height="22" rx="11" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-    <text x="393" y="472.3">review packet</text>
-    <rect x="454" y="457" width="108" height="22" rx="11" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
-    <text x="508" y="472.3">counterexample</text>
+  <rect x="16" y="480" width="568" height="54" rx="6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <g font-size="15" text-anchor="middle" fill="currentColor">
+    <rect x="26" y="493" width="61" height="28" rx="14" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="56.5" y="512.3">proof</text>
+    <rect x="100" y="493" width="61" height="28" rx="14" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="130.5" y="512.3">trace</text>
+    <rect x="174" y="493" width="111" height="28" rx="14" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="229.5" y="512.3">test result</text>
+    <rect x="298" y="493" width="127" height="28" rx="14" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="361.5" y="512.3">review packet</text>
+    <rect x="438" y="493" width="136" height="28" rx="14" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+    <text x="506" y="512.3">counterexample</text>
   </g>
 
   <!-- 9 human acceptance -->
-  <rect x="250" y="518" width="180" height="32" rx="16" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-  <text x="340" y="539" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">human acceptance</text>
+  <rect x="200" y="558" width="200" height="36" rx="18" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="581.5" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">human acceptance</text>
 </svg>
 <figcaption><strong>F5</strong> Intent is formalized into policy and obligations, executed under a harness, checked by compiler and analyzers, and accepted on evidence.</figcaption>
 </figure>
