@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 650" width="100%" role="img" aria-labelledby="f7-title f7-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
-  <title id="f7-title">Four weeks in summer 2026: four layers opened</title>
-  <desc id="f7-desc">A timeline from Jul 24 to Aug 18, 2026 with five dated ticks, connected to four cards: the open-weights letter (weights layer), Amazon funding the Lean FRO (proofs layer), DeepSeek Harness (agent harness layer), and Mojo 1.0 followed by its open compiler at ModCon (compiler and language layer). Each card names the layer it opens and the first principle behind it. A footer notes that each event opens one layer of the cake and none opens the weights' trust problem on its own.</desc>
+  <title id="f7-title">Summer 2026: four layers opened</title>
+  <desc id="f7-desc">A sequence of four summer-2026 events, each connected to a card naming its layer and first principle: the open-weights letter (weights), Amazon funding the Lean FRO (proofs), DeepSeek Harness (agent harness), and Mojo 1.0 followed by the open compiler at ModCon (compiler and language).</desc>
   <defs>
     <marker id="f7-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
@@ -22,34 +22,21 @@
   </defs>
 
   <!-- title -->
-  <text class="t" x="12" y="25">Four weeks in summer 2026: four layers opened</text>
+  <text class="t" x="12" y="25">Summer 2026: four layers opened</text>
 
-  <!-- timeline bar, proportional: Jul 24 = x40, Aug 18 = x724 (27.4 px per day) -->
+  <line class="link" x1="99.5" y1="97" x2="99.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="286.5" y1="97" x2="286.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="473.5" y1="97" x2="473.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="660.5" y1="97" x2="660.5" y2="148" marker-end="url(#f7-arrow)"/>
   <line class="axis" x1="12" y1="92" x2="748" y2="92" marker-end="url(#f7-arrow)"/>
+  <text class="r" x="12" y="78">summer 2026, in order</text>
 
   <!-- upper-row labels with leaders -->
-  <text class="d" x="40"  y="56">Jul 24</text>
-  <line class="lead" x1="40"  y1="61" x2="40"  y2="87"/>
-  <text class="d" x="532" y="56">Aug 11</text>
-  <line class="lead" x1="532" y1="61" x2="532" y2="87"/>
   <!-- lower-row labels -->
-  <text class="d" x="95"  y="78">Jul 26</text>
-  <text class="d" x="587" y="78">Aug 13</text>
-  <text class="d" x="724" y="78">Aug 18</text>
 
   <!-- ticks -->
-  <circle cx="40"  cy="92" r="4"/>
-  <circle cx="95"  cy="92" r="4"/>
-  <circle cx="532" cy="92" r="4"/>
-  <circle cx="587" cy="92" r="4"/>
-  <circle cx="724" cy="92" r="4"/>
 
   <!-- connectors tick -> card -->
-  <line class="link" x1="40"  y1="97" x2="99.5"  y2="148" marker-end="url(#f7-arrow)"/>
-  <line class="link" x1="95"  y1="97" x2="286.5" y2="148" marker-end="url(#f7-arrow)"/>
-  <line class="link" x1="587" y1="97" x2="473.5" y2="148" marker-end="url(#f7-arrow)"/>
-  <line class="link" x1="532" y1="97" x2="660.5" y2="148" marker-end="url(#f7-arrow)"/>
-  <line class="link" x1="724" y1="97" x2="660.5" y2="148" marker-end="url(#f7-arrow)"/>
 
   <!-- CARD 1: open-weights letter (x=12) -->
   <rect class="band" x="12" y="150" width="175" height="466" rx="6"/>
@@ -65,7 +52,6 @@
   <text class="r" x="21" y="344">· Google, OpenAI,</text>
   <text class="r" x="21" y="361">Amazon joined ·</text>
   <text class="r" x="21" y="378">235 signatories</text>
-  <text class="r" x="21" y="395">by Jul 29</text>
   <rect class="open" x="21" y="408" width="157" height="36" rx="8"/>
   <text class="p" x="99.5" y="423.2">weights —</text>
   <text class="p" x="99.5" y="438.2">a leaf, either</text>
@@ -87,7 +73,7 @@
   <text class="r" x="208" y="310">proof when you can</text>
   <text class="r" x="208" y="327">evaluate the tools</text>
   <text class="r" x="208" y="344">behind it yourself”</text>
-  <text class="r" x="208" y="361">· CSLib (Feb 2026)</text>
+  <text class="r" x="208" y="361">· CSLib</text>
   <text class="r" x="208" y="378">builds the CS</text>
   <text class="r" x="208" y="395">library</text>
   <rect class="open" x="208" y="408" width="157" height="51" rx="8"/>
@@ -129,13 +115,13 @@
   <text class="n" x="582" y="194">open compiler</text>
   <text class="n" x="582" y="214">at ModCon</text>
   <line class="rule" x1="582" y1="224" x2="739" y2="224"/>
-  <text class="r" x="582" y="242">1.0 on Aug 11</text>
-  <text class="r" x="582" y="259">(stability) ·</text>
-  <text class="r" x="582" y="276">compiler + toolchain</text>
+  <text class="r" x="582" y="242">1.0 first (source</text>
+  <text class="r" x="582" y="259">stability) · then the</text>
+  <text class="r" x="582" y="276">compiler + toolchain,</text>
   <text class="r" x="582" y="293">Apache-2.0 with</text>
-  <text class="r" x="582" y="310">LLVM exceptions</text>
-  <text class="r" x="582" y="327">on Aug 18 · built</text>
-  <text class="r" x="582" y="344">purely on MLIR Core</text>
+  <text class="r" x="582" y="310">LLVM exceptions ·</text>
+  <text class="r" x="582" y="327">built purely on</text>
+  <text class="r" x="582" y="344">MLIR Core</text>
   <rect class="open" x="582" y="408" width="157" height="51" rx="8"/>
   <text class="p" x="660.5" y="423.2">compiler &amp;</text>
   <text class="p" x="660.5" y="438.2">language — IR and</text>
