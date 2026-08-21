@@ -50,7 +50,7 @@ HEADER = """<!DOCTYPE html>
     <header class="site-header">
       <a class="brand" href="/" aria-label="Shakthi Bachala home"><span class="brand-mark">SB</span><span>Shakthi Bachala</span></a>
       <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/#experience">Experience</a><a href="/research-statement/">Research</a><a href="/#publications">Publications</a><a href="/blog/" aria-current="page">Blog</a><a href="/#contact">Contact</a></nav>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to white theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>White</span></button>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Light</span></button>
     </header>
     <main id="article"><article>
       <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>{series}</span><span>{part}</span><span>{date}</span></div><h1>{title}</h1><p class="dek">{dek}</p></div></header>
@@ -64,7 +64,7 @@ FOOTER = """
     </article></main>
     <footer class="site-footer"><span>Shakthi Bachala</span><span>{series} · {part}</span><span>2026</span></footer>
   </div>
-  <script src="/theme.js?v=20260820m" defer></script>
+  <script src="/theme.js?v=20260821e" defer></script>
 </body>
 </html>
 """
