@@ -936,8 +936,19 @@ h3 {
 }
 
 .article-body {
-  max-width: 900px;
-  padding: 58px min(9vw, 118px) 92px;
+  max-width: 1040px;
+  padding: 58px min(7vw, 96px) 92px;
+}
+
+.article-body > p,
+.article-body > ul,
+.article-body > ol,
+.article-body > blockquote,
+.article-body > .essay-code,
+.article-body > .table-wrap,
+.article-body > section,
+.article-body > h3 {
+  max-width: 720px;
 }
 
 .article-body .lead {
@@ -948,9 +959,11 @@ h3 {
 }
 
 .article-body h2 {
-  max-width: 16ch;
-  margin: 4rem 0 1rem;
-  font-size: 3rem;
+  max-width: 720px;
+  margin: 4rem 0 1.2rem;
+  font-size: 2.6rem;
+  line-height: 1.08;
+  text-wrap: balance;
 }
 
 .article-body h3 {
@@ -990,14 +1003,18 @@ h3 {
 }
 
 .article-body blockquote {
-  margin: 3rem 0;
-  padding: 1.4rem 0;
+  margin: 2.8rem 0;
+  padding: 1.3rem 0;
   border-top: 2px solid var(--cyan-strong);
   border-bottom: 2px solid var(--cyan-strong);
   color: var(--paper-ink);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 2.2rem;
-  line-height: 1.12;
+  font-size: 1.9rem;
+  line-height: 1.22;
+}
+
+.article-body blockquote + p {
+  margin-top: 0;
 }
 
 .article-body blockquote p {
@@ -1138,6 +1155,11 @@ h3 {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   background: var(--surface-2);
+}
+
+.article-body th:first-child,
+.article-body td:first-child {
+  width: 32%;
 }
 
 .article-body tr:last-child td {
@@ -1347,6 +1369,11 @@ h3 {
 
   .article-figure {
     padding: 0.9rem 0.6rem 0.7rem;
+    overflow-x: auto;
+  }
+
+  .article-figure svg {
+    min-width: 600px;
   }
 
   .article-figure.hero-figure {
@@ -1407,11 +1434,11 @@ h3 {
   }
 
   .article-body h2 {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
 
   .article-body blockquote {
-    font-size: 1.7rem;
+    font-size: 1.45rem;
   }
 
   .publication-lineage li {
