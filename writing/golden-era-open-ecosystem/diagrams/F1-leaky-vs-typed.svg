@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 532" width="100%" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" stroke="currentColor">
+  <title id="f1-title">Leaky pipeline versus typed-task pipeline</title>
+  <desc id="f1-desc">Two vertical pipelines. Left, today's leaky flow: prompt, agent, Markdown handoff, agent, shell, filesystem, prose summary, with four leaks marked in red: ambient permission, untyped handoff, invisible effect, summary-as-evidence. Right, the typed-task flow: intent, Phi, a fork into obligations and policy that rejoins, typed handoff, effect-checked execution, evidence packet, acceptance, with four checks marked in cyan: bounded authority, typed interface, recorded and revertible effect, classed evidence.</desc>
+  <defs>
+    <marker id="f1-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+  </defs>
+
+  <!-- Headers -->
+  <g font-size="16" font-weight="600" text-anchor="middle" stroke="none">
+    <text x="258" y="28">Today: leaky</text>
+    <text x="502" y="28">Typed task: checked</text>
+  </g>
+  <line x1="211" y1="38" x2="305" y2="38" stroke="#c44a37" stroke-width="2"/>
+  <line x1="425" y1="38" x2="579" y2="38" stroke="#1fa8d6" stroke-width="2"/>
+
+  <!-- ===== LEFT PIPELINE ===== -->
+  <g stroke-width="1.2">
+    <!-- boxes -->
+    <rect x="170" y="53"  width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="170" y="123" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="170" y="193" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="170" y="263" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="170" y="333" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="170" y="403" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="170" y="473" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <!-- arrows -->
+    <line x1="258" y1="87"  x2="258" y2="122" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="258" y1="157" x2="258" y2="192" marker-end="url(#f1-arr)" stroke-dasharray="4 3" stroke-width="1.5"/>
+    <line x1="258" y1="227" x2="258" y2="262" marker-end="url(#f1-arr)" stroke-dasharray="4 3" stroke-width="1.5"/>
+    <line x1="258" y1="297" x2="258" y2="332" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="258" y1="367" x2="258" y2="402" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="258" y1="437" x2="258" y2="472" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+  </g>
+  <g font-size="13" text-anchor="middle" stroke="none">
+    <text x="258" y="75">prompt</text>
+    <text x="258" y="145">agent</text>
+    <text x="258" y="215">Markdown handoff</text>
+    <text x="258" y="285">agent</text>
+    <text x="258" y="355">shell</text>
+    <text x="258" y="425">filesystem</text>
+    <text x="258" y="495">prose summary</text>
+  </g>
+  <!-- leak markers -->
+  <g fill="#c44a37" stroke="none">
+    <circle cx="158" cy="210" r="5"/>
+    <circle cx="158" cy="280" r="5"/>
+    <circle cx="158" cy="350" r="5"/>
+    <circle cx="158" cy="490" r="5"/>
+  </g>
+  <g font-size="12" text-anchor="end" stroke="none">
+    <text x="146" y="214">untyped handoff</text>
+    <text x="146" y="284">ambient permission</text>
+    <text x="146" y="354">invisible effect</text>
+    <text x="146" y="494">summary-as-evidence</text>
+  </g>
+
+  <!-- ===== RIGHT PIPELINE ===== -->
+  <g stroke-width="1.2" fill="none">
+    <!-- boxes -->
+    <rect x="414" y="53"  width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="414" y="123" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="412" y="193" width="82"  height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="510" y="193" width="82"  height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="414" y="263" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="414" y="333" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="414" y="403" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="414" y="473" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <!-- trunk arrows -->
+    <line x1="502" y1="87"  x2="502" y2="122" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <!-- fork -->
+    <path d="M502,157 V170 H453 V192" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <path d="M502,157 V170 H551 V192" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <!-- rejoin -->
+    <path d="M453,227 V244 H551 V227" stroke-width="1.5"/>
+    <line x1="502" y1="244" x2="502" y2="262" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="502" y1="297" x2="502" y2="332" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="502" y1="367" x2="502" y2="402" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="502" y1="437" x2="502" y2="472" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+  </g>
+  <g font-size="13" text-anchor="middle" stroke="none">
+    <text x="502" y="75">intent</text>
+    <text x="502" y="146" font-size="16" font-weight="600">Φ</text>
+    <text x="453" y="215">obligations</text>
+    <text x="502" y="215">∥</text>
+    <text x="551" y="215">policy</text>
+    <text x="502" y="285">typed handoff</text>
+    <text x="502" y="355">effect-checked execution</text>
+    <text x="502" y="425">evidence packet</text>
+    <text x="502" y="495">acceptance</text>
+  </g>
+  <!-- check markers -->
+  <g fill="#1fa8d6" stroke="none">
+    <circle cx="604" cy="210" r="5"/>
+    <circle cx="604" cy="280" r="5"/>
+    <circle cx="604" cy="350" r="5"/>
+    <circle cx="604" cy="420" r="5"/>
+  </g>
+  <g font-size="12" text-anchor="start" stroke="none">
+    <text x="616" y="214">bounded authority</text>
+    <text x="616" y="284">typed interface</text>
+    <text x="616" y="347">recorded +</text>
+    <text x="616" y="361">revertible effect</text>
+    <text x="616" y="424">classed evidence</text>
+  </g>
+</svg>
