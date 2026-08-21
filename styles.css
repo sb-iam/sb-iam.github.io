@@ -1317,6 +1317,14 @@ h3 {
 }
 
 
+.dek a,
+.about-columns p a,
+.statement-facts dd a {
+  color: var(--cyan);
+  font-weight: 650;
+  border-bottom: 1px solid var(--cyan);
+}
+
 @media (max-width: 1100px) {
   h1 {
     font-size: 4.6rem;
