@@ -1000,6 +1000,13 @@ h3 {
   line-height: 1.12;
 }
 
+.article-body blockquote p {
+  margin: 0;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
 .source-list {
   display: grid;
   gap: 0.55rem;
@@ -1324,7 +1331,26 @@ h3 {
     width: 100%;
     max-width: 100%;
     overflow: hidden;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .article-body .table-wrap,
+  .article-body .essay-code,
+  .article-body .article-figure {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .article-body table {
+    min-width: 480px;
+  }
+
+  .article-figure {
+    padding: 0.9rem 0.6rem 0.7rem;
+  }
+
+  .article-figure.hero-figure {
+    padding: 1rem 0.6rem 0.8rem;
   }
 
   .plane-card,
