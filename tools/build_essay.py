@@ -98,7 +98,7 @@ def main() -> int:
     ap.add_argument("--series", required=True)
     ap.add_argument("--part", required=True)
     ap.add_argument("--date", required=True)
-    ap.add_argument("--css-version", default="20260821c")
+    ap.add_argument("--css-version", default="20260821d")
     args = ap.parse_args()
 
     src = pathlib.Path(args.source).resolve()
