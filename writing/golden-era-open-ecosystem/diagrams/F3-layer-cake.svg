@@ -5,11 +5,11 @@
     <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
       .t  { font-size: 18px; font-weight: 600; }
-      .h  { font-size: 13.5px; font-weight: 600; opacity: 0.78; letter-spacing: 0.08em; }
+      .h  { font-size: 14px; font-weight: 600; opacity: 0.78; letter-spacing: 0.08em; }
       .n  { font-size: 16px; font-weight: 600; }
       .c  { font-size: 15px; }
       .r  { font-size: 15px; opacity: 0.78; }
-      .p  { font-size: 13.5px; text-anchor: middle; }
+      .p  { font-size: 14px; text-anchor: middle; }
       .g  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
       .b  { font-size: 15px; opacity: 0.78; text-anchor: middle; }
       .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
@@ -48,8 +48,8 @@
   <text class="n" x="54" y="215">&amp; policy</text>
   <text class="c" x="178" y="196">task boundary,</text>
   <text class="c" x="178" y="214">obligations stated</text>
-  <text class="r" x="372" y="196">Cedar · autoformalization ·</text>
-  <text class="r" x="372" y="214">CSLib</text>
+  <text class="r" x="372" y="196">Cedar · CSLib (Feb 2026) ·</text>
+  <text class="r" x="372" y="214">Lean FRO (Amazon, Jul 2026)</text>
   <rect class="open" x="626" y="189" width="112" height="22" rx="11"/>
   <text class="p" x="682" y="204.8">open semantics</text>
 
@@ -60,8 +60,8 @@
   <text class="c" x="178" y="273">effects recorded</text>
   <text class="c" x="178" y="291">with inverses;</text>
   <text class="c" x="178" y="309">model-visible logged</text>
-  <text class="r" x="372" y="282">DeepSeek Harness ·</text>
-  <text class="r" x="372" y="300">Cordis · ACP</text>
+  <text class="r" x="372" y="282">DeepSeek Harness</text>
+  <text class="r" x="372" y="300">(Aug 2026) · Cordis · ACP</text>
   <rect class="open" x="612" y="254" width="126" height="22" rx="11"/>
   <text class="p" x="675" y="269.8">interface open</text>
   <rect class="either" x="612" y="282" width="126" height="36" rx="8"/>
@@ -75,7 +75,8 @@
   <text class="c" x="178" y="359">structure checked;</text>
   <text class="c" x="178" y="377">analysis hooks</text>
   <text class="c" x="178" y="395">before lowering</text>
-  <text class="r" x="372" y="377">Mojo · MLIR · LLVM</text>
+  <text class="r" x="372" y="368">Mojo 1.0 + open compiler</text>
+  <text class="r" x="372" y="386">(Aug 2026) · MLIR · LLVM</text>
   <rect class="open" x="612" y="340" width="126" height="22" rx="11"/>
   <text class="p" x="675" y="355.8">interface open</text>
   <rect class="either" x="612" y="368" width="126" height="36" rx="8"/>
@@ -88,7 +89,8 @@
   <text class="n" x="54" y="473">system</text>
   <text class="c" x="178" y="454">behaviour observed;</text>
   <text class="c" x="178" y="472">traces produced</text>
-  <text class="r" x="372" y="463">Zed as control plane · CLI</text>
+  <text class="r" x="372" y="454">Zed · CLI · DGX Spark-class</text>
+  <text class="r" x="372" y="472">local models</text>
   <rect class="either" x="670" y="447" width="68" height="22" rx="11"/>
   <text class="p" x="704" y="462.8">either</text>
 
@@ -99,7 +101,8 @@
   <text class="c" x="178" y="531">proved, tested,</text>
   <text class="c" x="178" y="549">observed, judged,</text>
   <text class="c" x="178" y="567">assumed</text>
-  <text class="r" x="372" y="549">portable formats</text>
+  <text class="r" x="372" y="540">portable formats ·</text>
+  <text class="r" x="372" y="558">environments (Prime Intellect)</text>
   <rect class="open" x="626" y="533" width="112" height="22" rx="11"/>
   <text class="p" x="682" y="548.8">portable</text>
 
