@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 508" width="100%" role="img" aria-labelledby="f8-title f8-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f8-title">Jensen Huang's five-layer cake, and where this series lives</title>
+  <desc id="f8-desc">Jensen Huang's five layers stacked bottom to top: energy, chips, infrastructure, models, applications. The bottom three are hatched and marked as below this series' boundary, deciding the cost floor rather than trust. A cyan bracket spans models and applications and points to a miniature of this series' six-layer cake: human intent, formal intent and policy, agent harness, compiler and language, executable system, evidence and witness. A Huang quote closes the figure.</desc>
+  <defs>
+    <marker id="f8-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f8-arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+    <pattern id="f8-hatch" patternUnits="userSpaceOnUse" width="8" height="8"><path d="M-2,2 L2,-2 M0,8 L8,0 M6,10 L10,6" stroke="currentColor" stroke-opacity="0.14" stroke-width="1"/></pattern>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .h  { font-size: 14px; font-weight: 600; opacity: 0.78; letter-spacing: 0.08em; }
+      .n  { font-size: 16px; font-weight: 600; }
+      .m  { font-size: 14px; }
+      .r  { font-size: 14px; opacity: 0.78; }
+      .k  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .b  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .dim  { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.45; stroke-width: 1.2; stroke-dasharray: 4 3; }
+      .hatch{ fill: url(#f8-hatch); }
+      .frame{ fill: none; stroke: #1fa8d6; stroke-width: 1.2; }
+      .mini { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .brk  { fill: none; stroke: #1fa8d6; stroke-width: 1.2; }
+      .rule { stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- title -->
+  <text class="t" x="12" y="25">Jensen Huang's five-layer cake, and where this series lives</text>
+
+  <!-- column headers -->
+  <text class="h" x="12" y="78">HUANG'S FIVE LAYERS</text>
+  <text class="k" x="428" y="60">this series: the six-layer cake</text>
+  <text class="k" x="428" y="78">for agentic software sits here</text>
+
+  <!-- Huang's five bands, top to bottom (x=12..420, h=64, gap 6) -->
+  <!-- Applications: y=92 -->
+  <rect class="band" x="12" y="92" width="408" height="64" rx="6"/>
+  <text class="n" x="24" y="129.5">Applications</text>
+
+  <!-- Models: y=162 -->
+  <rect class="band" x="12" y="162" width="408" height="64" rx="6"/>
+  <text class="n" x="24" y="199.5">Models</text>
+
+  <!-- Infrastructure: y=232 (below boundary) -->
+  <rect class="dim" x="12" y="232" width="408" height="64" rx="6"/>
+  <rect class="hatch" x="12" y="232" width="408" height="64" rx="6"/>
+  <text class="n" x="24" y="269.5">Infrastructure</text>
+
+  <!-- Chips: y=302 (below boundary) -->
+  <rect class="dim" x="12" y="302" width="408" height="64" rx="6"/>
+  <rect class="hatch" x="12" y="302" width="408" height="64" rx="6"/>
+  <text class="n" x="24" y="339.5">Chips</text>
+
+  <!-- Energy: y=372 (below boundary) -->
+  <rect class="dim" x="12" y="372" width="408" height="64" rx="6"/>
+  <rect class="hatch" x="12" y="372" width="408" height="64" rx="6"/>
+  <text class="n" x="24" y="409.5">Energy</text>
+
+  <!-- note beside the dimmed group -->
+  <text class="r" x="428" y="329">below this series' boundary:</text>
+  <text class="r" x="428" y="347">decides the cost floor, not trust</text>
+
+  <!-- bracket spanning Models + Applications, and connector to the mini cake -->
+  <path class="brk" d="M428,92 h6 v134 h-6"/>
+  <line class="brk" x1="434" y1="159" x2="546" y2="159" marker-end="url(#f8-arrow-cyan)"/>
+
+  <!-- miniature six-layer cake, level with Models + Applications (x=548..748, y=92..226) -->
+  <rect class="frame" x="548" y="92" width="200" height="134" rx="6"/>
+  <rect class="mini" x="556" y="100" width="184" height="18" rx="4"/>
+  <text class="m" x="562" y="114">Human intent</text>
+  <rect class="mini" x="556" y="120" width="184" height="18" rx="4"/>
+  <text class="m" x="562" y="134">Formal intent &amp; policy</text>
+  <rect class="mini" x="556" y="140" width="184" height="18" rx="4"/>
+  <text class="m" x="562" y="154">Agent harness</text>
+  <rect class="mini" x="556" y="160" width="184" height="18" rx="4"/>
+  <text class="m" x="562" y="174">Compiler &amp; language</text>
+  <rect class="mini" x="556" y="180" width="184" height="18" rx="4"/>
+  <text class="m" x="562" y="194">Executable system</text>
+  <rect class="mini" x="556" y="200" width="184" height="18" rx="4"/>
+  <text class="m" x="562" y="214">Evidence · witness</text>
+
+  <!-- quote -->
+  <line class="rule" x1="12" y1="456" x2="748" y2="456"/>
+  <text class="b" x="380" y="480">“Every successful application pulls on every layer beneath it, all the way down to the power</text>
+  <text class="b" x="380" y="498">plant that keeps it alive.” — Jensen Huang, AI Is a 5-Layer Cake (2026)</text>
+</svg>

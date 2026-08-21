@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 506" width="100%" role="img" aria-labelledby="f0-title f0-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f0-title">Four steps to an open ecosystem for AI</title>
+  <desc id="f0-desc">A rising staircase of four steps from bottom-left to top-right: ChatGPT (Nov 2022, unit of work an answer); reasoning models and the DeepSeek moment (winter 2024–25, a chain of reasoning); coding agents everywhere and the start of OpenClaw (fall 2025, a repository action); an open ecosystem for AI (summer 2026, a trusted change). A thin arrow along the staircase is labelled “what the model is trusted to do”.</desc>
+  <defs>
+    <marker id="f0-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .n  { font-size: 16px; font-weight: 600; }
+      .r  { font-size: 14px; opacity: 0.78; }
+      .g  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+    </style>
+  </defs>
+
+  <!-- title -->
+  <text class="t" x="12" y="25">Four steps to an open ecosystem for AI</text>
+
+  <!-- rising arrow along the staircase, bottom-left to top-right -->
+  <line class="link" x1="472" y1="490" x2="748" y2="175" marker-end="url(#f0-arrow)"/>
+  <text class="g" transform="rotate(-48.8 625 346)" x="625" y="346">what the model is trusted to do</text>
+
+  <!-- STEP 1: Nov 2022 (x=12, y=414) -->
+  <text class="s" x="24" y="406">Nov 2022</text>
+  <rect class="band" x="12" y="414" width="436" height="80" rx="6"/>
+  <text class="n" x="24" y="447">ChatGPT</text>
+  <text class="r" x="24" y="469">the unit of work: an answer</text>
+
+  <!-- STEP 2: Winter 2024–25 (x=112, y=300) -->
+  <text class="s" x="124" y="292">Winter 2024–25</text>
+  <rect class="band" x="112" y="300" width="436" height="80" rx="6"/>
+  <text class="n" x="124" y="325">Reasoning models + the DeepSeek moment</text>
+  <text class="r" x="124" y="347">o1 → o3 previews; DeepSeek V3 and R1 open-weight ·</text>
+  <text class="r" x="124" y="364">unit of work: a chain of reasoning</text>
+
+  <!-- STEP 3: Fall 2025 (x=212, y=186) -->
+  <text class="s" x="224" y="178">Fall 2025</text>
+  <rect class="band" x="212" y="186" width="436" height="80" rx="6"/>
+  <text class="n" x="224" y="211">Coding agents everywhere; OpenClaw begins</text>
+  <text class="r" x="224" y="233">Claude Code, Codex CLI, Cursor; Steinberger's open</text>
+  <text class="r" x="224" y="250">personal agent · unit of work: a repository action</text>
+
+  <!-- STEP 4: Summer 2026 (x=312, y=72) -->
+  <text class="s" x="324" y="64">Summer 2026</text>
+  <rect class="band" x="312" y="72" width="436" height="80" rx="6"/>
+  <text class="n" x="324" y="97">An open ecosystem for AI</text>
+  <text class="r" x="324" y="119">open compiler, open harness, open proofs,</text>
+  <text class="r" x="324" y="136">open-weights letter · unit of work: a trusted change</text>
+</svg>
