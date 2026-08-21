@@ -49,7 +49,7 @@ HEADER = """<!DOCTYPE html>
   <div class="site-shell">
     <header class="site-header">
       <a class="brand" href="/" aria-label="Shakthi Bachala home"><span class="brand-mark">SB</span><span>Shakthi Bachala</span></a>
-      <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/#experience">Experience</a><a href="/research-statement/">Research</a><a href="/#publications">Publications</a><a href="/#blog" aria-current="page">Blog</a><a href="/#contact">Contact</a></nav>
+      <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/#experience">Experience</a><a href="/research-statement/">Research</a><a href="/#publications">Publications</a><a href="/blog/" aria-current="page">Blog</a><a href="/#contact">Contact</a></nav>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to white theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>White</span></button>
     </header>
     <main id="article"><article>
@@ -98,7 +98,7 @@ def main() -> int:
     ap.add_argument("--series", required=True)
     ap.add_argument("--part", required=True)
     ap.add_argument("--date", required=True)
-    ap.add_argument("--css-version", default="20260820p")
+    ap.add_argument("--css-version", default="20260821b")
     args = ap.parse_args()
 
     src = pathlib.Path(args.source).resolve()
