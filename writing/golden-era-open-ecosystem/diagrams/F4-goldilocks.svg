@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" width="100%" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="currentColor">
+  <title id="f4-title">The Goldilocks zone</title>
+  <desc id="f4-desc">A square two-axis chart. The horizontal axis is rigor, from prompt-only on the left to proof for every edit on the right. The vertical axis is openness, from closed vertical at the bottom to fragmented at the top. A cyan zone in the centre is labelled Goldilocks zone: typed intent, open connective layers, evidence proportional to risk. The four corners are labelled supervising a demo (bottom-left), locked-in ceremony (bottom-right), nothing composes nothing checks (top-left), and formal islands (top-right). Below the chart a gold gradient bar shows evidence proportional to risk, from a docs edit through a parser refactor to auth and payments.</desc>
+  <defs>
+    <marker id="f4-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <linearGradient id="f4-risk" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c78307" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#c78307" stop-opacity="0.90"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(62 0)">
+
+  <!-- plot frame: dashed top/right, solid axes with arrowheads -->
+  <path d="M150 20 H560 V430" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="150" y1="430" x2="576" y2="430" stroke="currentColor" stroke-width="1.5" marker-end="url(#f4-arr)"/>
+  <line x1="150" y1="430" x2="150" y2="6" stroke="currentColor" stroke-width="1.5" marker-end="url(#f4-arr)"/>
+
+  <!-- y axis labels -->
+  <text x="140" y="26" text-anchor="end" fill="currentColor">fragmented</text>
+  <text x="140" y="434" text-anchor="end" fill="currentColor">closed vertical</text>
+  <text transform="translate(64 225) rotate(-90)" text-anchor="middle" fill="currentColor" font-weight="600">openness</text>
+
+  <!-- x axis labels -->
+  <text x="150" y="450" fill="currentColor">prompt-only</text>
+  <text x="355" y="450" text-anchor="middle" fill="currentColor" font-weight="600">rigor</text>
+  <text x="560" y="450" text-anchor="end" fill="currentColor">proof for every edit</text>
+
+  <!-- zone halo + zone -->
+  <rect x="200" y="125" width="310" height="200" rx="28" fill="rgba(31,168,214,0.16)" fill-opacity="0.5" stroke="#1fa8d6" stroke-opacity="0.55" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <rect x="235" y="160" width="240" height="130" rx="16" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="355" y="192" text-anchor="middle" fill="currentColor" font-size="15" font-weight="600">Goldilocks zone</text>
+  <text x="355" y="218" text-anchor="middle" fill="currentColor" font-size="13">typed intent</text>
+  <text x="355" y="240" text-anchor="middle" fill="currentColor" font-size="13">open connective layers</text>
+  <text x="355" y="262" text-anchor="middle" fill="currentColor" font-size="13">evidence ∝ risk</text>
+
+  <!-- corner tags (too little = red, too much = purple) -->
+  <rect x="162" y="33" width="236" height="22" rx="11" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+  <text x="280" y="48.3" text-anchor="middle" fill="currentColor" font-size="13">nothing composes, nothing checks</text>
+
+  <rect x="432" y="33" width="116" height="22" rx="11" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
+  <text x="490" y="48.3" text-anchor="middle" fill="currentColor" font-size="13">formal islands</text>
+
+  <rect x="162" y="393" width="144" height="22" rx="11" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+  <text x="234" y="408.3" text-anchor="middle" fill="currentColor" font-size="13">supervising a demo</text>
+
+  <rect x="404" y="393" width="144" height="22" rx="11" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
+  <text x="476" y="408.3" text-anchor="middle" fill="currentColor" font-size="13">locked-in ceremony</text>
+
+  <!-- evidence ∝ risk gradient bar along the rigor axis -->
+  <text x="150" y="477" fill="#c78307" font-size="13" font-weight="600">evidence proportional to risk</text>
+  <rect x="150" y="484" width="410" height="10" rx="5" fill="url(#f4-risk)" stroke="#c78307" stroke-opacity="0.6" stroke-width="1"/>
+  <text x="150" y="514" fill="currentColor">docs edit</text>
+  <text x="355" y="514" text-anchor="middle" fill="currentColor">parser refactor</text>
+  <text x="560" y="514" text-anchor="end" fill="currentColor">auth / payments</text>
+  </g>
+</svg>
