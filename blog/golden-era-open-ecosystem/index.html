@@ -36,7 +36,13 @@
         <li><a href="#references">References</a></li>
       </ol></nav></aside><div class="article-body">
 <p class="lead"><strong>AI coding agents have exposed a missing layer between human intent and executable side effects.</strong> A person types a sentence, an agent edits a repository, and nothing between the two carries what the task permitted, what it had to preserve, and what counted as done. The model was the product; everything around it was scaffolding.</p>
-<p>The scaffolding is becoming the architecture, in public, one layer at a time. Within four weeks this summer an industry coalition published an open letter on open weights; Amazon made the largest gift in the Lean FRO's history; DeepSeek shipped an MIT-licensed agent harness; Modular open-sourced the Mojo compiler.</p>
+<p>The scaffolding is becoming the architecture, in public, one layer at a time. Within four weeks this summer:</p>
+<ul>
+<li>an industry coalition published an open letter on open weights;</li>
+<li>Amazon made the largest gift in the Lean FRO's history;</li>
+<li>DeepSeek shipped an MIT-licensed agent harness;</li>
+<li>Modular open-sourced the Mojo compiler.</li>
+</ul>
 <p>My stance is neutral on open versus closed and exact about layers. Tan and colleagues argued at ICML 2026, in <em>If open source is to win, it must go public</em>, that "open source weights alone are inert" without the layers that activate them, the paper's "activation gap," and conceded that public AI "is not about replacing private labs." Their question is which layers must be public; mine is which must be open for an agent's work to be checked from outside the vendor.</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 506" role="img" aria-labelledby="f0-title f0-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
@@ -91,7 +97,13 @@
 </svg>
 <figcaption><strong>F0</strong> What the model is trusted to do, step by step: an answer, a chain of reasoning, a repository action, a trusted change.</figcaption>
 </figure>
-<p>Four steps got us here. ChatGPT in November 2022 made the unit of work an answer. Reasoning models in the winter of 2024–25, o1 and the o3 previews, with DeepSeek's open-weight V3 and R1 landing in the same weeks, made it a chain of reasoning and showed the weights could come from anywhere. By fall 2025 coding agents were everywhere, Claude Code, Codex CLI, and Cursor, and OpenClaw, Peter Steinberger's open personal agent, had begun; the unit of work became a repository action. Summer 2026 is the fourth step: an ecosystem opening around the agent so that the unit of work can be a change someone else can trust.</p>
+<p>Four steps got us here.</p>
+<ul>
+<li><strong>November 2022 — ChatGPT.</strong> The unit of work became an answer.</li>
+<li><strong>Winter 2024–25 — reasoning models and the DeepSeek moment.</strong> o1 and the o3 previews, with DeepSeek's open-weight V3 and R1 landing in the same weeks: the unit of work became a chain of reasoning, and the weights could come from anywhere.</li>
+<li><strong>Fall 2025 — coding agents everywhere; OpenClaw begins.</strong> Claude Code, Codex CLI, and Cursor, and Peter Steinberger's open personal agent: the unit of work became a repository action.</li>
+<li><strong>Summer 2026 — an open ecosystem for AI.</strong> An ecosystem opening around the agent, so that the unit of work can be a change someone else can trust.</li>
+</ul>
 <p>The cake comes first; the scope of the series follows from it.</p>
 <h2 id="1-the-open-ai-layer-cake">1. The Open AI Layer Cake</h2>
 <p>Jensen Huang's cake comes first, because it is the real one. "Industrially, AI is actually essentially a five-layer cake," he wrote in March: energy, chips, infrastructure, models, applications, bottom to top, and "every successful application pulls on every layer beneath it, all the way down to the power plant that keeps it alive." The bottom three layers decide the cost floor. This series lives in the top two, where the code gets written, and it cuts those two into six.</p>
@@ -299,17 +311,23 @@
 <figcaption><strong>F3</strong> Each layer: what it commits, its 2026 open reference, and its boundary verdict.</figcaption>
 </figure>
 <p><strong>The cake is the activation gap, drawn for one domain.</strong> Six layers sit above a line: each commits what the layer above left informal, in a form the layer below can check, and each commitment is either open to inspection or sealed inside one vendor.</p>
-<p><strong>Human intent</strong> commits a goal and a person who accepts the risk. It arrives through whichever client that person types into, open or closed.</p>
-<p><strong>Formal intent and policy</strong> commits the task boundary: what the agent may touch, what it must preserve, what counts as done. Cedar is the open reference for authority; Lean and CSLib are where obligations land. This layer must be open: a policy semantics only one product understands is configuration, and a proof only one vendor can check is a claim.</p>
-<p><strong>The agent harness</strong> commits execution: which tool ran, under which capability, with what result, and whether the run can be replayed. Its interface must be open: the protocol the editor speaks to the agent (ACP) and the log of what the model saw. The implementation can be anyone's, and DeepSeek Harness opened this layer in August.</p>
-<p><strong>Compiler and language</strong> commits meaning: typed structure, an IR that analyzers can attach to, and hooks for checks before lowering erases what they need. The IR and its analyzers must be open; the compiler that produces them can be either. Modular open-sourced Mojo's compiler at ModCon.</p>
-<p><strong>The executable system</strong> commits behavior: what runs, where, and the traces it throws off. It sits on either side.</p>
-<p><strong>Evidence and witness</strong> commits the record: what was proved, refuted, tested, observed, judged, assumed, or never checked, in a format a second tool can read. It must be portable. Evidence legible only in one vendor's dashboard is a screenshot.</p>
+<ul>
+<li><strong>Human intent</strong> commits a goal and a person who accepts the risk. It arrives through whichever client that person types into, open or closed.</li>
+<li><strong>Formal intent and policy</strong> commits the task boundary: what the agent may touch, what it must preserve, what counts as done. Cedar is the open reference for authority; Lean and CSLib are where obligations land. This layer must be open: a policy semantics only one product understands is configuration, and a proof only one vendor can check is a claim.</li>
+<li><strong>The agent harness</strong> commits execution: which tool ran, under which capability, with what result, and whether the run can be replayed. Its interface must be open: the protocol the editor speaks to the agent (ACP) and the log of what the model saw. The implementation can be anyone's, and DeepSeek Harness opened this layer in August.</li>
+<li><strong>Compiler and language</strong> commits meaning: typed structure, an IR that analyzers can attach to, and hooks for checks before lowering erases what they need. The IR and its analyzers must be open; the compiler that produces them can be either. Modular open-sourced Mojo's compiler at ModCon.</li>
+<li><strong>The executable system</strong> commits behavior: what runs, where, and the traces it throws off. It sits on either side.</li>
+<li><strong>Evidence and witness</strong> commits the record: what was proved, refuted, tested, observed, judged, assumed, or never checked, in a format a second tool can read. It must be portable. Evidence legible only in one vendor's dashboard is a screenshot.</li>
+</ul>
 <p>The weights are what the cake activates, and they sit on either side of the line. Below the cake sit cloud, chips, and energy, outside this series.</p>
 <blockquote>
 <p>An open flagship lowers the cost floor. It says nothing about whether the agent's software can be trusted.</p>
 </blockquote>
-<p>Goldilocks is a calibration on two axes. Rigor runs from prompt-only intent with ambient permissions to a proof for every edit, and the zone scales evidence to risk. Openness runs from one vendor owning every layer to a scatter of source that never composes, and the zone opens the connective layers while the leaves, the layers nothing else speaks through, go either way.</p>
+<p>Goldilocks is a calibration on two axes.</p>
+<ul>
+<li><strong>Rigor</strong> runs from prompt-only intent with ambient permissions to a proof for every edit; the zone scales evidence to risk.</li>
+<li><strong>Openness</strong> runs from one vendor owning every layer to a scatter of source that never composes; the zone opens the connective layers while the leaves, the layers nothing else speaks through, go either way.</li>
+</ul>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 510" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" fill="currentColor" width="100%">
   <title id="f4-title">The Goldilocks zone</title>
@@ -505,9 +523,11 @@
 </figure>
 <p>The loop has not changed, and everything in it moves faster. SWE-agent and OpenHands run it at repository scale, and the literature calls the result the agentic SDLC. A systematic review of 92 studies found the deciding factor: "output verifiability is the primary enabler of agentic adoption."</p>
 <p><strong>A verifiable ecosystem lets agents build verified large-scale software on three principles the functional-programming and hardware communities already live by.</strong></p>
-<p><strong>The formal spec is the contract.</strong> RISC-V specifies its architecture twice: the ISA manual is the official prose, and the Sail model is the official formal specification. The Architectural Certification Tests compute expected results from Sail and gate the "RISC-V Compatible" mark. The agentic analogue: intent lands in a spec that tools can execute, and the prose stays prose.</p>
-<p><strong>Make illegal states unrepresentable.</strong> Yaron Minsky's maxim is typed functional programming's working rule, and the verified canon runs on it: CompCert is written in Coq and extracted to OCaml; seL4's 8,700 lines of C were derived from a Haskell prototype and proved in 200,000 lines of Isabelle; QuickCheck made properties executable tests. An agent that cannot express a forbidden state cannot reach it.</p>
-<p><strong>Verification is sign-off, not afterthought.</strong> Verification consumes 60 to 70 percent of engineering effort on a chip project; simulation still dominates and formal grows every year. Csmith spent about six CPU-years failing to find a wrong-code bug in CompCert's verified middle-end and still concluded that "verification does not obviate testing, but rather complements it." Proofs and tests travel together, and neither merges on its own word.</p>
+<ul>
+<li><strong>The formal spec is the contract.</strong> RISC-V specifies its architecture twice: the ISA manual is the official prose, and the Sail model is the official formal specification. The Architectural Certification Tests compute expected results from Sail and gate the "RISC-V Compatible" mark. The agentic analogue: intent lands in a spec that tools can execute, and the prose stays prose.</li>
+<li><strong>Make illegal states unrepresentable.</strong> Yaron Minsky's maxim is typed functional programming's working rule, and the verified canon runs on it: CompCert is written in Coq and extracted to OCaml; seL4's 8,700 lines of C were derived from a Haskell prototype and proved in 200,000 lines of Isabelle; QuickCheck made properties executable tests. An agent that cannot express a forbidden state cannot reach it.</li>
+<li><strong>Verification is sign-off, not afterthought.</strong> Verification consumes 60 to 70 percent of engineering effort on a chip project; simulation still dominates and formal grows every year. Csmith spent about six CPU-years failing to find a wrong-code bug in CompCert's verified middle-end and still concluded that "verification does not obviate testing, but rather complements it." Proofs and tests travel together, and neither merges on its own word.</li>
+</ul>
 <blockquote>
 <p>Hardware ships when verification signs off. Software written by agents should ship the same way.</p>
 </blockquote>
@@ -654,39 +674,98 @@
 </svg>
 <figcaption><strong>F7</strong> The open-weights letter, the Lean FRO gift, DeepSeek Harness, and Mojo&#x27;s open compiler, each placed on its layer with the first principle it rests on.</figcaption>
 </figure>
-<p>Four weeks, four layers, and each event rests on a first principle older than the product: the letter on the economics of a finished artifact, the FRO on dependent type theory, the harness on type theory and category theory by way of Cordis, the compiler on progressive lowering through typed IR. Five layers acquired open references this year, on both sides of the must-open line.</p>
+<p>Four weeks, four layers, and each event rests on a first principle older than the product:</p>
+<ul>
+<li>the letter, on the economics of a finished artifact;</li>
+<li>the FRO, on dependent type theory;</li>
+<li>the harness, on type theory and category theory by way of Cordis;</li>
+<li>the compiler, on progressive lowering through typed IR.</li>
+</ul>
+<p>Five layers acquired open references this year, on both sides of the must-open line.</p>
 <h3>Compiler: Mojo goes open at ModCon</h3>
-<p>Mojo 1.0 shipped on August 11 as a stability milestone: source-stable, 1.x changes "primarily additive," the ABI still unstable. A week later at ModCon, Modular open-sourced the entire compiler and toolchain under Apache 2.0 with LLVM exceptions. MAX stays source-available, and Modular is now a Qualcomm company.</p>
+<ul>
+<li><strong>Mojo 1.0</strong> shipped on August 11 as a stability milestone: source-stable, 1.x changes "primarily additive," the ABI still unstable.</li>
+<li><strong>A week later at ModCon</strong>, Modular open-sourced the entire compiler and toolchain under Apache 2.0 with LLVM exceptions.</li>
+<li><strong>MAX</strong> stays source-available, and Modular is now a Qualcomm company.</li>
+</ul>
 <p>Modular's earlier docs called Mojo "the first major language designed expressly for MLIR"; the current vision doc says "built purely on top of MLIR Core," aiming at "a unified language for kernel development." My argument, which Modular does not make: an open, general-purpose compiler built directly on MLIR is the pattern book for MLIR DSLs and for verification hooks that run before lowering. For the language itself, read the Mojo 1.0 post.</p>
-<p>Modular's own framing is the systems language for the AI era, and I will add the part it does not say. Mojo is the first major language designed for MLIR and the first mainstream language built for the AI era, with the data plane, training and inference both, as its target. Today that plane is split down the middle: training lives in PyTorch, a decade old, JAX, and TensorFlow; production inference has moved to purpose-built engines, vLLM, SGLang, TensorRT-LLM, and every model crosses a language boundary on the way from one to the other. MAX, Modular's graph compiler and serving runtime, sits on the inference side; its Python API and GPU kernels are Apache-2.0, the runtime is source-available. Training in Mojo is arriving from the community: llm.mojo, Evan Owen's port of Karpathy's llm.c to Mojo 1.0, reports bf16 parity with llm.c on a GB10; Nabla is a JAX-style autodiff framework on Mojo and MAX, Apache-2.0 and alpha. I am building nabla-mojo on that line, open source soon, for training coding models only, not a replacement for PyTorch.</p>
+<p>Modular's own framing is the systems language for the AI era, and I will add the part it does not say.</p>
+<ul>
+<li><strong>First on MLIR, first for the AI era.</strong> Mojo is the first major language designed for MLIR and the first mainstream language built for the AI era, with the data plane, training and inference both, as its target.</li>
+<li><strong>The data plane is split down the middle.</strong> Training lives in PyTorch, a decade old, JAX, and TensorFlow; production inference has moved to purpose-built engines, vLLM, SGLang, TensorRT-LLM, and every model crosses a language boundary on the way from one to the other.</li>
+<li><strong>MAX</strong>, Modular's graph compiler and serving runtime, sits on the inference side; its Python API and GPU kernels are Apache-2.0, the runtime is source-available.</li>
+<li><strong>Training in Mojo is arriving from the community.</strong> llm.mojo, Evan Owen's port of Karpathy's llm.c to Mojo 1.0, reports bf16 parity with llm.c on a GB10; Nabla is a JAX-style autodiff framework on Mojo and MAX, Apache-2.0 and alpha.</li>
+<li><strong>nabla-mojo</strong> is mine, on that line: open source soon, for training coding models only, not a replacement for PyTorch.</li>
+</ul>
 <p><strong>The point is that fifty years of program analysis applies to one platform when training and inference share it, because there is no cross-language seam for the analysis to fall through. Performance is the bonus: a systems language with Rust- and C++-class speed and zero-cost abstractions comes with the platform.</strong></p>
 <p>Modular is not taking compiler contributions yet, "particularly in today's era of AI coding," and aims to by year end: open in source, closed in governance. No analyzer needs that queue; the IR is must-open, the gate is can-close.</p>
 <h3>Harness: DeepSeek Harness on Cordis</h3>
-<p>DeepSeek Harness, binary <code>dsh</code>, arrived on August 13 as an MIT-licensed developer preview and had 179,486 GitHub stars by August 21. It is built on Cordis, a 2022 plugin framework it credits as its foundation, with two invariants. Everything is a plugin, the agent loop included, with no privileged core. Model-visible means logged: anything that reaches a model request must be reconstructable from the append-only session log.</p>
-<p>pi, Mario Zechner's coding agent, is the opposite answer to the same problem: a four-tool core that refuses sub-agents, plan mode, and MCP. <code>dsh</code> ships sub-agents, planning, skills, sandboxing, and approval policy; only its Minimal preset, a two-tool loop for benchmarking, is pi-shaped, and pi's only footprint in <code>dsh</code> is one npm package behind one model-adapter plugin.</p>
+<p>DeepSeek Harness, binary <code>dsh</code>, arrived on August 13 as an MIT-licensed developer preview and had 179,486 GitHub stars by August 21. It is built on Cordis, a 2022 plugin framework it credits as its foundation, with two invariants:</p>
+<ul>
+<li><strong>Everything is a plugin</strong>, the agent loop included, with no privileged core.</li>
+<li><strong>Model-visible means logged</strong>: anything that reaches a model request must be reconstructable from the append-only session log.</li>
+</ul>
+<p>pi, Mario Zechner's coding agent, is the opposite answer to the same problem:</p>
+<ul>
+<li>pi keeps a four-tool core and refuses sub-agents, plan mode, and MCP;</li>
+<li><code>dsh</code> ships sub-agents, planning, skills, sandboxing, and approval policy;</li>
+<li>only <code>dsh</code>'s Minimal preset, a two-tool loop for benchmarking, is pi-shaped, and pi's only footprint in <code>dsh</code> is one npm package behind one model-adapter plugin.</li>
+</ul>
 <p>This is the layer Tan and colleagues say stays private, the harness that "captures the user's exact process of software development." The log and the plugin interface are must-open, the harness can be anyone's, and a model lab has opened it.</p>
 <h3>Proofs: Amazon funds Lean outside Amazon; CSLib builds the library</h3>
 <p>On July 26 Amazon's Automated Reasoning organization made what the Lean FRO calls the single largest donation in its history, amount undisclosed, to a body outside Amazon. Its reason is the argument for open proof tools: "it's easier to trust a proof when you can evaluate the tools behind it yourself."</p>
-<p>CSLib is separate: announced in August 2025 with a white paper this February, Mathlib for computer science plus Boole, a Boogie-style intermediate language that discharges into Lean verification conditions. Its steering committee spans Amazon, Google DeepMind, Stanford, UT Austin, Southern Denmark, and the Lean FRO; its funding runs through a Renaissance Philanthropy program. Its authors name the constraint, "AI-based provers are bottlenecked by the abstractions available in the underlying proof assistant," and their governance rule is the right one: AI advisory only, every commit through manual review.</p>
+<p>CSLib is separate:</p>
+<ul>
+<li>announced in August 2025 with a white paper this February: Mathlib for computer science plus Boole, a Boogie-style intermediate language that discharges into Lean verification conditions;</li>
+<li>steered by Amazon, Google DeepMind, Stanford, UT Austin, Southern Denmark, and the Lean FRO, and funded through a Renaissance Philanthropy program;</li>
+<li>explicit about the constraint, "AI-based provers are bottlenecked by the abstractions available in the underlying proof assistant," and right about governance: AI advisory only, every commit through manual review.</li>
+</ul>
 <p>My judgment: an independently governed checker plus a shared library of abstractions is the biggest step AI-aided formal verification has taken toward agents writing proofs that humans can check. The checker is where trust bottoms out, so its governance is must-open.</p>
 <h3>Weights: the coalition letter</h3>
-<p>On July 24 NVIDIA hosted "Open Weights and American AI Leadership," an open letter to U.S. policymakers that grew from 25 launch signatories led by NVIDIA, Microsoft, and Meta to 235 in its July 29 revision; Google, OpenAI, and Amazon joined within the week, and most signatories are startups, infrastructure vendors, and nonprofits. It is advocacy, not commitment, on five arguments: access, competition, control, adaptability, and security, the last inverted: "Relying solely on closed models is not inherently safe."</p>
+<p>On July 24 NVIDIA hosted "Open Weights and American AI Leadership," an open letter to U.S. policymakers.</p>
+<ul>
+<li>It grew from 25 launch signatories led by NVIDIA, Microsoft, and Meta to 235 in its July 29 revision; Google, OpenAI, and Amazon joined within the week, and most signatories are startups, infrastructure vendors, and nonprofits.</li>
+<li>It is advocacy, not commitment, on five arguments: access, competition, control, adaptability, and security.</li>
+<li>The last is inverted from the usual framing: "Relying solely on closed models is not inherently safe."</li>
+</ul>
 <p>The letter argues for the artifact; Tan and colleagues call it inert. Both are right: weights set the cost floor, a leaf either way, and the cake decides whether the output can be trusted.</p>
 <h3>Models and environments: Prime Intellect, GLM, Kimi, and a desk-sized box</h3>
-<p>Prime Intellect's stack separates the trainer from the task. prime-rl (Apache-2.0) runs the asynchronous RL loop; verifiers (MIT) packages a task as an environment, a dataset plus a harness plus reward functions; the Environments Hub versions more than 2,500 of them. The reward is a deterministic check or an LLM judge "where deterministic evaluation is impractical." The mapping is mine, not Prime Intellect's: a deterministic reward is verification, a judged reward is validation, and one environment scores training and evaluation alike.</p>
-<p>Z.ai's GLM-5.2 (753B parameters, MIT) and Moonshot's Kimi K3 (2.8T, Kimi K3 License) approach frontier models on the labs' own benchmarks; Moonshot itself says K3 "still trails the most powerful proprietary models." Neither runs on a DGX Spark. NVIDIA rates the $4,699, 128 GB box for inference to 200B parameters and fine-tuning to 70B; what fits is GLM-4.7-Flash (30B-A3B, MIT) and its 30-to-70B peers. NVIDIA documents LoRA fine-tuning on the box; running prime-rl's RL loop there is undocumented.</p>
+<p>Prime Intellect's stack separates the trainer from the task.</p>
+<ul>
+<li><strong>prime-rl</strong> (Apache-2.0) runs the asynchronous RL loop.</li>
+<li><strong>verifiers</strong> (MIT) packages a task as an environment: a dataset plus a harness plus reward functions.</li>
+<li><strong>The Environments Hub</strong> versions more than 2,500 of them.</li>
+<li>The reward is a deterministic check or an LLM judge "where deterministic evaluation is impractical." The mapping is mine, not Prime Intellect's: a deterministic reward is verification, a judged reward is validation, and one environment scores training and evaluation alike.</li>
+</ul>
+<p>The open models and the desk-sized box:</p>
+<ul>
+<li>Z.ai's GLM-5.2 (753B parameters, MIT) and Moonshot's Kimi K3 (2.8T, Kimi K3 License) approach frontier models on the labs' own benchmarks; Moonshot itself says K3 "still trails the most powerful proprietary models."</li>
+<li>Neither runs on a DGX Spark. NVIDIA rates the $4,699, 128 GB box for inference to 200B parameters and fine-tuning to 70B.</li>
+<li>What fits is GLM-4.7-Flash (30B-A3B, MIT) and its 30-to-70B peers. NVIDIA documents LoRA fine-tuning on the box; running prime-rl's RL loop there is undocumented.</li>
+</ul>
 <p>Models are leaves. Environments are evidence, and a reward nobody else can run is not a benchmark, so environments must be open.</p>
 <h2 id="5-why-open-three-incentives-one-boundary">5. Why open? Three incentives, one boundary</h2>
 <p>The five stories share a mechanism, and it is not that open source is good. Private actors open a layer for one of three reasons, and the reasons are not exclusive.</p>
-<p><strong>Common infrastructure.</strong> "This should be something everyone can build on." Internet standards, Linux, LLVM: a foundational layer becomes more valuable as shared ground than as a private island.</p>
-<p><strong>Strategic collaboration.</strong> "We benefit more by sharing this layer than by competing over it." Shared cost, catching up to an incumbent, commoditizing a non-core layer, competing somewhere else. A company opens the layer where ecosystem growth beats exclusivity and captures value next to it.</p>
-<p><strong>Network effects.</strong> "The technology becomes more valuable when everyone can participate." Programming languages, compilers and IRs, protocols, package ecosystems, agent interfaces, policy languages: each is worth more with every implementation that speaks it, and closing one destroys the externality that made it valuable.</p>
-<p>LLVM is all three at once, which is why Chris Lattner's <em>Democratizing AI Compute</em> series is the closest precedent for this one. As common infrastructure it is a permissively licensed compiler substrate; as collaboration it is Apple, Google, NVIDIA, AMD, and Intel sharing an enormous body of compiler engineering rather than rebuilding it five times; as a network it is worth more with every language, target, and tool that plugs in.</p>
+<ul>
+<li><strong>Common infrastructure.</strong> "This should be something everyone can build on." Internet standards, Linux, LLVM: a foundational layer becomes more valuable as shared ground than as a private island.</li>
+<li><strong>Strategic collaboration.</strong> "We benefit more by sharing this layer than by competing over it." Shared cost, catching up to an incumbent, commoditizing a non-core layer, competing somewhere else. A company opens the layer where ecosystem growth beats exclusivity and captures value next to it.</li>
+<li><strong>Network effects.</strong> "The technology becomes more valuable when everyone can participate." Programming languages, compilers and IRs, protocols, package ecosystems, agent interfaces, policy languages: each is worth more with every implementation that speaks it, and closing one destroys the externality that made it valuable.</li>
+</ul>
+<p>LLVM is all three at once, which is why Chris Lattner's <em>Democratizing AI Compute</em> series is the closest precedent for this one:</p>
+<ul>
+<li>as <strong>common infrastructure</strong>, a permissively licensed compiler substrate;</li>
+<li>as <strong>collaboration</strong>, Apple, Google, NVIDIA, AMD, and Intel sharing an enormous body of compiler engineering rather than rebuilding it five times;</li>
+<li>as a <strong>network</strong>, worth more with every language, target, and tool that plugs in.</li>
+</ul>
 <blockquote>
 <p>Open ecosystems emerge when private actors find more value in sharing a foundational layer than in owning it.</p>
 </blockquote>
 <p>Sometimes that begins as a public good, sometimes as strategic necessity, sometimes because the technology cannot reach its value without a network; usually all three end up reinforcing one another. That sentence recurs through the ten parts, and it sharpens the question the series is really asking: <strong>which layers of the AI software stack become common infrastructure, which stay competitive, and what economic or technical force draws the line?</strong> It leaves room to read Linux, LLVM and MLIR, Mojo, Rust, Cedar, ACP and MCP, agent harnesses, models, and inference runtimes each on its own terms, without assuming they are open for the same reason.</p>
-<p>Where Tan and colleagues answer with institutions, I answer with a rule. <strong>A layer that exists to connect independent systems must be open: policy semantics, agent protocols, effect logs, compiler IR and its analyzers, evidence formats, the proof checker.</strong> A leaf can be closed, as long as the layers around it emit portable evidence: weights, hosted inference, the best client, a compiler's contribution queue.</p>
+<p>Where Tan and colleagues answer with institutions, I answer with a rule.</p>
+<ul>
+<li><strong>A layer that exists to connect independent systems must be open:</strong> policy semantics, agent protocols, effect logs, compiler IR and its analyzers, evidence formats, the proof checker.</li>
+<li><strong>A leaf can be closed</strong>, as long as the layers around it emit portable evidence: weights, hosted inference, the best client, a compiler's contribution queue.</li>
+</ul>
 <p>The reader's test: does a layer's value come from connecting things that do not share an owner? Zed, a GPL-3.0 editor speaking an Apache-2.0 protocol to closed agents behind it, passes; a harness whose session log only its vendor can parse does not.</p>
 <h2 id="6-the-ecosystem-is-its-tooling">6. The ecosystem is its tooling</h2>
 <p><strong>An ecosystem is as good as its developer tooling.</strong> Weights without a harness are a download; proofs without an open checker are a vendor's assurance. Trust arrives through the compiler that checks, the harness that logs, the prover that admits, and the evidence format that survives a vendor change.</p>
@@ -724,7 +803,12 @@
 </table></div>
 <p>The open column is where the connective layers are; the closed column is leaves. A team can run the whole loop on the open column today, and the closed column competes on being better, not on being the only way in.</p>
 <p>The series goes deep on each layer from here; the holy wars of programming languages and their SDKs, and where each language sits in the cake, come in Part 3. Next: Part 2, From Leaky Abstractions to Type-Safe Abstractions in the Era of the Open Ecosystem.</p>
-<p>This essay is the culmination of conversations with hundreds of researchers across three 2026 events: ICSE 2026 in Rio de Janeiro, from the Doctoral Symposium (April 14) to the IDE 2026 workshop organized by JetBrains Research (April 18); and, both in San Francisco, The Verification Summit by Pramaana Labs (June 10) and ModCon 2026 (August 18).</p>
+<p>This essay is the culmination of conversations with hundreds of researchers across three 2026 events:</p>
+<ul>
+<li>ICSE 2026 in Rio de Janeiro, from the Doctoral Symposium (April 14) to the IDE 2026 workshop organized by JetBrains Research (April 18);</li>
+<li>The Verification Summit by Pramaana Labs, San Francisco (June 10);</li>
+<li>ModCon 2026, San Francisco (August 18).</li>
+</ul>
 <section class="references">
 <h2 id="references">References</h2>
 <h3>Stance</h3>
