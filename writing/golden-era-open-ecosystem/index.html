@@ -25,41 +25,20 @@
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to white theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>White</span></button>
     </header>
     <main id="article"><article>
-      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Open Ecosystem</span><span>Part 1 of 6</span><span>Aug 21, 2026</span></div><h1>The Goldilocks Zone of the Open AI Ecosystem</h1><p class="dek">Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.</p></div></header>
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Open Ecosystem</span><span>Part 1 of 10</span><span>Aug 21, 2026</span></div><h1>The Goldilocks Zone of the Open AI Ecosystem</h1><p class="dek">Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.</p></div></header>
       <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
         <li><a href="#1-the-open-ai-layer-cake">The Open AI Layer Cake</a></li>
-        <li><a href="#2-ai-assisted-software-development-made-verifiable">AI-assisted software development, made verifiable</a></li>
-        <li><a href="#3-2026-layer-by-layer">2026, layer by layer</a></li>
-        <li><a href="#4-which-layers-open-and-why">Which layers open, and why</a></li>
-        <li><a href="#5-the-ecosystem-is-its-tooling">The ecosystem is its tooling</a></li>
+        <li><a href="#2-what-this-series-covers">What this series covers</a></li>
+        <li><a href="#3-ai-assisted-software-development-made-verifiable">AI-assisted software development, made verifiable</a></li>
+        <li><a href="#4-four-weeks-in-summer-2026-layer-by-layer">Four weeks in summer 2026, layer by layer</a></li>
+        <li><a href="#5-which-layers-open-and-why">Which layers open, and why</a></li>
+        <li><a href="#6-the-ecosystem-is-its-tooling">The ecosystem is its tooling</a></li>
         <li><a href="#references">References</a></li>
       </ol></nav></aside><div class="article-body">
 <p class="lead"><strong>AI coding agents have exposed a missing layer between human intent and executable side effects.</strong> A person types a sentence, an agent edits a repository, and nothing between the two carries what the task permitted, what it had to preserve, and what counted as done. The model was the product; everything around it was scaffolding.</p>
 <p>The scaffolding is becoming the architecture, in public, one layer at a time. Within four weeks this summer an industry coalition published an open letter on open weights; Amazon made the largest gift in the Lean FRO's history; DeepSeek shipped an MIT-licensed agent harness; Modular open-sourced the Mojo compiler.</p>
 <p>My stance is neutral on open versus closed and exact about layers. Tan and colleagues argued at ICML 2026, in <em>If open source is to win, it must go public</em>, that "open source weights alone are inert" without the layers that activate them, the paper's "activation gap," and conceded that public AI "is not about replacing private labs." Their question is which layers must be public; mine is which must be open for an agent's work to be checked from outside the vendor.</p>
-<p>This essay maps those layers and opens the first of three threads, each revisited quarterly.</p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>Thread</th>
-<th>Parts</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>The Golden Era of the Open Ecosystem</td>
-<td>6: this essay · from leaky abstractions to type-safe abstractions · languages, SDKs, and the holy wars · open models and environments · open harnesses, compilers, and protocols · incentives and the open social contract</td>
-</tr>
-<tr>
-<td>Hybrid Analysis</td>
-<td>3: static vs. dynamic analysis · verification vs. validation · static + dynamic, verification + validation</td>
-</tr>
-<tr>
-<td>Future of Software Engineering</td>
-<td>3: IDEs, CLIs, and harnesses · language wars in the agent era · review, acceptance, and ownership</td>
-</tr>
-</tbody>
-</table></div>
+<p>The cake comes first; the scope of the series follows from it.</p>
 <h2 id="1-the-open-ai-layer-cake">1. The Open AI Layer Cake</h2>
 <figure class="article-figure hero-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 648" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
@@ -246,7 +225,33 @@
 </svg>
 <figcaption><strong>F4</strong> Rigor by openness, with the zone bounded on all four sides.</figcaption>
 </figure>
-<h2 id="2-ai-assisted-software-development-made-verifiable">2. AI-assisted software development, made verifiable</h2>
+<h2 id="2-what-this-series-covers">2. What this series covers</h2>
+<p><strong>In scope: the six layers of the cake and the software engineering that runs through them.</strong> Typed intent and policy; agent harnesses and the protocols between editor, agent, and tool; compilers, languages, and the IRs that analyzers attach to; the executable system and its traces; evidence and the formats it travels in. The agentic software development loop is the subject being made trustworthy. Open models, weights, and RL environments are in scope exactly where they touch those layers: what runs locally, what a reward can verify, what a license allows.</p>
+<p><strong>Out of scope: the ethics of open versus closed.</strong> The series takes the coexistence of open and closed as given and argues only about layers. Also out: everything below the ABI, meaning chips, cloud, energy, physical hardware, and robotics, which decide the cost floor and nothing about trust; anything outside software engineering; and auto-research, the loop that produces papers rather than software.</p>
+<p>Three threads, each revisited quarterly for as long as the stack keeps moving.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Thread</th>
+<th>Parts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The Golden Era of the Open Ecosystem</td>
+<td>10: this essay · from leaky abstractions to type-safe abstractions · languages, SDKs, and the holy wars · open compilers: Mojo, MLIR, and the pattern book for DSLs · open agent harnesses: runtimes with inverses · open proofs: Lean, CSLib, and the checker nobody owns · open weights: the letter and the activation gap · open models and environments: RL on your own hardware · open protocols and portable evidence · incentives, licensing, and the open social contract</td>
+</tr>
+<tr>
+<td>Hybrid Analysis</td>
+<td>3: static vs. dynamic analysis · verification vs. validation · static + dynamic, verification + validation</td>
+</tr>
+<tr>
+<td>Future of Software Engineering</td>
+<td>3: IDEs, CLIs, and harnesses · language wars in the agent era · review, acceptance, and ownership — and, across all three, how devtools unify the personas (software engineer, AI engineer, data and platform engineer) and whether generic tooling or specialized, extensible tooling wins</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="3-ai-assisted-software-development-made-verifiable">3. AI-assisted software development, made verifiable</h2>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 612" role="img" aria-labelledby="f6-title f6-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f6-title">Agentic SDLC inside a verifiable ecosystem</title>
@@ -348,8 +353,163 @@
 <p>Hardware ships when verification signs off. Software written by agents should ship the same way.</p>
 </blockquote>
 <p>Auto-research is out of scope; this is the loop that ships software.</p>
-<h2 id="3-2026-layer-by-layer">3. 2026, layer by layer</h2>
-<p>Five layers acquired open references in 2026, on both sides of the must-open line.</p>
+<h2 id="4-four-weeks-in-summer-2026-layer-by-layer">4. Four weeks in summer 2026, layer by layer</h2>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 650" role="img" aria-labelledby="f7-title f7-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f7-title">Four weeks in summer 2026: four layers opened</title>
+  <desc id="f7-desc">A timeline from Jul 24 to Aug 18, 2026 with five dated ticks, connected to four cards: the open-weights letter (weights layer), Amazon funding the Lean FRO (proofs layer), DeepSeek Harness (agent harness layer), and Mojo 1.0 followed by its open compiler at ModCon (compiler and language layer). Each card names the layer it opens and the first principle behind it. A footer notes that each event opens one layer of the cake and none opens the weights' trust problem on its own.</desc>
+  <defs>
+    <marker id="f7-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .d  { font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .n  { font-size: 16px; font-weight: 600; }
+      .r  { font-size: 14px; opacity: 0.78; }
+      .p  { font-size: 14px; text-anchor: middle; }
+      .k  { font-size: 14px; font-weight: 600; fill: #c78307; }
+      .f  { font-size: 14px; fill: #c78307; }
+      .b  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .open { fill: rgba(31,168,214,0.16); stroke: #1fa8d6; stroke-width: 1.2; }
+      .rule { stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
+      .axis { stroke: currentColor; stroke-width: 1.5; fill: none; }
+      .lead { stroke: currentColor; stroke-opacity: 0.45; stroke-width: 1; }
+      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; }
+    </style>
+  </defs>
+
+  <!-- title -->
+  <text class="t" x="12" y="25">Four weeks in summer 2026: four layers opened</text>
+
+  <!-- timeline bar, proportional: Jul 24 = x40, Aug 18 = x724 (27.4 px per day) -->
+  <line class="axis" x1="12" y1="92" x2="748" y2="92" marker-end="url(#f7-arrow)"/>
+
+  <!-- upper-row labels with leaders -->
+  <text class="d" x="40"  y="56">Jul 24</text>
+  <line class="lead" x1="40"  y1="61" x2="40"  y2="87"/>
+  <text class="d" x="532" y="56">Aug 11</text>
+  <line class="lead" x1="532" y1="61" x2="532" y2="87"/>
+  <!-- lower-row labels -->
+  <text class="d" x="95"  y="78">Jul 26</text>
+  <text class="d" x="587" y="78">Aug 13</text>
+  <text class="d" x="724" y="78">Aug 18</text>
+
+  <!-- ticks -->
+  <circle cx="40"  cy="92" r="4"/>
+  <circle cx="95"  cy="92" r="4"/>
+  <circle cx="532" cy="92" r="4"/>
+  <circle cx="587" cy="92" r="4"/>
+  <circle cx="724" cy="92" r="4"/>
+
+  <!-- connectors tick -> card -->
+  <line class="link" x1="40"  y1="97" x2="99.5"  y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="95"  y1="97" x2="286.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="587" y1="97" x2="473.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="532" y1="97" x2="660.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="724" y1="97" x2="660.5" y2="148" marker-end="url(#f7-arrow)"/>
+
+  <!-- CARD 1: open-weights letter (x=12) -->
+  <rect class="band" x="12" y="150" width="175" height="466" rx="6"/>
+  <text class="n" x="21" y="174">Open-weights</text>
+  <text class="n" x="21" y="194">letter</text>
+  <line class="rule" x1="21" y1="224" x2="178" y2="224"/>
+  <text class="r" x="21" y="242">“Open Weights and</text>
+  <text class="r" x="21" y="259">American AI</text>
+  <text class="r" x="21" y="276">Leadership”, hosted</text>
+  <text class="r" x="21" y="293">by NVIDIA · launched</text>
+  <text class="r" x="21" y="310">by NVIDIA,</text>
+  <text class="r" x="21" y="327">Microsoft, Meta + 22</text>
+  <text class="r" x="21" y="344">· Google, OpenAI,</text>
+  <text class="r" x="21" y="361">Amazon joined ·</text>
+  <text class="r" x="21" y="378">235 signatories</text>
+  <text class="r" x="21" y="395">by Jul 29</text>
+  <rect class="open" x="21" y="408" width="157" height="36" rx="8"/>
+  <text class="p" x="99.5" y="423.2">weights —</text>
+  <text class="p" x="99.5" y="438.2">a leaf, either</text>
+  <text class="k" x="21" y="483">first principle:</text>
+  <text class="f" x="21" y="500">weights are the</text>
+  <text class="f" x="21" y="517">finished artifact;</text>
+  <text class="f" x="21" y="534">the cake activates</text>
+  <text class="f" x="21" y="551">them</text>
+
+  <!-- CARD 2: Amazon funds the Lean FRO (x=199) -->
+  <rect class="band" x="199" y="150" width="175" height="466" rx="6"/>
+  <text class="n" x="208" y="174">Amazon funds</text>
+  <text class="n" x="208" y="194">the Lean FRO</text>
+  <line class="rule" x1="208" y1="224" x2="365" y2="224"/>
+  <text class="r" x="208" y="242">largest gift in the</text>
+  <text class="r" x="208" y="259">FRO's history,</text>
+  <text class="r" x="208" y="276">outside Amazon ·</text>
+  <text class="r" x="208" y="293">“easier to trust a</text>
+  <text class="r" x="208" y="310">proof when you can</text>
+  <text class="r" x="208" y="327">evaluate the tools</text>
+  <text class="r" x="208" y="344">behind it yourself”</text>
+  <text class="r" x="208" y="361">· CSLib (Feb 2026)</text>
+  <text class="r" x="208" y="378">builds the CS</text>
+  <text class="r" x="208" y="395">library</text>
+  <rect class="open" x="208" y="408" width="157" height="51" rx="8"/>
+  <text class="p" x="286.5" y="423.2">proofs —</text>
+  <text class="p" x="286.5" y="438.2">the checker</text>
+  <text class="p" x="286.5" y="453.2">must be open</text>
+  <text class="k" x="208" y="483">first principle:</text>
+  <text class="f" x="208" y="500">dependent type</text>
+  <text class="f" x="208" y="517">theory: propositions</text>
+  <text class="f" x="208" y="534">as types, proofs</text>
+  <text class="f" x="208" y="551">as programs</text>
+
+  <!-- CARD 3: DeepSeek Harness (x=386) -->
+  <rect class="band" x="386" y="150" width="175" height="466" rx="6"/>
+  <text class="n" x="395" y="174">DeepSeek</text>
+  <text class="n" x="395" y="194">Harness (dsh)</text>
+  <line class="rule" x1="395" y1="224" x2="552" y2="224"/>
+  <text class="r" x="395" y="242">MIT, developer</text>
+  <text class="r" x="395" y="259">preview · built on</text>
+  <text class="r" x="395" y="276">Cordis · everything</text>
+  <text class="r" x="395" y="293">is a plugin ·</text>
+  <text class="r" x="395" y="310">model-visible</text>
+  <text class="r" x="395" y="327">means logged</text>
+  <rect class="open" x="395" y="408" width="157" height="36" rx="8"/>
+  <text class="p" x="473.5" y="423.2">agent harness —</text>
+  <text class="p" x="473.5" y="438.2">interface open</text>
+  <text class="k" x="395" y="483">first principle:</text>
+  <text class="f" x="395" y="500">type theory +</text>
+  <text class="f" x="395" y="517">category theory:</text>
+  <text class="f" x="395" y="534">effects as monads,</text>
+  <text class="f" x="395" y="551">coeffects as</text>
+  <text class="f" x="395" y="568">comonads, every</text>
+  <text class="f" x="395" y="585">effect with a</text>
+  <text class="f" x="395" y="602">tracked inverse</text>
+
+  <!-- CARD 4: Mojo 1.0 -> open compiler (x=573) -->
+  <rect class="band" x="573" y="150" width="175" height="466" rx="6"/>
+  <text class="n" x="582" y="174">Mojo 1.0 →</text>
+  <text class="n" x="582" y="194">open compiler</text>
+  <text class="n" x="582" y="214">at ModCon</text>
+  <line class="rule" x1="582" y1="224" x2="739" y2="224"/>
+  <text class="r" x="582" y="242">1.0 on Aug 11</text>
+  <text class="r" x="582" y="259">(stability) ·</text>
+  <text class="r" x="582" y="276">compiler + toolchain</text>
+  <text class="r" x="582" y="293">Apache-2.0 with</text>
+  <text class="r" x="582" y="310">LLVM exceptions</text>
+  <text class="r" x="582" y="327">on Aug 18 · built</text>
+  <text class="r" x="582" y="344">purely on MLIR Core</text>
+  <rect class="open" x="582" y="408" width="157" height="51" rx="8"/>
+  <text class="p" x="660.5" y="423.2">compiler &amp;</text>
+  <text class="p" x="660.5" y="438.2">language — IR and</text>
+  <text class="p" x="660.5" y="453.2">analyzers open</text>
+  <text class="k" x="582" y="483">first principle:</text>
+  <text class="f" x="582" y="500">progressive lowering</text>
+  <text class="f" x="582" y="517">through typed IR:</text>
+  <text class="f" x="582" y="534">each pass commits</text>
+  <text class="f" x="582" y="551">what the last</text>
+  <text class="f" x="582" y="568">left open</text>
+
+  <!-- footer -->
+  <text class="b" x="380" y="640">each event opens one layer of the cake; none of them opens the weights' trust problem on its own</text>
+</svg>
+<figcaption><strong>F7</strong> The open-weights letter, the Lean FRO gift, DeepSeek Harness, and Mojo&#x27;s open compiler, each placed on its layer with the first principle it rests on.</figcaption>
+</figure>
+<p>Four weeks, four layers, and each event rests on a first principle older than the product: the letter on the economics of a finished artifact, the FRO on dependent type theory, the harness on type theory and category theory by way of Cordis, the compiler on progressive lowering through typed IR. Five layers acquired open references this year, on both sides of the must-open line.</p>
 <h3>Compiler: Mojo goes open at ModCon</h3>
 <p>Mojo 1.0 shipped on August 11 as a stability milestone: source-stable, 1.x changes "primarily additive," the ABI still unstable. A week later at ModCon, Modular open-sourced the entire compiler and toolchain under Apache 2.0 with LLVM exceptions. MAX stays source-available, and Modular is now a Qualcomm company.</p>
 <p>Modular's earlier docs called Mojo "the first major language designed expressly for MLIR"; the current vision doc says "built purely on top of MLIR Core," aiming at "a unified language for kernel development." My argument, which Modular does not make: an open, general-purpose compiler built directly on MLIR is the pattern book for MLIR DSLs and for verification hooks that run before lowering. For the language itself, read the Mojo 1.0 post.</p>
@@ -369,17 +529,16 @@
 <p>Prime Intellect's stack separates the trainer from the task. prime-rl (Apache-2.0) runs the asynchronous RL loop; verifiers (MIT) packages a task as an environment, a dataset plus a harness plus reward functions; the Environments Hub versions more than 2,500 of them. The reward is a deterministic check or an LLM judge "where deterministic evaluation is impractical." The mapping is mine, not Prime Intellect's: a deterministic reward is verification, a judged reward is validation, and one environment scores training and evaluation alike.</p>
 <p>Z.ai's GLM-5.2 (753B parameters, MIT) and Moonshot's Kimi K3 (2.8T, Kimi K3 License) approach frontier models on the labs' own benchmarks; Moonshot itself says K3 "still trails the most powerful proprietary models." Neither runs on a DGX Spark. NVIDIA rates the $4,699, 128 GB box for inference to 200B parameters and fine-tuning to 70B; what fits is GLM-4.7-Flash (30B-A3B, MIT) and its 30-to-70B peers. NVIDIA documents LoRA fine-tuning on the box; running prime-rl's RL loop there is undocumented.</p>
 <p>Models are leaves. Environments are evidence, and a reward nobody else can run is not a benchmark, so environments must be open.</p>
-<h2 id="4-which-layers-open-and-why">4. Which layers open, and why</h2>
+<h2 id="5-which-layers-open-and-why">5. Which layers open, and why</h2>
 <p>The five stories share a mechanism. Three forces open a layer: common infrastructure, which everyone needs to build on; strategic collaboration, where sharing beats competing; and network effects, which make a layer worth more with every implementation that speaks it. LLVM is all three compounding. Openness at a connective layer is architectural, so I expect these layers to open whether or not anyone is virtuous.</p>
 <p>Where Tan and colleagues answer with institutions, I answer with a rule. <strong>A layer that exists to connect independent systems must be open: policy semantics, agent protocols, effect logs, compiler IR and its analyzers, evidence formats, the proof checker.</strong> A leaf can be closed, as long as the layers around it emit portable evidence: weights, hosted inference, the best client, a compiler's contribution queue.</p>
 <blockquote>
 <p>LLVM is the proof: a permissive substrate funded by rivals, worth more with every front end.</p>
 </blockquote>
 <p>The reader's test: does a layer's value come from connecting things that do not share an owner? Zed, a GPL-3.0 editor speaking an Apache-2.0 protocol to closed agents behind it, passes; a harness whose session log only its vendor can parse does not.</p>
-<h2 id="5-the-ecosystem-is-its-tooling">5. The ecosystem is its tooling</h2>
+<h2 id="6-the-ecosystem-is-its-tooling">6. The ecosystem is its tooling</h2>
 <p><strong>An ecosystem is as good as its developer tooling.</strong> Weights without a harness are a download; proofs without an open checker are a vendor's assurance. Trust arrives through the compiler that checks, the harness that logs, the prover that admits, and the evidence format that survives a vendor change.</p>
 <p>The series goes deep on each layer from here; the holy wars of programming languages and their SDKs, and where each language sits in the cake, come in Part 3. Next: Part 2, From Leaky Abstractions to Type-Safe Abstractions in the Era of the Open Ecosystem.</p>
-<p>Out of scope: the ethics of open versus closed, auto-research, everything below the ABI including hardware and robotics, and anything outside software engineering.</p>
 <p>This essay is the culmination of conversations with hundreds of researchers across three 2026 events: ICSE 2026 in Rio de Janeiro, from the Doctoral Symposium (April 14) to the IDE 2026 workshop organized by JetBrains Research (April 18); and, both in San Francisco, The Verification Summit by Pramaana Labs (June 10) and ModCon 2026 (August 18).</p>
 <section class="references">
 <h2 id="references">References</h2>
@@ -462,7 +621,7 @@
 </section>
       </div></div>
     </article></main>
-    <footer class="site-footer"><span>Shakthi Bachala</span><span>Open Ecosystem · Part 1 of 6</span><span>2026</span></footer>
+    <footer class="site-footer"><span>Shakthi Bachala</span><span>Open Ecosystem · Part 1 of 10</span><span>2026</span></footer>
   </div>
   <script src="/theme.js?v=20260820m" defer></script>
 </body>

@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 650" width="100%" role="img" aria-labelledby="f7-title f7-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f7-title">Four weeks in summer 2026: four layers opened</title>
+  <desc id="f7-desc">A timeline from Jul 24 to Aug 18, 2026 with five dated ticks, connected to four cards: the open-weights letter (weights layer), Amazon funding the Lean FRO (proofs layer), DeepSeek Harness (agent harness layer), and Mojo 1.0 followed by its open compiler at ModCon (compiler and language layer). Each card names the layer it opens and the first principle behind it. A footer notes that each event opens one layer of the cake and none opens the weights' trust problem on its own.</desc>
+  <defs>
+    <marker id="f7-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .d  { font-size: 14px; font-weight: 600; text-anchor: middle; }
+      .n  { font-size: 16px; font-weight: 600; }
+      .r  { font-size: 14px; opacity: 0.78; }
+      .p  { font-size: 14px; text-anchor: middle; }
+      .k  { font-size: 14px; font-weight: 600; fill: #c78307; }
+      .f  { font-size: 14px; fill: #c78307; }
+      .b  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .open { fill: rgba(31,168,214,0.16); stroke: #1fa8d6; stroke-width: 1.2; }
+      .rule { stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
+      .axis { stroke: currentColor; stroke-width: 1.5; fill: none; }
+      .lead { stroke: currentColor; stroke-opacity: 0.45; stroke-width: 1; }
+      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; }
+    </style>
+  </defs>
+
+  <!-- title -->
+  <text class="t" x="12" y="25">Four weeks in summer 2026: four layers opened</text>
+
+  <!-- timeline bar, proportional: Jul 24 = x40, Aug 18 = x724 (27.4 px per day) -->
+  <line class="axis" x1="12" y1="92" x2="748" y2="92" marker-end="url(#f7-arrow)"/>
+
+  <!-- upper-row labels with leaders -->
+  <text class="d" x="40"  y="56">Jul 24</text>
+  <line class="lead" x1="40"  y1="61" x2="40"  y2="87"/>
+  <text class="d" x="532" y="56">Aug 11</text>
+  <line class="lead" x1="532" y1="61" x2="532" y2="87"/>
+  <!-- lower-row labels -->
+  <text class="d" x="95"  y="78">Jul 26</text>
+  <text class="d" x="587" y="78">Aug 13</text>
+  <text class="d" x="724" y="78">Aug 18</text>
+
+  <!-- ticks -->
+  <circle cx="40"  cy="92" r="4"/>
+  <circle cx="95"  cy="92" r="4"/>
+  <circle cx="532" cy="92" r="4"/>
+  <circle cx="587" cy="92" r="4"/>
+  <circle cx="724" cy="92" r="4"/>
+
+  <!-- connectors tick -> card -->
+  <line class="link" x1="40"  y1="97" x2="99.5"  y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="95"  y1="97" x2="286.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="587" y1="97" x2="473.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="532" y1="97" x2="660.5" y2="148" marker-end="url(#f7-arrow)"/>
+  <line class="link" x1="724" y1="97" x2="660.5" y2="148" marker-end="url(#f7-arrow)"/>
+
+  <!-- CARD 1: open-weights letter (x=12) -->
+  <rect class="band" x="12" y="150" width="175" height="466" rx="6"/>
+  <text class="n" x="21" y="174">Open-weights</text>
+  <text class="n" x="21" y="194">letter</text>
+  <line class="rule" x1="21" y1="224" x2="178" y2="224"/>
+  <text class="r" x="21" y="242">“Open Weights and</text>
+  <text class="r" x="21" y="259">American AI</text>
+  <text class="r" x="21" y="276">Leadership”, hosted</text>
+  <text class="r" x="21" y="293">by NVIDIA · launched</text>
+  <text class="r" x="21" y="310">by NVIDIA,</text>
+  <text class="r" x="21" y="327">Microsoft, Meta + 22</text>
+  <text class="r" x="21" y="344">· Google, OpenAI,</text>
+  <text class="r" x="21" y="361">Amazon joined ·</text>
+  <text class="r" x="21" y="378">235 signatories</text>
+  <text class="r" x="21" y="395">by Jul 29</text>
+  <rect class="open" x="21" y="408" width="157" height="36" rx="8"/>
+  <text class="p" x="99.5" y="423.2">weights —</text>
+  <text class="p" x="99.5" y="438.2">a leaf, either</text>
+  <text class="k" x="21" y="483">first principle:</text>
+  <text class="f" x="21" y="500">weights are the</text>
+  <text class="f" x="21" y="517">finished artifact;</text>
+  <text class="f" x="21" y="534">the cake activates</text>
+  <text class="f" x="21" y="551">them</text>
+
+  <!-- CARD 2: Amazon funds the Lean FRO (x=199) -->
+  <rect class="band" x="199" y="150" width="175" height="466" rx="6"/>
+  <text class="n" x="208" y="174">Amazon funds</text>
+  <text class="n" x="208" y="194">the Lean FRO</text>
+  <line class="rule" x1="208" y1="224" x2="365" y2="224"/>
+  <text class="r" x="208" y="242">largest gift in the</text>
+  <text class="r" x="208" y="259">FRO's history,</text>
+  <text class="r" x="208" y="276">outside Amazon ·</text>
+  <text class="r" x="208" y="293">“easier to trust a</text>
+  <text class="r" x="208" y="310">proof when you can</text>
+  <text class="r" x="208" y="327">evaluate the tools</text>
+  <text class="r" x="208" y="344">behind it yourself”</text>
+  <text class="r" x="208" y="361">· CSLib (Feb 2026)</text>
+  <text class="r" x="208" y="378">builds the CS</text>
+  <text class="r" x="208" y="395">library</text>
+  <rect class="open" x="208" y="408" width="157" height="51" rx="8"/>
+  <text class="p" x="286.5" y="423.2">proofs —</text>
+  <text class="p" x="286.5" y="438.2">the checker</text>
+  <text class="p" x="286.5" y="453.2">must be open</text>
+  <text class="k" x="208" y="483">first principle:</text>
+  <text class="f" x="208" y="500">dependent type</text>
+  <text class="f" x="208" y="517">theory: propositions</text>
+  <text class="f" x="208" y="534">as types, proofs</text>
+  <text class="f" x="208" y="551">as programs</text>
+
+  <!-- CARD 3: DeepSeek Harness (x=386) -->
+  <rect class="band" x="386" y="150" width="175" height="466" rx="6"/>
+  <text class="n" x="395" y="174">DeepSeek</text>
+  <text class="n" x="395" y="194">Harness (dsh)</text>
+  <line class="rule" x1="395" y1="224" x2="552" y2="224"/>
+  <text class="r" x="395" y="242">MIT, developer</text>
+  <text class="r" x="395" y="259">preview · built on</text>
+  <text class="r" x="395" y="276">Cordis · everything</text>
+  <text class="r" x="395" y="293">is a plugin ·</text>
+  <text class="r" x="395" y="310">model-visible</text>
+  <text class="r" x="395" y="327">means logged</text>
+  <rect class="open" x="395" y="408" width="157" height="36" rx="8"/>
+  <text class="p" x="473.5" y="423.2">agent harness —</text>
+  <text class="p" x="473.5" y="438.2">interface open</text>
+  <text class="k" x="395" y="483">first principle:</text>
+  <text class="f" x="395" y="500">type theory +</text>
+  <text class="f" x="395" y="517">category theory:</text>
+  <text class="f" x="395" y="534">effects as monads,</text>
+  <text class="f" x="395" y="551">coeffects as</text>
+  <text class="f" x="395" y="568">comonads, every</text>
+  <text class="f" x="395" y="585">effect with a</text>
+  <text class="f" x="395" y="602">tracked inverse</text>
+
+  <!-- CARD 4: Mojo 1.0 -> open compiler (x=573) -->
+  <rect class="band" x="573" y="150" width="175" height="466" rx="6"/>
+  <text class="n" x="582" y="174">Mojo 1.0 →</text>
+  <text class="n" x="582" y="194">open compiler</text>
+  <text class="n" x="582" y="214">at ModCon</text>
+  <line class="rule" x1="582" y1="224" x2="739" y2="224"/>
+  <text class="r" x="582" y="242">1.0 on Aug 11</text>
+  <text class="r" x="582" y="259">(stability) ·</text>
+  <text class="r" x="582" y="276">compiler + toolchain</text>
+  <text class="r" x="582" y="293">Apache-2.0 with</text>
+  <text class="r" x="582" y="310">LLVM exceptions</text>
+  <text class="r" x="582" y="327">on Aug 18 · built</text>
+  <text class="r" x="582" y="344">purely on MLIR Core</text>
+  <rect class="open" x="582" y="408" width="157" height="51" rx="8"/>
+  <text class="p" x="660.5" y="423.2">compiler &amp;</text>
+  <text class="p" x="660.5" y="438.2">language — IR and</text>
+  <text class="p" x="660.5" y="453.2">analyzers open</text>
+  <text class="k" x="582" y="483">first principle:</text>
+  <text class="f" x="582" y="500">progressive lowering</text>
+  <text class="f" x="582" y="517">through typed IR:</text>
+  <text class="f" x="582" y="534">each pass commits</text>
+  <text class="f" x="582" y="551">what the last</text>
+  <text class="f" x="582" y="568">left open</text>
+
+  <!-- footer -->
+  <text class="b" x="380" y="640">each event opens one layer of the cake; none of them opens the weights' trust problem on its own</text>
+</svg>
