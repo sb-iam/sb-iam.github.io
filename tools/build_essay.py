@@ -153,7 +153,8 @@ def main() -> int:
     def h2_sub(m):
         inner = m.group(1)
         sid = slugify(inner)
-        rail.append(f'        <li><a href="#{sid}">{inner}</a></li>')
+        label = re.sub(r"^\s*\d+\.\s*", "", inner)  # the <ol> supplies the number
+        rail.append(f'        <li><a href="#{sid}">{label}</a></li>')
         return f'<h2 id="{sid}">{inner}</h2>'
 
     out = re.sub(r"<h2>(.*?)</h2>", h2_sub, out, flags=re.S)
@@ -162,12 +163,13 @@ def main() -> int:
     for key, f in figures.items():
         if not f["path"].exists():
             sys.exit(f"missing figure file: {f['path']}")
-        label, _, cap = f["alt"].partition("—")
-        label = label.strip()
-        cap = cap.strip() or f["alt"]
-        caption = f"<strong>{html.escape(label)}</strong> {html.escape(cap)}" if _ else html.escape(cap)
-        if f["extra"]:
-            caption += " " + html.escape(f["extra"])
+        # Caption: the italic line after the figure wins; the alt text is the fallback.
+        text = f["extra"] or f["alt"]
+        label, dash, cap = text.partition("—")
+        if dash and len(label.strip()) <= 4:
+            caption = f"<strong>{html.escape(label.strip())}</strong> {html.escape(cap.strip())}"
+        else:
+            caption = html.escape(text)
         cls = "article-figure hero-figure" if "F3" in f["path"].name else "article-figure"
         fig_html = f'<figure class="{cls}">\n{inline_svg(f["path"])}\n<figcaption>{caption}</figcaption>\n</figure>'
         out = out.replace(f"<p>{key}</p>", fig_html).replace(key, fig_html)
