@@ -191,6 +191,41 @@ def main() -> int:
         out = out[: nxt.start()] + out[nxt.end():]
         refs = out.find('<section class="references">')
         out = out[:refs] + block + out[refs:]
+    # Autolink bare URLs in text nodes (python-markdown leaves them as text).
+    def autolink(segment):
+        return re.sub(r'(?<!["\'>])(https?://[^\s<]+?)(?=[.,;:)]?(?:\s|$|<))', r'<a href="\1">\1</a>', segment)
+    parts = re.split(r"(<[^>]+>)", out)
+    inside_a = 0
+    for i, part in enumerate(parts):
+        if part.startswith("<"):
+            if re.match(r"<a\b", part):
+                inside_a += 1
+            elif part.startswith("</a"):
+                inside_a = max(0, inside_a - 1)
+            continue
+        if not inside_a:
+            parts[i] = autolink(part)
+    out = "".join(parts)
+    # Numbered reference lists continue across group headings.
+    if m:
+        counter = [0]
+        def renumber(mm):
+            counter[0] += 1
+            return f'<ol start="{counter[0]}">' if counter[0] > 1 else "<ol>"
+        refs_start = out.find('<section class="references">')
+        body, refs = out[:refs_start], out[refs_start:]
+        # count items per list to advance start values correctly
+        def fix_lists(html_block):
+            pos, start, res = 0, 1, []
+            for lm in re.finditer(r"<ol>(.*?)</ol>", html_block, flags=re.S):
+                res.append(html_block[pos:lm.start()])
+                items = lm.group(1).count("<li>")
+                res.append(f'<ol start="{start}">' + lm.group(1) + "</ol>")
+                start += items
+                pos = lm.end()
+            res.append(html_block[pos:])
+            return "".join(res)
+        out = body + fix_lists(refs)
     # External links open in a new tab, like the rest of the site.
     out = re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noreferrer"', out)
 
