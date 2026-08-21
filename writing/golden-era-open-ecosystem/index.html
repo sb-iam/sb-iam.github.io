@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Leaky abstractions, type-safe boundaries, open compilers, agent harnesses, autoformalization, Cedar, Goldilocks diagrams, and evidence-bearing software engineering.">
-  <meta property="og:title" content="Leaky Abstractions vs. Type-Safe Abstractions in the Era of AI Coding Agents">
-  <meta property="og:description" content="Part 1 of The Open Ecosystem and the Future of Software Engineering">
-  <title>Leaky Abstractions vs. Type-Safe Abstractions in the Era of AI Coding Agents - Shakthi Bachala</title>
+  <meta name="description" content="Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.">
+  <meta property="og:title" content="The Goldilocks Zone of the Open AI Ecosystem">
+  <meta property="og:description" content="Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.">
+  <meta property="og:type" content="article">
+  <title>The Goldilocks Zone of the Open AI Ecosystem - Shakthi Bachala</title>
   <script>
     (function () {
       try { var savedTheme = localStorage.getItem("sb-theme"); document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark"; }
       catch (error) { document.documentElement.dataset.theme = "dark"; }
     })();
   </script>
-  <link rel="stylesheet" href="../../styles.css?v=20260821c">
+  <link rel="stylesheet" href="../../styles.css?v=20260820p">
 </head>
 <body>
   <a class="skip-link" href="#article">Skip to article</a>
@@ -24,1685 +25,572 @@
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to white theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>White</span></button>
     </header>
     <main id="article"><article>
-      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Open Ecosystem</span><span>Aug 21, 2026</span><span>Full Blog 1 Draft</span></div><h1>Leaky Abstractions vs. Type-Safe Abstractions in the Era of AI Coding Agents</h1><p class="dek">Part 1 of The Open Ecosystem and the Future of Software Engineering</p></div></header>
-      <div class="article-layout full-draft-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
-                <li><a href="#1-one-window">1. One window</a></li>
-                <li><a href="#2-the-current-abstraction-leaks">2. The current abstraction leaks</a></li>
-                <li><a href="#3-the-open-agentic-software-stack">3. The open agentic software stack</a></li>
-                <li><a href="#4-the-goldilocks-problem">4. The Goldilocks problem</a></li>
-                <li><a href="#5-cedar-is-not-autoformalization">5. Cedar is not autoformalization</a></li>
-                <li><a href="#6-autoformalization-is-becoming-a-knowledge-base-problem">6. Autoformalization is becoming a knowledge-base problem</a></li>
-                <li><a href="#7-agent-harnesses-are-becoming-runtimes">7. Agent harnesses are becoming runtimes</a></li>
-                <li><a href="#8-mojo-mlir-and-open-compiler-practice">8. Mojo, MLIR, and open compiler practice</a></li>
-                <li><a href="#9-zed-and-high-performance-local-control">9. Zed and high-performance local control</a></li>
-                <li><a href="#10-open-weights-as-part-of-the-same-ecosystem">10. Open weights as part of the same ecosystem</a></li>
-                <li><a href="#11-why-open">11. Why open?</a></li>
-                <li><a href="#12-from-informal-work-to-evidence-bearing-execution">12. From informal work to evidence-bearing execution</a></li>
-                <li><a href="#13-what-this-series-will-track">13. What this series will track</a></li>
-                <li><a href="#references-by-layer">References by Layer</a></li>
-                <li><a href="#archive-draft-2-before-research-voice-rewrite-preserved">Archive: Draft 2 Before Research-Voice Rewrite (Preserved)</a></li>
-                <li><a href="#leaky-abstractions-vs-type-safe-abstractions-in-the-era-of-ai-coding-agents">Leaky Abstractions vs. Type-Safe Abstractions in the Era of AI Coding Agents</a></li>
-                <li><a href="#high-level-contents">High-Level Contents</a></li>
-                <li><a href="#full-blog-draft">Full Blog Draft</a></li>
-                <li><a href="#1-my-development-environment-has-collapsed-to-one-window">1. My development environment has collapsed to one window</a></li>
-                <li><a href="#2-the-model-is-becoming-interchangeable">2. The model is becoming interchangeable</a></li>
-                <li><a href="#3-where-the-current-abstraction-leaks">3. Where the current abstraction leaks</a></li>
-                <li><a href="#4-the-open-agentic-software-stack">4. The open agentic software stack</a></li>
-                <li><a href="#5-cedar-is-policy-not-autoformalization">5. Cedar is policy, not autoformalization</a></li>
-                <li><a href="#6-harnesses-are-becoming-runtimes">6. Harnesses are becoming runtimes</a></li>
-                <li><a href="#7-compilers-already-know-how-to-reduce-ambiguity">7. Compilers already know how to reduce ambiguity</a></li>
-                <li><a href="#8-why-open">8. Why open?</a></li>
-                <li><a href="#9-cedar-mojo-as-open-exploration">9. Cedar-Mojo as open exploration</a></li>
-                <li><a href="#10-series-map">10. Series map</a></li>
-                <li><a href="#11-what-this-article-claims-and-what-it-does-not-claim">11. What this article claims, and what it does not claim</a></li>
-                <li><a href="#source-anchors-to-resolve-before-publication">Source Anchors To Resolve Before Publication</a></li>
-                <li><a href="#archive-prior-blog-1-draft-preserved">Archive: Prior Blog 1 Draft (Preserved)</a></li>
-                <li><a href="#the-golden-era-of-the-open-ecosystem">The Golden Era of the Open Ecosystem</a></li>
-                <li><a href="#high-level-contents-2">High-Level Contents</a></li>
-                <li><a href="#full-blog-draft-2">Full Blog Draft</a></li>
-                <li><a href="#1-the-claim">1. The claim</a></li>
-                <li><a href="#2-why-this-matters-now">2. Why this matters now</a></li>
-                <li><a href="#3-the-ai-layer-cake">3. The AI layer cake</a></li>
-                <li><a href="#4-the-three-threads">4. The three threads</a></li>
-                <li><a href="#5-the-inflection-arc">5. The inflection arc</a></li>
-                <li><a href="#6-what-open-must-mean">6. What &quot;open&quot; must mean</a></li>
-                <li><a href="#7-the-open-stack-for-agentic-software">7. The open stack for agentic software</a></li>
-                <li><a href="#8-the-old-holy-wars-are-moving-up-a-level">8. The old holy wars are moving up a level</a></li>
-                <li><a href="#9-hybrid-analysis-is-the-missing-discipline">9. Hybrid analysis is the missing discipline</a></li>
-                <li><a href="#10-neuro-symbolic-verification-without-the-hype">10. Neuro-symbolic verification without the hype</a></li>
-                <li><a href="#11-verification-and-validation-are-different">11. Verification and validation are different</a></li>
-                <li><a href="#12-why-deepseek-harness-matters-technically">12. Why DeepSeek Harness matters technically</a></li>
-                <li><a href="#13-why-mojo-matters-technically">13. Why Mojo matters technically</a></li>
-                <li><a href="#14-the-economics-of-open-layers">14. The economics of open layers</a></li>
-                <li><a href="#15-hyperscalers-model-labs-neoclouds-and-application-builders">15. Hyperscalers, model labs, neoclouds, and application builders</a></li>
-                <li><a href="#16-the-social-contract-changes-when-agents-read-everything">16. The social contract changes when agents read everything</a></li>
-                <li><a href="#17-why-not-create-yet-another-protocol-right-now">17. Why not create yet another protocol right now</a></li>
-                <li><a href="#18-autoformalization-is-useful-only-with-an-admission-rule">18. Autoformalization is useful only with an admission rule</a></li>
-                <li><a href="#19-j-lens-and-the-interpretability-boundary">19. J-Lens and the interpretability boundary</a></li>
-                <li><a href="#20-what-i-am-not-building-in-phase-1">20. What I am not building in phase 1</a></li>
-                <li><a href="#21-what-the-hybrid-analysis-thread-will-cover">21. What the Hybrid Analysis thread will cover</a></li>
-                <li><a href="#22-what-the-future-of-software-engineering-thread-will-cover">22. What the Future of Software Engineering thread will cover</a></li>
-                <li><a href="#23-the-practical-stack-i-want">23. The practical stack I want</a></li>
-                <li><a href="#24-the-conclusion">24. The conclusion</a></li>
-                <li><a href="#thread-and-series-map">Thread and Series Map</a></li>
-                <li><a href="#thread-1-open-ecosystem-2">Thread 1: Open Ecosystem</a></li>
-                <li><a href="#thread-2-hybrid-analysis-2">Thread 2: Hybrid Analysis</a></li>
-                <li><a href="#thread-3-future-of-software-engineering-2">Thread 3: Future of Software Engineering</a></li>
-                <li><a href="#sources-and-links-checked">Sources and Links Checked</a></li>
-              </ol></nav></aside><div class="article-body full-draft-body">
-            <p class="lead">I am writing this as a doctoral researcher in hybrid program analysis and as an engineer who spends a large part of the day inside real tools. The technical shift is already visible in ordinary software work: agents are becoming active participants in repository state transitions, but the abstractions around them are still too informal.</p>
-            <p>The claim of this essay is simple:</p>
-            <div class="diagram-block">
-            <pre><code>AI coding agents are exposing a missing layer between human intent
-and executable side effects.</code></pre>
-            </div>
-            <p>That missing layer is not one thing. It is a stack of specifications, policies, typed handoffs, runtime effects, compiler representations, and evidence. Some of those ideas come from formal methods. Some come from programming languages. Some come from editor and CLI design. Some come from open-source economics.</p>
-            <p>They now belong in the same conversation.</p>
-            <h3 id="1-one-window">1. One window</h3>
-            <p>My current development environment has collapsed into one working surface.</p>
-            <p>Zed is the editor. The CLI is the durable execution substrate. Codex, Claude Code, Cursor, and other agents enter through command-line workflows. Handoffs, review notes, diffs, tests, and evidence are coordinated around the repository rather than around one chat interface.</p>
-            <p>The significance is that editor, shell, agent, and evidence are converging at the point where repository state changes.</p>
-            <div class="diagram-block">
-            <pre><code>                         one working surface
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Open Ecosystem</span><span>Part 1 of 6</span><span>Aug 20, 2026</span></div><h1>The Goldilocks Zone of the Open AI Ecosystem</h1><p class="dek">Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.</p></div></header>
+      <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
+        <li><a href="#1-where-the-abstraction-leaks">Where the abstraction leaks</a></li>
+        <li><a href="#2-the-type">The type</a></li>
+        <li><a href="#3-progressive-commitment-the-layer-cake">Progressive commitment: the layer cake</a></li>
+        <li><a href="#4-calibration">Calibration</a></li>
+        <li><a href="#5-which-layers-open-and-why">Which layers open, and why</a></li>
+        <li><a href="#6-the-creed">The creed</a></li>
+        <li><a href="#references">References</a></li>
+      </ol></nav></aside><div class="article-body">
+<p class="lead"><strong>AI coding agents have exposed a missing layer between human intent and executable side effects.</strong> Nothing in today's stack carries what a task permits, what it must preserve, and what counts as done from the typed sentence to the written bytes.</p>
+<p>Filling that layer is a calibration problem on two axes, and the right answer on both is a Goldilocks zone. On rigor, it sits between prompt-only intent with ambient permissions and a proof for every edit. On openness, it sits between one vendor owning model, harness, policy, compiler, and evidence, and a scatter of source that never composes.</p>
+<p>Open and closed will coexist. The frontier models are closed and will remain so. <strong>The connective layers must be open:</strong> evidence formats, policy semantics, agent protocols (ACP, MCP), compiler IR and the analyzers that attach to it. They exist to connect independent systems; closing them destroys the reason they exist, and they are where inspection, replacement, and replay happen. <strong>The leaves can be closed:</strong> weights, hosted inference, enterprise control planes, proprietary data, the best client, as long as the layers around them emit portable evidence.</p>
+<p>That boundary is the zone, and every serious vendor is choosing where it sits. Modular opened its compiler and closed compiler contributions. Amazon funds Lean outside Amazon. Zed opened its agent protocol while most agents stay closed. Cedar's semantics are open while the hosted service is paid. This essay maps the boundary and opens the first of three threads, each revisited quarterly.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Thread</th>
+<th>Parts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The Golden Era of the Open Ecosystem</td>
+<td>6: this essay · open models and model competition · open agent harnesses · open compilers and AI-native languages · open protocols and portable evidence · incentives and the open social contract</td>
+</tr>
+<tr>
+<td>Hybrid Analysis</td>
+<td>3: static vs. dynamic analysis · verification vs. validation · static + dynamic, verification + validation</td>
+</tr>
+<tr>
+<td>Future of Software Engineering</td>
+<td>3: IDEs, CLIs, and harnesses · language wars in the agent era · review, acceptance, and ownership</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="1-where-the-abstraction-leaks">1. Where the abstraction leaks</h2>
+<p>My working position is one window. Zed is the editor, the CLI is the execution substrate, and Codex, Claude Code, and Cursor enter through the shell or the Agent Client Protocol, ACP. The agents are interchangeable by design. I keep the workflow, the constraints, and the evidence; I swap the agent. When the workflow carries the constraints, a narrow task can go to a local model and an obligation to a prover, and nothing around the swap changes.</p>
+<p>That position is a test, and the current abstraction fails it.</p>
+<p>Intent is informal: "refactor the parser." Permissions are ambient: whatever the shell user can touch, the agent can touch. Handoffs are prose: one agent writes Markdown and another reads it. Effects are invisible: a dependency added, a CI file edited, a network call made. Completion is social: "done" is a sentence, and the evidence for it is a summary written by the party under review.</p>
+<p>A human engineer reads "refactor the parser" and knows what it excludes: no public API change, no new dependency, no CI edit, no network. The boundary is real and was never written down.</p>
+<blockquote>
+<p>Humans infer the boundary from culture and consequence. Agents have to be told, and nothing tells them.</p>
+</blockquote>
+<p>That is the law of leaky abstractions in the agent loop, and there is a datum for how leaky. The Cordis paper, whose runtime returns in §3, surveyed the top 100 VS Code extensions: 87 need a host restart to be removed, and cross-extension exports are typed <code>any</code> by default. Nothing was committed at load time, so nothing can be unwound at unload time. An agent harness is the same shape of platform, with a model at the keyboard.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 532" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" stroke="currentColor" width="100%">
+  <title id="f1-title">Leaky pipeline versus typed-task pipeline</title>
+  <desc id="f1-desc">Two vertical pipelines. Left, today's leaky flow: prompt, agent, Markdown handoff, agent, shell, filesystem, prose summary, with four leaks marked in red: ambient permission, untyped handoff, invisible effect, summary-as-evidence. Right, the typed-task flow: intent, Phi, a fork into obligations and policy that rejoins, typed handoff, effect-checked execution, evidence packet, acceptance, with four checks marked in cyan: bounded authority, typed interface, recorded and revertible effect, classed evidence.</desc>
+  <defs>
+    <marker id="f1-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+  </defs>
 
-+------------------------------------------------------------------+
-| Zed                                                              |
-|                                                                  |
-| source files | terminal | diffs | notes | logs | review context  |
-+------------------------------+-----------------------------------+
-                               |
-                               v
-                       CLI / ACP boundary
-                               |
-          +--------------------+--------------------+
-          |                    |                    |
-          v                    v                    v
-        Codex             Claude Code             Cursor
-          |                    |                    |
-          +--------------------+--------------------+
-                               |
-                               v
-                  handoffs / orchestration / evidence</code></pre>
-            </div>
-            <p>The editor is no longer only a place where a human writes text. It is becoming the human control plane for agentic software engineering. The CLI matters because it remains the most stable way to bind an agent to a real repository, a real shell, real tests, and real failure modes.</p>
-            <p>The right endpoint is not one perfect agent UI. It is an environment where agents remain interchangeable because the surrounding workflow carries the constraints and evidence.</p>
-            <p>The unit that matters is not:</p>
-            <div class="diagram-block">
-            <pre><code>agent UI</code></pre>
-            </div>
-            <p>It is:</p>
-            <div class="diagram-block">
-            <pre><code>workflow + constraints + evidence</code></pre>
-            </div>
-            <p>Once the workflow is explicit enough, the particular model can change. A stronger model can replace a weaker one. A local model can take over a narrow task. A specialized reviewer can judge a patch. A theorem prover can check a formal obligation. A compiler can reject an invalid lowering. The engineering system should not collapse when one agent is swapped out.</p>
-            <p>That is the first technical reason open interfaces matter.</p>
-            <h3 id="2-the-current-abstraction-leaks">2. The current abstraction leaks</h3>
-            <p>Today, much of agentic development still looks like this:</p>
-            <div class="diagram-block">
-            <pre><code>prompt
-  -&gt; agent
-  -&gt; Markdown handoff
-  -&gt; another agent
-  -&gt; shell command
-  -&gt; filesystem mutation
-  -&gt; prose summary</code></pre>
-            </div>
-            <p>This works often enough to be useful. It also leaks in exactly the places where software engineering needs precision.</p>
-            <p>The intent is informal. The permissions are often ambient. The tool boundary is weak. The file system is treated as a shared substrate rather than a typed resource. The test result is usually summarized in prose. The reviewer may receive a diff without a precise statement of the allowed effects. Completion is often defined socially rather than technically.</p>
-            <p>For a human, this informality can be manageable. Humans infer the boundary from culture, taste, experience, and consequences. If a maintainer says &quot;refactor the parser,&quot; a good engineer usually understands that this does not include changing the public API, editing CI, adding a dependency, or accessing the network.</p>
-            <p>An agent should not have to infer those limits from implicit social cues.</p>
-            <p>The stronger abstraction is:</p>
-            <div class="diagram-block">
-            <pre><code>intent
-  -&gt; candidate formal specification
-  -&gt; authorization policy
-  -&gt; semantic obligations
-  -&gt; typed handoff
-  -&gt; effect-aware execution
-  -&gt; evidence packet
-  -&gt; human acceptance</code></pre>
-            </div>
-            <p>That does not mean every code change becomes fully formal. It means the system should reduce ambiguity as work moves from intent to side effect.</p>
-            <p>Compilers already do this.</p>
-            <p>Programs do not remain raw text all the way to execution. They pass through parse trees, type checks, semantic checks, intermediate representations, optimization passes, lowering stages, and target-specific code generation. The point of the compiler pipeline is not ceremony. It is progressive commitment: each stage makes some ambiguity impossible and some invariants checkable.</p>
-            <p>AI software engineering needs the same instinct above the code level.</p>
-            <h3 id="3-the-open-agentic-software-stack">3. The open agentic software stack</h3>
-            <p>The stack I have in mind has three technical layers and one evidence layer.</p>
-            <div class="diagram-block">
-            <pre><code>                     OPEN AGENTIC SOFTWARE STACK
+  <!-- Headers -->
+  <g font-size="16" font-weight="600" text-anchor="middle" stroke="none">
+    <text x="258" y="28">Today: leaky</text>
+    <text x="502" y="28">Typed task: checked</text>
+  </g>
+  <line x1="211" y1="38" x2="305" y2="38" stroke="#c44a37" stroke-width="2"/>
+  <line x1="425" y1="38" x2="579" y2="38" stroke="#1fa8d6" stroke-width="2"/>
 
-Human intent
-    |
-    v
-Autoformalization
-    |
-    v
-+--------------------------------------------------+
-| FORMAL INTENT / POLICY                           |
-|                                                  |
-| preconditions, postconditions, invariants         |
-| capabilities and forbidden effects               |
-| Cedar-style authorization policy                  |
-| semantic obligations for verification/validation  |
-+-------------------------+------------------------+
-                          |
-                          v
-+--------------------------------------------------+
-| AGENT HARNESS                                    |
-|                                                  |
-| ACP / CLI                                        |
-| Codex / Claude Code / Cursor                     |
-| DeepSeek Harness / Cordis                        |
-| typed handoffs, reviewers, judges, event logs     |
-+-------------------------+------------------------+
-                          |
-                          v
-+--------------------------------------------------+
-| COMPILER / LANGUAGE INFRASTRUCTURE               |
-|                                                  |
-| Mojo                                             |
-| MLIR-based compiler practice                     |
-| domain-specific dialects and lowering pipelines   |
-| future verification and policy-aware dialects     |
-+-------------------------+------------------------+
-                          |
-                          v
-                  executable system
-                          |
-                          v
-                  evidence / witness</code></pre>
-            </div>
-            <p>The formal intent layer asks what the user meant, what the user allowed, and what the resulting program must preserve.</p>
-            <p>The agent harness layer asks how models become bounded actors with tools, events, effects, reviewer loops, and durable handoffs.</p>
-            <p>The compiler layer asks how source-level ambiguity becomes checked structure and executable behavior.</p>
-            <p>The evidence layer asks what remains after the system acts: tests, traces, proofs, logs, diffs, counterexamples, and human review decisions.</p>
-            <p>The layers should remain separable. If one closed system owns intent, policy, harness, compiler, and evidence, then the developer cannot inspect where authority ended and where behavior began. Open interfaces are not a moral ornament here. They are part of the engineering method.</p>
-            <h3 id="4-the-goldilocks-problem">4. The Goldilocks problem</h3>
-            <p>The missing layer should not be understood as &quot;add maximum formalism everywhere.&quot; That would be as wrong as leaving everything in prose.</p>
-            <p>The engineering problem is calibration. A trivial documentation edit should not require a proof assistant. A parser refactor should have stronger obligations than a spelling fix. A dependency update should have stronger policy and evidence requirements than a local comment change. A security-sensitive runtime change should carry still more structure.</p>
-            <p>The useful target is a Goldilocks zone: enough structure to constrain authority and preserve evidence, not so much structure that ordinary engineering becomes impossible.</p>
-            <div class="diagram-block">
-            <pre><code>                Goldilocks zone for agentic software work
+  <!-- ===== LEFT PIPELINE ===== -->
+  <g stroke-width="1.2">
+    <!-- boxes -->
+    <rect x="170" y="53"  width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="170" y="123" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="170" y="193" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="170" y="263" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="170" y="333" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <rect x="170" y="403" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="170" y="473" width="176" height="34" rx="6" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.6"/>
+    <!-- arrows -->
+    <line x1="258" y1="87"  x2="258" y2="122" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="258" y1="157" x2="258" y2="192" marker-end="url(#f1-arr)" stroke-dasharray="4 3" stroke-width="1.5"/>
+    <line x1="258" y1="227" x2="258" y2="262" marker-end="url(#f1-arr)" stroke-dasharray="4 3" stroke-width="1.5"/>
+    <line x1="258" y1="297" x2="258" y2="332" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="258" y1="367" x2="258" y2="402" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="258" y1="437" x2="258" y2="472" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+  </g>
+  <g font-size="13" text-anchor="middle" stroke="none">
+    <text x="258" y="75">prompt</text>
+    <text x="258" y="145">agent</text>
+    <text x="258" y="215">Markdown handoff</text>
+    <text x="258" y="285">agent</text>
+    <text x="258" y="355">shell</text>
+    <text x="258" y="425">filesystem</text>
+    <text x="258" y="495">prose summary</text>
+  </g>
+  <!-- leak markers -->
+  <g fill="#c44a37" stroke="none">
+    <circle cx="158" cy="210" r="5"/>
+    <circle cx="158" cy="280" r="5"/>
+    <circle cx="158" cy="350" r="5"/>
+    <circle cx="158" cy="490" r="5"/>
+  </g>
+  <g font-size="12" text-anchor="end" stroke="none">
+    <text x="146" y="214">untyped handoff</text>
+    <text x="146" y="284">ambient permission</text>
+    <text x="146" y="354">invisible effect</text>
+    <text x="146" y="494">summary-as-evidence</text>
+  </g>
 
-under-specified              calibrated                     over-specified
-----------------             ----------------               ----------------
-prompt-only intent           typed task intent              full proof for
-ambient filesystem           bounded capabilities           every edit
-prose handoffs               structured handoffs            brittle workflow
-untyped tool calls           effect-aware tools             blocked iteration
-summary-as-evidence          evidence packet                ceremony &gt; signal
+  <!-- ===== RIGHT PIPELINE ===== -->
+  <g stroke-width="1.2" fill="none">
+    <!-- boxes -->
+    <rect x="414" y="53"  width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="414" y="123" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="412" y="193" width="82"  height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <rect x="510" y="193" width="82"  height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="414" y="263" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="414" y="333" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="414" y="403" width="176" height="34" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+    <rect x="414" y="473" width="176" height="34" rx="6" fill="rgba(128,128,128,0.12)"/>
+    <!-- trunk arrows -->
+    <line x1="502" y1="87"  x2="502" y2="122" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <!-- fork -->
+    <path d="M502,157 V170 H453 V192" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <path d="M502,157 V170 H551 V192" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <!-- rejoin -->
+    <path d="M453,227 V244 H551 V227" stroke-width="1.5"/>
+    <line x1="502" y1="244" x2="502" y2="262" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="502" y1="297" x2="502" y2="332" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="502" y1="367" x2="502" y2="402" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+    <line x1="502" y1="437" x2="502" y2="472" marker-end="url(#f1-arr)" stroke-width="1.5"/>
+  </g>
+  <g font-size="13" text-anchor="middle" stroke="none">
+    <text x="502" y="75">intent</text>
+    <text x="502" y="146" font-size="16" font-weight="600">Φ</text>
+    <text x="453" y="215">obligations</text>
+    <text x="502" y="215">∥</text>
+    <text x="551" y="215">policy</text>
+    <text x="502" y="285">typed handoff</text>
+    <text x="502" y="355">effect-checked execution</text>
+    <text x="502" y="425">evidence packet</text>
+    <text x="502" y="495">acceptance</text>
+  </g>
+  <!-- check markers -->
+  <g fill="#1fa8d6" stroke="none">
+    <circle cx="604" cy="210" r="5"/>
+    <circle cx="604" cy="280" r="5"/>
+    <circle cx="604" cy="350" r="5"/>
+    <circle cx="604" cy="420" r="5"/>
+  </g>
+  <g font-size="12" text-anchor="start" stroke="none">
+    <text x="616" y="214">bounded authority</text>
+    <text x="616" y="284">typed interface</text>
+    <text x="616" y="347">recorded +</text>
+    <text x="616" y="361">revertible effect</text>
+    <text x="616" y="424">classed evidence</text>
+  </g>
+</svg>
+<figcaption><strong>F1</strong> One task through an untyped pipeline (left) and a checked one (right); every leak on the left has its check on the right.</figcaption>
+</figure>
+<p>Every leak sits in connective tissue: between human and agent, agent and agent, agent and filesystem. That tissue has to be open for anyone to check it.</p>
+<h2 id="2-the-type">2. The type</h2>
+<p>Every abstraction leaks. Types never stopped leaks; they made them checked errors at explicit boundaries. So ask what type a task handed to an agent has. Mine is a six-tuple.</p>
+<div class="essay-code"><pre><code class="language-text">Φ = ⟨Pre, Post, Inv, Cap, Effects, Evidence⟩
 
-risk: silent side effects     target: inspectable work       risk: unusable
-      false completion                bounded authority            process
-      weak review                     proportional evidence        false rigor</code></pre>
-            </div>
-            <p>There is a similar Goldilocks problem for openness.</p>
-            <div class="diagram-block">
-            <pre><code>                 Goldilocks zone for open infrastructure
+Pre       what holds before the task
+Post      what must hold after it
+Inv       what must never break along the way
+Cap       the authority granted
+Effects   side effects allowed and forbidden
+Evidence  what must be produced for acceptance
+</code></pre></div>
+<p><strong>Φ is the type.</strong> A model can draft it from a sentence; nothing admits it on the model's word. A handoff between agents is a signature in it rather than a paragraph, and everything downstream is one of four projections.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f2-title">Φ and its four projections</title>
+  <desc id="f2-desc">The typed task object Φ = ⟨Pre, Post, Inv, Cap, Effects, Evidence⟩ sits at the centre. Four arrows project its components outward: Cap and Effects become an authorization policy in Cedar where forbid overrides permit; Pre, Post and Inv become obligations discharged by tests, static analysis or proof; Effects become a runtime effect check in the harness that records and reverts; Evidence becomes the witness packet labelled proved, tested, observed, judged or assumed. Caption: authorization and verification are two projections of one typed object.</desc>
+  <defs>
+    <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+  </defs>
 
-closed vertical              open common layer              fragmented openness
----------------              -----------------              -------------------
-one vendor owns              shared semantics               source exists but
-model + harness              stable interfaces              nothing composes
-policy + evidence            portable evidence              dialect drift
-compiler boundary            multiple implementations       fork-only adoption
+  <!-- projection boxes -->
+  <g stroke="currentColor" stroke-width="1.2" fill="rgba(128,128,128,0.12)">
+    <rect x="20" y="20" width="320" height="78" rx="6"/>
+    <rect x="420" y="20" width="320" height="78" rx="6"/>
+    <rect x="20" y="352" width="320" height="78" rx="6"/>
+    <rect x="420" y="352" width="320" height="78" rx="6"/>
+  </g>
 
-risk: lock-in                target: interoperability       risk: incoherence
-      weak inspection                independent review            no standards
-      no replacement                 compounding adoption          no leverage</code></pre>
-            </div>
-            <p>And there is a Goldilocks problem for evidence.</p>
-            <div class="diagram-block">
-            <pre><code>                       Evidence proportional to risk
+  <!-- centre: Φ -->
+  <rect x="180" y="198" width="400" height="58" rx="6" stroke="#1fa8d6" stroke-width="1.6" fill="rgba(31,168,214,0.16)"/>
+  <text x="380" y="233" font-size="16" font-weight="600" text-anchor="middle">Φ = ⟨Pre, Post, Inv, Cap, Effects, Evidence⟩</text>
 
-low-risk change           medium-risk change          high-risk change
----------------           ------------------          ----------------
-formatting                parser/runtime logic        authorization,
-comments                  dependency behavior         security,
-local docs                compiler lowering           payments,
-                           API compatibility          safety boundary
+  <!-- arrows -->
+  <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#f2-arrow)">
+    <line x1="240" y1="198" x2="198" y2="102"/>
+    <line x1="520" y1="198" x2="562" y2="102"/>
+    <line x1="240" y1="256" x2="198" y2="348"/>
+    <line x1="520" y1="256" x2="562" y2="348"/>
+  </g>
 
-evidence:                 evidence:                   evidence:
-diff review               tests + static checks       policy + tests +
-basic tests               dynamic traces              static analysis +
-                           compatibility checks       proof obligation or
-                                                      explicit human signoff</code></pre>
-            </div>
-            <p>The stack should therefore be risk-sensitive. The task representation should carry enough information to decide what evidence is required, which effects are allowed, and when a human must make the final acceptance decision.</p>
-            <p>This is where hybrid program analysis becomes useful. Static checks, dynamic checks, formal obligations, policy decisions, and human review are not competing religions. They are instruments with different operating ranges.</p>
-            <h3 id="5-cedar-is-not-autoformalization">5. Cedar is not autoformalization</h3>
-            <p>Cedar is useful in this stack, but it should not be confused with autoformalization.</p>
-            <p>Cedar answers an authorization question:</p>
-            <div class="diagram-block">
-            <pre><code>May this principal perform this action
-on this resource
-in this context?</code></pre>
-            </div>
-            <p>Autoformalization asks a different question:</p>
-            <div class="diagram-block">
-            <pre><code>Can an informal intent be translated into a structured formal object
-that a machine can check, refine, or use?</code></pre>
-            </div>
-            <p>A useful task representation might look like this:</p>
-            <div class="diagram-block">
-            <pre><code>Phi = &lt;Pre, Post, Inv, Cap, Effects, Evidence&gt;</code></pre>
-            </div>
-            <p>where:</p>
-            <div class="diagram-block">
-            <pre><code>Pre       = assumptions before the task
-Post      = required properties after the task
-Inv       = invariants that must not be broken
-Cap       = capabilities granted to the actor
-Effects   = allowed and forbidden side effects
-Evidence  = what must be produced for acceptance</code></pre>
-            </div>
-            <p>Only part of that object projects into authorization policy:</p>
-            <div class="diagram-block">
-            <pre><code>Cap(Phi) + Effects(Phi) -&gt; Cedar-style policy</code></pre>
-            </div>
-            <p>For example:</p>
-            <div class="diagram-block">
-            <pre><code>Refactor the parser.
-You may modify parser source and tests.
-Do not change public APIs.
-Do not add dependencies.
-Do not edit CI.
-Do not access the network.</code></pre>
-            </div>
-            <p>This should split into two classes of constraints.</p>
-            <p>Authorization constraints:</p>
-            <div class="diagram-block">
-            <pre><code>permit(agent, Read, parser/**)
-permit(agent, Write, parser/**)
-permit(agent, Write, tests/**)
+  <!-- arrow labels: which components project -->
+  <g font-size="13">
+    <text x="236" y="154">Cap + Effects</text>
+    <text x="524" y="154" text-anchor="end">Pre, Post, Inv</text>
+    <text x="236" y="308">Effects</text>
+    <text x="524" y="308" text-anchor="end">Evidence</text>
+  </g>
 
-forbid(agent, Write, Cargo.toml)
-forbid(agent, Write, .github/**)
-forbid(agent, Network, *)</code></pre>
-            </div>
-            <p>Semantic obligations:</p>
-            <div class="diagram-block">
-            <pre><code>public_api(before) == public_api(after)
-tests(after) == PASS
-behavior(before) ~= behavior(after)</code></pre>
-            </div>
-            <p>The first class says what the agent may do. The second class says what the resulting program must satisfy.</p>
-            <p>This distinction matters because a policy engine can correctly prevent a forbidden write and still say nothing about whether the parser remains correct. Conversely, a test suite can pass while the agent used authority it should not have had. Authorization and verification are complementary. They are not substitutes.</p>
-            <h3 id="6-autoformalization-is-becoming-a-knowledge-base-problem">6. Autoformalization is becoming a knowledge-base problem</h3>
-            <p>The autoformalization literature is moving in exactly the direction this stack needs.</p>
-            <p>The important shift is from isolated statements to structured formal knowledge. Translating one theorem into Lean is useful, but real verification work usually depends on a library of definitions, lemmas, invariants, proof infrastructure, and naming conventions. A theorem rarely stands alone. It sits inside a theory.</p>
-            <p>That is why the theory-level autoformalization agenda is important. It reframes autoformalization as the construction of coherent formal libraries rather than one-off translations. In software terms, this is the difference between generating a single type signature and building the surrounding module system, dependency graph, invariants, and proofs needed for that signature to mean anything.</p>
-            <div class="diagram-block">
-            <pre><code>isolated statement formalization
+  <!-- top-left: Authorization -->
+  <text x="180" y="50" font-size="15" font-weight="600" text-anchor="middle">Authorization</text>
+  <text x="180" y="76" font-size="13" text-anchor="middle">Cedar policy · forbid overrides permit</text>
 
-informal theorem
-      |
-      v
-formal theorem
+  <!-- top-right: Obligations -->
+  <text x="580" y="50" font-size="15" font-weight="600" text-anchor="middle">Obligations</text>
+  <text x="580" y="76" font-size="13" text-anchor="middle">tests · static analysis · proof</text>
 
+  <!-- bottom-left: Runtime effect check -->
+  <text x="180" y="382" font-size="15" font-weight="600" text-anchor="middle">Runtime effect check</text>
+  <text x="180" y="408" font-size="13" text-anchor="middle">harness records + reverts</text>
 
-theory-level autoformalization
+  <!-- bottom-right: Witness -->
+  <text x="580" y="378" font-size="15" font-weight="600" text-anchor="middle">Witness</text>
+  <text x="580" y="399" font-size="13" text-anchor="middle">evidence packet:</text>
+  <text x="580" y="418" font-size="13" text-anchor="middle">proved · tested · observed · judged · assumed</text>
 
-informal notes / papers / code comments / specs
-      |
-      v
-definitions + axioms + lemmas + notations + tactics
-      |
-      v
-structured formal library
-      |
-      v
-target theorem / verification condition</code></pre>
-            </div>
-            <p>CSLib is relevant for the same reason. The Lean ecosystem has Mathlib for mathematics. Computer science needs its own body of reusable formal infrastructure: automata, operational semantics, algorithms, complexity, program logics, compiler semantics, network models, and verification conditions. Without that substrate, &quot;autoformalize this software claim&quot; often has nowhere stable to land.</p>
-            <p>For AI coding agents, this becomes practical. If agents write more of the code, then the cost of checking the code has to fall. But checking cannot be only a bigger test run. Some claims need static analysis. Some need dynamic validation. Some need symbolic execution or SMT. Some need proof assistants. Some need a human to reject an invalid formalization even if it type-checks.</p>
-            <p>The research problem is not &quot;let the model produce a proof and move on.&quot; The research problem is admission:</p>
-            <div class="diagram-block">
-            <pre><code>candidate formalization
-      |
-      v
-type check / proof check
-      |
-      v
-semantic review
-      |
-      v
-integration into a trusted library
-      |
-      v
-reuse by future verification tasks</code></pre>
-            </div>
-            <p>This is where hybrid program analysis enters the picture. Static evidence, dynamic evidence, formal evidence, and human evidence have different failure modes. A serious system needs to record which kind of claim each artifact supports.</p>
-            <h3 id="7-agent-harnesses-are-becoming-runtimes">7. Agent harnesses are becoming runtimes</h3>
-            <p>Agent harnesses are not just wrappers around model calls. They are becoming runtimes for software work.</p>
-            <p>DeepSeek Harness is interesting because its public framing is plugin-oriented: an agent harness where tools and capabilities are part of the system structure. Cordis is interesting because it gives a formal vocabulary for composability, effects, coeffects, context, lifecycle, and implementation correspondence.</p>
-            <p>The Cordis paper's page 55 is a useful starting point for reading agent harnesses as runtimes: a table that maps theory-level objects to implementation objects. Symbols such as context, effects, fibers, lifecycle transitions, inverses, providers, and targets are put next to implementation constructs such as <code>ctx</code>, <code>ctx.effect</code>, <code>ctx.get</code>, <code>ctx.set</code>, <code>fiber</code>, <code>fiber.state</code>, and <code>fiber.dispose</code>.</p>
-            <p>That matters because agent systems are full of hidden state.</p>
-            <div class="diagram-block">
-            <pre><code>agent run
-  reads context
-  calls tools
-  changes files
-  observes errors
-  retries
-  hands off
-  gets reviewed
-  resumes later</code></pre>
-            </div>
-            <p>If the harness treats those steps as unstructured events, then the developer receives a story. If the harness treats them as typed effects with recoverable context, then the developer receives an inspectable execution.</p>
-            <p>The distinction is important:</p>
-            <div class="diagram-block">
-            <pre><code>chat wrapper:
-  model call + tool call + transcript
+  <!-- caption -->
+  <text x="380" y="458" font-size="13" font-style="italic" text-anchor="middle">Authorization and verification are two projections of one typed object.</text>
+</svg>
+<figcaption><strong>F2</strong> Φ at the centre; everything downstream consumes one of its four projections.</figcaption>
+</figure>
+<p><strong>Cap and Effects project to authorization.</strong> "Refactor the parser, no network" becomes Cedar:</p>
+<div class="essay-code"><pre><code class="language-cedar">permit (
+  principal == Agent::&quot;refactor-bot&quot;,
+  action == Action::&quot;Write&quot;,
+  resource in Dir::&quot;parser&quot;
+);
+forbid (
+  principal == Agent::&quot;refactor-bot&quot;,
+  action == Action::&quot;Network&quot;,
+  resource
+);
+</code></pre></div>
+<p>A request is allowed only if some permit matches and no forbid matches; an empty policy set denies everything. "No network" is a forbid, and no permit can reopen it. Cedar is a projection of Φ, not its formalizer. It answers whether this principal may take this action on this resource in this context, and says nothing about whether the parser still parses.</p>
+<p><strong>Pre, Post, and Inv project to obligations</strong>, discharged by tests, static analysis, or proof depending on risk:</p>
+<div class="essay-code"><pre><code class="language-text">public_api(before) == public_api(after)
+tests(after)       == PASS
+behavior(before)   ≈  behavior(after)
+</code></pre></div>
+<p>Here ≈ is observational equivalence on the specified interface: no client of the parser's public surface can tell before from after. Defined that narrowly, it can be tested, approximated statically, or proved. Left undefined, it is the hand-wave this essay exists to end.</p>
+<p><strong>Effects project to a runtime check.</strong> The harness watches the run and checks each side effect against the declared set. No static effect system can see a tool loaded after deployment, so Cordis reifies effects and coeffects as runtime objects instead, and an undeclared access is an error rather than a surprise. Checked boundaries are static where possible and reified at runtime where not.</p>
+<p><strong>Evidence projects to a witness:</strong> tests run, traces captured, policy decisions logged, obligations discharged or refuted, and the human decision that accepted the residual risk.</p>
+<blockquote>
+<p>Authorization and verification are two projections of one typed object.</p>
+</blockquote>
+<p>An obligation with nowhere to land is ceremony, and two developments give obligations ground. Theory-level autoformalization, a position paper by Min, Bastani, and colleagues, moves the target from isolated statements to formal knowledge bases: definitions, lemmas, and invariants a new obligation can be stated against.</p>
+<p>CSLib aims to be the Mathlib for computer science, in two pillars: formalizing CS itself (models of computation, automata, operational semantics, program logics, complexity, concurrency, verified algorithms) and Boole, a Lean-embedded intermediate verification language that generates verification conditions for Grind, Lean-SMT, Hammer, or LLM provers. Its authors name the bottleneck: "AI-based provers are bottlenecked by the abstractions available in the underlying proof assistant." Their governance rule is this essay's creed: AI tools are advisory only, and every committed proof goes through manual review.</p>
+<p>Admission is a pipeline: candidate formalization, then proof check, which is verification (does the artifact satisfy Φ), then semantic review, which is validation (was Φ what was meant), then integration into the trusted library for the next task to reuse. A proof that passes against the wrong Φ is autoformalization's easiest failure, and Thread 2's second essay.</p>
+<p>Cedar itself shows where the open-closed boundary falls. Its semantics are formalized in Lean in cedar-spec, the Rust implementation is differentially tested against that spec, and cedar-policy-symcc compiles policies to SMT to prove never-errors, always-allows, subsumption, and equivalence, with cvc5 counterexamples. Amazon Verified Permissions, the hosted service, is paid. The semantics are connective, so they are open and verified all the way down; the service is a leaf.</p>
+<h2 id="3-progressive-commitment-the-layer-cake">3. Progressive commitment: the layer cake</h2>
+<p>Compilers solved this shape of problem decades ago: parse tree, typed representation, IR, lowering, codegen, and each stage makes some ambiguity impossible and some invariant checkable. The layer cake is that pipeline lifted above the code, with Φ as the object being lowered. Goldilocks decides how much each layer must commit; open-versus-closed decides who may inspect it.</p>
+<figure class="article-figure hero-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f3-title">The AI layer cake for agentic software</title>
+  <desc id="f3-desc">Six layers from human intent down to evidence, each stating what it commits, its open reference, and whether it must be open or may be closed; a vertical arrow marks progressive commitment; a shaded band below marks cloud, chips and energy as out of scope.</desc>
+  <defs>
+    <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .t  { font-size: 16px; font-weight: 600; }
+      .h  { font-size: 12px; font-weight: 600; opacity: 0.6; letter-spacing: 0.04em; }
+      .n  { font-size: 13px; font-weight: 600; }
+      .c  { font-size: 13px; }
+      .r  { font-size: 12px; opacity: 0.78; }
+      .p  { font-size: 12px; text-anchor: middle; }
+      .g  { font-size: 12px; opacity: 0.8; text-anchor: middle; }
+      .b  { font-size: 13px; opacity: 0.85; text-anchor: middle; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .open  { fill: rgba(31,168,214,0.16); stroke: #1fa8d6; stroke-width: 1.2; }
+      .either{ fill: rgba(199,131,7,0.16);  stroke: #c78307; stroke-width: 1.2; }
+      .rule  { stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
+    </style>
+  </defs>
 
-agent runtime:
-  actor + capability + context + effect + inverse + event + evidence</code></pre>
-            </div>
-            <p>The second form is closer to software engineering.</p>
-            <p>It lets a system ask better questions:</p>
-            <ul>
-              <li>Which capability authorized this tool call?</li>
-              <li>Which context was visible?</li>
-              <li>Which side effects occurred?</li>
-              <li>Which effect has an inverse?</li>
-              <li>Which reviewer judged the result?</li>
-              <li>Which evidence was produced?</li>
-              <li>Which state transition was accepted by the human?</li>
-            </ul>
-            <p>Those questions are not decorative. They are the beginning of a programming model.</p>
-            <h3 id="8-mojo-mlir-and-open-compiler-practice">8. Mojo, MLIR, and open compiler practice</h3>
-            <p>Mojo's compiler being open source is important beyond Mojo itself.</p>
-            <p>Modular's post says the Mojo language, compiler, tooling, and the source needed to build the language are available in the <code>modular</code> GitHub repository under Apache 2.0 with LLVM exceptions. That matters because Mojo is not only a language story. It is a compiler-infrastructure story.</p>
-            <p>The interesting possibility is that Mojo becomes one of the first broadly visible, implementation-serious, general-purpose languages whose open compiler makes the MLIR ecosystem legible to ordinary systems programmers.</p>
-            <p>MLIR has already mattered in compiler research and infrastructure. But many developers still experience MLIR as something behind the curtain: a framework used by compiler teams, accelerator stacks, tensor compilers, and DSL implementers. An open Mojo compiler gives the broader compiler industry a concrete reference point for how a modern language can be built around MLIR-based ideas.</p>
-            <p>The value is not only &quot;you can read the code.&quot; The value is that the code can become a living pattern book for using and creating DSLs on top of MLIR-based compilers:</p>
-            <div class="diagram-block">
-            <pre><code>application domain
-      |
-      v
-language / DSL surface
-      |
-      v
-typed semantic representation
-      |
-      v
-MLIR dialects and transformations
-      |
-      v
-lowering pipeline
-      |
-      v
-LLVM / accelerator / runtime target</code></pre>
-            </div>
-            <p>For DSL authors, this is the important lesson. MLIR is not merely a back-end detail. It can shape how a language exposes domain structure, how transformations are organized, how optimizations are staged, and how verification hooks can be inserted before lowering erases useful information.</p>
-            <p>That connects directly to AI software engineering.</p>
-            <p>If agent-generated code is going to be trusted in high-performance and high-assurance settings, then the compiler cannot be a black box that simply accepts text. It should expose intermediate structure where analysis can attach:</p>
-            <div class="diagram-block">
-            <pre><code>agent intent
-      |
-      v
-source patch
-      |
-      v
-typed language representation
-      |
-      v
-domain-specific IR
-      |
-      v
-analysis / verification / validation hooks
-      |
-      v
-lowered executable artifact
-      |
-      v
-witness</code></pre>
-            </div>
-            <p>The &quot;witness&quot; here does not have to be a full proof. It can be a typed trace, a test certificate, a static-analysis report, a verified lowering condition, a proof artifact, or a counterexample. The important point is that the compiler stack should preserve enough structure for evidence to be meaningful.</p>
-            <p>This is why open compilers matter in the agent era. They are not only places to generate faster code. They are places to define and inspect the meaning of generated code.</p>
-            <h3 id="9-zed-and-high-performance-local-control">9. Zed and high-performance local control</h3>
-            <p>The IDE layer matters because humans still accept risk.</p>
-            <p>Zed is relevant not because every developer must use it, but because it represents a class of tool that should matter more: high-performance, local, programmable, and close to the repository. The Zed repository describes it as a high-performance multiplayer code editor from the creators of Atom and Tree-sitter. Its implementation in Rust is also relevant to the broader systems story: editor performance, concurrency, tree-sitter integration, and local responsiveness matter when the editor becomes a control plane for agents.</p>
-            <p>The useful interface is not a giant chat panel. It is a working surface where a human can inspect state:</p>
-            <div class="diagram-block">
-            <pre><code>human control plane
+  <!-- title -->
+  <text class="t" x="34" y="30">The AI layer cake for agentic software</text>
 
-code      -&gt; what changed?
-diff      -&gt; where did it change?
-tests     -&gt; what ran?
-trace     -&gt; what happened?
-policy    -&gt; what was allowed?
-handoff   -&gt; what was delegated?
-review    -&gt; what was accepted or rejected?</code></pre>
-            </div>
-            <p>The agent may write the patch. The harness may run the tools. The compiler may reject invalid structure. The proof assistant may check a theorem. But the human still needs a place to integrate the evidence.</p>
-            <p>That place should be fast, local, inspectable, and model-agnostic.</p>
-            <h3 id="10-open-weights-as-part-of-the-same-ecosystem">10. Open weights as part of the same ecosystem</h3>
-            <p>The NVIDIA open-weights pledge belongs in this discussion because it shows that open models are no longer a fringe topic. Open weights are now argued for in terms of access, competition, control, adaptability, and security.</p>
-            <p>I do not need to endorse every policy claim in that document to treat it as evidence. The important point is that the industry argument for openness is becoming more explicit:</p>
-            <div class="diagram-block">
-            <pre><code>open weights
-  -&gt; more access
-  -&gt; more local control
-  -&gt; more competition
-  -&gt; more specialized adaptation
-  -&gt; more independent evaluation</code></pre>
-            </div>
-            <p>This does not make open weights automatically safe. Released weights can be misused, modified, or redistributed in ways the original developer cannot fully control. But closed models have their own risks: concentrated dependency, limited inspectability, narrow evaluation, and single points of failure.</p>
-            <p>For software engineering, the practical conclusion is modest:</p>
-            <div class="diagram-block">
-            <pre><code>closed frontier models may remain important,
-but open models keep the surrounding ecosystem honest.</code></pre>
-            </div>
-            <p>They let researchers, small teams, universities, and infrastructure builders test workflows without asking permission from one model provider. They also make it easier to separate model capability from the rest of the stack: harness, policy, compiler, evidence, and review.</p>
-            <h3 id="11-why-open">11. Why open?</h3>
-            <p>The open ecosystem is not one argument. It is at least three.</p>
-            <div class="diagram-block">
-            <pre><code>Why Open?
+  <!-- column headers -->
+  <text class="h" x="46"  y="58">LAYER</text>
+  <text class="h" x="188" y="58">COMMITS</text>
+  <text class="h" x="411" y="58">OPEN REFERENCE</text>
+  <text class="h" x="744" y="58" text-anchor="end">OPENNESS</text>
+  <line class="rule" x1="34" y1="64" x2="754" y2="64"/>
 
-1. Common infrastructure
-   Some layers should be shared because everyone needs to build on them.
+  <!-- left gutter: progressive commitment -->
+  <line x1="24" y1="72" x2="24" y2="466" stroke="currentColor" stroke-width="1.5" marker-end="url(#f3-arrow)"/>
+  <text class="g" transform="rotate(-90 14 270)" x="14" y="270">progressive commitment</text>
 
-2. Strategic collaboration
-   Some layers are opened because cooperation is more useful than duplicated control.
+  <!-- L1 Human intent: y=70 -->
+  <rect class="band" x="34" y="70" width="720" height="60" rx="6"/>
+  <text class="n" x="46" y="104.5">Human intent</text>
+  <text class="c" x="188" y="104.5">what was asked; who accepts risk</text>
+  <text class="r" x="411" y="104.5">—</text>
+  <rect class="either" x="682" y="89" width="62" height="22" rx="11"/>
+  <text class="p" x="713" y="104.3">either</text>
 
-3. Network effects
-   Some layers become valuable only when many producers and consumers participate.</code></pre>
-            </div>
-            <p>The Internet is common protocol infrastructure. Linux is shared operating-system infrastructure. LLVM is shared compiler infrastructure. They are not identical stories, but they show the same recurring pattern: a foundational layer becomes more valuable when many independent actors can build on it.</p>
-            <p>LLVM is especially instructive:</p>
-            <div class="diagram-block">
-            <pre><code>                         LLVM
-                          |
-          +---------------+---------------+
-          |               |               |
-          v               v               v
- common compiler     shared engineering   network effects
- infrastructure      across organizations languages, tools,
-                                         targets, research</code></pre>
-            </div>
-            <p>The lesson is not &quot;open source wins because it is virtuous.&quot; That is too simple.</p>
-            <p>The better lesson is:</p>
-            <div class="diagram-block">
-            <pre><code>Open ecosystems emerge when a foundational layer becomes more
-valuable as shared infrastructure than as a private island.</code></pre>
-            </div>
-            <p>Sometimes that begins as public infrastructure. Sometimes it begins as strategic collaboration. Sometimes the technology simply requires network effects. Often, all three forces reinforce each other over time.</p>
-            <p>Programming languages, compilers, protocols, intermediate representations, agent interfaces, policy languages, and formal libraries have this property. They gain value from tools, contributors, implementations, integrations, targets, and users.</p>
-            <p>For this series, that is the key idea:</p>
-            <div class="diagram-block">
-            <pre><code>Sometimes openness is a feature of the architecture,
-not only a license choice.</code></pre>
-            </div>
-            <p>If a layer exists to connect independent systems, closing it can weaken the reason it exists.</p>
-            <h3 id="12-from-informal-work-to-evidence-bearing-execution">12. From informal work to evidence-bearing execution</h3>
-            <p>The central graph of this essay is this:</p>
-            <div class="diagram-block">
-            <pre><code>human intent
-    |
-    v
-natural language task
-    |
-    v
-autoformalization
-    |
-    +------------------------------+
-    |                              |
-    v                              v
-authorization policy          semantic obligations
-who may do what               what must remain true
-    |                              |
-    +---------------+--------------+
-                    |
-                    v
-              agent harness
-       typed context + tools + effects
-                    |
-                    v
-             repository mutation
-                    |
-                    v
-          compiler / analyzer / tests
-                    |
-                    v
-        proof, trace, counterexample,
-        test result, or review packet
-                    |
-                    v
-             human acceptance</code></pre>
-            </div>
-            <p>This is the future abstraction this series investigates.</p>
-            <p>The model is part of it, but not all of it. The editor is part of it, but not all of it. The compiler is part of it, but not all of it. The proof assistant is part of it, but not all of it.</p>
-            <p>The system only becomes software engineering when the pieces compose.</p>
-            <h3 id="13-what-this-series-will-track">13. What this series will track</h3>
-            <p>The writing program has three recurring threads.</p>
-            <p>Open Ecosystem:</p>
-            <div class="diagram-block">
-            <pre><code>open models
-open weights
-open harnesses
-open compilers
-open policy semantics
-open evidence formats</code></pre>
-            </div>
-            <p>Hybrid Analysis:</p>
-            <div class="diagram-block">
-            <pre><code>static analysis
-dynamic analysis
-verification
-validation
-runtime traces
-compiler IR
-agent side effects</code></pre>
-            </div>
-            <p>Future of Software Engineering:</p>
-            <div class="diagram-block">
-            <pre><code>IDE as human control plane
-CLI as durable execution base
-agent protocols
-typed handoffs
-reviewer and judge graphs
-languages for verifiable AI infrastructure</code></pre>
-            </div>
-            <p>These threads should be revisited quarterly because the stack is moving too quickly for a one-time map.</p>
-            <p>The question is not whether agents will write code. They already do.</p>
-            <p>The question is whether the surrounding engineering discipline becomes stronger or weaker as they do.</p>
-            <h3 id="references-by-layer">References by Layer</h3>
-            <h4 id="open-compiler-and-mlir-ecosystem">Open compiler and MLIR ecosystem</h4>
-            <ul>
-              <li>Modular, &quot;Mojo is now open source&quot;: <a href="https://www.modular.com/blog/mojo-open-source" target="_blank" rel="noreferrer">https://www.modular.com/blog/mojo-open-source</a></li>
-              <ul>
-                <li>Classification: open compiler infrastructure.</li>
-                <li>Why it matters here: the Mojo compiler and tooling being open source provides a concrete reference for language and DSL builders working in the MLIR ecosystem. For compiler engineers, this is a chance to study modern language implementation practice rather than only consume a finished binary.</li>
-              </ul>
-            </ul>
-            <h4 id="autoformalization-and-verification-layer">Autoformalization and verification layer</h4>
-            <ul>
-              <li>Marcus J. Min, Mike He, Zhaoyu Li, Zixuan Yi, Sharad Malik, Aarti Gupta, Xujie Si, Osbert Bastani, &quot;Theory-Level Autoformalization: From Isolated Statements to Unified Formal Knowledge Bases&quot;: <a href="https://openreview.net/forum?id=BoteCHEFUr" target="_blank" rel="noreferrer">https://openreview.net/forum?id=BoteCHEFUr</a></li>
-              <ul>
-                <li>PDF / arXiv mirror: <a href="https://arxiv.org/abs/2607.13292" target="_blank" rel="noreferrer">https://arxiv.org/abs/2607.13292</a></li>
-                <li>Classification: theory-level autoformalization.</li>
-                <li>Why it matters here: it moves the target from isolated statement translation to coherent formal knowledge bases with dependencies.</li>
-              </ul>
-            </ul>
-            <ul>
-              <li>CSLib, &quot;The Lean Computer Science Library&quot;: <a href="https://arxiv.org/pdf/2602.04846" target="_blank" rel="noreferrer">https://arxiv.org/pdf/2602.04846</a></li>
-              <ul>
-                <li>Classification: formal computer-science library.</li>
-                <li>Why it matters here: it argues for reusable Lean infrastructure for computer science, including models, logics, algorithms, semantics, and verification infrastructure.</li>
-              </ul>
-            </ul>
-            <ul>
-              <li>Amazon Science, &quot;Amazon is investing in the Lean Focused Research Organization&quot;: <a href="https://www.amazon.science/news/amazon-is-investing-in-the-lean-focused-research-organization" target="_blank" rel="noreferrer">https://www.amazon.science/news/amazon-is-investing-in-the-lean-focused-research-organization</a></li>
-              <ul>
-                <li>Classification: proof-assistant ecosystem support.</li>
-                <li>Why it matters here: it frames Lean as infrastructure whose trustworthiness depends on independent validation, transparency, and external community development.</li>
-              </ul>
-            </ul>
-            <h4 id="formal-policy-layer">Formal policy layer</h4>
-            <ul>
-              <li>Cedar policy language: <a href="https://github.com/cedar-policy/cedar" target="_blank" rel="noreferrer">https://github.com/cedar-policy/cedar</a></li>
-              <ul>
-                <li>Classification: authorization policy language and Rust implementation.</li>
-                <li>Why it matters here: Cedar separates authorization policy from application code and gives a concrete language for fine-grained permissions, validation, analysis, and audit.</li>
-              </ul>
-            </ul>
-            <h4 id="agent-harnesses">Agent harnesses</h4>
-            <ul>
-              <li>DeepSeek Harness: <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noreferrer">https://github.com/deepseek-ai/deepseek-harness</a></li>
-              <ul>
-                <li>Classification: open agent harness.</li>
-                <li>Why it matters here: it treats the harness as a plugin-oriented execution environment rather than only a model wrapper.</li>
-              </ul>
-            </ul>
-            <ul>
-              <li>Cordis, &quot;A Programming Paradigm for Spatiotemporal Composability&quot;: <a href="https://github.com/cordiverse/paper/blob/main/paper.pdf" target="_blank" rel="noreferrer">https://github.com/cordiverse/paper/blob/main/paper.pdf</a></li>
-              <ul>
-                <li>Classification: formal model for composable runtime structure.</li>
-                <li>Why it matters here: page 55 gives a theory-to-implementation correspondence table that maps formal constructs such as context, effects, fibers, lifecycle state, and inverses to concrete implementation objects.</li>
-              </ul>
-            </ul>
-            <h4 id="ide-and-developer-control-plane">IDE and developer control plane</h4>
-            <ul>
-              <li>Zed: <a href="https://github.com/zed-industries/zed" target="_blank" rel="noreferrer">https://github.com/zed-industries/zed</a></li>
-              <ul>
-                <li>Classification: high-performance local editor infrastructure.</li>
-                <li>Why it matters here: my current setup uses Zed with Codex, Claude Code, and Cursor through CLI workflows, with handoffs and agent orchestration organized around the repository.</li>
-              </ul>
-            </ul>
-            <h4 id="open-weights-and-open-ai-infrastructure">Open weights and open AI infrastructure</h4>
-            <ul>
-              <li>NVIDIA, &quot;Open Weights and American AI Leadership&quot;: <a href="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf" target="_blank" rel="noreferrer">https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf</a></li>
-              <ul>
-                <li>Classification: open-weights policy and ecosystem argument.</li>
-                <li>Why it matters here: it makes the industrial case for open weights in terms of access, competition, control, adaptability, and security, which belongs in the broader open ecosystem analysis.</li>
-              </ul>
-            </ul>
-            <hr>
-            <h2 id="archive-draft-2-before-research-voice-rewrite-preserved" class="archive-heading">Archive: Draft 2 Before Research-Voice Rewrite (Preserved)</h2>
-            <p>The draft below was the previous active version. It is preserved so earlier structure and wording remain available, but the publishable article now starts above this archive.</p>
-            <h2 id="leaky-abstractions-vs-type-safe-abstractions-in-the-era-of-ai-coding-agents">Leaky Abstractions vs. Type-Safe Abstractions in the Era of AI Coding Agents</h2>
-            <p>Part 1 of The Open Ecosystem and the Future of Software Engineering</p>
-            <p>Draft status: active Blog 1 draft.</p>
-            <p>This is personal technical thought leadership. I am writing as a researcher in hybrid program analysis, a systems/compiler engineer, a heavy user of coding agents, and an open-source builder trying to understand where software engineering is going.</p>
-            <h3 id="high-level-contents">High-Level Contents</h3>
-            <p class="numbered-item">My development environment has collapsed to one window.</p>
-            <p>Zed, ACP/CLI, Codex, Claude Code, Cursor, judge loops, handoffs, and deep work now sit in the same daily workflow. That is not just a productivity change. It exposes where the abstractions around agentic software work are still informal.</p>
-            <p class="numbered-item">The model is becoming interchangeable.</p>
-            <p>Once a developer uses several strong coding agents, loyalty to one interface matters less. The valuable object becomes:</p>
-            <p>```text workflow &gt; agent UI</p>
-            <p>eventually:</p>
-            <p>specification + harness + evidence &gt; particular model ```</p>
-            <p class="numbered-item">The abstractions leak.</p>
-            <p>Natural-language handoffs, implicit permissions, ambient filesystem access, unstructured judge output, context loss, and vague completion criteria are not small UX issues. They are signs that the programming abstraction for autonomous software engineering is still under-specified.</p>
-            <p class="numbered-item">The stack needs typed boundaries.</p>
-            <p>The loose loop:</p>
-            <p>``<code>text prompt -&gt; agent -&gt; Markdown handoff -&gt; agent -&gt; tool -&gt; side effects </code>``</p>
-            <p>needs to evolve toward:</p>
-            <p>``<code>text intent -&gt; autoformalized specification -&gt; typed policy -&gt; typed agent handoffs -&gt; typed/effect-aware execution -&gt; compiler -&gt; witness </code>``</p>
-            <p class="numbered-item">Cedar matters, but Cedar is not the autoformalizer.</p>
-            <p>Cedar answers an authorization question: may this principal perform this action on this resource in this context? It does not prove that the resulting program satisfied the user's semantic intent. That separation is essential.</p>
-            <p class="numbered-item">Open source needs a sharper economic frame.</p>
-            <p>The recurring framework for this series is:</p>
-            <p>```text Why Open?</p>
-            <p class="numbered-item">Common infrastructure</p>
-            <p class="numbered-item">Strategic collaboration</p>
-            <p class="numbered-item">Network effects</p>
-            <p>```</p>
-            <p>These are not mutually exclusive. Internet standards, Linux, and LLVM each show different versions of shared infrastructure. LLVM also shows strategic collaboration and network effects at the compiler layer.</p>
-            <p class="numbered-item">The series has three recurring threads.</p>
-            <p>The writing program is not one flat list of posts. It has three threads that should be revisited quarterly: Open Ecosystem, Hybrid Analysis, and the Future of Software Engineering.</p>
-            <hr>
-            <h2 id="full-blog-draft">Full Blog Draft</h2>
-            <h3 id="1-my-development-environment-has-collapsed-to-one-window">1. My development environment has collapsed to one window</h3>
-            <p>My software development environment has collapsed to one window.</p>
-            <p>Not literally one process. Not one vendor. One working surface.</p>
-            <p>Zed is where I keep the code and the rhythm of editing. ACP and CLI workflows are where agents become operational instead of conversational. Codex, Claude Code, Cursor, and other coding agents are no longer separate curiosities. They are interchangeable participants in a single development loop. Around them are handoffs, review prompts, judge loops, repository state, tests, diffs, and the human decision to accept or reject a change.</p>
-            <p>That change is easy to describe as productivity. It is more useful to describe it as a pressure test on the abstractions of software engineering.</p>
-            <p>The old editor abstraction was simple enough:</p>
-            <div class="diagram-block">
-            <pre><code>human edits file
-human runs tool
-human interprets result
-human commits change</code></pre>
-            </div>
-            <p>The new agentic abstraction is much messier:</p>
-            <div class="diagram-block">
-            <pre><code>human states intent
-agent reads repository
-agent edits files
-agent runs tools
-agent interprets failures
-agent summarizes evidence
-another agent reviews the change
-human accepts or rejects</code></pre>
-            </div>
-            <p>That sounds like a workflow improvement until something goes wrong. Then the hidden questions appear:</p>
-            <ul>
-              <li>What did the agent believe it was allowed to do?</li>
-              <li>Which files was it allowed to read?</li>
-              <li>Which files was it allowed to write?</li>
-              <li>Which tools could it run?</li>
-              <li>Was network access part of the task or an ambient capability?</li>
-              <li>What counts as completion?</li>
-              <li>What is evidence, and who decides whether it is enough?</li>
-              <li>If a second agent reviews the work, what exactly is it reviewing?</li>
-            </ul>
-            <p>These are not chatbot questions. These are programming-language, operating-system, policy, compiler, and software-engineering questions appearing inside the daily developer workflow.</p>
-            <p>The point of this article is not that I have a finished answer. The point is that several developments that are usually discussed separately belong in the same conversation: agent harnesses, typed handoffs, autoformalization, Cedar policies, open compilers, MLIR-style intermediate representations, and evidence-bearing development workflows.</p>
-            <p>The question is:</p>
-            <div class="diagram-block">
-            <pre><code>What should the programming abstraction for autonomous software engineering be?</code></pre>
-            </div>
-            <h3 id="2-the-model-is-becoming-interchangeable">2. The model is becoming interchangeable</h3>
-            <p>The first surprise of using several strong coding agents is that the model becomes less sacred.</p>
-            <p>That does not mean model quality stops mattering. It matters enormously. A weak model inside a strong harness is still weak. But after some threshold, the developer's attention shifts. I care less about which branded chat box is open and more about whether the system around the model can preserve intent, constrain effects, collect evidence, and recover from failure.</p>
-            <p>The useful comparison is:</p>
-            <div class="diagram-block">
-            <pre><code>agent UI
-  vs.
-workflow</code></pre>
-            </div>
-            <p>An isolated agent UI can feel impressive. It can answer a hard question, write code, summarize a codebase, and produce a plausible plan. But repository-level software engineering is not just answer production. It is state transition under constraints.</p>
-            <p>The stronger object is:</p>
-            <div class="diagram-block">
-            <pre><code>specification + harness + evidence</code></pre>
-            </div>
-            <p>That object can survive model substitution. If the workflow has explicit intent, typed permissions, durable events, replayable commands, structured test output, and reviewable evidence, then the model can improve, regress, or be swapped without destroying the surrounding engineering discipline.</p>
-            <p>This is why I deliberately want agents to become interchangeable. A future where every developer workflow is locked to one opaque model UI is weaker than a future where models plug into shared harnesses, shared policies, shared evidence formats, and shared review structures.</p>
-            <p>In that world, the model is still powerful, but it is not the whole system.</p>
-            <h3 id="3-where-the-current-abstraction-leaks">3. Where the current abstraction leaks</h3>
-            <p>The current abstraction leaks everywhere.</p>
-            <p>The normal workflow often looks like this:</p>
-            <div class="diagram-block">
-            <pre><code>prompt
-  -&gt; agent
-  -&gt; Markdown handoff
-  -&gt; agent
-  -&gt; tool
-  -&gt; side effects</code></pre>
-            </div>
-            <p>This is useful, but it is not a strong programming model.</p>
-            <p>The handoff is often natural language. The permissions are often implicit. Filesystem access is often ambient. Tool output is summarized in prose. Judge output is unstructured. Context can be lost during long work. The definition of completion is often a sentence like &quot;make it done&quot; or &quot;fix the issue,&quot; even when the actual requirements are much sharper.</p>
-            <p>The failure mode is not only that the model hallucinates. The deeper failure mode is that the system has no first-class representation of the task's authority, obligations, effects, and evidence.</p>
-            <p>For a human developer, some of this informality is tolerable because organizational context fills in the gaps. Humans know that &quot;refactor the parser&quot; usually does not mean &quot;change CI configuration, add a new dependency, edit unrelated packages, and fetch random code from the network.&quot; Agents do not share that implicit social boundary unless the harness makes it explicit.</p>
-            <p>The future abstraction needs to look more like this:</p>
-            <div class="diagram-block">
-            <pre><code>intent
-  -&gt; autoformalized specification
-  -&gt; typed policy
-  -&gt; typed agent handoffs
-  -&gt; typed/effect-aware execution
-  -&gt; compiler
-  -&gt; witness</code></pre>
-            </div>
-            <p>This does not mean every task becomes a theorem proving exercise. It means the system should progressively reduce ambiguity as work moves from human intent to executable side effects.</p>
-            <p>That is exactly what the compiler world already understands.</p>
-            <h3 id="4-the-open-agentic-software-stack">4. The open agentic software stack</h3>
-            <p>The emerging stack has three open layers that solve different problems.</p>
-            <div class="diagram-block">
-            <pre><code>                       OPEN AGENTIC SOFTWARE STACK
+  <!-- L2 Formal intent & policy: y=138 -->
+  <rect class="band" x="34" y="138" width="720" height="60" rx="6"/>
+  <text class="n" x="46" y="163">Formal intent</text>
+  <text class="n" x="46" y="180">&amp; policy</text>
+  <text class="c" x="188" y="163">Φ: authority bounded,</text>
+  <text class="c" x="188" y="180">obligations stated</text>
+  <text class="r" x="411" y="172.5">Cedar · autoformalization · CSLib</text>
+  <rect class="open" x="644" y="157" width="100" height="22" rx="11"/>
+  <text class="p" x="694" y="172.3">must be open</text>
 
-Human intent
-    |
-    v
-Autoformalization
-    |
-    v
-+--------------------------------------------------+
-| FORMAL INTENT / POLICY                           |
-|                                                  |
-| Specs + invariants + capabilities                |
-| Cedar policy                                     |
-| Rust-native Cedar                                |
-| planned Cedar &lt;-&gt; Mojo-native path               |
-+-------------------------+------------------------+
-                          |
-                          v
-+--------------------------------------------------+
-| AGENT HARNESS                                    |
-|                                                  |
-| ACP / CLI                                        |
-| Codex / Claude Code / Cursor                     |
-| DeepSeek Harness / Cordis                        |
-| typed handoffs + judge/reviewer graphs           |
-+-------------------------+------------------------+
-                          |
-                          v
-+--------------------------------------------------+
-| COMPILER                                         |
-|                                                  |
-| Mojo                                             |
-| LIT -&gt; KGEN -&gt; LLVM                              |
-| future verification / policy dialects            |
-+-------------------------+------------------------+
-                          |
-                          v
-                  Executable system
-                          |
-                          v
-                  Evidence / witness</code></pre>
-            </div>
-            <p>Each layer answers a different question.</p>
-            <p>The formal intent and policy layer asks: what is the user actually authorizing, requiring, and forbidding?</p>
-            <p>The agent harness layer asks: how do models become actors with bounded tools, durable events, typed handoffs, and reviewable execution?</p>
-            <p>The compiler layer asks: how does ambiguous source-level work become progressively structured, checked, lowered, optimized, and executed?</p>
-            <p>The witness layer asks: what evidence remains after the system acts?</p>
-            <p>The important thing is that these layers should not collapse into one opaque product. If a model, harness, policy system, compiler, and evidence store are all fused into a black box, then the developer cannot inspect the boundary between intent, authority, execution, and proof. Open interfaces matter because the boundaries are where trust is built.</p>
-            <h3 id="5-cedar-is-policy-not-autoformalization">5. Cedar is policy, not autoformalization</h3>
-            <p>Cedar is important in this picture, but the distinction has to be precise.</p>
-            <p>Cedar is not the autoformalizer.</p>
-            <p>The LLM or agent can perform autoformalization:</p>
-            <div class="diagram-block">
-            <pre><code>natural-language intent
-  -&gt; LLM / agent
-  -&gt; Phi</code></pre>
-            </div>
-            <p>where:</p>
-            <div class="diagram-block">
-            <pre><code>Phi = &lt;Pre, Post, Inv, Cap, Effects, Evidence&gt;</code></pre>
-            </div>
-            <p>Part of that formalized object can project into Cedar authorization policy:</p>
-            <div class="diagram-block">
-            <pre><code>Cap(Phi) -&gt; Cedar policy</code></pre>
-            </div>
-            <p>But the full specification is larger than authorization.</p>
-            <p>Consider an informal request:</p>
-            <div class="diagram-block">
-            <pre><code>Refactor the parser.
-You may modify parser source and tests,
-but do not change public APIs,
-dependencies,
-CI configuration,
-or access the network.</code></pre>
-            </div>
-            <p>That should become two different kinds of constraints.</p>
-            <p>First, semantic obligations:</p>
-            <div class="diagram-block">
-            <pre><code>public_api(before) == public_api(after)
-tests(after) == PASS
-behavior(before) ~= behavior(after)</code></pre>
-            </div>
-            <p>Second, authorization policy:</p>
-            <div class="diagram-block">
-            <pre><code>permit(agent, Read, parser/**)
-permit(agent, Write, parser/**)
-permit(agent, Write, tests/**)
+  <!-- L3 Agent harness: y=206 -->
+  <rect class="band" x="34" y="206" width="720" height="60" rx="6"/>
+  <text class="n" x="46" y="231">Agent harness</text>
+  <text class="n" x="46" y="248">(runtime)</text>
+  <text class="c" x="188" y="231">effects recorded with inverses;</text>
+  <text class="c" x="188" y="248">model-visible ⇒ logged</text>
+  <text class="r" x="411" y="231">DeepSeek Harness ·</text>
+  <text class="r" x="411" y="247">Cordis · ACP</text>
+  <rect class="open" x="636" y="212" width="108" height="22" rx="11"/>
+  <text class="p" x="690" y="227.3">interface open</text>
+  <rect class="either" x="589" y="238" width="155" height="22" rx="11"/>
+  <text class="p" x="666.5" y="253.3">implementation either</text>
 
-forbid(agent, Write, Cargo.toml)
-forbid(agent, Write, .github/**)
-forbid(agent, Network, *)</code></pre>
-            </div>
-            <p>Cedar answers a specific question:</p>
-            <div class="diagram-block">
-            <pre><code>May this principal perform this action on this resource in this context?</code></pre>
-            </div>
-            <p>It does not prove:</p>
-            <div class="diagram-block">
-            <pre><code>Did the resulting program satisfy the specification?</code></pre>
-            </div>
-            <p>You need both.</p>
-            <p>This separation is not academic. If an agent is allowed to edit <code>parser/**</code> and <code>tests/**</code>, Cedar-style authorization can prevent it from writing <code>.github/**</code> or adding dependencies. But authorization alone cannot prove that the refactor preserved parser behavior, public APIs, or performance properties. That requires semantic checks, tests, traces, static analysis, dynamic analysis, or formal verification depending on the task.</p>
-            <p>Authorization constrains what the actor may do. Verification and validation judge what the actor actually produced.</p>
-            <h3 id="6-harnesses-are-becoming-runtimes">6. Harnesses are becoming runtimes</h3>
-            <p>Agent harnesses are becoming runtimes for software work.</p>
-            <p>That is why projects like DeepSeek Harness and Cordis are interesting. The important idea is not only &quot;run another model.&quot; The interesting idea is composable agent infrastructure: tools, effects, coeffects, plugins, durable events, structured handoffs, and judge or reviewer graphs.</p>
-            <p>Once agents act on real repositories, the harness has to care about things that ordinary chat interfaces could ignore:</p>
-            <ul>
-              <li>capability boundaries,</li>
-              <li>tool schemas,</li>
-              <li>side effects,</li>
-              <li>event logs,</li>
-              <li>retry behavior,</li>
-              <li>reviewer routing,</li>
-              <li>handoff formats,</li>
-              <li>evidence collection,</li>
-              <li>recovery after interruption.</li>
-            </ul>
-            <p>This is where the future starts to resemble a runtime system.</p>
-            <p>In a programming language, the runtime is not just where code happens to execute. It defines memory behavior, scheduling behavior, error behavior, IO behavior, and sometimes security behavior. Agent harnesses are moving in the same direction for software work. They define what an agent can observe, what it can mutate, how it calls tools, how its actions are logged, and how another actor can judge the result.</p>
-            <p>The present state is still rough. Much of the agent world is held together by Markdown, shell commands, human trust, and post-hoc summaries. But the direction is visible. Agentic software engineering needs harnesses that behave less like chat wrappers and more like typed execution environments.</p>
-            <h3 id="7-compilers-already-know-how-to-reduce-ambiguity">7. Compilers already know how to reduce ambiguity</h3>
-            <p>Compiler people have lived with a version of this problem for decades.</p>
-            <p>Programs do not remain ambiguous blobs all the way to execution. They progressively acquire structure and lose ambiguity:</p>
-            <div class="diagram-block">
-            <pre><code>Source
-  -&gt; parsed structure
-  -&gt; typed representation
-  -&gt; semantic checks
-  -&gt; intermediate representation
-  -&gt; optimization / transformation
-  -&gt; lower-level IR
-  -&gt; machine code</code></pre>
-            </div>
-            <p>For Mojo, the public story around the opened compiler/toolchain is especially relevant because the structure is explicit:</p>
-            <div class="diagram-block">
-            <pre><code>Source -&gt; LIT -&gt; KGEN -&gt; LLVM -&gt; Machine</code></pre>
-            </div>
-            <p>The exact details will evolve, but the conceptual lesson is stable. A serious systems language cannot treat code as undifferentiated text until the last moment. It needs source-level representation, semantic and lifetime checking, parametric IR, elaboration, lowering, and eventual execution.</p>
-            <p>AI coding agents create pressure to apply a similar idea above the code level.</p>
-            <p>Human intent should not remain an ambiguous natural-language blob until it becomes filesystem mutation. It should progressively acquire structure:</p>
-            <div class="diagram-block">
-            <pre><code>intent
-  -&gt; candidate specification
-  -&gt; capabilities
-  -&gt; semantic obligations
-  -&gt; effect constraints
-  -&gt; typed handoff
-  -&gt; execution trace
-  -&gt; evidence packet</code></pre>
-            </div>
-            <p>That is why autoformalization, policy languages, harnesses, and compilers belong in the same article. They are all trying to move work from ambiguity toward checked structure.</p>
-            <h3 id="8-why-open">8. Why open?</h3>
-            <p>The word &quot;open&quot; is not decoration in this series.</p>
-            <p>The technical thesis is:</p>
-            <div class="diagram-block">
-            <pre><code>AI coding agents expose the weakness of today's loosely specified abstraction boundaries.</code></pre>
-            </div>
-            <p>The economic thesis is:</p>
-            <div class="diagram-block">
-            <pre><code>The infrastructure enabling better boundaries will often become open,
-not because every participant shares the same ideology,
-but because interoperability itself creates value.</code></pre>
-            </div>
-            <p>The framework I want to use across this writing program is:</p>
-            <div class="diagram-block">
-            <pre><code>Why Open?
+  <!-- L4 Compiler & language: y=274 -->
+  <rect class="band" x="34" y="274" width="720" height="60" rx="6"/>
+  <text class="n" x="46" y="299">Compiler</text>
+  <text class="n" x="46" y="316">&amp; language</text>
+  <text class="c" x="188" y="299">structure checked;</text>
+  <text class="c" x="188" y="316">analysis hooks before lowering</text>
+  <text class="r" x="411" y="308.5">Mojo · MLIR · LLVM</text>
+  <rect class="open" x="636" y="280" width="108" height="22" rx="11"/>
+  <text class="p" x="690" y="295.3">interface open</text>
+  <rect class="either" x="589" y="306" width="155" height="22" rx="11"/>
+  <text class="p" x="666.5" y="321.3">implementation either</text>
 
-1. Common infrastructure
-   &quot;This should be something everyone can build on.&quot;
+  <!-- L5 Executable system: y=342 -->
+  <rect class="band" x="34" y="342" width="720" height="60" rx="6"/>
+  <text class="n" x="46" y="376.5">Executable system</text>
+  <text class="c" x="188" y="367">behaviour observed;</text>
+  <text class="c" x="188" y="384">traces produced</text>
+  <text class="r" x="411" y="376.5">Zed as control plane · CLI</text>
+  <rect class="either" x="682" y="361" width="62" height="22" rx="11"/>
+  <text class="p" x="713" y="376.3">either</text>
 
-2. Strategic collaboration
-   &quot;We benefit more by sharing this layer
-    than by competing over it.&quot;
+  <!-- L6 Evidence / witness: y=410 -->
+  <rect class="band" x="34" y="410" width="720" height="60" rx="6"/>
+  <text class="n" x="46" y="444.5">Evidence / witness</text>
+  <text class="c" x="188" y="435">proved · tested · observed ·</text>
+  <text class="c" x="188" y="452">judged · assumed</text>
+  <text class="r" x="411" y="444.5">portable formats</text>
+  <rect class="open" x="644" y="429" width="100" height="22" rx="11"/>
+  <text class="p" x="694" y="444.3">must be open</text>
 
-3. Network effects
-   &quot;The technology becomes more valuable
-    when everyone can participate.&quot;</code></pre>
-            </div>
-            <p>These categories overlap. That is a feature, not a defect. The point is not to classify every project with one label. The point is to ask which force is doing the work.</p>
-            <h4 id="common-infrastructure">Common infrastructure</h4>
-            <p>Sometimes the value of a technology comes precisely from being available as shared infrastructure rather than being captured by one vendor.</p>
-            <p>The Internet is the strongest example at the protocol level. TCP/IP, DNS, HTTP, and related standards formed an open standards and protocol ecosystem. The Internet is not one open-source project, so it is better to describe it as common protocol infrastructure.</p>
-            <p>Linux is the canonical software example. The kernel became shared infrastructure that individuals, universities, cloud companies, chip companies, device manufacturers, and competitors could all improve while building very different systems above and around it.</p>
-            <p>LLVM is especially relevant here because it shows the same pattern at the compiler layer. A reusable, permissively licensed compiler infrastructure allowed languages, research projects, hardware vendors, and commercial products to share a huge body of compiler engineering instead of rebuilding everything independently.</p>
-            <h4 id="strategic-collaboration">Strategic collaboration</h4>
-            <p>Sometimes a company or ecosystem opens infrastructure because owning that layer is not where it captures the most value.</p>
-            <p>The useful phrase is:</p>
-            <div class="diagram-block">
-            <pre><code>Companies open the layer where ecosystem growth is more valuable
-than exclusivity, and capture value somewhere adjacent to it.</code></pre>
-            </div>
-            <p>That can happen because shared development lowers cost. It can happen because several actors are behind a stronger incumbent. It can happen because a layer is important but non-core. It can happen because openness recruits developers and weakens lock-in somewhere else.</p>
-            <p>The pattern often looks like this:</p>
-            <div class="diagram-block">
-            <pre><code>Company / ecosystem
+  <!-- below the boundary -->
+  <rect x="34" y="488" width="720" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="4 3"/>
+  <text class="b" x="394" y="510.5">cloud · chips · energy — below this series' boundary</text>
+</svg>
+<figcaption><strong>F3</strong> One row per layer: what it commits, its open reference, and whether it must be open, can be closed, or either.</figcaption>
+</figure>
+<p><strong>Human intent</strong> commits a goal and arrives through whichever client a person types into, open or closed.</p>
+<p><strong>Formal intent and policy</strong> commits Φ. Authority becomes decidable, obligations become stated, and "what was the agent allowed to do" is a lookup. It must be open: a policy semantics that only one product understands is configuration, not policy.</p>
+<p><strong>The agent harness</strong> commits execution: which tool ran, under which capability, with what result. It is a runtime. In Cordis a component is a triple ⟨coeffect specification, provision, witnessed effect function⟩; loading runs the effect function and accumulates inverses, and unloading applies them LIFO, so removing a plugin removes what it did. Without inverses you get the failures agent runs are full of: a tool present when the model read its schema and gone at call time, a permission granted for one payload and reused for another.</p>
+<p>DeepSeek Harness, MIT-licensed on Cordis and in developer preview, states its invariants. Everything is a plugin. Model-visible means logged: anything that reaches a model request is reconstructable from the log, and a runtime assertion enforces it.</p>
+<p>Each seam has a definition, a provider, and a consumer, so pointing the filesystem and subprocess providers at a remote sandbox carries Bash, PTY, and LSP with them. The protocol and the effect log must be open; the best agent can be closed.</p>
+<p><strong>Compiler and language</strong> commits meaning: typed structure with an IR that analyzers can attach to. Mojo 1.0 (2026-08-11) is a stability milestone, with 1.x changes primarily additive, and a week later (2026-08-18) Modular opened the compiler and toolchain under Apache 2.0 with LLVM exceptions in modular/modular.</p>
+<p>Mojo's vision doc calls the language syntactic sugar for MLIR, built purely on MLIR Core, and I will make the argument Modular does not: an open, MLIR-native, general-purpose compiler is the pattern book for DSLs on MLIR and for verification hooks inserted before lowering erases the structure they need. Modular is not taking compiler contributions yet, and says why: "in today's era of AI coding" it needs to be deliberate about how contributions are handled. Open source, closed gate, because of agents: the IR and its analyzers are must-open, the gate is governance rather than interface, and a compiler vendor has drawn this essay's boundary.</p>
+<p><strong>Executable</strong> commits behavior, and it can sit on either side. <strong>Evidence and witness</strong> commits the record. It must be open: evidence legible only in one vendor's dashboard is a screenshot.</p>
+<p>Below the cake sit cloud, chips, and energy, decisive for the cost floor and outside this series.</p>
+<p>My research lineage is hybrid program analysis, so I watch the evidence layer. Jitana and ReHAna were built for Android, where reflection and dynamic class loading hid the running code from static analysis while a trace showed nothing of the paths it skipped. Each side lies by omission; the discipline is making each side challenge the other. The agent loop reproduces that split: a patch is a static artifact, tool calls are dynamic behavior, logs are traces, tests are sampled executions, and a proof is a scoped formal claim. Reconciling them is the evidence layer's whole job and the subject of Thread 2.</p>
+<h2 id="4-calibration">4. Calibration</h2>
+<p>A typed object is what makes calibration possible. You cannot tune the rigor of a prose handoff, but you can decide how much of Φ a task must discharge. The failure corners are symmetric. On rigor, too little is ambient permissions and summary-as-evidence; too much is a proof for every edit and ceremony outrunning signal. On openness, too little is the closed vertical; too much is fragmentation: source exists, nothing composes, dialects drift, adoption happens by fork.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 530" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" fill="currentColor" width="100%">
+  <title id="f4-title">The Goldilocks zone</title>
+  <desc id="f4-desc">A square two-axis chart. The horizontal axis is rigor, from prompt-only on the left to proof for every edit on the right. The vertical axis is openness, from closed vertical at the bottom to fragmented at the top. A cyan zone in the centre is labelled Goldilocks zone: typed intent, open connective layers, evidence proportional to risk. The four corners are labelled supervising a demo (bottom-left), locked-in ceremony (bottom-right), nothing composes nothing checks (top-left), and formal islands (top-right). Below the chart a gold gradient bar shows evidence proportional to risk, from a docs edit through a parser refactor to auth and payments.</desc>
+  <defs>
+    <marker id="f4-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <linearGradient id="f4-risk" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c78307" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#c78307" stop-opacity="0.90"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(62 0)">
 
-OPEN:
-  language
-  compiler
-  protocol
-  model
-  runtime
-  framework
-  interchange format
+  <!-- plot frame: dashed top/right, solid axes with arrowheads -->
+  <path d="M150 20 H560 V430" fill="none" stroke="currentColor" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="150" y1="430" x2="576" y2="430" stroke="currentColor" stroke-width="1.5" marker-end="url(#f4-arr)"/>
+  <line x1="150" y1="430" x2="150" y2="6" stroke="currentColor" stroke-width="1.5" marker-end="url(#f4-arr)"/>
 
-CAPTURE:
-  hardware
-  cloud
-  inference
-  distribution
-  enterprise platform
-  proprietary data
-  hosted service</code></pre>
-            </div>
-            <p>That is a stronger claim than &quot;open source is good.&quot; It says openness can be strategically rational even for private actors.</p>
-            <h4 id="network-effects">Network effects</h4>
-            <p>Some technologies become more useful as more people participate.</p>
-            <p>A programming language that nobody else writes is weak. A compiler that nobody targets has limited leverage. An IR that no other tool understands is isolated. An agent protocol supported by one agent is barely a protocol. A policy language understood by one product is just configuration.</p>
-            <p>A simple conceptual model is:</p>
-            <div class="diagram-block">
-            <pre><code>V(open layer) = f(implementations, users, tools, integrations, contributors)</code></pre>
-            </div>
-            <p>This is not an empirical equation. It is a way of thinking.</p>
-            <p>Programming languages, compilers, protocols, and intermediate representations often become substantially more valuable when they are open because their value compounds with adoption, tooling, integrations, targets, and contributors.</p>
-            <p>Sometimes openness is a feature of the architecture, not a licensing decision.</p>
-            <p>For interoperability layers, closing the layer can destroy precisely the externalities that make it valuable.</p>
-            <p>LLVM is a good example of the three forces reinforcing each other:</p>
-            <div class="diagram-block">
-            <pre><code>                         LLVM
-                          |
-          +---------------+---------------+
-          |               |               |
-          v               v               v
-   COMMON GOOD      COLLABORATION       NETWORK
-   compiler         Apple, Google,      languages,
-   infrastructure   NVIDIA, AMD,        targets,
-                    Intel, etc.         tooling</code></pre>
-            </div>
-            <p>The thesis becomes:</p>
-            <div class="diagram-block">
-            <pre><code>Open ecosystems emerge when private actors discover that there is
-more value in sharing a foundational layer than owning it exclusively.
-Sometimes that begins as a public good, sometimes as strategic necessity,
-and sometimes because the technology cannot achieve its full value
-without a network. Often, all three forces eventually reinforce one another.</code></pre>
-            </div>
-            <p>The future-of-software-engineering question is not merely &quot;what will be open sourced?&quot; It is:</p>
-            <div class="diagram-block">
-            <pre><code>Which layers of the emerging AI software stack become common infrastructure,
-which remain competitive,
-and what economic or technical force determines that boundary?</code></pre>
-            </div>
-            <h3 id="9-cedar-mojo-as-open-exploration">9. Cedar-Mojo as open exploration</h3>
-            <p>Cedar-Mojo fits this series naturally, but only if it is framed correctly.</p>
-            <p>The framing is shared semantics and open infrastructure, not ownership of a proprietary representation.</p>
-            <p>The right framing is simpler:</p>
-            <div class="diagram-block">
-            <pre><code>As part of exploring this idea,
-I am working on a native Cedar-Mojo implementation
-that I plan to open source.</code></pre>
-            </div>
-            <p>That gives the writing some skin in the game without changing the article into an announcement. I am not only saying that open compiler ecosystems, policy semantics, and agent harnesses are interesting. I am testing the intersection:</p>
-            <div class="diagram-block">
-            <pre><code>Cedar authorization semantics
-        |
-        +--&gt; Rust implementation
-        |
-        +--&gt; native Mojo exploration
-                 |
-                 v
-          Mojo / MLIR ecosystem</code></pre>
-            </div>
-            <p>The reason to open that kind of work is not charity alone. It is that policy semantics become more valuable when multiple systems can speak them. An authorization language that only one runtime understands is configuration. A policy language with shared semantics across agents, services, compilers, and developer tools can become infrastructure.</p>
-            <p>The strategic consequence is:</p>
-            <div class="diagram-block">
-            <pre><code>Open the semantics you want to become a standard.</code></pre>
-            </div>
-            <p>This does not mean every implementation detail of every system should be open. It means interoperability layers deserve special treatment: policy schemas, witness formats, verification interfaces, typed handoff contracts, and compiler-facing semantics are candidates where broad adoption can be more valuable than private control.</p>
-            <h3 id="10-series-map">10. Series map</h3>
-            <p>This writing program has three recurring threads. They are independent enough to read separately, but they converge around the same problem: how software engineering changes when agents can act, compilers expose more structure, and evidence becomes central.</p>
-            <h4 id="thread-1-open-ecosystem">Thread 1: Open Ecosystem</h4>
-            <p>A 6-part opening series:</p>
-            <p class="numbered-item">Leaky Abstractions vs. Type-Safe Abstractions in the Era of AI Coding Agents</p>
-            <p class="numbered-item">Open Models and Model Interchangeability</p>
-            <p class="numbered-item">Open Agent Harnesses, ACP/CLI, and Durable Handoffs</p>
-            <p class="numbered-item">Open Compilers, Mojo, MLIR, and the Return of Typed Infrastructure</p>
-            <p class="numbered-item">Open Policy, Formal Intent, Cedar, and Evidence</p>
-            <p class="numbered-item">Why Open? Common Infrastructure, Strategic Collaboration, and Network Effects</p>
-            <p>This thread asks why foundational layers become open, which layers need interoperability to create value, and where economic value migrates after a layer becomes common infrastructure.</p>
-            <h4 id="thread-2-hybrid-analysis">Thread 2: Hybrid Analysis</h4>
-            <p>A 3-part opening series:</p>
-            <p class="numbered-item">Static vs. Dynamic Analysis Is the Wrong Final Frame</p>
-            <p class="numbered-item">Verification vs. Validation in AI Software Engineering</p>
-            <p class="numbered-item">Static + Dynamic, Verification + Validation: Hybrid Analysis for Agentic Software</p>
-            <p>This thread connects older hybrid program analysis work to the new problem of agents, generated code, runtime traces, tool calls, policies, and evidence.</p>
-            <h4 id="thread-3-future-of-software-engineering">Thread 3: Future of Software Engineering</h4>
-            <p>A 3-part opening series:</p>
-            <p class="numbered-item">IDEs as Human Control Planes, CLI as the Durable Base</p>
-            <p class="numbered-item">Agent Protocols, Handoffs, and Code Review When Agents Produce Most of the Patch</p>
-            <p class="numbered-item">Languages for Verifiable AI Infrastructure</p>
-            <p>This thread is a quarterly field report on how the daily practice of software engineering changes as agents become normal participants in the development loop.</p>
-            <h3 id="11-what-this-article-claims-and-what-it-does-not-claim">11. What this article claims, and what it does not claim</h3>
-            <p>This article does not claim that one policy language solves software correctness.</p>
-            <p>It does not claim that one harness solves trust.</p>
-            <p>It does not claim that one compiler solves agentic software engineering.</p>
-            <p>It does not claim that open source always wins or that closed systems have no role.</p>
-            <p>The claim is narrower and stronger:</p>
-            <div class="diagram-block">
-            <pre><code>AI coding agents expose a missing abstraction layer between human intent
-and executable side effects.</code></pre>
-            </div>
-            <p>The systems that fill that layer will need formal intent, authorization policy, semantic obligations, typed handoffs, effect-aware execution, compiler structure, and evidence.</p>
-            <p>Many of those pieces are likely to become open because they are interoperability layers. They become more valuable when multiple actors can implement them, inspect them, target them, and build around them.</p>
-            <p>That is why the open ecosystem and the future of software engineering belong in the same title.</p>
-            <p>The most important question is no longer:</p>
-            <div class="diagram-block">
-            <pre><code>Which model writes the best patch?</code></pre>
-            </div>
-            <p>It is:</p>
-            <div class="diagram-block">
-            <pre><code>What stack lets humans specify intent,
-bound authority,
-run agents,
-inspect effects,
-and trust evidence?</code></pre>
-            </div>
-            <p>That is the programming abstraction I want this series to explore.</p>
-            <h3 id="source-anchors-to-resolve-before-publication">Source Anchors To Resolve Before Publication</h3>
-            <ul>
-              <li>DeepSeek Harness and Cordis documentation for the agent-harness/runtime discussion.</li>
-              <li>Modular and Mojo compiler/toolchain materials for LIT, KGEN, MLIR, LLVM, and open compiler structure.</li>
-              <li>Cedar documentation and the Cedar implementation for authorization-policy semantics.</li>
-              <li>Internet protocol history, Linux, and LLVM materials for the common-infrastructure examples.</li>
-              <li>ACP/CLI and coding-agent documentation for the developer-workflow examples.</li>
-            </ul>
-            <hr>
-            <h2 id="archive-prior-blog-1-draft-preserved" class="archive-heading">Archive: Prior Blog 1 Draft (Preserved)</h2>
-            <p>The prior draft begins below. It is preserved in this file for continuity and future reuse, but it is no longer the active Blog 1 structure.</p>
-            <h2 id="the-golden-era-of-the-open-ecosystem">The Golden Era of the Open Ecosystem</h2>
-            <p>Working subtitle: why AI software engineering will be built from open models, open harnesses, open compilers, and verifiable workflows.</p>
-            <p>Draft status: deep Blog 1 draft for the Open Ecosystem thread.</p>
-            <p>Inspired by:</p>
-            <ul>
-              <li>Chris Lattner, &quot;DeepSeek's Impact on AI (Democratizing AI Compute, Part 1)&quot;</li>
-              <li>Tim Davis, &quot;The Token Curve&quot;</li>
-            </ul>
-            <p>Source note:</p>
-            <ul>
-              <li>The rough note said &quot;Jul-Aug 2025&quot; for some ecosystem signals. I am correcting the dated public signals in this draft: ChatGPT was introduced on November 30, 2022; ChatGPT Pro was introduced on December 5, 2024; Mojo 1.0 was announced on August 11, 2026; Modular announced the Mojo compiler/toolchain open-source release on August 18, 2026; DeepSeek Harness was checked as a developer-preview source-included harness on August 20, 2026.</li>
-              <li>I am keeping this article technical. Chinese open-source work is discussed as technical work. Geopolitical comparisons are out of scope.</li>
-              <li>I am also avoiding a legal essay. Licensing, platform risk, and the social contract of open systems are in scope only where they shape developer tools and AI software engineering.</li>
-            </ul>
-            <h3 id="high-level-contents-2">High-Level Contents</h3>
-            <p class="numbered-item">Thesis</p>
-            <p>AI software engineering is moving from &quot;a model writes code&quot; to &quot;a model participates in a verifiable software system.&quot; The open ecosystem matters because the pieces that must be inspected, replaced, replayed, and verified cannot all live inside one closed product.</p>
-            <p class="numbered-item">The three threads of the series</p>
-            <ul>
-              <ul>
-                <li>Open Ecosystem: a 6-part opening series on open models, open harnesses, open compilers, open protocols, incentives, and portable evidence.</li>
-                <li>Hybrid Analysis: a 3-part opening series on static vs. dynamic analysis, verification vs. validation, and the combined static + dynamic / verification + validation loop.</li>
-                <li>Future of Software Engineering: a 3-part opening series on agents, IDEs, CLIs, protocols, language choices, review, and human acceptance.</li>
-                <li>All three threads should be revisited quarterly for the foreseeable future, because the stack is moving too quickly for a one-time map to stay correct.</li>
-              </ul>
-            </ul>
-            <p class="numbered-item">Scope</p>
-            <p>The series mostly stays at the application layer, model layer, developer-tooling layer, agent harness layer, compiler layer, and verification/validation layer. Cloud infrastructure, chips, energy, and data-center finance matter, but they are mostly below this series' operating boundary.</p>
-            <p class="numbered-item">The AI layer cake</p>
-            <p>The new stack looks roughly like applications, models, cloud/runtime infrastructure, chips, and energy. The lower layers are capital intensive. The upper layers are where open standards, compilers, harnesses, and verification systems can still be shaped by smaller teams.</p>
-            <p class="numbered-item">The inflection arc</p>
-            <ul>
-              <ul>
-                <li>November 2022: ChatGPT made natural-language interaction with models a mainstream developer habit.</li>
-                <li>December 2024: reasoning products and high-compute plans made &quot;more thinking&quot; an explicit product surface.</li>
-                <li>2025-2026: coding agents changed the unit of work from completion to repository-level action.</li>
-                <li>August 2026: Mojo 1.0, Mojo open source, and DeepSeek Harness made the compiler/harness layer feel newly open and composable.</li>
-              </ul>
-            </ul>
-            <p class="numbered-item">The open stack</p>
-            <p>A useful open AI software stack has at least five surfaces: model, harness, compiler, IDE/CLI, and evidence. If any one of them is closed in the wrong way, the system can still be operationally locked in even when some source code is public.</p>
-            <p class="numbered-item">The language, harness, and model wars</p>
-            <p>The old holy wars are not going away. They are moving up a level. The question is not &quot;Rust or C++ or Mojo&quot; in isolation, or &quot;open model or closed model&quot; in isolation. The question is which combinations preserve inspectability, performance, safety, portability, and evidence.</p>
-            <p class="numbered-item">Verification and validation</p>
-            <p>Formal methods prove what can be specified. Dynamic validation attacks behavior that the specification missed. Neural systems propose, summarize, and search. A real AI software-engineering stack needs all three, with authority boundaries stated clearly.</p>
-            <p class="numbered-item">Incentives and social contract</p>
-            <p>Big companies open source layers when openness increases adoption, commoditizes a complement, recruits developers, or weakens a rival's lock-in. Developers should welcome the open releases while still asking what remains closed, where evidence lives, and who can change the rules.</p>
-            <p class="numbered-item">Conclusion</p>
-            <p>The golden era of the open ecosystem is not a slogan about free code. It is the moment when the industry has enough pressure, enough infrastructure, and enough dissatisfaction with closed monoliths to build a more inspectable software-engineering stack.</p>
-            <hr>
-            <h2 id="full-blog-draft-2">Full Blog Draft</h2>
-            <h3 id="1-the-claim">1. The claim</h3>
-            <p>We are entering a golden era of the open ecosystem, but not because every important AI system will become open source. That would be too simple and probably false.</p>
-            <p>The better claim is this:</p>
-            <p>AI software engineering is becoming too important, too fast-moving, and too operationally complex to be trusted as a single closed vertical stack. The systems that matter will need open interfaces, open compilers, open harnesses, open evidence formats, and enough open models to keep the market honest.</p>
-            <p>The useful unit is no longer just &quot;the model.&quot; It is the whole system around the model:</p>
-            <div class="diagram-block">
-            <pre><code>human intent
-  -&gt; model proposal
-  -&gt; agent harness
-  -&gt; tool execution
-  -&gt; compiler/runtime semantics
-  -&gt; static and dynamic checks
-  -&gt; evidence
-  -&gt; human or policy acceptance</code></pre>
-            </div>
-            <p>That system has to be inspectable. It has to be replaceable. It has to be replayable. It has to admit failure without hiding it. A closed model can still participate in such a system, but the system itself cannot be only a black box. If the harness, compiler, logs, policies, and evidence are all opaque, then the developer is not supervising software engineering. The developer is supervising a demo.</p>
-            <p>This is the first article in a recurring three-thread writing program. The Open Ecosystem thread starts with a 6-part series. The Hybrid Analysis thread starts with a 3-part series. The Future of Software Engineering thread starts with a 3-part series. All three threads should be revisited quarterly for the foreseeable future. They are separate threads, but the point of the program is that they converge.</p>
-            <p>The unifying question is simple:</p>
-            <p>What would it take for AI-generated software to be as inspectable, debuggable, and governable as software written by humans?</p>
-            <h3 id="2-why-this-matters-now">2. Why this matters now</h3>
-            <p>The last few years changed the unit of software work.</p>
-            <p>In November 2022, ChatGPT made it normal for developers to ask a model for explanations, snippets, scripts, tests, and design alternatives. The first wave was conversational. It felt like a better search box, a better rubber duck, and sometimes a better autocomplete.</p>
-            <p>In December 2024, high-compute reasoning products made &quot;thinking harder&quot; a visible product surface. This mattered because developers started treating model calls less like text generation and more like a bounded search process. You could spend more compute to attack a harder question.</p>
-            <p>In 2025 and 2026, coding agents shifted the unit again. The model was no longer only returning text. It was reading a repository, forming a plan, editing files, running commands, interpreting test failures, and trying again. The unit of interaction moved from a prompt completion to a state transition in a real worktree.</p>
-            <p>That is a different problem.</p>
-            <p>When a model writes a paragraph, the main question is whether the paragraph is useful. When an agent edits a repository, the questions multiply:</p>
-            <ul>
-              <li>What did it read?</li>
-              <li>What did it change?</li>
-              <li>Which tools did it call?</li>
-              <li>Which permissions did it rely on?</li>
-              <li>Which tests or checks cover the change?</li>
-              <li>Which assumptions remain unverified?</li>
-              <li>Can the result be reverted?</li>
-              <li>Can the run be replayed?</li>
-              <li>Who accepted the final state?</li>
-            </ul>
-            <p>Those are software-engineering questions, not chatbot questions.</p>
-            <p>This is why the open ecosystem matters now. The bottleneck is moving from code production to trust production. Code is becoming abundant. Trust is still scarce.</p>
-            <h3 id="3-the-ai-layer-cake">3. The AI layer cake</h3>
-            <p>People often describe the modern AI stack as a layer cake. The exact labels vary, but the practical version looks like this:</p>
-            <div class="diagram-block">
-            <pre><code>Applications
-Models
-Cloud/runtime infrastructure
-Chips and accelerators
-Energy and physical infrastructure</code></pre>
-            </div>
-            <p>The lower layers matter enormously. Energy, chips, networking, memory bandwidth, scheduling, data-center financing, and hardware utilization will shape the economics of AI. But those layers require very large capital commitments, deep hardware teams, supply chains, and long planning cycles.</p>
-            <p>This series is mostly about the upper layers:</p>
-            <ul>
-              <li>applications that use agents,</li>
-              <li>models that reason and generate,</li>
-              <li>harnesses that turn models into actors,</li>
-              <li>compilers and runtimes that give generated software stronger semantics,</li>
-              <li>IDEs and CLIs that let humans supervise work,</li>
-              <li>verification and validation systems that produce evidence.</li>
-            </ul>
-            <p>The top layers are where the open ecosystem can move fastest. A model can be swapped. A harness can be forked. A compiler pass can be inspected. A protocol can make tools portable. A proof or trace format can survive a vendor change. A small team can build a useful developer tool if the interfaces are open enough.</p>
-            <p>That is the strategic reason to care. The lower layers decide the cost floor. The upper layers decide who gets to build.</p>
-            <h3 id="4-the-three-threads">4. The three threads</h3>
-            <p>This series has three threads.</p>
-            <p>The first thread is the open ecosystem. It starts as a 6-part series about open models, open harnesses, open compilers, open protocols, incentives, licensing pressure, and open evidence. It is not a naive argument that open always wins. Open systems can be underfunded, fragmented, insecure, badly documented, or captured by hidden dependencies. The argument is narrower: for AI software engineering, openness is the mechanism that makes inspection, replacement, replay, and independent verification possible.</p>
-            <p>The second thread is hybrid analysis. It starts as a 3-part series: static vs. dynamic analysis, verification vs. validation, and then the combined static + dynamic / verification + validation loop. My research background is in hybrid program analysis: combining static analysis, dynamic analysis, graph representations, runtime evidence, and program-understanding techniques to reason about software that does not reveal all of its behavior statically. In Android, that meant class loaders, reflection, dynamic code loading, inter-application flows, and graph overlays. In AI software engineering, the same pattern returns in a new form. Agents create code, call tools, load context dynamically, route through policies, and produce traces that must be analyzed after the fact.</p>
-            <p>The third thread is the future of software engineering. It starts as a 3-part series and then becomes a quarterly field report. If agents write more of the code, then humans move up the stack. Humans specify intent, set constraints, select tradeoffs, review evidence, and accept risk. The IDE becomes the human control plane. The CLI remains the most durable execution interface. Agent protocols connect tools and runtimes. Compilers and analyzers become more important, not less, because generated code still has to run in real systems.</p>
-            <p>These threads converge in one sentence:</p>
-            <p>The future of software engineering is open, agentic, compiler-aware, and evidence-driven, or it becomes an opaque automation stack that only its vendor can explain.</p>
-            <h3 id="5-the-inflection-arc">5. The inflection arc</h3>
-            <p>There are many timelines one could draw, but this is the one that matters for this article.</p>
-            <h4 id="november-2022-the-chatgpt-moment">November 2022: the ChatGPT moment</h4>
-            <p>The ChatGPT launch made model interaction ordinary. It did not solve correctness. It did not make hallucination disappear. But it changed behavior. Developers started putting ordinary work into a conversational loop: explain this error, write a test, summarize this API, sketch a design, refactor this snippet.</p>
-            <p>That matters because technology adoption is not only about capability. It is also about habit. ChatGPT changed the habit.</p>
-            <h4 id="december-2024-reasoning-becomes-a-product-surface">December 2024: reasoning becomes a product surface</h4>
-            <p>The $200 ChatGPT Pro announcement made high-compute reasoning explicit. The exact product details will continue to change, but the signal was important: reasoning was no longer only an internal model property. It became something users could buy, route work to, and think about as a compute allocation decision.</p>
-            <p>Once reasoning has a visible cost, developers start asking better questions:</p>
-            <ul>
-              <li>Which tasks deserve the expensive model?</li>
-              <li>Which tasks can be delegated to cheaper models?</li>
-              <li>Which checks can be run deterministically?</li>
-              <li>Which claims need proof rather than another model opinion?</li>
-            </ul>
-            <p>This is the beginning of orchestration as an engineering discipline.</p>
-            <h4 id="2025-2026-coding-agents-change-the-unit-of-work">2025-2026: coding agents change the unit of work</h4>
-            <p>Autocomplete completes a line. A chatbot returns an answer. A coding agent tries to complete a task.</p>
-            <p>That shift is large. Once the model can read files, edit files, run commands, call tools, and iterate, the system around it becomes part of the model's effective intelligence. The harness decides what the model can observe. The tool registry decides what it can invoke. The sandbox decides what it can touch. The session log decides what can be replayed. The approval system decides which actions require a human. The IDE decides what the human sees.</p>
-            <p>At that point, &quot;model quality&quot; is only one variable. Harness quality matters. Tool quality matters. Context quality matters. Evidence quality matters.</p>
-            <h4 id="august-2026-the-harness-and-compiler-layer-opens-up">August 2026: the harness and compiler layer opens up</h4>
-            <p>Two signals stand out.</p>
-            <p>First, DeepSeek Harness made the agent runtime itself a first-class open surface. The interesting technical idea is not only &quot;an agent framework exists.&quot; The interesting idea is that every capability can be treated as a plugin: models, tools, skills, sessions, sandboxes, storage, loops, scheduling, and UI. That is a serious architectural statement. It says the agent loop is not a sacred hidden core. It can be composed, swapped, and inspected.</p>
-            <p>Second, Mojo reached 1.0 and then Modular opened the Mojo compiler and toolchain. For AI software engineering, this is not only another language announcement. Mojo sits at the intersection of Python ergonomics, systems programming, accelerator programming, and MLIR-based compiler infrastructure. A serious open compiler stack gives agentic software work a better semantic substrate than raw text mutation.</p>
-            <p>Those two events point in the same direction:</p>
-            <p>The AI software stack is opening at the harness layer and the compiler layer at the same time.</p>
-            <p>That is why the moment feels different.</p>
-            <h3 id="6-what-open-must-mean">6. What &quot;open&quot; must mean</h3>
-            <p>Open source by itself is not enough.</p>
-            <p>For AI software engineering, &quot;open&quot; has to mean at least six things.</p>
-            <p>First, the implementation must be inspectable. A developer should be able to read how the harness routes a tool call, how it stores a session, how it handles failure, how it requests approval, and how it replays a run.</p>
-            <p>Second, components must be replaceable. If the model adapter, tool registry, storage layer, sandbox, or UI cannot be swapped without rewriting the system, the open surface is too shallow.</p>
-            <p>Third, effects must be visible. If an agent can mutate files, call tools, install plugins, or change configuration, those effects need to be recorded in a way that can be reviewed and undone.</p>
-            <p>Fourth, evidence must be portable. A test result, proof artifact, trace, policy decision, or replay should not only be meaningful inside one vendor's dashboard.</p>
-            <p>Fifth, semantics must be explicit. Compilers, type systems, IRs, and analyzers matter because they create durable meaning beyond text. Text diffs are necessary, but not sufficient.</p>
-            <p>Sixth, the human acceptance boundary must be clear. A green test is not human approval. A model confidence score is not proof. A proof over one property is not proof over the whole system. Open systems should make those distinctions easier to see, not easier to blur.</p>
-            <p>This is the difference between source availability and engineering openness.</p>
-            <h3 id="7-the-open-stack-for-agentic-software">7. The open stack for agentic software</h3>
-            <p>A useful open stack for AI software engineering has five surfaces.</p>
-            <h4 id="7-1-the-model-surface">7.1 The model surface</h4>
-            <p>Models are the most visible part of the stack, but they are not the whole stack. Open models matter because they create price pressure, portability, local deployment options, and research access. They also give developers more ways to pair a strong frontier model with cheaper specialist models.</p>
-            <p>The important pattern is not &quot;one model wins.&quot; The pattern is orchestration. A strong model may plan. A smaller model may classify, summarize, or search. A local model may run where data cannot leave. A deterministic tool may verify what no model should be trusted to guess.</p>
-            <p>The model surface should therefore be swappable. If your harness assumes one provider, one prompt format, one tool schema, and one hidden memory system, then you do not have an open agent stack. You have a product integration.</p>
-            <h4 id="7-2-the-harness-surface">7.2 The harness surface</h4>
-            <p>The harness turns a model into an actor.</p>
-            <p>That sentence is important. A model by itself predicts tokens. A harness decides what those tokens can do.</p>
-            <p>The harness owns:</p>
-            <ul>
-              <li>tool schemas,</li>
-              <li>model adapters,</li>
-              <li>session logs,</li>
-              <li>context injection,</li>
-              <li>skills,</li>
-              <li>subagents,</li>
-              <li>shell access,</li>
-              <li>file access,</li>
-              <li>sandboxes,</li>
-              <li>approvals,</li>
-              <li>retries,</li>
-              <li>background jobs,</li>
-              <li>memory,</li>
-              <li>compaction,</li>
-              <li>replay,</li>
-              <li>UI routing.</li>
-            </ul>
-            <p>This is why DeepSeek Harness is worth studying. &quot;Everything is a plugin&quot; is not just a developer-experience slogan. If taken seriously, it means the harness has a composition model. Capabilities are not hidden inside a privileged loop. They are mounted, configured, replaced, and observed.</p>
-            <p>The deeper technical idea comes from Cordis: components have effects and dependencies. If a component is mounted, it registers capabilities. If it is removed, those capabilities should be unwound. If a dependency changes, the dependent component should react. This is close to the right mental model for agent systems because agents are always sitting on changing context.</p>
-            <p>In an agentic IDE, the harness cannot be a bag of callbacks. It needs lifecycle semantics.</p>
-            <h4 id="7-3-the-compiler-surface">7.3 The compiler surface</h4>
-            <p>Generated code still needs semantics.</p>
-            <p>The quickest way to make AI software engineering fragile is to treat code as only text. Text is what humans review, but compilers are what programs pass through. If we want generated code to be more inspectable, the compiler stack matters.</p>
-            <p>Mojo is interesting here because it gives the AI era a language and compiler story that is not only Python scripting and not only C++ systems programming. It puts MLIR, ownership, accelerator programming, and high-performance systems work in the same frame.</p>
-            <p>For my own research direction, this changes the build strategy. I do not need to build a full custom MLIR stack just to make the point. If high-quality Mojo/MLIR infrastructure exists, the right move is to piggyback on it and add dialects or analysis layers only where they are needed. A dissertation or platform should not rebuild the compiler world to prove that compiler-aware verification matters.</p>
-            <p>The compiler surface is where we can attach:</p>
-            <ul>
-              <li>typed effects,</li>
-              <li>ownership and lifetime information,</li>
-              <li>control-flow graphs,</li>
-              <li>data-flow facts,</li>
-              <li>def-use chains,</li>
-              <li>call graphs,</li>
-              <li>policy-relevant IR,</li>
-              <li>provenance-preserving transformations,</li>
-              <li>proof obligations.</li>
-            </ul>
-            <p>That is the bridge between &quot;the agent changed a file&quot; and &quot;the change has analyzable meaning.&quot;</p>
-            <h4 id="7-4-the-ide-and-cli-surface">7.4 The IDE and CLI surface</h4>
-            <p>The IDE is becoming the human control plane.</p>
-            <p>Before coding agents, the IDE was mostly an editor plus navigation, build, debug, and source-control integration. With agents, the IDE becomes the place where a human watches and steers a state transition. The human says what matters, interrupts bad work, inspects the diff, reads the evidence, and decides whether to accept.</p>
-            <p>At the same time, the CLI remains the base layer. It is scriptable, replayable, automatable, and easier to preserve across UI changes. Protocols like LSP, ACP, MCP, and A2A are important because they decouple tools, editors, agents, and services. But the CLI is still the stable floor: if the workflow cannot be expressed outside the UI, it is hard to test, automate, or recover.</p>
-            <p>The future IDE should not hide the agent's work. It should make the work legible.</p>
-            <h4 id="7-5-the-evidence-surface">7.5 The evidence surface</h4>
-            <p>The evidence surface is the most underbuilt part of the stack.</p>
-            <p>Tests are evidence. Type checks are evidence. Static analysis is evidence. Runtime traces are evidence. Policy decisions are evidence. Formal proofs are evidence. Human review is evidence. But these are different kinds of evidence with different scopes.</p>
-            <p>A test says something about executed examples. A type check says something about the type system's guarantees. A model judge says something about a learned evaluator's assessment. A theorem prover says something about a formal statement under assumptions. A human approval says someone accepted the risk.</p>
-            <p>The evidence layer should preserve those distinctions. If it collapses all of them into &quot;green,&quot; it becomes dangerous.</p>
-            <h3 id="8-the-old-holy-wars-are-moving-up-a-level">8. The old holy wars are moving up a level</h3>
-            <p>Technology people fight about languages because languages encode values.</p>
-            <p>C++ says control and performance matter. Rust says memory safety and ownership can be enforced without a garbage collector. Python says iteration speed and ecosystem leverage matter. TypeScript says JavaScript won the distribution war, so we should discipline it. Haskell and OCaml say algebraic structure and types can make illegal states harder to express. Mojo says Python-like usability and systems-level performance should not be separate worlds.</p>
-            <p>The mistake is to turn this into one winner.</p>
-            <p>For the kind of work I care about, the in-scope languages are mainly Rust, Mojo, and modern C++.</p>
-            <p>Rust is the obvious choice when memory safety, strong tooling, and production systems constraints matter. Mojo is the language to watch for AI-native systems work because it is tied to MLIR, accelerator programming, and Python migration pressure. Modern C++ remains unavoidable in high-performance systems, compiler infrastructure, and large existing codebases. The categorical C++ tradition also matters because it shows that abstraction can be principled without giving up performance, even when the language itself is sharp.</p>
-            <p>Python is out of scope for the systems layer I want to build. Python will remain important as a user-facing and research-facing language, but if the objective is verifiable AI infrastructure, the lower layers need stronger semantics. My default stance is: if a critical systems component wants to be Python, look hard at whether it should be Mojo instead.</p>
-            <p>Markdown is a different case. Markdown is not a systems language, but it is becoming a specification surface. Agents read it. Humans write it. Policies, plans, proofs, prompts, and runbooks often start there. A future Markdown-like DSL may become a neuro-symbolic interface: informal enough for humans, structured enough for tools, and strict enough to generate obligations.</p>
-            <p>The language war therefore becomes a stack question:</p>
-            <div class="diagram-block">
-            <pre><code>Human intent and docs:        Markdown / structured prose / DSLs
-Application glue:             TypeScript, Python where appropriate
-Systems and agents runtime:   Rust, Mojo, modern C++
-Compiler and analysis layer:  MLIR, LLVM, typed IRs, graph IRs
-Proof and specification:      Lean, SMT, policy languages, model checkers</code></pre>
-            </div>
-            <p>No single language owns the future. The open ecosystem wins if these layers can talk to each other without hiding the important semantics.</p>
-            <h3 id="9-hybrid-analysis-is-the-missing-discipline">9. Hybrid analysis is the missing discipline</h3>
-            <p>This is where my older research connects to the current moment.</p>
-            <p>Jitana and ReHAna came from the Android world. The details were Android-specific: DEX bytecode, class loaders, reflection, dynamic code loading, call graphs, intent flows, and inter-application behavior. But the deeper problem was not Android. The deeper problem was that real software does not reveal itself through one analysis mode.</p>
-            <p>Static analysis gives you structure:</p>
-            <ul>
-              <li>control-flow graphs,</li>
-              <li>data-flow analysis,</li>
-              <li>def-use pairs,</li>
-              <li>call graphs,</li>
-              <li>class hierarchies,</li>
-              <li>interprocedural facts,</li>
-              <li>type constraints,</li>
-              <li>lattice-based fixed points,</li>
-              <li>reachable program surfaces.</li>
-            </ul>
-            <p>Dynamic analysis gives you behavior:</p>
-            <ul>
-              <li>executed paths,</li>
-              <li>runtime values,</li>
-              <li>dynamic loading,</li>
-              <li>reflection,</li>
-              <li>traces,</li>
-              <li>counterexamples,</li>
-              <li>timing,</li>
-              <li>failures,</li>
-              <li>observed side effects.</li>
-            </ul>
-            <p>Hybrid analysis exists because each side lies by omission.</p>
-            <p>Static analysis can over-approximate so broadly that the signal disappears, or under-approximate when dynamic behavior hides the target. Dynamic analysis can show what happened in one run while missing paths that did not execute. The useful move is not to choose one side. The useful move is to make each side challenge the other.</p>
-            <p>AI software engineering needs the same discipline.</p>
-            <p>An agent's proposed patch is a static artifact. Its tool calls are dynamic behavior. Its prompts and context are semantic inputs. Its logs are traces. Its tests are sampled executions. Its proofs are scoped formal claims. Its human acceptance is a decision under incomplete information.</p>
-            <p>That is a hybrid-analysis problem.</p>
-            <h3 id="10-neuro-symbolic-verification-without-the-hype">10. Neuro-symbolic verification without the hype</h3>
-            <p>The term &quot;neuro-symbolic&quot; can become vague very quickly, so I want to state the version I mean.</p>
-            <p>Neural systems are useful for proposal, search, summarization, ranking, translation, explanation, and pattern recognition. They are powerful because their representations are compressed, approximate, and distributed. That is also why hallucination is not an accidental edge case. It is connected to the same representational looseness that makes the system useful.</p>
-            <p>Symbolic systems are useful for constraint, proof, replay, type checking, policy evaluation, model checking, and exact counterexamples. They are powerful because they preserve structure and make obligations explicit. They are also brittle when the statement is wrong, incomplete, too expensive, or too far from the real system.</p>
-            <p>The right architecture is not &quot;replace symbolic systems with neural systems&quot; or &quot;pretend neural systems can be fully formal.&quot; The right architecture is a loop:</p>
-            <div class="diagram-block">
-            <pre><code>neural proposal
-  -&gt; candidate invariant or patch
-  -&gt; symbolic or static obligation
-  -&gt; runtime validation where proof is unavailable
-  -&gt; counterexample or evidence
-  -&gt; corpus update
-  -&gt; human or policy decision</code></pre>
-            </div>
-            <p>The admission rule should be strict:</p>
-            <p>An LLM may propose an invariant, but only a verifier can admit it as a proven invariant. If the verifier refutes it, the counterexample becomes a regression fixture. If the verifier cannot decide, the claim stays unadmitted.</p>
-            <p>That is the difference between using a model as a research assistant and using a model as an authority. The first is useful. The second is a category error.</p>
-            <h3 id="11-verification-and-validation-are-different">11. Verification and validation are different</h3>
-            <p>This distinction matters enough to say plainly.</p>
-            <p>Verification asks whether a system satisfies a specified property. Validation asks whether the system is fit for the purpose we actually care about.</p>
-            <p>Formal verification can be very strong, but only for the property that was formalized. Dynamic validation can expose failures that the specification missed, but it rarely proves absence. Model evaluation can identify likely weaknesses, but it is not proof. Human review can apply context, but it is not a deterministic oracle.</p>
-            <p>AI software engineering needs a layered acceptance model:</p>
-            <div class="diagram-block">
-            <pre><code>Specification:   What did we ask for?
-Static checks:   What can be inferred without running it?
-Dynamic checks:  What happened when we ran it?
-Formal proofs:   Which stated obligations were discharged?
-Model review:    What did learned evaluators flag?
-Human review:    What risk did the owner accept?</code></pre>
-            </div>
-            <p>This is why I dislike shallow &quot;agent did X, tests passed, ship it&quot; workflows. They erase the boundaries between evidence types. A serious system should say:</p>
-            <ul>
-              <li>proved,</li>
-              <li>refuted,</li>
-              <li>tested,</li>
-              <li>observed,</li>
-              <li>judged,</li>
-              <li>assumed,</li>
-              <li>not checked.</li>
-            </ul>
-            <p>That vocabulary is not bureaucracy. It is how you avoid fooling yourself.</p>
-            <h3 id="12-why-deepseek-harness-matters-technically">12. Why DeepSeek Harness matters technically</h3>
-            <p>The important point about DeepSeek Harness is not that another coding-agent product exists. The important point is the architecture.</p>
-            <p>An agent harness has historically been easy to build badly. You wire a model to a tool list, add a loop, append messages to a log, bolt on some approvals, and call it a day. That works for a demo. It does not give you a theory of replacement, replay, or failure.</p>
-            <p>The DeepSeek Harness/Cordis direction is interesting because it treats the runtime as a composition problem. Capabilities are plugins. Plugins provide services. Services have dependencies. Runs are traceable. Configuration can select and swap components.</p>
-            <p>The deeper idea is effect management. A plugin registers something into the world: a tool, hook, model adapter, prompt section, route, service, storage provider, or event listener. That registration is an effect. If the plugin is removed, the effect should be removed. If a dependency changes, the dependent component should not keep operating against stale assumptions.</p>
-            <p>This matters for agents because agent systems are full of stale assumptions:</p>
-            <ul>
-              <li>a tool existed when the model saw the schema but disappeared before execution,</li>
-              <li>a permission was granted for one payload but reused for another,</li>
-              <li>a sandbox changed while a command was parked,</li>
-              <li>a memory provider was swapped mid-run,</li>
-              <li>a plugin failed halfway through setup,</li>
-              <li>a session was resumed under a different runtime.</li>
-            </ul>
-            <p>An open harness should make those situations explicit. It should not hide them behind &quot;tool failed.&quot;</p>
-            <h3 id="13-why-mojo-matters-technically">13. Why Mojo matters technically</h3>
-            <p>Mojo matters because the AI stack has been living with a split personality.</p>
-            <p>Python dominates research ergonomics. C++ and CUDA dominate large parts of performance engineering. MLIR and LLVM dominate serious compiler infrastructure. Rust dominates many conversations around safer systems work. The AI era needs the productivity of the first world and the semantic strength of the second.</p>
-            <p>Mojo is one serious attempt to close that gap.</p>
-            <p>The important part for this series is not whether Mojo becomes the only language. It will not. The important part is that Mojo gives AI infrastructure a modern systems language tied to MLIR and accelerator-aware compilation. That makes it a natural place to attach program analysis, verification obligations, and compiler-aware evidence.</p>
-            <p>For my own work, the implication is practical:</p>
-            <p>Do not build a giant custom interpretability/compiler stack just to prove the concept. Use the best open compiler infrastructure available. Build new dialects only where the existing IR cannot express the claim. Focus on the verification and evidence layer, not on recreating the whole compiler ecosystem.</p>
-            <p>This is also why &quot;Python for everything&quot; is the wrong default for verifiable AI infrastructure. Python is excellent for exploration and orchestration. But for a systems substrate that must carry effects, ownership, lowering, acceleration, and proof obligations, a stronger compiler story matters.</p>
-            <h3 id="14-the-economics-of-open-layers">14. The economics of open layers</h3>
-            <p>Open source is not charity. It often aligns with strategy.</p>
-            <p>Large companies open source layers when doing so helps them:</p>
-            <ul>
-              <li>grow a developer ecosystem,</li>
-              <li>commoditize a rival's advantage,</li>
-              <li>recruit contributors,</li>
-              <li>accelerate standards,</li>
-              <li>make their platform the default integration point,</li>
-              <li>shift value capture to another layer,</li>
-              <li>reduce trust barriers for adoption.</li>
-            </ul>
-            <p>This is not a criticism. It is how the industry works.</p>
-            <p>The useful question is: which layer is being opened, and which layer remains the control point?</p>
-            <p>A company may open a model but keep the training data, serving stack, eval loop, and product distribution closed. Another may open a compiler but monetize cloud services. Another may open a protocol but control the best client. Another may open a framework but keep the marketplace.</p>
-            <p>Developers should welcome open releases while still reading the boundary carefully.</p>
-            <p>The money is often made at the edge: the proprietary interface, the hosted runtime, the enterprise control plane, the distribution channel, the data advantage, the compliance surface, the app workflow, the payment rail, the high-margin integration.</p>
-            <p>That does not make openness fake. It means openness is part of a system of incentives. The open ecosystem wins when enough of the critical path remains replaceable that no single company can silently redefine the rules.</p>
-            <h3 id="15-hyperscalers-model-labs-neoclouds-and-application-builders">15. Hyperscalers, model labs, neoclouds, and application builders</h3>
-            <p>The AI layer cake creates different incentives for different players.</p>
-            <p>Hyperscalers want infrastructure utilization, cloud lock-in, enterprise trust, and platform breadth. They can fund chips, data centers, managed services, compliance layers, and foundation-model partnerships. They like open ecosystems when openness drives workloads onto their clouds.</p>
-            <p>Model labs want usage, distribution, developer mindshare, data flywheels, and product expansion. They like openness when it grows the market or weakens a competitor, but they also face pressure to move up into applications and down into infrastructure.</p>
-            <p>Neoclouds and specialized compute providers want workload portability. They benefit when models, runtimes, and compilers can move across hardware. They need the ecosystem to believe that heterogeneous compute is not second-class.</p>
-            <p>Application companies want leverage without being eaten by the platform. They need agent infrastructure, but they do not want the model provider to own the customer relationship, the workflow, the data, and the payment surface.</p>
-            <p>Open-source communities want agency, portability, technical quality, and durability. They do not want the future of software engineering to depend on hidden APIs and disappearing products.</p>
-            <p>Enterprises want productivity, safety, compliance, auditability, and bargaining power. They will use closed products, but they should demand open evidence boundaries.</p>
-            <p>These incentives are not aligned by default. Open interfaces are how the ecosystem negotiates.</p>
-            <h3 id="16-the-social-contract-changes-when-agents-read-everything">16. The social contract changes when agents read everything</h3>
-            <p>Open-source licensing was already complicated. AI coding agents make it more complicated.</p>
-            <p>An agent can read a repository, summarize patterns, generate similar code, and apply ideas elsewhere. The old boundary between &quot;I copied code&quot; and &quot;I learned from code&quot; becomes harder to reason about operationally. This is not only a legal issue. It is a social-contract issue.</p>
-            <p>This article will not solve that. The series will stay mostly technical. But any serious open ecosystem has to ask:</p>
-            <ul>
-              <li>What is fair reuse when an agent is the reader?</li>
-              <li>What attribution should survive through generated code?</li>
-              <li>What obligations attach to model-assisted derivation?</li>
-              <li>What evidence should a company preserve about source influence?</li>
-              <li>How should enterprises avoid accidental license contamination?</li>
-              <li>How should open-source maintainers benefit when their work trains the tools that automate everyone else?</li>
-            </ul>
-            <p>The practical engineering answer starts with provenance. Keep records. Preserve source references where they matter. Make generated artifacts traceable. Do not pretend that &quot;the model wrote it&quot; means &quot;no source influenced it.&quot;</p>
-            <p>Again, this is not a legal conclusion. It is an engineering discipline.</p>
-            <h3 id="17-why-not-create-yet-another-protocol-right-now">17. Why not create yet another protocol right now</h3>
-            <p>It is tempting to respond to every new stack problem with another protocol.</p>
-            <p>I have thought about an Intelligence Verification Protocol, but I do not think the first move should be to standardize a new name. The current ecosystem already has many moving pieces: LSP for language tooling, ACP for agent-client coordination, MCP for tool and context integration, A2A-style agent communication, plus ordinary CLIs, logs, schemas, and package managers.</p>
-            <p>The better first move is to understand the invariants:</p>
-            <ul>
-              <li>What did the human ask?</li>
-              <li>What authority did the agent have?</li>
-              <li>What did the agent observe?</li>
-              <li>What effects did it attempt?</li>
-              <li>What effects actually happened?</li>
-              <li>What evidence was produced?</li>
-              <li>What remains unverified?</li>
-              <li>What decision was made?</li>
-            </ul>
-            <p>If existing protocols can carry those facts, use them. If they cannot, only then define a new surface.</p>
-            <p>The base layer should remain simple: CLI first, structured logs, typed schemas, replayable state, and tool boundaries that can be tested without a UI.</p>
-            <h3 id="18-autoformalization-is-useful-only-with-an-admission-rule">18. Autoformalization is useful only with an admission rule</h3>
-            <p>Autoformalization is one of the most important topics in this series, but it is also one of the easiest to overstate.</p>
-            <p>The valuable workflow is:</p>
-            <p class="numbered-item">A model reads code, docs, examples, traces, and failures.</p>
-            <p class="numbered-item">It proposes a candidate specification or invariant.</p>
-            <p class="numbered-item">A formal system attempts to discharge the obligation.</p>
-            <p class="numbered-item">A failure becomes a counterexample or a new test.</p>
-            <p class="numbered-item">A success becomes admitted evidence, scoped to the exact claim.</p>
-            <p>The dangerous workflow is:</p>
-            <p class="numbered-item">A model writes a plausible formal statement.</p>
-            <p class="numbered-item">Humans assume the statement captures the real requirement.</p>
-            <p class="numbered-item">The proof passes.</p>
-            <p class="numbered-item">The system claims more than it proved.</p>
-            <p>Autoformalization needs hybrid analysis because the hard part is not only translating English into Lean, SMT, or a policy language. The hard part is choosing the right obligation. Static analysis tells you where the obligation attaches. Dynamic analysis tells you what behavior is actually observed. Human review tells you what matters. Formal proof tells you whether the chosen statement follows.</p>
-            <p>The future stack needs all of that.</p>
-            <h3 id="19-j-lens-and-the-interpretability-boundary">19. J-Lens and the interpretability boundary</h3>
-            <p>In my own notes, J-Lens is the name I use for a desired interpretability surface: a way to look through the noisy story around model &quot;consciousness&quot; and focus on the signal that matters for software engineering.</p>
-            <p>For software work, the question is not whether a model is conscious. The question is:</p>
-            <ul>
-              <li>What context did it use?</li>
-              <li>Which latent pattern caused the recommendation?</li>
-              <li>Which source files and examples influenced the patch?</li>
-              <li>Which uncertainty did it ignore?</li>
-              <li>Which tool result changed its plan?</li>
-              <li>Which generated invariant survived verification?</li>
-            </ul>
-            <p>This is why interpretability and verification belong together. Interpretability can help identify candidate mechanisms and failure modes. Verification can decide whether a formalized claim holds. Validation can show whether the behavior survives real execution.</p>
-            <p>The goal is not a mystical theory of models. The goal is a practical evidence pipeline.</p>
-            <h3 id="20-what-i-am-not-building-in-phase-1">20. What I am not building in phase 1</h3>
-            <p>The scope matters.</p>
-            <p>I am not trying to support every language. For the systems and verification layer, my focus is Rust, Mojo, and modern C++. Python remains useful at the user and research boundary, but it should not be the default substrate for verifiable systems infrastructure.</p>
-            <p>I am not trying to build a full custom MLIR universe. If Mojo and the open Modular stack provide high-quality MLIR infrastructure, the right move is to use it and extend only where needed.</p>
-            <p>I am not revisiting the full Android/AOSP/GrapheneOS hybrid-analysis implementation in phase 1. That remains interesting, especially for just-in-time software and mobile systems, but it is a later phase.</p>
-            <p>I am not claiming that neural evaluation is authoritative. It is advisory unless a deterministic check, proof, policy, or human decision promotes it.</p>
-            <p>I am not claiming that open source solves governance. It only makes governance possible to inspect.</p>
-            <h3 id="21-what-the-hybrid-analysis-thread-will-cover">21. What the Hybrid Analysis thread will cover</h3>
-            <p>The Hybrid Analysis thread starts as a 3-part series:</p>
-            <p class="numbered-item">Static vs. dynamic analysis.</p>
-            <p>Why static analysis and dynamic analysis each fail alone, and why real systems force reconciliation.</p>
-            <p class="numbered-item">Verification vs. validation.</p>
-            <p>What formal proof can say, what runtime testing and evals can say, and where human or policy authority enters.</p>
-            <p class="numbered-item">Static + dynamic, verification + validation.</p>
-            <p>The combined hybrid loop: static facts propose the reachable surface, dynamic traces expose observed behavior, verifiers discharge precise claims, validators attack what the proof did not cover, and counterexamples become new fixtures.</p>
-            <p>The thread should go deep on the analysis spine:</p>
-            <ul>
-              <li>static analysis,</li>
-              <li>dynamic analysis,</li>
-              <li>symbolic execution,</li>
-              <li>concolic execution,</li>
-              <li>SMT solving,</li>
-              <li>constraint programming,</li>
-              <li>call-graph construction,</li>
-              <li>def-use analysis,</li>
-              <li>interprocedural data-flow analysis,</li>
-              <li>dynamic code loading,</li>
-              <li>reflection,</li>
-              <li>trace reconciliation,</li>
-              <li>neural proposal and symbolic discharge.</li>
-            </ul>
-            <p>The key idea will be that AI coding agents recreate the same static/dynamic split that Android analysis exposed years ago. The domain changed. The analysis problem did not disappear.</p>
-            <p>The phrase &quot;hybrid program analysis&quot; should be treated seriously. It is not just a branding phrase for &quot;run a test and ask an LLM.&quot; It means the system has multiple partial views of the program and must reconcile them.</p>
-            <h3 id="22-what-the-future-of-software-engineering-thread-will-cover">22. What the Future of Software Engineering thread will cover</h3>
-            <p>The Future of Software Engineering thread starts as a 3-part series and then becomes a quarterly field report for the foreseeable future.</p>
-            <p>The opening series should go deep on the programming model.</p>
-            <p>The old workflow was:</p>
-            <div class="diagram-block">
-            <pre><code>human writes code
-compiler checks code
-tests run code
-human reviews code</code></pre>
-            </div>
-            <p>The emerging workflow is:</p>
-            <div class="diagram-block">
-            <pre><code>human specifies intent
-agent proposes code
-harness mediates tools
-compiler/analyzers extract semantics
-tests and traces validate behavior
-formal tools discharge selected obligations
-human or policy accepts the result</code></pre>
-            </div>
-            <p>That changes the IDE. It changes the CLI. It changes code review. It changes testing. It changes what a programming language is for.</p>
-            <p>Higher-level abstractions will matter, but only if they are not leaky in the wrong places. Zero-cost abstraction is not enough. We need what I would call non-deceptive abstraction: an abstraction that hides what it should hide while preserving the evidence needed to debug, verify, and govern the system.</p>
-            <p>The future is not &quot;no code.&quot; The future is code plus intent, code plus traces, code plus proofs, code plus policies, code plus human judgment.</p>
-            <h3 id="23-the-practical-stack-i-want">23. The practical stack I want</h3>
-            <p>The stack I want to build and write about looks like this:</p>
-            <div class="diagram-block">
-            <pre><code>Human layer
-  - intent, review, acceptance, risk ownership
+  <!-- y axis labels -->
+  <text x="140" y="26" text-anchor="end" fill="currentColor">fragmented</text>
+  <text x="140" y="434" text-anchor="end" fill="currentColor">closed vertical</text>
+  <text transform="translate(64 225) rotate(-90)" text-anchor="middle" fill="currentColor" font-weight="600">openness</text>
 
-Writing/spec layer
-  - Markdown, structured prose, policies, candidate invariants
+  <!-- x axis labels -->
+  <text x="150" y="450" fill="currentColor">prompt-only</text>
+  <text x="355" y="450" text-anchor="middle" fill="currentColor" font-weight="600">rigor</text>
+  <text x="560" y="450" text-anchor="end" fill="currentColor">proof for every edit</text>
 
-Agent layer
-  - harness, tools, sessions, memory, subagents, approvals
+  <!-- zone halo + zone -->
+  <rect x="200" y="125" width="310" height="200" rx="28" fill="rgba(31,168,214,0.16)" fill-opacity="0.5" stroke="#1fa8d6" stroke-opacity="0.55" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <rect x="235" y="160" width="240" height="130" rx="16" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="355" y="192" text-anchor="middle" fill="currentColor" font-size="15" font-weight="600">Goldilocks zone</text>
+  <text x="355" y="218" text-anchor="middle" fill="currentColor" font-size="13">typed intent</text>
+  <text x="355" y="240" text-anchor="middle" fill="currentColor" font-size="13">open connective layers</text>
+  <text x="355" y="262" text-anchor="middle" fill="currentColor" font-size="13">evidence ∝ risk</text>
 
-Compiler/program layer
-  - Rust, Mojo, modern C++, MLIR/LLVM, typed IRs, graph IRs
+  <!-- corner tags (too little = red, too much = purple) -->
+  <rect x="162" y="33" width="236" height="22" rx="11" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+  <text x="280" y="48.3" text-anchor="middle" fill="currentColor" font-size="13">nothing composes, nothing checks</text>
 
-Analysis layer
-  - static facts, dynamic traces, hybrid reconciliation
+  <rect x="432" y="33" width="116" height="22" rx="11" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
+  <text x="490" y="48.3" text-anchor="middle" fill="currentColor" font-size="13">formal islands</text>
 
-Verification/validation layer
-  - SMT, model checking, theorem proving, tests, evals, replay
+  <rect x="162" y="393" width="144" height="22" rx="11" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+  <text x="234" y="408.3" text-anchor="middle" fill="currentColor" font-size="13">supervising a demo</text>
 
-Evidence layer
-  - provenance, receipts, logs, witnesses, counterexamples</code></pre>
-            </div>
-            <p>Each layer has to be open enough for another layer to inspect it.</p>
-            <p>If the model cannot be swapped, the system is brittle. If the harness cannot be inspected, the agent is ungovernable. If the compiler cannot expose semantics, the analysis is shallow. If evidence cannot be replayed, the result is a story. If human approval is not explicit, responsibility becomes vague.</p>
-            <p>That is the stack this series is about.</p>
-            <h3 id="24-the-conclusion">24. The conclusion</h3>
-            <p>The golden era of the open ecosystem is not a claim that open systems are morally pure or that closed systems are useless. Closed systems will remain powerful. Many of them will be excellent. I use them every day.</p>
-            <p>The claim is that AI software engineering has a trust problem, and the trust problem cannot be solved entirely inside closed vertical products.</p>
-            <p>We need open models to create competition and portability.</p>
-            <p>We need open harnesses so agent behavior can be inspected and replaced.</p>
-            <p>We need open compilers so generated code can become analyzable software, not only text.</p>
-            <p>We need open protocols so tools, editors, agents, and runtimes can interoperate.</p>
-            <p>We need open evidence formats so tests, traces, policy decisions, proofs, and human review can survive across systems.</p>
-            <p>Most importantly, we need a culture that distinguishes proposal from proof, validation from verification, and automation from authority.</p>
-            <p>That is where the open ecosystem, hybrid analysis, and the future of software engineering become one thread.</p>
-            <p>The model can write code. The harness can act. The compiler can preserve semantics. The analyzer can extract facts. The verifier can discharge claims. The runtime can produce traces. The human can decide.</p>
-            <p>The open ecosystem is how those pieces become a software-engineering discipline instead of a vendor demo.</p>
-            <hr>
-            <h2 id="thread-and-series-map">Thread and Series Map</h2>
-            <p>This is not one flat 6-post series. It is three recurring threads. Each thread should be revisited every quarter for the foreseeable future because the model, harness, compiler, IDE, and verification layers are changing too quickly for a one-time essay to stay current.</p>
-            <h3 id="thread-1-open-ecosystem-2">Thread 1: Open Ecosystem</h3>
-            <p>Initial shape: 6-part series.</p>
-            <p class="numbered-item">The Golden Era of the Open Ecosystem</p>
-            <p>Why the open ecosystem matters now: open models, open harnesses, open compilers, open protocols, incentives, and portable evidence.</p>
-            <p class="numbered-item">Open Models and Model Competition</p>
-            <p>Why open models matter for price pressure, local deployment, research access, orchestration, and avoiding single-provider dependence.</p>
-            <p class="numbered-item">Open Agent Harnesses</p>
-            <p>Why harnesses are the action plane: tools, sessions, sandboxes, approvals, skills, replay, plugins, and traceability.</p>
-            <p class="numbered-item">Open Compilers and AI-Native Systems Languages</p>
-            <p>Why Mojo, MLIR, LLVM, Rust, and modern C++ matter for generated software that needs semantics rather than only text.</p>
-            <p class="numbered-item">Open Protocols and Portable Evidence</p>
-            <p>Why LSP, ACP, MCP, CLI surfaces, logs, schemas, traces, policy decisions, proofs, and replay artifacts need to travel across tools.</p>
-            <p class="numbered-item">Incentives, Licensing, and the Open Social Contract</p>
-            <p>Why companies open some layers, keep other layers closed, and how provenance/licensing changes when coding agents read and reuse open systems.</p>
-            <p>Quarterly revisit:</p>
-            <p>Each quarter, revisit what changed in models, harnesses, compilers, protocols, licensing pressure, and evidence formats.</p>
-            <h3 id="thread-2-hybrid-analysis-2">Thread 2: Hybrid Analysis</h3>
-            <p>Initial shape: 3-part series.</p>
-            <p class="numbered-item">Static vs. Dynamic Analysis</p>
-            <p>Static analysis gives structure: CFGs, call graphs, def-use chains, interprocedural facts, type facts, reachable surfaces. Dynamic analysis gives behavior: traces, runtime values, reflection, dynamic loading, counterexamples, and observed effects. The first article should explain why choosing one side is the wrong frame.</p>
-            <p class="numbered-item">Verification vs. Validation</p>
-            <p>Verification asks whether a precise property holds. Validation asks whether the system is fit for the real purpose. This article should separate proof, testing, runtime evidence, neural evaluation, human review, and policy acceptance.</p>
-            <p class="numbered-item">Static + Dynamic, Verification + Validation</p>
-            <p>The synthesis article: Jitana/ReHAna lineage, hybrid program analysis for agentic software, static maps of what to verify, dynamic traces of what happened, formal claims where possible, validation where proof is unavailable, and counterexamples feeding the next corpus.</p>
-            <p>Quarterly revisit:</p>
-            <p>Each quarter, revisit new evidence from program analysis, formal methods, neuro-symbolic tooling, agent traces, and verification/validation practice.</p>
-            <h3 id="thread-3-future-of-software-engineering-2">Thread 3: Future of Software Engineering</h3>
-            <p>Initial shape: 3-part series.</p>
-            <p class="numbered-item">IDEs, CLIs, and Agent Harnesses</p>
-            <p>IDEs become human control planes. CLIs remain the durable execution base. Agent harnesses mediate tools, sessions, context, approvals, and replay.</p>
-            <p class="numbered-item">Language Wars in the Agent Era</p>
-            <p>Rust, Mojo, modern C++, TypeScript, Python, Markdown-as-spec, and DSLs: what each layer is for when agents generate and modify software.</p>
-            <p class="numbered-item">Review, Acceptance, and Software Ownership</p>
-            <p>Code review when agents write most of the patch: intent, evidence, tests, proofs, policy decisions, provenance, risk ownership, and human acceptance.</p>
-            <p>Quarterly revisit:</p>
-            <p>Each quarter, revisit the state of coding agents, IDEs, CLIs, protocols, language ecosystems, review workflows, and what it now means to be a software engineer.</p>
-            <hr>
-            <h2 id="sources-and-links-checked">Sources and Links Checked</h2>
-            <ul>
-              <li>Chris Lattner, &quot;DeepSeek's Impact on AI (Democratizing AI Compute, Part 1)&quot;: <a href="https://www.modular.com/blog/democratizing-compute-part-1-deepseeks-impact-on-ai" target="_blank" rel="noreferrer">https://www.modular.com/blog/democratizing-compute-part-1-deepseeks-impact-on-ai</a></li>
-              <li>Tim Davis, &quot;The Token Curve&quot;: <a href="https://www.timdavis.com/blog/the-token-curve" target="_blank" rel="noreferrer">https://www.timdavis.com/blog/the-token-curve</a></li>
-              <li>OpenAI, &quot;Introducing ChatGPT&quot;: <a href="https://openai.com/index/chatgpt/" target="_blank" rel="noreferrer">https://openai.com/index/chatgpt/</a></li>
-              <li>OpenAI, &quot;Introducing ChatGPT Pro&quot;: <a href="https://openai.com/index/introducing-chatgpt-pro/" target="_blank" rel="noreferrer">https://openai.com/index/introducing-chatgpt-pro/</a></li>
-              <li>DeepSeek Harness developer preview: <a href="https://deepseek.com/harness/en/" target="_blank" rel="noreferrer">https://deepseek.com/harness/en/</a></li>
-              <li>Cordis repository: <a href="https://github.com/cordiverse/cordis" target="_blank" rel="noreferrer">https://github.com/cordiverse/cordis</a></li>
-              <li>Modular, &quot;Modular 26.5: Mojo 1.0 is here!&quot;: <a href="https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here" target="_blank" rel="noreferrer">https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here</a></li>
-              <li>Modular, &quot;Mojo is now open source!&quot;: <a href="https://www.modular.com/blog/mojo-open-source" target="_blank" rel="noreferrer">https://www.modular.com/blog/mojo-open-source</a></li>
-              <li>DBLP publication page for Shakthi Bachala: <a href="https://dblp.org/pid/200/1146.html" target="_blank" rel="noreferrer">https://dblp.org/pid/200/1146.html</a></li>
-              <li>ReHAna DOI/Crossref record: <a href="https://doi.org/10.1007/978-3-030-94822-1_19" target="_blank" rel="noreferrer">https://doi.org/10.1007/978-3-030-94822-1_19</a></li>
-              <li>Jitana source code: <a href="https://github.com/ytsutano/jitana" target="_blank" rel="noreferrer">https://github.com/ytsutano/jitana</a></li>
-            </ul>
-          </div></div>
+  <rect x="404" y="393" width="144" height="22" rx="11" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
+  <text x="476" y="408.3" text-anchor="middle" fill="currentColor" font-size="13">locked-in ceremony</text>
+
+  <!-- evidence ∝ risk gradient bar along the rigor axis -->
+  <text x="150" y="477" fill="#c78307" font-size="13" font-weight="600">evidence proportional to risk</text>
+  <rect x="150" y="484" width="410" height="10" rx="5" fill="url(#f4-risk)" stroke="#c78307" stroke-opacity="0.6" stroke-width="1"/>
+  <text x="150" y="514" fill="currentColor">docs edit</text>
+  <text x="355" y="514" text-anchor="middle" fill="currentColor">parser refactor</text>
+  <text x="560" y="514" text-anchor="end" fill="currentColor">auth / payments</text>
+  </g>
+</svg>
+<figcaption><strong>F4</strong> Rigor by openness, with the zone bounded on all four sides.</figcaption>
+</figure>
+<p>The zone on rigor is evidence proportional to risk. A docs edit earns a diff review and a test run. A parser refactor earns tests, static checks, and traces. An auth or payments boundary earns policy, a proof obligation, and an explicit human signature. Φ carries enough to place the task in advance: Effects and Inv say which band it is in, and Evidence says what the band demands.</p>
+<blockquote>
+<p>Rigor belongs to the task, not the agent, and Φ fixes it before a line changes.</p>
+</blockquote>
+<p>The evidence vocabulary has seven labels: proved, refuted, tested, observed, judged, assumed, not checked. The labels cost nothing and block the most common failure in agent workflows: a proof over one property quietly presented as a proof over the system. Collapse them into one green check and the leak is back. The bands and the vocabulary are the contract between tools, which puts calibration itself on the open side of the boundary.</p>
+<h2 id="5-which-layers-open-and-why">5. Which layers open, and why</h2>
+<p>Three forces open a layer. Common infrastructure: everyone needs to build on it. Strategic collaboration: sharing it beats competing over it. Network effects: it is worth more with every implementation that speaks it. LLVM is all three compounding, a permissive compiler substrate funded by rivals and valuable in proportion to the languages and targets on it.</p>
+<p>Openness at a connective layer is architectural: its value is its externalities, so I expect these layers to open whether or not anyone is virtuous.</p>
+<p><strong>Weights can be closed.</strong> The open-weights letter NVIDIA hosted (2026-07-24), with over two hundred co-signers, argues on access, competition, control, adaptability, and security. Closed frontier models will coexist with open ones regardless, and trust never hinged on the weights.</p>
+<p><strong>The harness must be open.</strong> DeepSeek Harness on Cordis is the existence proof.</p>
+<p><strong>The compiler must be open; its gate can be closed.</strong> Mojo's compiler is Apache 2.0 with LLVM exceptions; its contribution queue is shut, and no analyzer needs that queue.</p>
+<p><strong>The protocol must be open; the editor and the agents can be either.</strong> Zed is roughly 97% Rust on its own GPU framework, gpui, under GPL-3.0-or-later. ACP is Apache-2.0 with no CLA, JSON-RPC over stdio with a typed schema, SDKs in five languages, and JetBrains co-developing. Zed charges nothing for external agents, and Claude Code and Cursor stay closed products behind it.</p>
+<p><strong>The proof tools must be open.</strong> Amazon's donation to the Lean FRO (2026-07-26), the FRO's largest ever, went outside Amazon on purpose: "it's easier to trust a proof when you can evaluate the tools behind it yourself," so that customers, auditors, and regulators can inspect work done in community-governed tools. The compiler may keep its gate because its output is checked downstream, by tests and by analyzers on an open IR; the proof checker is the last check, so its governance has to sit outside any one vendor.</p>
+<h2 id="6-the-creed">6. The creed</h2>
+<p><strong>A model may propose. Only a verifier admits.</strong> The reason is structural: the approximate representation that makes a model a strong proposer disqualifies it as an admitter.</p>
+<p>If the verifier refutes the claim, the counterexample becomes a regression fixture. If it cannot decide, the claim stays unadmitted. A model's output is advisory until a deterministic check, a proof, a policy decision, or a human promotes it, and the promotion is recorded in the witness with its evidence class attached.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" role="img" aria-labelledby="f5-title f5-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f5-title">From intent to acceptance</title>
+  <desc id="f5-desc">Top-to-bottom graph: human intent becomes a natural-language task, is autoformalized, forks into an authorization policy (who may do what) and semantic obligations (what must remain true), rejoins in the agent harness with typed context, tools and effects, produces a repository mutation checked by compiler, analyzer and tests, yields evidence (proof, trace, test result, review packet, counterexample) and ends in human acceptance. A single feedback edge returns a refuted counterexample to autoformalization as a regression fixture.</desc>
+  <defs>
+    <marker id="f5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f5-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+  </defs>
+
+  <!-- main flow edges -->
+  <g fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#f5-arrow)">
+    <line x1="340" y1="48" x2="340" y2="71"/>
+    <line x1="340" y1="104" x2="340" y2="127"/>
+    <line x1="340" y1="306" x2="340" y2="331"/>
+    <line x1="340" y1="364" x2="340" y2="387"/>
+    <line x1="340" y1="420" x2="340" y2="443"/>
+    <line x1="340" y1="492" x2="340" y2="517"/>
+    <!-- fork -->
+    <path d="M340,160 V173 H215 V185"/>
+    <path d="M340,160 V173 H465 V185"/>
+    <!-- rejoin -->
+    <path d="M215,232 V246 H340 V259"/>
+    <path d="M465,232 V246 H340 V259"/>
+  </g>
+
+  <!-- feedback edge: counterexample -> autoformalization -->
+  <path d="M562,468 H610 V144 H461" fill="none" stroke="#c44a37" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#f5-arrow-red)"/>
+  <text x="618" y="298" font-size="13" font-weight="600" fill="#c44a37">
+    <tspan x="618" dy="0">refuted →</tspan>
+    <tspan x="618" dy="17">regression fixture</tspan>
+  </text>
+
+  <!-- 1 human intent -->
+  <rect x="250" y="16" width="180" height="32" rx="16" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="340" y="37" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">human intent</text>
+
+  <!-- 2 natural-language task -->
+  <rect x="220" y="72" width="240" height="32" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="340" y="93" font-size="13" text-anchor="middle" fill="currentColor">natural-language task</text>
+
+  <!-- 3 autoformalization -->
+  <rect x="220" y="128" width="240" height="32" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="340" y="149" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">autoformalization</text>
+
+  <!-- 4 fork -->
+  <rect x="110" y="186" width="210" height="46" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="215" y="205" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">authorization policy</text>
+  <text x="215" y="223" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.8">who may do what</text>
+
+  <rect x="360" y="186" width="210" height="46" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="465" y="205" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">semantic obligations</text>
+  <text x="465" y="223" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.8">what must remain true</text>
+
+  <!-- 5 agent harness -->
+  <rect x="200" y="260" width="280" height="46" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="340" y="279" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">agent harness</text>
+  <text x="340" y="297" font-size="12" text-anchor="middle" fill="currentColor" opacity="0.8">typed context · tools · effects</text>
+
+  <!-- 6 repository mutation -->
+  <rect x="220" y="332" width="240" height="32" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="340" y="353" font-size="13" text-anchor="middle" fill="currentColor">repository mutation</text>
+
+  <!-- 7 compiler · analyzer · tests -->
+  <rect x="220" y="388" width="240" height="32" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="340" y="409" font-size="13" text-anchor="middle" fill="currentColor">compiler · analyzer · tests</text>
+
+  <!-- 8 evidence -->
+  <rect x="110" y="444" width="460" height="48" rx="6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <g font-size="12" text-anchor="middle" fill="currentColor">
+    <rect x="122" y="457" width="50" height="22" rx="11" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="147" y="472.3">proof</text>
+    <rect x="182" y="457" width="50" height="22" rx="11" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="207" y="472.3">trace</text>
+    <rect x="242" y="457" width="90" height="22" rx="11" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="287" y="472.3">test result</text>
+    <rect x="342" y="457" width="102" height="22" rx="11" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="393" y="472.3">review packet</text>
+    <rect x="454" y="457" width="108" height="22" rx="11" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+    <text x="508" y="472.3">counterexample</text>
+  </g>
+
+  <!-- 9 human acceptance -->
+  <rect x="250" y="518" width="180" height="32" rx="16" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="340" y="539" font-size="13" font-weight="600" text-anchor="middle" fill="currentColor">human acceptance</text>
+</svg>
+<figcaption><strong>F5</strong> Intent is formalized into policy and obligations, executed under a harness, checked by compiler and analyzers, and accepted on evidence.</figcaption>
+</figure>
+<p>That rule is the Goldilocks boundary, applied. Commit enough at each layer that admission is decidable; open enough of each layer that admission can be inspected by someone who does not work for the vendor.</p>
+<p>Compilers learned this decades ago; the stack above the code is learning it now, in public, and the series follows it from here.</p>
+<blockquote>
+<p>The proposer can be closed. The admitter must be open.</p>
+</blockquote>
+<p class="next-in-series">Next: Part 2, Open Models and Model Competition.</p>
+<section class="references">
+<h2 id="references">References</h2>
+<p><strong>Compiler</strong>
+1. Modular, "Mojo is now open source" (2026-08-18): https://www.modular.com/blog/mojo-open-source
+2. Modular, "Modular 26.5: Mojo 1.0 is here" (2026-08-11): https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here
+3. Mojo documentation, "Mojo vision" (built purely on MLIR Core; syntactic sugar for MLIR): https://mojolang.org/docs/vision/</p>
+<p><strong>Autoformalization and verification</strong>
+4. M. J. Min, M. He, Z. Li, Z. Yi, S. Malik, A. Gupta, X. Si, O. Bastani, "Theory-Level Autoformalization: From Isolated Statements to Unified Formal Knowledge Bases," arXiv:2607.13292: https://arxiv.org/abs/2607.13292
+5. CSLib, "The Lean Computer Science Library," arXiv:2602.04846: https://arxiv.org/abs/2602.04846
+6. Amazon Science, "Amazon is investing in the Lean Focused Research Organization" (2026-07-26): https://www.amazon.science/news/amazon-is-investing-in-the-lean-focused-research-organization</p>
+<p><strong>Policy</strong>
+7. Cedar policy language, Rust implementation, and cedar-policy-symcc: https://github.com/cedar-policy/cedar
+8. cedar-spec, Lean formalization and differential testing: https://github.com/cedar-policy/cedar-spec</p>
+<p><strong>Harness</strong>
+9. DeepSeek Harness (MIT, developer preview, checked 2026-08-20): https://github.com/deepseek-ai/deepseek-harness and https://deepseek.com/harness/en/
+10. Cordis, "A Programming Paradigm for Spatiotemporal Composability," theory-to-implementation table p.55: https://github.com/cordiverse/paper/blob/main/paper.pdf</p>
+<p><strong>IDE and protocol</strong>
+11. Zed: https://github.com/zed-industries/zed
+12. Agent Client Protocol: https://agentclientprotocol.com</p>
+<p><strong>Open weights</strong>
+13. "Open Weights and American AI Leadership," coalition letter hosted by NVIDIA (2026-07-24): https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf</p>
+<p><strong>Author lineage</strong>
+14. Jitana: https://github.com/ytsutano/jitana
+15. ReHAna, MobiQuitous 2021: https://doi.org/10.1007/978-3-030-94822-1_19
+16. DBLP, Shakthi Bachala: https://dblp.org/pid/200/1146.html</p>
+</section>
+      </div></div>
     </article></main>
-    <footer class="site-footer"><span>Shakthi Bachala</span><span>Open Ecosystem 001</span><span>2026</span></footer>
+    <footer class="site-footer"><span>Shakthi Bachala</span><span>Open Ecosystem · Part 1 of 6</span><span>2026</span></footer>
   </div>
   <script src="/theme.js?v=20260820m" defer></script>
 </body>
