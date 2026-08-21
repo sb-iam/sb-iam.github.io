@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 612" width="100%" role="img" aria-labelledby="f6-title f6-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f6-title">Agentic SDLC inside a verifiable ecosystem</title>
+  <desc id="f6-desc">A clockwise racetrack loop of eight stages: intent, plan, edit, build, test, review, merge, operate, with operate feeding back into intent. Four coloured bands hug the outside of the loop naming what the verifiable ecosystem contributes at each arc: typed intent and policy over intent to plan; an open harness with effects logged and revertible over plan, edit and build; compiler and analyzers checking structure before lowering over build to test; and evidence that is proved, tested, observed or judged over review, merge and operate. A note marks auto-research as out of scope, and a legend names the imported discipline: from functional programming, make illegal states unrepresentable and property-based tests; from hardware, the formal spec as the contract (RISC-V Sail) and verification as sign-off.</desc>
+  <defs>
+    <marker id="f6-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .t    { font-size: 18px; font-weight: 600; }
+      .note { font-size: 14px; opacity: 0.78; text-anchor: middle; }
+      .node { font-size: 16px; font-weight: 600; text-anchor: middle; }
+      .ctr  { font-size: 16px; font-weight: 600; text-anchor: middle; }
+      .bn   { font-size: 15px; font-weight: 600; }
+      .bd   { font-size: 15px; opacity: 0.78; }
+      .mid  { text-anchor: middle; }
+      .h    { font-size: 14px; font-weight: 600; opacity: 0.78; letter-spacing: 0.08em; }
+      .lk   { font-size: 15px; font-weight: 600; }
+      .lv   { font-size: 15px; opacity: 0.78; }
+      .box  { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .pill { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
+      .edge { fill: none; stroke: currentColor; stroke-width: 1.5; marker-end: url(#f6-arrow); }
+      .band { fill: none; stroke-width: 3; stroke-linecap: round; }
+      .cyan { stroke: #1fa8d6; }
+      .purp { stroke: #7458a6; }
+      .gold { stroke: #c78307; }
+      .rule { stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- title + scope note -->
+  <text class="t" x="12" y="26">Agentic SDLC inside a verifiable ecosystem</text>
+  <rect class="pill" x="524" y="10" width="224" height="24" rx="12"/>
+  <text class="note" x="636" y="26.5">auto-research: out of scope</text>
+
+  <!-- bands (outside the loop) -->
+  <line class="band cyan" x1="58"  y1="90" x2="208" y2="90"/>
+  <line class="band purp" x1="216" y1="90" x2="478" y2="90"/>
+  <path class="band gold" d="M500,122 A64 168 0 0 1 500,438"/>
+  <line class="band cyan" x1="58"  y1="470" x2="366" y2="470"/>
+
+  <!-- band labels -->
+  <text class="bn mid" x="133" y="58" fill="#1fa8d6">typed intent</text>
+  <text class="bn mid" x="133" y="76" fill="#1fa8d6">&amp; policy</text>
+  <text class="bn mid" x="347" y="58" fill="#7458a6">open harness:</text>
+  <text class="bd mid" x="347" y="76">effects logged, revertible</text>
+  <text class="bn" x="556" y="262" fill="#c78307">compiler &amp; analyzers:</text>
+  <text class="bd" x="556" y="282">structure checked</text>
+  <text class="bd" x="556" y="302">before lowering</text>
+  <text class="mid" x="212" y="494"><tspan class="bn" fill="#1fa8d6">evidence:</tspan><tspan class="bd" dx="5">proved · tested · observed · judged</tspan></text>
+
+  <!-- loop edges (clockwise) -->
+  <line class="edge" x1="144" y1="132" x2="168" y2="132"/>
+  <line class="edge" x1="256" y1="132" x2="280" y2="132"/>
+  <line class="edge" x1="368" y1="132" x2="392" y2="132"/>
+  <path class="edge" d="M478,132 A44 148 0 0 1 478,428"/>
+  <line class="edge" x1="392" y1="428" x2="368" y2="428"/>
+  <line class="edge" x1="280" y1="428" x2="256" y2="428"/>
+  <line class="edge" x1="168" y1="428" x2="144" y2="428"/>
+  <path class="edge" d="M58,428 A44 148 0 0 1 58,132"/>
+
+  <!-- top row: intent, plan, edit, build -->
+  <rect class="box" x="58"  y="112" width="84" height="40" rx="8"/>
+  <text class="node" x="100" y="137.5">intent</text>
+  <rect class="box" x="170" y="112" width="84" height="40" rx="8"/>
+  <text class="node" x="212" y="137.5">plan</text>
+  <rect class="box" x="282" y="112" width="84" height="40" rx="8"/>
+  <text class="node" x="324" y="137.5">edit</text>
+  <rect class="box" x="394" y="112" width="84" height="40" rx="8"/>
+  <text class="node" x="436" y="137.5">build</text>
+
+  <!-- bottom row: test, review, merge, operate (right to left) -->
+  <rect class="box" x="394" y="408" width="84" height="40" rx="8"/>
+  <text class="node" x="436" y="433.5">test</text>
+  <rect class="box" x="282" y="408" width="84" height="40" rx="8"/>
+  <text class="node" x="324" y="433.5">review</text>
+  <rect class="box" x="170" y="408" width="84" height="40" rx="8"/>
+  <text class="node" x="212" y="433.5">merge</text>
+  <rect class="box" x="58"  y="408" width="84" height="40" rx="8"/>
+  <text class="node" x="100" y="433.5">operate</text>
+
+  <!-- centre claim -->
+  <text class="ctr" x="268" y="274">agentic software development,</text>
+  <text class="ctr" x="268" y="294">made verifiable</text>
+  <text class="bd mid" x="268" y="318">operate feeds back into intent</text>
+
+  <!-- legend -->
+  <line class="rule" x1="12" y1="524" x2="748" y2="524"/>
+  <text class="h" x="12" y="548">IMPORTED DISCIPLINE</text>
+  <text x="12" y="572"><tspan class="lk">FP</tspan><tspan class="lv" dx="6">— make illegal states unrepresentable; property-based tests</tspan></text>
+  <text x="12" y="596"><tspan class="lk">hardware</tspan><tspan class="lv" dx="6">— formal spec as the contract (RISC-V Sail); verification as sign-off</tspan></text>
+</svg>
