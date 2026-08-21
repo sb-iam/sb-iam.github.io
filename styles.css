@@ -285,7 +285,11 @@ button:focus-visible {
 }
 
 .home-columns .dek {
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.9rem;
+}
+
+.home-columns .dek + .dek {
+  margin-bottom: 1.4rem;
 }
 
 .home-columns .hero-actions {
