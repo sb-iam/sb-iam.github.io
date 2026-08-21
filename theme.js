@@ -26,9 +26,9 @@
     document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
       var label = button.querySelector("[data-theme-label]");
       button.setAttribute("aria-pressed", String(theme === "light"));
-      button.setAttribute("aria-label", nextTheme === "light" ? "Switch to white theme" : "Switch to dark theme");
+      button.setAttribute("aria-label", nextTheme === "light" ? "Switch to light theme" : "Switch to dark theme");
       if (label) {
-        label.textContent = nextTheme === "light" ? "White" : "Dark";
+        label.textContent = nextTheme === "light" ? "Light" : "Dark";
       }
     });
   }
