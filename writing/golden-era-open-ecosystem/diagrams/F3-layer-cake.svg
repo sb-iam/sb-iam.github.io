@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 648" width="100%" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
   <title id="f3-title">The AI layer cake for agentic software</title>
-  <desc id="f3-desc">Six layers from human intent down to evidence, each stating what it commits, its open reference, and whether it must be open or may be closed; a vertical arrow marks progressive commitment; a shaded band below marks cloud, chips and energy as out of scope.</desc>
+  <desc id="f3-desc">Six layers from human intent down to evidence, each stating what it commits, its open reference, and the appropriate openness boundary; a vertical arrow marks progressive commitment; a shaded band below marks cloud, chips and energy as out of scope.</desc>
   <defs>
     <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
@@ -26,7 +26,7 @@
   <text class="h" x="54"  y="56">LAYER</text>
   <text class="h" x="178" y="56">COMMITS</text>
   <text class="h" x="372" y="56">OPEN REFERENCE</text>
-  <text class="h" x="738" y="56" text-anchor="end">OPENNESS</text>
+  <text class="h" x="738" y="56" text-anchor="end">BOUNDARY</text>
   <line class="rule" x1="42" y1="64" x2="750" y2="64"/>
 
   <!-- left gutter: progressive commitment -->
@@ -46,12 +46,12 @@
   <rect class="band" x="42" y="160" width="708" height="80" rx="6"/>
   <text class="n" x="54" y="196">Formal intent</text>
   <text class="n" x="54" y="215">&amp; policy</text>
-  <text class="c" x="178" y="196">Φ: authority bounded,</text>
+  <text class="c" x="178" y="196">task boundary,</text>
   <text class="c" x="178" y="214">obligations stated</text>
   <text class="r" x="372" y="196">Cedar · autoformalization ·</text>
   <text class="r" x="372" y="214">CSLib</text>
   <rect class="open" x="626" y="189" width="112" height="22" rx="11"/>
-  <text class="p" x="682" y="204.8">must be open</text>
+  <text class="p" x="682" y="204.8">open semantics</text>
 
   <!-- L3 Agent harness: y=246 -->
   <rect class="band" x="42" y="246" width="708" height="80" rx="6"/>
@@ -59,7 +59,7 @@
   <text class="n" x="54" y="301">(runtime)</text>
   <text class="c" x="178" y="273">effects recorded</text>
   <text class="c" x="178" y="291">with inverses;</text>
-  <text class="c" x="178" y="309">model-visible → logged</text>
+  <text class="c" x="178" y="309">model-visible logged</text>
   <text class="r" x="372" y="282">DeepSeek Harness ·</text>
   <text class="r" x="372" y="300">Cordis · ACP</text>
   <rect class="open" x="612" y="254" width="126" height="22" rx="11"/>
@@ -96,14 +96,14 @@
   <rect class="band" x="42" y="504" width="708" height="80" rx="6"/>
   <text class="n" x="54" y="540">Evidence /</text>
   <text class="n" x="54" y="559">witness</text>
-  <text class="c" x="178" y="531">proved · tested ·</text>
-  <text class="c" x="178" y="549">observed · judged ·</text>
+  <text class="c" x="178" y="531">proved, tested,</text>
+  <text class="c" x="178" y="549">observed, judged,</text>
   <text class="c" x="178" y="567">assumed</text>
   <text class="r" x="372" y="549">portable formats</text>
   <rect class="open" x="626" y="533" width="112" height="22" rx="11"/>
-  <text class="p" x="682" y="548.8">must be open</text>
+  <text class="p" x="682" y="548.8">portable</text>
 
   <!-- below the boundary -->
   <rect x="42" y="598" width="708" height="38" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="4 3"/>
-  <text class="b" x="396" y="622">cloud · chips · energy — below this series' boundary</text>
+  <text class="b" x="396" y="622">cloud, chips, energy - below this series' boundary</text>
 </svg>
