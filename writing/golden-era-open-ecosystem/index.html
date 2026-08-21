@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.">
+  <meta name="description" content="Open and closed systems will coexist. The research question is which layers require open semantics, interfaces, or evidence for software written by agents to be trusted.">
   <meta property="og:title" content="The Goldilocks Zone of the Open AI Ecosystem">
-  <meta property="og:description" content="Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.">
+  <meta property="og:description" content="Open and closed systems will coexist. The research question is which layers require open semantics, interfaces, or evidence for software written by agents to be trusted.">
   <meta property="og:type" content="article">
   <title>The Goldilocks Zone of the Open AI Ecosystem - Shakthi Bachala</title>
   <script>
@@ -14,7 +14,7 @@
       catch (error) { document.documentElement.dataset.theme = "dark"; }
     })();
   </script>
-  <link rel="stylesheet" href="../../styles.css?v=20260820p">
+  <link rel="stylesheet" href="../../styles.css?v=20260821d">
 </head>
 <body>
   <a class="skip-link" href="#article">Skip to article</a>
@@ -25,20 +25,20 @@
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to white theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>White</span></button>
     </header>
     <main id="article"><article>
-      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Open Ecosystem</span><span>Part 1 of 6</span><span>Aug 20, 2026</span></div><h1>The Goldilocks Zone of the Open AI Ecosystem</h1><p class="dek">Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.</p></div></header>
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Open Ecosystem</span><span>Part 1 of 6</span><span>Aug 20, 2026</span></div><h1>The Goldilocks Zone of the Open AI Ecosystem</h1><p class="dek">Open and closed systems will coexist. The research question is which layers require open semantics, interfaces, or evidence for software written by agents to be trusted.</p></div></header>
       <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
         <li><a href="#1-where-the-abstraction-leaks">Where the abstraction leaks</a></li>
-        <li><a href="#2-the-type">The type</a></li>
+        <li><a href="#2-the-task-record">The task record</a></li>
         <li><a href="#3-progressive-commitment-the-layer-cake">Progressive commitment: the layer cake</a></li>
         <li><a href="#4-calibration">Calibration</a></li>
         <li><a href="#5-which-layers-open-and-why">Which layers open, and why</a></li>
-        <li><a href="#6-the-creed">The creed</a></li>
+        <li><a href="#6-admission-and-governance">Admission and governance</a></li>
         <li><a href="#references">References</a></li>
       </ol></nav></aside><div class="article-body">
-<p class="lead"><strong>AI coding agents have exposed a missing layer between human intent and executable side effects.</strong> Nothing in today's stack carries what a task permits, what it must preserve, and what counts as done from the typed sentence to the written bytes.</p>
-<p>Filling that layer is a calibration problem on two axes, and the right answer on both is a Goldilocks zone. On rigor, it sits between prompt-only intent with ambient permissions and a proof for every edit. On openness, it sits between one vendor owning model, harness, policy, compiler, and evidence, and a scatter of source that never composes.</p>
-<p>Open and closed will coexist. The frontier models are closed and will remain so. <strong>The connective layers must be open:</strong> evidence formats, policy semantics, agent protocols (ACP, MCP), compiler IR and the analyzers that attach to it. They exist to connect independent systems; closing them destroys the reason they exist, and they are where inspection, replacement, and replay happen. <strong>The leaves can be closed:</strong> weights, hosted inference, enterprise control planes, proprietary data, the best client, as long as the layers around them emit portable evidence.</p>
-<p>That boundary is the zone, and every serious vendor is choosing where it sits. Modular opened its compiler and closed compiler contributions. Amazon funds Lean outside Amazon. Zed opened its agent protocol while most agents stay closed. Cedar's semantics are open while the hosted service is paid. This essay maps the boundary and opens the first of three threads, each revisited quarterly.</p>
+<p class="lead"><strong>AI coding agents have exposed a missing layer between human intent and executable side effects.</strong> Present tools do not consistently carry a task's authority, preservation obligations, and completion evidence from the user's instruction to the resulting repository mutation.</p>
+<p>Filling that layer is a calibration problem on two axes. On rigor, the useful region lies between prompt-only intent with ambient permissions and the unrealistic demand that every edit carry a full formal proof. On openness, it lies between a closed vertical system that owns model, harness, policy, compiler, and evidence, and a fragmented ecosystem in which source code exists but common semantics do not.</p>
+<p>Open and closed systems will coexist. Many frontier models are closed today, and closed systems will remain part of the stack. The connective layers are different. Evidence formats, policy semantics, agent protocols such as ACP and MCP, compiler intermediate representations, and analyzers attached to those representations exist to connect independent systems. Their value depends on inspection, replacement, replay, and independent review. By contrast, hosted inference, enterprise control planes, proprietary data, and specialized clients can remain closed if the surrounding interfaces emit portable evidence.</p>
+<p>That boundary is the Goldilocks zone. Several current systems illustrate it. Modular opened the Mojo compiler while retaining governance over compiler contributions. Amazon supports Lean through an external research organization. Zed participates in an open agent protocol while individual agents may remain closed. Cedar's semantics and implementation are open, while a hosted authorization service can be commercial. This essay maps that boundary and opens the first of three threads, each revisited quarterly.</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -53,7 +53,7 @@
 </tr>
 <tr>
 <td>Hybrid Analysis</td>
-<td>3: static vs. dynamic analysis · verification vs. validation · static + dynamic, verification + validation</td>
+<td>3: static vs. dynamic analysis · verification vs. validation · static and dynamic evidence with verification and validation</td>
 </tr>
 <tr>
 <td>Future of Software Engineering</td>
@@ -62,18 +62,18 @@
 </tbody>
 </table></div>
 <h2 id="1-where-the-abstraction-leaks">1. Where the abstraction leaks</h2>
-<p>My working position is one window. Zed is the editor, the CLI is the execution substrate, and Codex, Claude Code, and Cursor enter through the shell or the Agent Client Protocol, ACP. The agents are interchangeable by design. I keep the workflow, the constraints, and the evidence; I swap the agent. When the workflow carries the constraints, a narrow task can go to a local model and an obligation to a prover, and nothing around the swap changes.</p>
-<p>That position is a test, and the current abstraction fails it.</p>
+<p>My working position is one window. Zed is the editor, the CLI is the execution substrate, and Codex, Claude Code, and Cursor enter through the shell or the Agent Client Protocol, ACP. The important property is agent substitutability. The workflow, constraints, and evidence remain stable while the actor changes. A narrow task can move to a local model, and a verification obligation can move to a proof tool, without changing the surrounding engineering record.</p>
+<p>That position is a useful test, and the current abstraction remains under-specified.</p>
 <p>Intent is informal: "refactor the parser." Permissions are ambient: whatever the shell user can touch, the agent can touch. Handoffs are prose: one agent writes Markdown and another reads it. Effects are invisible: a dependency added, a CI file edited, a network call made. Completion is social: "done" is a sentence, and the evidence for it is a summary written by the party under review.</p>
 <p>A human engineer reads "refactor the parser" and knows what it excludes: no public API change, no new dependency, no CI edit, no network. The boundary is real and was never written down.</p>
 <blockquote>
-<p>Humans infer the boundary from culture and consequence. Agents have to be told, and nothing tells them.</p>
+<p>Human engineers infer boundaries from culture, experience, and consequence. Agentic systems require those boundaries to be represented explicitly.</p>
 </blockquote>
-<p>That is the law of leaky abstractions in the agent loop, and there is a datum for how leaky. The Cordis paper, whose runtime returns in §3, surveyed the top 100 VS Code extensions: 87 need a host restart to be removed, and cross-extension exports are typed <code>any</code> by default. Nothing was committed at load time, so nothing can be unwound at unload time. An agent harness is the same shape of platform, with a model at the keyboard.</p>
+<p>That is the law of leaky abstractions in the agent loop. The Cordis paper, whose runtime model returns below, gives a concrete platform analogue. It reports that most of the top VS Code extensions need a host restart to be removed, and that cross-extension exports are typed broadly by default. If a platform does not commit effects at load time, it has little structure with which to unwind them at unload time. An agent harness is the same class of platform, with a model acting through tools.</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 550" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" stroke="currentColor" width="100%">
   <title id="f1-title">Leaky pipeline versus typed-task pipeline</title>
-  <desc id="f1-desc">Two vertical pipelines. Left, today's leaky flow: prompt, agent, Markdown handoff, agent, shell, filesystem, prose summary, with four leaks marked in red: ambient permission, untyped handoff, invisible effect, summary-as-evidence. Right, the typed-task flow: intent, Phi, a fork into obligations and policy that rejoins, typed handoff, effect-checked execution, evidence packet, acceptance, with four checks marked in cyan: bounded authority, typed interface, recorded and revertible effect, classed evidence.</desc>
+  <desc id="f1-desc">Two vertical pipelines. Left, today's leaky flow: prompt, agent, Markdown handoff, agent, shell, filesystem, prose summary, with four leaks marked in red: ambient permission, untyped handoff, invisible effect, summary-as-evidence. Right, the checked task flow: intent, task record, a fork into obligations and policy that rejoins, typed handoff, effect-checked execution, evidence packet, acceptance, with four checks marked in cyan: bounded authority, typed interface, recorded and revertible effect, classed evidence.</desc>
   <defs>
     <marker id="f1-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
   </defs>
@@ -86,7 +86,7 @@
   <line x1="206" y1="35" x2="326" y2="35" stroke="#c44a37" stroke-width="2"/>
   <line x1="403" y1="35" x2="591" y2="35" stroke="#1fa8d6" stroke-width="2"/>
 
-  <!-- ===== LEFT PIPELINE (box x 178..354, centre 266) ===== -->
+  <!-- left pipeline -->
   <g stroke-width="1.2">
     <!-- boxes -->
     <rect x="178" y="48"  width="176" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
@@ -127,7 +127,7 @@
     <text x="150" y="525">summary-as-evidence</text>
   </g>
 
-  <!-- ===== RIGHT PIPELINE (box x 384..610, centre 497) ===== -->
+  <!-- right pipeline -->
   <g stroke-width="1.2" fill="none">
     <!-- boxes -->
     <rect x="384" y="48"  width="226" height="36" rx="6" fill="rgba(128,128,128,0.12)"/>
@@ -152,7 +152,7 @@
   </g>
   <g font-size="15" text-anchor="middle" stroke="none">
     <text x="497" y="71">intent</text>
-    <text x="497" y="144" font-size="18" font-weight="600">Φ</text>
+    <text x="497" y="144" font-size="16" font-weight="600">task record</text>
     <text x="440" y="217">obligations</text>
     <text x="513" y="217" font-size="14" opacity="0.78">and</text>
     <text x="570" y="217">policy</text>
@@ -172,7 +172,7 @@
   <g font-size="14" text-anchor="start" stroke="none" opacity="0.78">
     <text x="637" y="217">bounded authority</text>
     <text x="637" y="291">typed interface</text>
-    <text x="637" y="362">recorded +</text>
+    <text x="637" y="362">recorded and</text>
     <text x="637" y="379">revertible effect</text>
     <text x="637" y="453">classed evidence</text>
   </g>
@@ -180,22 +180,22 @@
 <figcaption><strong>F1</strong> One task through an untyped pipeline (left) and a checked one (right); every leak on the left has its check on the right.</figcaption>
 </figure>
 <p>Every leak sits in connective tissue: between human and agent, agent and agent, agent and filesystem. That tissue has to be open for anyone to check it.</p>
-<h2 id="2-the-type">2. The type</h2>
-<p>Every abstraction leaks. Types never stopped leaks; they made them checked errors at explicit boundaries. So ask what type a task handed to an agent has. Mine is a six-tuple.</p>
-<div class="essay-code"><pre><code class="language-text">Φ = ⟨Pre, Post, Inv, Cap, Effects, Evidence⟩
-
-Pre       what holds before the task
-Post      what must hold after it
-Inv       what must never break along the way
-Cap       the authority granted
-Effects   side effects allowed and forbidden
-Evidence  what must be produced for acceptance
-</code></pre></div>
-<p><strong>Φ is the type.</strong> A model can draft it from a sentence; nothing admits it on the model's word. A handoff between agents is a signature in it rather than a paragraph, and everything downstream is one of four projections.</p>
+<h2 id="2-the-task-record">2. The task record</h2>
+<p>Every abstraction leaks. Types did not eliminate leaks; they made many of them observable at boundaries. The analogous question for an agentic task is what record the system carries from instruction to execution.</p>
+<p>The record needs six fields.</p>
+<ul>
+<li>Preconditions: what the task assumes before work begins.</li>
+<li>Postconditions: what must hold after the task.</li>
+<li>Invariants: what must remain true throughout the change.</li>
+<li>Capabilities: what authority the actor receives.</li>
+<li>Effects: what side effects are allowed or forbidden.</li>
+<li>Evidence: what artifacts must be produced before acceptance.</li>
+</ul>
+<p>This task record is not admitted simply because a model drafted it. It is a proposed interface between human intent and machine action. A handoff between agents should point to that record rather than rely on a paragraph of prose, and downstream tools consume different portions of the record.</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 476" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
-  <title id="f2-title">Φ and its four projections</title>
-  <desc id="f2-desc">The typed task object Φ = (Pre, Post, Inv, Cap, Effects, Evidence) sits at the centre. Four arrows project its components outward: Cap and Effects become an authorization policy in Cedar where forbid overrides permit; Pre, Post and Inv become obligations discharged by tests, static analysis or proof; Effects become a runtime effect check in the harness that records and reverts; Evidence becomes the witness packet labelled proved, tested, observed, judged or assumed. Authorization and verification are two projections of one typed object.</desc>
+  <title id="f2-title">Task record and review paths</title>
+  <desc id="f2-desc">A typed task record sits at the centre. Four arrows route its fields outward: capabilities and effects become authorization policy; requirements become obligations discharged by tests, static analysis or proof; observed effects become runtime checks in the harness; evidence becomes the witness packet labelled proved, tested, observed, judged or assumed. Authorization and verification are derived from the same task record but answer different questions.</desc>
   <defs>
     <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
   </defs>
@@ -208,9 +208,10 @@ Evidence  what must be produced for acceptance
     <rect x="398" y="368" width="350" height="96" rx="6"/>
   </g>
 
-  <!-- centre: Φ -->
+  <!-- centre: task record -->
   <rect x="150" y="208" width="460" height="62" rx="6" stroke="#1fa8d6" stroke-width="1.6" fill="rgba(31,168,214,0.16)"/>
-  <text x="380" y="245" font-size="18" font-weight="600" text-anchor="middle">Φ = (Pre, Post, Inv, Cap, Effects, Evidence)</text>
+  <text x="380" y="236" font-size="18" font-weight="600" text-anchor="middle">Task record</text>
+  <text x="380" y="257" font-size="14" opacity="0.78" text-anchor="middle">requirements, capabilities, effects, evidence</text>
 
   <!-- arrows -->
   <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#f2-arrow)">
@@ -220,67 +221,51 @@ Evidence  what must be produced for acceptance
     <line x1="520" y1="270" x2="560" y2="364"/>
   </g>
 
-  <!-- arrow labels: which components project -->
+  <!-- arrow labels: which fields are routed -->
   <g font-size="15">
-    <text x="238" y="166">Cap + Effects</text>
-    <text x="522" y="166" text-anchor="end">Pre, Post, Inv</text>
-    <text x="238" y="322">Effects</text>
+    <text x="238" y="166">Capabilities and effects</text>
+    <text x="522" y="166" text-anchor="end">Requirements</text>
+    <text x="238" y="322">Observed effects</text>
     <text x="522" y="322" text-anchor="end">Evidence</text>
   </g>
 
   <!-- top-left: Authorization -->
   <text x="187" y="50" font-size="18" font-weight="600" text-anchor="middle">Authorization</text>
-  <text x="187" y="80" font-size="14" opacity="0.78" text-anchor="middle">Cedar policy · forbid overrides permit</text>
+  <text x="187" y="80" font-size="14" opacity="0.78" text-anchor="middle">Cedar policy and capability boundaries</text>
 
   <!-- top-right: Obligations -->
   <text x="573" y="50" font-size="18" font-weight="600" text-anchor="middle">Obligations</text>
-  <text x="573" y="80" font-size="14" opacity="0.78" text-anchor="middle">tests · static analysis · proof</text>
+  <text x="573" y="80" font-size="14" opacity="0.78" text-anchor="middle">tests, static analysis, proof</text>
 
   <!-- bottom-left: Runtime effect check -->
   <text x="187" y="406" font-size="18" font-weight="600" text-anchor="middle">Runtime effect check</text>
-  <text x="187" y="436" font-size="14" opacity="0.78" text-anchor="middle">harness records + reverts</text>
+  <text x="187" y="436" font-size="14" opacity="0.78" text-anchor="middle">harness records and reverts</text>
 
   <!-- bottom-right: Witness -->
   <text x="573" y="398" font-size="18" font-weight="600" text-anchor="middle">Witness</text>
   <text x="573" y="426" font-size="14" opacity="0.78" text-anchor="middle">evidence packet: proved, tested,</text>
   <text x="573" y="448" font-size="14" opacity="0.78" text-anchor="middle">observed, judged or assumed</text>
 </svg>
-<figcaption><strong>F2</strong> Φ at the centre; everything downstream consumes one of its four projections.</figcaption>
+<figcaption><strong>F2</strong> The task record separates authorization, obligations, runtime effects, and witness evidence.</figcaption>
 </figure>
-<p><strong>Cap and Effects project to authorization.</strong> "Refactor the parser, no network" becomes Cedar:</p>
-<div class="essay-code"><pre><code class="language-cedar">permit (
-  principal == Agent::&quot;refactor-bot&quot;,
-  action == Action::&quot;Write&quot;,
-  resource in Dir::&quot;parser&quot;
-);
-forbid (
-  principal == Agent::&quot;refactor-bot&quot;,
-  action == Action::&quot;Network&quot;,
-  resource
-);
-</code></pre></div>
-<p>A request is allowed only if some permit matches and no forbid matches; an empty policy set denies everything. "No network" is a forbid, and no permit can reopen it. Cedar is a projection of Φ, not its formalizer. It answers whether this principal may take this action on this resource in this context, and says nothing about whether the parser still parses.</p>
-<p><strong>Pre, Post, and Inv project to obligations</strong>, discharged by tests, static analysis, or proof depending on risk:</p>
-<div class="essay-code"><pre><code class="language-text">public_api(before) == public_api(after)
-tests(after)       == PASS
-behavior(before)   ≈  behavior(after)
-</code></pre></div>
-<p>Here ≈ is observational equivalence on the specified interface: no client of the parser's public surface can tell before from after. Defined that narrowly, it can be tested, approximated statically, or proved. Left undefined, it is the hand-wave this essay exists to end.</p>
-<p><strong>Effects project to a runtime check.</strong> The harness watches the run and checks each side effect against the declared set. No static effect system can see a tool loaded after deployment, so Cordis reifies effects and coeffects as runtime objects instead, and an undeclared access is an error rather than a surprise. Checked boundaries are static where possible and reified at runtime where not.</p>
-<p><strong>Evidence projects to a witness:</strong> tests run, traces captured, policy decisions logged, obligations discharged or refuted, and the human decision that accepted the residual risk.</p>
+<p>Capabilities and effects become authorization constraints. For example, a parser refactor may allow reads and writes under parser and test directories, while forbidding network access, dependency edits, and CI changes. Cedar is a useful language for this layer because it asks whether a principal may perform a given action on a given resource in a given context.</p>
+<p>Cedar is not the formalizer. It does not decide whether the parser remains correct. It constrains authority. That distinction is central: the permission decision and the correctness argument are separate claims.</p>
+<p>Preconditions, postconditions, and invariants become obligations. In the parser example, the public interface should remain stable, the relevant tests should pass, and clients of the specified parser surface should not observe a behavioral change. Those obligations may be discharged by tests, static analysis, dynamic traces, or proof depending on risk.</p>
+<p>Effects become runtime checks. The harness watches the run and compares each observed side effect with the declared task boundary. No static effect system can see every tool loaded after deployment, so Cordis makes effects and coeffects runtime objects. In this setting, an undeclared access becomes an error rather than a post hoc surprise.</p>
+<p>Evidence becomes a witness: tests run, traces captured, policy decisions logged, obligations discharged or refuted, and the human decision that accepted residual risk.</p>
 <blockquote>
-<p>Authorization and verification are two projections of one typed object.</p>
+<p>Authorization and verification should be derived from the same task record, but they answer different questions.</p>
 </blockquote>
 <p>An obligation with nowhere to land is ceremony, and two developments give obligations ground. Theory-level autoformalization, a position paper by Min, Bastani, and colleagues, moves the target from isolated statements to formal knowledge bases: definitions, lemmas, and invariants a new obligation can be stated against.</p>
-<p>CSLib aims to be the Mathlib for computer science, in two pillars: formalizing CS itself (models of computation, automata, operational semantics, program logics, complexity, concurrency, verified algorithms) and Boole, a Lean-embedded intermediate verification language that generates verification conditions for Grind, Lean-SMT, Hammer, or LLM provers. Its authors name the bottleneck: "AI-based provers are bottlenecked by the abstractions available in the underlying proof assistant." Their governance rule is this essay's creed: AI tools are advisory only, and every committed proof goes through manual review.</p>
-<p>Admission is a pipeline: candidate formalization, then proof check, which is verification (does the artifact satisfy Φ), then semantic review, which is validation (was Φ what was meant), then integration into the trusted library for the next task to reuse. A proof that passes against the wrong Φ is autoformalization's easiest failure, and Thread 2's second essay.</p>
-<p>Cedar itself shows where the open-closed boundary falls. Its semantics are formalized in Lean in cedar-spec, the Rust implementation is differentially tested against that spec, and cedar-policy-symcc compiles policies to SMT to prove never-errors, always-allows, subsumption, and equivalence, with cvc5 counterexamples. Amazon Verified Permissions, the hosted service, is paid. The semantics are connective, so they are open and verified all the way down; the service is a leaf.</p>
+<p>CSLib aims to be the Mathlib for computer science, in two pillars: formalizing CS itself (models of computation, automata, operational semantics, program logics, complexity, concurrency, verified algorithms) and Boole, a Lean-embedded intermediate verification language that generates verification conditions for multiple proof tools. Its authors identify the bottleneck as the availability of abstractions in the underlying proof assistant. Their governance rule is directly relevant to agentic software engineering: AI tools are advisory, and committed proofs require manual review.</p>
+<p>Admission is a pipeline: candidate formalization, proof checking, semantic review, and integration into a trusted library for future tasks. Proof checking asks whether the artifact satisfies the stated obligation. Semantic review asks whether the obligation captured the intended claim. A proof against the wrong task record is one of autoformalization's easiest failures, and it is the subject of Thread 2's second essay.</p>
+<p>Cedar itself shows where the open-closed boundary falls. Its semantics are formalized in Lean in cedar-spec, the Rust implementation is differentially tested against that spec, and cedar-policy-symcc compiles policies to SMT to prove never-errors, always-allows, subsumption, and equivalence, with cvc5 counterexamples. Amazon Verified Permissions, the hosted service, is paid. The connective semantics are open and independently inspectable; the hosted service occupies a separate implementation layer.</p>
 <h2 id="3-progressive-commitment-the-layer-cake">3. Progressive commitment: the layer cake</h2>
-<p>Compilers solved this shape of problem decades ago: parse tree, typed representation, IR, lowering, codegen, and each stage makes some ambiguity impossible and some invariant checkable. The layer cake is that pipeline lifted above the code, with Φ as the object being lowered. Goldilocks decides how much each layer must commit; open-versus-closed decides who may inspect it.</p>
+<p>Compilers solved this shape of problem decades ago: parse tree, typed representation, intermediate representation, lowering, and code generation. Each stage makes some ambiguity impossible and some invariant checkable. The layer cake is that pipeline lifted above the code. The task record is progressively committed as it moves from human intent to policy, harness execution, compiler-visible structure, and evidence.</p>
 <figure class="article-figure hero-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 648" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f3-title">The AI layer cake for agentic software</title>
-  <desc id="f3-desc">Six layers from human intent down to evidence, each stating what it commits, its open reference, and whether it must be open or may be closed; a vertical arrow marks progressive commitment; a shaded band below marks cloud, chips and energy as out of scope.</desc>
+  <desc id="f3-desc">Six layers from human intent down to evidence, each stating what it commits, its open reference, and the appropriate openness boundary; a vertical arrow marks progressive commitment; a shaded band below marks cloud, chips and energy as out of scope.</desc>
   <defs>
     <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
@@ -306,7 +291,7 @@ behavior(before)   ≈  behavior(after)
   <text class="h" x="54"  y="56">LAYER</text>
   <text class="h" x="178" y="56">COMMITS</text>
   <text class="h" x="372" y="56">OPEN REFERENCE</text>
-  <text class="h" x="738" y="56" text-anchor="end">OPENNESS</text>
+  <text class="h" x="738" y="56" text-anchor="end">BOUNDARY</text>
   <line class="rule" x1="42" y1="64" x2="750" y2="64"/>
 
   <!-- left gutter: progressive commitment -->
@@ -326,12 +311,12 @@ behavior(before)   ≈  behavior(after)
   <rect class="band" x="42" y="160" width="708" height="80" rx="6"/>
   <text class="n" x="54" y="196">Formal intent</text>
   <text class="n" x="54" y="215">&amp; policy</text>
-  <text class="c" x="178" y="196">Φ: authority bounded,</text>
+  <text class="c" x="178" y="196">task boundary,</text>
   <text class="c" x="178" y="214">obligations stated</text>
   <text class="r" x="372" y="196">Cedar · autoformalization ·</text>
   <text class="r" x="372" y="214">CSLib</text>
   <rect class="open" x="626" y="189" width="112" height="22" rx="11"/>
-  <text class="p" x="682" y="204.8">must be open</text>
+  <text class="p" x="682" y="204.8">open semantics</text>
 
   <!-- L3 Agent harness: y=246 -->
   <rect class="band" x="42" y="246" width="708" height="80" rx="6"/>
@@ -339,7 +324,7 @@ behavior(before)   ≈  behavior(after)
   <text class="n" x="54" y="301">(runtime)</text>
   <text class="c" x="178" y="273">effects recorded</text>
   <text class="c" x="178" y="291">with inverses;</text>
-  <text class="c" x="178" y="309">model-visible → logged</text>
+  <text class="c" x="178" y="309">model-visible logged</text>
   <text class="r" x="372" y="282">DeepSeek Harness ·</text>
   <text class="r" x="372" y="300">Cordis · ACP</text>
   <rect class="open" x="612" y="254" width="126" height="22" rx="11"/>
@@ -376,31 +361,31 @@ behavior(before)   ≈  behavior(after)
   <rect class="band" x="42" y="504" width="708" height="80" rx="6"/>
   <text class="n" x="54" y="540">Evidence /</text>
   <text class="n" x="54" y="559">witness</text>
-  <text class="c" x="178" y="531">proved · tested ·</text>
-  <text class="c" x="178" y="549">observed · judged ·</text>
+  <text class="c" x="178" y="531">proved, tested,</text>
+  <text class="c" x="178" y="549">observed, judged,</text>
   <text class="c" x="178" y="567">assumed</text>
   <text class="r" x="372" y="549">portable formats</text>
   <rect class="open" x="626" y="533" width="112" height="22" rx="11"/>
-  <text class="p" x="682" y="548.8">must be open</text>
+  <text class="p" x="682" y="548.8">portable</text>
 
   <!-- below the boundary -->
   <rect x="42" y="598" width="708" height="38" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="4 3"/>
-  <text class="b" x="396" y="622">cloud · chips · energy — below this series' boundary</text>
+  <text class="b" x="396" y="622">cloud, chips, energy - below this series' boundary</text>
 </svg>
-<figcaption><strong>F3</strong> One row per layer: what it commits, its open reference, and whether it must be open, can be closed, or either.</figcaption>
+<figcaption><strong>F3</strong> One row per layer: what it commits, its open reference, and the appropriate openness boundary.</figcaption>
 </figure>
 <p><strong>Human intent</strong> commits a goal and arrives through whichever client a person types into, open or closed.</p>
-<p><strong>Formal intent and policy</strong> commits Φ. Authority becomes decidable, obligations become stated, and "what was the agent allowed to do" is a lookup. It must be open: a policy semantics that only one product understands is configuration, not policy.</p>
-<p><strong>The agent harness</strong> commits execution: which tool ran, under which capability, with what result. It is a runtime. In Cordis a component is a triple ⟨coeffect specification, provision, witnessed effect function⟩; loading runs the effect function and accumulates inverses, and unloading applies them LIFO, so removing a plugin removes what it did. Without inverses you get the failures agent runs are full of: a tool present when the model read its schema and gone at call time, a permission granted for one payload and reused for another.</p>
+<p><strong>Formal intent and policy</strong> commit the task boundary. Authority becomes decidable, obligations become stated, and "what was the agent allowed to do" becomes an auditable lookup. This layer requires open semantics: a policy language understood by only one product is configuration, not policy infrastructure.</p>
+<p><strong>The agent harness</strong> commits execution: which tool ran, under which capability, with what result. It is a runtime. Cordis is useful because it treats context, effects, lifecycle state, and recovery behavior as first-class runtime concerns. Loading a component records what it did; unloading has enough information to reverse or retire the relevant effects. Without such structure, agent runs inherit familiar platform failures: a tool present when the model read its schema but absent at call time, or a permission granted for one payload and reused for another.</p>
 <p>DeepSeek Harness, MIT-licensed on Cordis and in developer preview, states its invariants. Everything is a plugin. Model-visible means logged: anything that reaches a model request is reconstructable from the log, and a runtime assertion enforces it.</p>
-<p>Each seam has a definition, a provider, and a consumer, so pointing the filesystem and subprocess providers at a remote sandbox carries Bash, PTY, and LSP with them. The protocol and the effect log must be open; the best agent can be closed.</p>
+<p>Each seam has a definition, a provider, and a consumer, so pointing the filesystem and subprocess providers at a remote sandbox can carry Bash, PTY, and LSP with them. The protocol and effect log need open semantics; individual agents can remain closed.</p>
 <p><strong>Compiler and language</strong> commits meaning: typed structure with an IR that analyzers can attach to. Mojo 1.0 (2026-08-11) is a stability milestone, with 1.x changes primarily additive, and a week later (2026-08-18) Modular opened the compiler and toolchain under Apache 2.0 with LLVM exceptions in modular/modular.</p>
-<p>Mojo's vision doc calls the language syntactic sugar for MLIR, built purely on MLIR Core, and I will make the argument Modular does not: an open, MLIR-native, general-purpose compiler is the pattern book for DSLs on MLIR and for verification hooks inserted before lowering erases the structure they need. Modular is not taking compiler contributions yet, and says why: "in today's era of AI coding" it needs to be deliberate about how contributions are handled. Open source, closed gate, because of agents: the IR and its analyzers are must-open, the gate is governance rather than interface, and a compiler vendor has drawn this essay's boundary.</p>
-<p><strong>Executable</strong> commits behavior, and it can sit on either side. <strong>Evidence and witness</strong> commits the record. It must be open: evidence legible only in one vendor's dashboard is a screenshot.</p>
+<p>Mojo's vision document frames the language as closely tied to MLIR. The broader compiler significance is that an open, MLIR-native, general-purpose compiler can become a pattern book for domain-specific languages on MLIR and for verification hooks inserted before lowering erases the structure they need. Modular is not taking compiler contributions yet, and says why: in the current era of AI coding, contribution governance has to be deliberate. This is another instance of the Goldilocks boundary: source and interfaces can be open while contribution gates remain governed.</p>
+<p><strong>Executable</strong> commits behavior, and it can sit on either side. <strong>Evidence and witness</strong> commit the record. Evidence needs portable representation; evidence legible only inside one vendor dashboard is difficult to audit independently.</p>
 <p>Below the cake sit cloud, chips, and energy, decisive for the cost floor and outside this series.</p>
-<p>My research lineage is hybrid program analysis, so I watch the evidence layer. Jitana and ReHAna were built for Android, where reflection and dynamic class loading hid the running code from static analysis while a trace showed nothing of the paths it skipped. Each side lies by omission; the discipline is making each side challenge the other. The agent loop reproduces that split: a patch is a static artifact, tool calls are dynamic behavior, logs are traces, tests are sampled executions, and a proof is a scoped formal claim. Reconciling them is the evidence layer's whole job and the subject of Thread 2.</p>
+<p>My research lineage is hybrid program analysis, so I watch the evidence layer. Jitana and ReHAna were built for Android, where reflection and dynamic class loading hid running code from static analysis, while a trace showed little about paths it did not exercise. Each evidence mode omits something. The discipline is to make those omissions explicit and to let each mode challenge the others. The agent loop reproduces the same split: a patch is a static artifact, tool calls are dynamic behavior, logs are traces, tests are sampled executions, and a proof is a scoped formal claim. Reconciling them is the evidence layer's whole job and the subject of Thread 2.</p>
 <h2 id="4-calibration">4. Calibration</h2>
-<p>A typed object is what makes calibration possible. You cannot tune the rigor of a prose handoff, but you can decide how much of Φ a task must discharge. The failure corners are symmetric. On rigor, too little is ambient permissions and summary-as-evidence; too much is a proof for every edit and ceremony outrunning signal. On openness, too little is the closed vertical; too much is fragmentation: source exists, nothing composes, dialects drift, adoption happens by fork.</p>
+<p>A structured task record is what makes calibration possible. A prose handoff cannot be tuned precisely, but a task record can state which obligations must be discharged for a given risk level. The failure corners are symmetric. On rigor, too little structure yields ambient permissions and summary-as-evidence; too much structure demands proof for every edit and lets ceremony outrun signal. On openness, too little structure yields the closed vertical; too much uncoordinated openness yields fragmentation: source exists, nothing composes, dialects drift, and adoption happens by fork.</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 510" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" fill="currentColor" width="100%">
   <title id="f4-title">The Goldilocks zone</title>
@@ -429,7 +414,7 @@ behavior(before)   ≈  behavior(after)
   <text x="430" y="421" text-anchor="middle" fill="currentColor" font-weight="600">rigor</text>
   <text x="732" y="421" text-anchor="end" fill="currentColor" fill-opacity="0.78">proof for every edit</text>
 
-  <!-- zone halo + zone -->
+  <!-- zone halo and zone -->
   <rect x="265" y="121" width="330" height="186" rx="28" fill="rgba(31,168,214,0.16)" fill-opacity="0.5" stroke="#1fa8d6" stroke-opacity="0.55" stroke-width="1.2" stroke-dasharray="4 3"/>
   <rect x="300" y="156" width="260" height="116" rx="16" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
   <text x="430" y="182" text-anchor="middle" fill="currentColor" font-size="18" font-weight="600">Goldilocks zone</text>
@@ -455,25 +440,25 @@ behavior(before)   ≈  behavior(after)
   <rect x="128" y="462" width="604" height="12" rx="6" fill="url(#f4-risk)" stroke="#c78307" stroke-opacity="0.6" stroke-width="1"/>
   <text x="128" y="496" fill="currentColor">docs edit</text>
   <text x="430" y="496" text-anchor="middle" fill="currentColor">parser refactor</text>
-  <text x="732" y="496" text-anchor="end" fill="currentColor">auth / payments</text>
+  <text x="732" y="496" text-anchor="end" fill="currentColor">auth and payments</text>
 </svg>
 <figcaption><strong>F4</strong> Rigor by openness, with the zone bounded on all four sides.</figcaption>
 </figure>
-<p>The zone on rigor is evidence proportional to risk. A docs edit earns a diff review and a test run. A parser refactor earns tests, static checks, and traces. An auth or payments boundary earns policy, a proof obligation, and an explicit human signature. Φ carries enough to place the task in advance: Effects and Inv say which band it is in, and Evidence says what the band demands.</p>
+<p>The zone on rigor is evidence proportional to risk. A documentation edit earns a diff review and a test run. A parser refactor earns tests, static checks, and traces. An authorization or payments boundary earns policy review, a proof obligation where appropriate, and explicit human signoff. The task record should carry enough information to place the work in the correct evidence band before edits begin.</p>
 <blockquote>
-<p>Rigor belongs to the task, not the agent, and Φ fixes it before a line changes.</p>
+<p>Rigor belongs to the task, not the agent, and the evidence requirement should be fixed before a line changes.</p>
 </blockquote>
 <p>The evidence vocabulary has seven labels: proved, refuted, tested, observed, judged, assumed, not checked. The labels cost nothing and block the most common failure in agent workflows: a proof over one property quietly presented as a proof over the system. Collapse them into one green check and the leak is back. The bands and the vocabulary are the contract between tools, which puts calibration itself on the open side of the boundary.</p>
 <h2 id="5-which-layers-open-and-why">5. Which layers open, and why</h2>
 <p>Three forces open a layer. Common infrastructure: everyone needs to build on it. Strategic collaboration: sharing it beats competing over it. Network effects: it is worth more with every implementation that speaks it. LLVM is all three compounding, a permissive compiler substrate funded by rivals and valuable in proportion to the languages and targets on it.</p>
-<p>Openness at a connective layer is architectural: its value is its externalities, so I expect these layers to open whether or not anyone is virtuous.</p>
-<p><strong>Weights can be closed.</strong> The open-weights letter NVIDIA hosted (2026-07-24), with over two hundred co-signers, argues on access, competition, control, adaptability, and security. Closed frontier models will coexist with open ones regardless, and trust never hinged on the weights.</p>
-<p><strong>The harness must be open.</strong> DeepSeek Harness on Cordis is the existence proof.</p>
-<p><strong>The compiler must be open; its gate can be closed.</strong> Mojo's compiler is Apache 2.0 with LLVM exceptions; its contribution queue is shut, and no analyzer needs that queue.</p>
-<p><strong>The protocol must be open; the editor and the agents can be either.</strong> Zed is roughly 97% Rust on its own GPU framework, gpui, under GPL-3.0-or-later. ACP is Apache-2.0 with no CLA, JSON-RPC over stdio with a typed schema, SDKs in five languages, and JetBrains co-developing. Zed charges nothing for external agents, and Claude Code and Cursor stay closed products behind it.</p>
-<p><strong>The proof tools must be open.</strong> Amazon's donation to the Lean FRO (2026-07-26), the FRO's largest ever, went outside Amazon on purpose: "it's easier to trust a proof when you can evaluate the tools behind it yourself," so that customers, auditors, and regulators can inspect work done in community-governed tools. The compiler may keep its gate because its output is checked downstream, by tests and by analyzers on an open IR; the proof checker is the last check, so its governance has to sit outside any one vendor.</p>
-<h2 id="6-the-creed">6. The creed</h2>
-<p><strong>A model may propose. Only a verifier admits.</strong> The reason is structural: the approximate representation that makes a model a strong proposer disqualifies it as an admitter.</p>
+<p>Openness at a connective layer is architectural: its value comes from external adoption, inspection, and interoperability rather than from exclusivity alone.</p>
+<p><strong>Weights can be closed.</strong> The open-weights letter NVIDIA hosted (2026-07-24), with over two hundred co-signers, argues on access, competition, control, adaptability, and security. Closed frontier models will coexist with open ones, and software trust does not reduce to weight access alone.</p>
+<p><strong>Harness semantics should be open.</strong> DeepSeek Harness on Cordis is a useful example of how a harness can expose plugin structure and runtime behavior.</p>
+<p><strong>Compiler interfaces should be open; contribution gates can remain governed.</strong> Mojo's compiler is Apache 2.0 with LLVM exceptions; its contribution queue is currently closed, but analyzers can still study and target the exposed compiler structure.</p>
+<p><strong>Protocols should be open; editors and agents can vary.</strong> Zed is implemented largely in Rust on its own GPU framework, gpui, under GPL-3.0-or-later. ACP is Apache-2.0 with no CLA, JSON-RPC over stdio with a typed schema, SDKs in five languages, and JetBrains co-developing. Zed charges nothing for external agents, and closed agents can still participate behind the protocol boundary.</p>
+<p><strong>Proof tools require open governance.</strong> Amazon's donation to the Lean FRO (2026-07-26), the FRO's largest ever, went outside Amazon on purpose: "it's easier to trust a proof when you can evaluate the tools behind it yourself," so that customers, auditors, and regulators can inspect work done in community-governed tools. The proof checker is close to the final trust boundary, so its governance cannot be treated as an ordinary implementation detail.</p>
+<h2 id="6-admission-and-governance">6. Admission and governance</h2>
+<p><strong>A model may propose; admission requires independent evidence.</strong> The reason is structural: the approximate representation that makes a model a strong proposer also makes it unsuitable as the sole authority for acceptance.</p>
 <p>If the verifier refutes the claim, the counterexample becomes a regression fixture. If it cannot decide, the claim stays unadmitted. A model's output is advisory until a deterministic check, a proof, a policy decision, or a human promotes it, and the promotion is recorded in the witness with its evidence class attached.</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 606" role="img" aria-labelledby="f5-title f5-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
@@ -503,8 +488,8 @@ behavior(before)   ≈  behavior(after)
   <!-- feedback edge: counterexample -> autoformalization -->
   <path d="M574,507 H616 V150 H421" fill="none" stroke="#c44a37" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#f5-arrow-red)"/>
   <text x="624" y="323" font-size="14" font-weight="600" fill="#c44a37">
-    <tspan x="624" dy="0">refuted →</tspan>
-    <tspan x="624" dy="18">regression fixture</tspan>
+    <tspan x="624" dy="0">refuted claim</tspan>
+    <tspan x="624" dy="18">becomes fixture</tspan>
   </text>
 
   <!-- 1 human intent -->
@@ -531,7 +516,7 @@ behavior(before)   ≈  behavior(after)
   <!-- 5 agent harness -->
   <rect x="155" y="280" width="290" height="56" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
   <text x="300" y="303" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">agent harness</text>
-  <text x="300" y="323" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">typed context · tools · effects</text>
+  <text x="300" y="323" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">typed context, tools, effects</text>
 
   <!-- 6 repository mutation -->
   <rect x="180" y="360" width="240" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
@@ -539,7 +524,7 @@ behavior(before)   ≈  behavior(after)
 
   <!-- 7 compiler · analyzer · tests -->
   <rect x="170" y="420" width="260" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-  <text x="300" y="443.5" font-size="15" text-anchor="middle" fill="currentColor">compiler · analyzer · tests</text>
+  <text x="300" y="443.5" font-size="15" text-anchor="middle" fill="currentColor">compiler, analyzer, tests</text>
 
   <!-- 8 evidence -->
   <rect x="16" y="480" width="568" height="54" rx="6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
@@ -562,11 +547,9 @@ behavior(before)   ≈  behavior(after)
 </svg>
 <figcaption><strong>F5</strong> Intent is formalized into policy and obligations, executed under a harness, checked by compiler and analyzers, and accepted on evidence.</figcaption>
 </figure>
-<p>That rule is the Goldilocks boundary, applied. Commit enough at each layer that admission is decidable; open enough of each layer that admission can be inspected by someone who does not work for the vendor.</p>
-<p>Compilers learned this decades ago; the stack above the code is learning it now, in public, and the series follows it from here.</p>
-<blockquote>
-<p>The proposer can be closed. The admitter must be open.</p>
-</blockquote>
+<p>That rule is the Goldilocks boundary applied to governance. Each layer should commit enough structure that admission is reviewable, and enough of the connective layer should be open that admission can be inspected outside the vendor that produced the artifact.</p>
+<p>Compilers learned progressive commitment decades ago. The stack above the code is now learning a similar discipline for agentic software engineering.</p>
+<p>The proposal source may be closed, but admission should depend on evidence that can be inspected outside the proposing system.</p>
 <p class="next-in-series">Next: Part 2, Open Models and Model Competition.</p>
 <section class="references">
 <h2 id="references">References</h2>

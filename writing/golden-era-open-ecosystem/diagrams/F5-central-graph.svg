@@ -25,8 +25,8 @@
   <!-- feedback edge: counterexample -> autoformalization -->
   <path d="M574,507 H616 V150 H421" fill="none" stroke="#c44a37" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#f5-arrow-red)"/>
   <text x="624" y="323" font-size="14" font-weight="600" fill="#c44a37">
-    <tspan x="624" dy="0">refuted →</tspan>
-    <tspan x="624" dy="18">regression fixture</tspan>
+    <tspan x="624" dy="0">refuted claim</tspan>
+    <tspan x="624" dy="18">becomes fixture</tspan>
   </text>
 
   <!-- 1 human intent -->
@@ -53,7 +53,7 @@
   <!-- 5 agent harness -->
   <rect x="155" y="280" width="290" height="56" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
   <text x="300" y="303" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">agent harness</text>
-  <text x="300" y="323" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">typed context · tools · effects</text>
+  <text x="300" y="323" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">typed context, tools, effects</text>
 
   <!-- 6 repository mutation -->
   <rect x="180" y="360" width="240" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
@@ -61,7 +61,7 @@
 
   <!-- 7 compiler · analyzer · tests -->
   <rect x="170" y="420" width="260" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
-  <text x="300" y="443.5" font-size="15" text-anchor="middle" fill="currentColor">compiler · analyzer · tests</text>
+  <text x="300" y="443.5" font-size="15" text-anchor="middle" fill="currentColor">compiler, analyzer, tests</text>
 
   <!-- 8 evidence -->
   <rect x="16" y="480" width="568" height="54" rx="6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>

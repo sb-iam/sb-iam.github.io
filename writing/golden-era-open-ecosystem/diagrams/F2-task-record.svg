@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 476" width="100%" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
-  <title id="f2-title">Φ and its four projections</title>
-  <desc id="f2-desc">The typed task object Φ = (Pre, Post, Inv, Cap, Effects, Evidence) sits at the centre. Four arrows project its components outward: Cap and Effects become an authorization policy in Cedar where forbid overrides permit; Pre, Post and Inv become obligations discharged by tests, static analysis or proof; Effects become a runtime effect check in the harness that records and reverts; Evidence becomes the witness packet labelled proved, tested, observed, judged or assumed. Authorization and verification are two projections of one typed object.</desc>
+  <title id="f2-title">Task record and review paths</title>
+  <desc id="f2-desc">A typed task record sits at the centre. Four arrows route its fields outward: capabilities and effects become authorization policy; requirements become obligations discharged by tests, static analysis or proof; observed effects become runtime checks in the harness; evidence becomes the witness packet labelled proved, tested, observed, judged or assumed. Authorization and verification are derived from the same task record but answer different questions.</desc>
   <defs>
     <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
   </defs>
@@ -13,9 +13,10 @@
     <rect x="398" y="368" width="350" height="96" rx="6"/>
   </g>
 
-  <!-- centre: Φ -->
+  <!-- centre: task record -->
   <rect x="150" y="208" width="460" height="62" rx="6" stroke="#1fa8d6" stroke-width="1.6" fill="rgba(31,168,214,0.16)"/>
-  <text x="380" y="245" font-size="18" font-weight="600" text-anchor="middle">Φ = (Pre, Post, Inv, Cap, Effects, Evidence)</text>
+  <text x="380" y="236" font-size="18" font-weight="600" text-anchor="middle">Task record</text>
+  <text x="380" y="257" font-size="14" opacity="0.78" text-anchor="middle">requirements, capabilities, effects, evidence</text>
 
   <!-- arrows -->
   <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#f2-arrow)">
@@ -25,25 +26,25 @@
     <line x1="520" y1="270" x2="560" y2="364"/>
   </g>
 
-  <!-- arrow labels: which components project -->
+  <!-- arrow labels: which fields are routed -->
   <g font-size="15">
-    <text x="238" y="166">Cap + Effects</text>
-    <text x="522" y="166" text-anchor="end">Pre, Post, Inv</text>
-    <text x="238" y="322">Effects</text>
+    <text x="238" y="166">Capabilities and effects</text>
+    <text x="522" y="166" text-anchor="end">Requirements</text>
+    <text x="238" y="322">Observed effects</text>
     <text x="522" y="322" text-anchor="end">Evidence</text>
   </g>
 
   <!-- top-left: Authorization -->
   <text x="187" y="50" font-size="18" font-weight="600" text-anchor="middle">Authorization</text>
-  <text x="187" y="80" font-size="14" opacity="0.78" text-anchor="middle">Cedar policy · forbid overrides permit</text>
+  <text x="187" y="80" font-size="14" opacity="0.78" text-anchor="middle">Cedar policy and capability boundaries</text>
 
   <!-- top-right: Obligations -->
   <text x="573" y="50" font-size="18" font-weight="600" text-anchor="middle">Obligations</text>
-  <text x="573" y="80" font-size="14" opacity="0.78" text-anchor="middle">tests · static analysis · proof</text>
+  <text x="573" y="80" font-size="14" opacity="0.78" text-anchor="middle">tests, static analysis, proof</text>
 
   <!-- bottom-left: Runtime effect check -->
   <text x="187" y="406" font-size="18" font-weight="600" text-anchor="middle">Runtime effect check</text>
-  <text x="187" y="436" font-size="14" opacity="0.78" text-anchor="middle">harness records + reverts</text>
+  <text x="187" y="436" font-size="14" opacity="0.78" text-anchor="middle">harness records and reverts</text>
 
   <!-- bottom-right: Witness -->
   <text x="573" y="398" font-size="18" font-weight="600" text-anchor="middle">Witness</text>
