@@ -35,13 +35,13 @@
         <li><a href="#6-the-ecosystem-is-its-tooling">The ecosystem is its tooling</a></li>
         <li><a href="#references">References</a></li>
       </ol></nav></aside><div class="article-body">
-<p class="lead"><strong>AI coding agents have exposed a missing layer between human intent and executable side effects.</strong> A person types a sentence, an agent edits a repository, and nothing between the two carries what the task permitted, what it had to preserve, and what counted as done. The model was the product; everything around it was scaffolding.</p>
-<p>The scaffolding is becoming the architecture, in public, one layer at a time. Within four weeks this summer:</p>
+<p class="lead"><strong>Software is heterogeneous by construction:</strong> it spans languages, type systems, intermediate representations, runtimes, protocols, and deployment targets. AI coding agents do not simplify that landscape; they move across it at machine speed, turning compositional correctness into a systems problem. An AI-native software stack therefore has to return to foundations: type theory for explicit contracts and invariants, category theory for composing tools and effects, and an open ecosystem in which critical interfaces can be inspected, extended, and independently checked.</p>
+<p>Four developments in summer 2026 made the emerging architecture concrete. Together, they point to four pillars: open models, typed agent harnesses, open compilers, and independently checkable proof infrastructure.</p>
 <ul>
 <li>an industry coalition published an open letter on open weights;</li>
-<li>Amazon made the largest gift in the Lean FRO's history;</li>
 <li>DeepSeek shipped an MIT-licensed agent harness;</li>
-<li>Modular open-sourced the Mojo compiler.</li>
+<li>Modular open-sourced the Mojo compiler;</li>
+<li>Amazon made the largest gift in the Lean FRO's history.</li>
 </ul>
 <p>My stance is neutral on open versus closed and exact about layers. Tan and colleagues argued at ICML 2026, in <em>If open source is to win, it must go public</em>, that "open source weights alone are inert" without the layers that activate them, the paper's "activation gap," and conceded that public AI "is not about replacing private labs." Their question is which layers must be public; mine is which must be open for an agent's work to be checked from outside the vendor.</p>
 <figure class="article-figure">
