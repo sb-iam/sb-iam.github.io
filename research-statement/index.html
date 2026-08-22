@@ -48,7 +48,7 @@
           <div class="hero-copy">
             <div class="article-meta">
               <span>Research Statement</span>
-              <span>Updated Aug 20, 2026</span>
+              <span>Updated Aug 21, 2026</span>
             </div>
             <h1>Hybrid program analysis, verification and synthesis for the current AI infrastructure</h1>
             <p class="dek">A concise research statement connecting Android hybrid analysis, the VerifyD Platform, compiler infrastructure, and interpretable AI systems.</p>
@@ -94,12 +94,163 @@
             <section id="lineage">
               <h2>Android Lineage</h2>
               <p>Jitana and ReHAna are the foundation of my research lineage. Jitana addressed scalable hybrid analysis for interacting Android applications. ReHAna focused on reflective code, where runtime behavior intentionally hides important targets from ordinary static analysis.</p>
+              <p>A single Jitana session can hold several large applications at once. The classloader graph below is what the analysis actually sees.</p>
+              <figure class="article-figure">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 476" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+                <title id="f1-title">Jitana classloader graph after analyzing four large apps</title>
+                <desc id="f1-desc">One System classloader on the left holds nine platform dex files. Four application classloaders on the right, SuperDepth, Facebook, Instagram, and JohnNESLite, each carry a parent_loader edge back to the System classloader, so every application's classes stay encapsulated and two classes with the same name in different apps resolve without collision.</desc>
+                <defs>
+                  <marker id="f1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+                  <style>
+                    .f1k  { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+                    .f1h  { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
+                    .f1id { font-size: 12px; font-weight: 750; opacity: 0.5; }
+                    .f1r  { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.82; }
+                    .f1e  { font-size: 11.5px; opacity: 0.62; text-anchor: middle; font-style: italic; }
+                    .f1c  { font-size: 12.5px; opacity: 0.72; text-anchor: middle; }
+                    .f1box{ fill: rgba(128,128,128,0.07); stroke-width: 1.3; }
+                    .f1sep{ stroke-width: 1; opacity: 0.4; }
+                    .f1link{ stroke: currentColor; stroke-width: 1.4; opacity: 0.6; fill: none; }
+                  </style>
+                </defs>
+
+                <text class="f1k" x="410" y="20">ONE SESSION. FOUR APPS. NO NAME COLLISIONS.</text>
+
+                <!-- System classloader: the identity anchor -->
+                <rect class="f1box" x="16" y="110" width="248" height="208" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
+                <text class="f1id" x="32" y="136">0</text>
+                <text class="f1h" x="52" y="136" fill="#b8860b">SYSTEM</text>
+                <line class="f1sep" x1="32" y1="146" x2="248" y2="146" stroke="#b8860b"/>
+                <text class="f1r" x="32" y="166">core.dex</text>
+                <text class="f1r" x="32" y="183">framework.dex</text>
+                <text class="f1r" x="32" y="200">framework2.dex</text>
+                <text class="f1r" x="32" y="217">ext.dex</text>
+                <text class="f1r" x="32" y="234">conscrypt.dex</text>
+                <text class="f1r" x="32" y="251">okhttp.dex</text>
+                <text class="f1r" x="32" y="268">core-junit.dex</text>
+                <text class="f1r" x="32" y="285">android.test.runner.dex</text>
+                <text class="f1r" x="32" y="302">android.policy.dex</text>
+
+                <!-- 1 SuperDepth -->
+                <rect class="f1box" x="470" y="26" width="334" height="72" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
+                <text class="f1id" x="486" y="52">1</text>
+                <text class="f1h" x="506" y="52" fill="#c44a37">SUPERDEPTH</text>
+                <line class="f1sep" x1="486" y1="62" x2="788" y2="62" stroke="#c44a37"/>
+                <text class="f1r" x="486" y="82">super_depth_classes.dex</text>
+
+                <!-- 2 Facebook -->
+                <rect class="f1box" x="470" y="110" width="334" height="123" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
+                <text class="f1id" x="486" y="136">2</text>
+                <text class="f1h" x="506" y="136" fill="#8b6fc0">FACEBOOK</text>
+                <line class="f1sep" x1="486" y1="146" x2="788" y2="146" stroke="#8b6fc0"/>
+                <text class="f1r" x="486" y="166">data@app@com.facebook.katana-1.apk@classes.dex</text>
+                <text class="f1r" x="486" y="183">program-eb5202dbb54c0efff1c01c5f...baa6.dex.dex</text>
+                <text class="f1r" x="486" y="200">program-e2ca9fdbaa4e32f97b90b376...baa6.dex.dex</text>
+                <text class="f1r" x="486" y="217">program-7feaf7c75a5305b1083a160f...baa6.dex.dex</text>
+
+                <!-- 3 Instagram -->
+                <rect class="f1box" x="470" y="245" width="334" height="72" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
+                <text class="f1id" x="486" y="271">3</text>
+                <text class="f1h" x="506" y="271" fill="#1fa8d6">INSTAGRAM</text>
+                <line class="f1sep" x1="486" y1="281" x2="788" y2="281" stroke="#1fa8d6"/>
+                <text class="f1r" x="486" y="301">instagram_classes.dex</text>
+
+                <!-- 4 JohnNESLite -->
+                <rect class="f1box" x="470" y="329" width="334" height="72" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
+                <text class="f1id" x="486" y="355">4</text>
+                <text class="f1h" x="506" y="355" fill="#4f9d69">JOHNNESLITE</text>
+                <line class="f1sep" x1="486" y1="365" x2="788" y2="365" stroke="#4f9d69"/>
+                <text class="f1r" x="486" y="385">johnneslite_classes.dex</text>
+
+                <!-- parent_loader edges, all returning to the System classloader -->
+                <path class="f1link" d="M470,62 C 400,62 340,140 268,152" marker-end="url(#f1-arrow)"/>
+                <text class="f1e" x="372" y="96">parent_loader</text>
+
+                <path class="f1link" d="M470,171 C 410,171 330,182 268,186" marker-end="url(#f1-arrow)"/>
+                <text class="f1e" x="372" y="167">parent_loader</text>
+
+                <path class="f1link" d="M470,281 C 410,281 330,244 268,236" marker-end="url(#f1-arrow)"/>
+                <text class="f1e" x="372" y="296">parent_loader</text>
+
+                <path class="f1link" d="M470,365 C 400,365 340,282 268,268" marker-end="url(#f1-arrow)"/>
+                <text class="f1e" x="372" y="350">parent_loader</text>
+
+                <text class="f1c" x="410" y="438">Every application classloader keeps a parent_loader edge back to the System loader.</text>
+                <text class="f1c" x="410" y="458">Classes stay encapsulated per app; identical names in different apps never collide.</text>
+              </svg>
+              <figcaption><strong>F1</strong> Classloader graph after analyzing four large apps simultaneously in a single Jitana session. The System loader is the identity anchor: every application binds back to it, which is what lets one analysis hold several large applications at once without their class namespaces running together. Redrawn after Figure 4 of <a class="text-link on-paper" href="/docs/Jitana-Journal.pdf" target="_blank" rel="noreferrer">Jitana, Journal of Computer Languages, 2019</a>.</figcaption>
+              </figure>
               <p>Those projects shaped how I think about software analysis. Static facts are necessary but incomplete. Runtime observations are necessary but incomplete. Useful analysis comes from composing them carefully and keeping track of what each method can and cannot claim.</p>
             </section>
 
             <section id="platform">
               <h2>VerifyD Platform</h2>
               <p>VerifyD is my current platform work for hybrid analysis of AI-assisted software development. The goal is to make software changes easier to inspect, test, explain, and review using static checks, dynamic checks, compiler-aware evidence, and provenance.</p>
+              <p>The platform separates control from computation and puts a typed program graph between them.</p>
+              <figure class="article-figure">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 288" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+                <title id="f2-title">VerifyD architecture: Rust control plane, Virtual Graph Loader, Mojo data plane</title>
+                <desc id="f2-desc">Three planes, left to right. The Rust control plane holds auth and the Cedar gate, the IDE, ACP and CLI surfaces, the cloud SDK and receipts, and lifecycle and storage. The Virtual Graph Loader holds the typed program graph, evidence and identity, on-demand context, and sealed snapshots. The Mojo data plane holds inference through MAX, Nabla-Mojo training, RLVR loops, and analysis and evaluation. Work flows left to right, and a return arc carries evidence from the data plane back to the control plane, where authority stays.</desc>
+                <defs>
+                  <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+                  <marker id="f2-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+                  <style>
+                    .f2k  { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+                    .f2h  { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
+                    .f2id { font-size: 12px; font-weight: 750; opacity: 0.5; }
+                    .f2r  { font-size: 12px; opacity: 0.84; }
+                    .f2c  { font-size: 12.5px; opacity: 0.72; text-anchor: middle; }
+                    .f2box{ fill: rgba(128,128,128,0.07); stroke-width: 1.3; }
+                    .f2sep{ stroke-width: 1; opacity: 0.4; }
+                    .f2link{ stroke: currentColor; stroke-width: 1.4; opacity: 0.6; fill: none; }
+                    .f2ret { stroke: #b8860b; stroke-width: 1.4; opacity: 0.9; fill: none; }
+                  </style>
+                </defs>
+
+                <text class="f2k" x="410" y="20">EVIDENCE RETURNS. AUTHORITY DOES NOT MOVE.</text>
+                <path class="f2ret" d="M680,56 C 680,34 620,32 410,32 C 200,32 140,34 140,56" marker-end="url(#f2-arrow-gold)"/>
+
+                <!-- 1 Rust control plane -->
+                <rect class="f2box" x="16" y="56" width="248" height="152" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
+                <text class="f2id" x="32" y="82">1</text>
+                <text class="f2h" x="52" y="82" fill="#1fa8d6">RUST CONTROL PLANE</text>
+                <line class="f2sep" x1="32" y1="92" x2="248" y2="92" stroke="#1fa8d6"/>
+                <text class="f2r" x="32" y="114">Auth + Cedar gate</text>
+                <text class="f2r" x="32" y="133">IDE / ACP / CLI</text>
+                <text class="f2r" x="32" y="152">cloud SDK + receipts</text>
+                <line class="f2sep" x1="32" y1="168" x2="248" y2="168" stroke="#1fa8d6"/>
+                <text class="f2r" x="32" y="190">lifecycle + storage</text>
+
+                <!-- 2 Virtual Graph Loader: the identity anchor -->
+                <rect class="f2box" x="286" y="56" width="248" height="152" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
+                <text class="f2id" x="302" y="82">2</text>
+                <text class="f2h" x="322" y="82" fill="#b8860b">VIRTUAL GRAPH LOADER</text>
+                <line class="f2sep" x1="302" y1="92" x2="518" y2="92" stroke="#b8860b"/>
+                <text class="f2r" x="302" y="114">typed program graph</text>
+                <text class="f2r" x="302" y="133">evidence + identity</text>
+                <text class="f2r" x="302" y="152">on-demand context</text>
+                <line class="f2sep" x1="302" y1="168" x2="518" y2="168" stroke="#b8860b"/>
+                <text class="f2r" x="302" y="190">sealed snapshots</text>
+
+                <!-- 3 Mojo data plane -->
+                <rect class="f2box" x="556" y="56" width="248" height="152" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
+                <text class="f2id" x="572" y="82">3</text>
+                <text class="f2h" x="592" y="82" fill="#8b6fc0">MOJO DATA PLANE</text>
+                <line class="f2sep" x1="572" y1="92" x2="788" y2="92" stroke="#8b6fc0"/>
+                <text class="f2r" x="572" y="114">inference / MAX</text>
+                <text class="f2r" x="572" y="133">Nabla-Mojo training</text>
+                <text class="f2r" x="572" y="152">RLVR loops</text>
+                <line class="f2sep" x1="572" y1="168" x2="788" y2="168" stroke="#8b6fc0"/>
+                <text class="f2r" x="572" y="190">analysis + evaluation</text>
+
+                <line class="f2link" x1="266" y1="132" x2="282" y2="132" marker-end="url(#f2-arrow)"/>
+                <line class="f2link" x1="536" y1="132" x2="552" y2="132" marker-end="url(#f2-arrow)"/>
+
+                <text class="f2c" x="410" y="250">The IDE, Cedar-Mojo, Nabla-Mojo, and the VGL are instruments.</text>
+                <text class="f2c" x="410" y="270">The verification spine is the product.</text>
+              </svg>
+              <figcaption><strong>F2</strong> The VerifyD platform architecture. Rust controls, Mojo computes, and the Virtual Graph Loader connects them: it holds the typed program graph, binds evidence and identity to it, loads program context on demand, and seals the snapshot a change was evaluated against. It plays the role the System classloader plays in <strong>F1</strong>, one rung up. Evidence returns to the control plane; the authority to admit a change never leaves it.</figcaption>
+              </figure>
               <p>The platform builds on my research background in Android hybrid analysis and compiler-integrated interpretability, but it is framed around practical software-engineering workflows rather than a standalone interpretability system.</p>
             </section>
 
@@ -107,6 +258,7 @@
               <h2>Current Direction</h2>
               <p>My current direction keeps the hybrid-analysis core and applies it to modern AI-assisted software work. I am interested in how static analysis, dynamic checks, compiler IR, and model-facing tools can help engineers understand code that is written, modified, or explained by AI systems.</p>
               <p>The point is not to claim that a model can replace analysis. The point is to use each tool for what it is good at: models for search and explanation, static analysis for structure, dynamic analysis for behavior, compilers for semantics, and humans for judgment.</p>
+              <p>The goal underneath all of it is a single high-performance substrate that composes. Analyses compose, evidence composes, and the composition laws hold at higher order, not only over first-order facts about a program. That is the difference between verification as infrastructure and verification as a pile of checkers: a result established once can be carried into another analysis, and into another tool, without being recomputed or re-trusted.</p>
             </section>
 
             <section id="publications">
@@ -118,7 +270,7 @@
                 <li><span>GranDroid: Graph-Based Detection of Malicious Network Behaviors in Android Applications. SecureComm 2018.</span><a href="/docs/Securecomm18_Grandroid.pdf" target="_blank" rel="noreferrer">PDF</a></li>
                 <li><span>An Efficient, Robust, and Scalable Approach for Analyzing Interacting Android Apps. ICSE 2017.</span><a href="https://github.com/ytsutano/jitana.git" target="_blank" rel="noreferrer">Source code</a></li>
               </ul>
-              <p><a class="text-link on-paper" href="/docs/shakthi_bachala_research_statement_icse.pdf" target="_blank" rel="noreferrer">Open previous PDF archive</a></p>
+              <p><a class="text-link on-paper" href="/docs/shakthi_bachala_research_statement_icse.pdf" target="_blank" rel="noreferrer">Previous research statement, as presented at the ICSE 2026 Doctoral Symposium (PDF)</a></p>
             </section>
           </div>
         </div>

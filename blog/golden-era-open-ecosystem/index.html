@@ -14,7 +14,7 @@
       catch (error) { document.documentElement.dataset.theme = "dark"; }
     })();
   </script>
-  <link rel="stylesheet" href="../../styles.css?v=20260821d">
+  <link rel="stylesheet" href="../../styles.css?v=20260821f">
 </head>
 <body>
   <a class="skip-link" href="#article">Skip to article</a>
@@ -25,7 +25,7 @@
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Light</span></button>
     </header>
     <main id="article"><article>
-      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Open Ecosystem</span><span>Part 1 of 10</span><span>Aug 21, 2026</span></div><h1>Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open-Weights Letter</h1><p class="dek">Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.</p></div></header>
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>The Goldilocks Zone of the Open Software Ecosystem</span><span>Part 1 of 10</span><span>Aug 21, 2026</span></div><h1>Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open-Weights Letter</h1><p class="dek">Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.</p></div></header>
       <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
         <li><a href="#1-the-open-ai-layer-cake">The Open AI Layer Cake</a></li>
         <li><a href="#2-what-this-series-covers">What this series covers</a></li>
@@ -35,13 +35,13 @@
         <li><a href="#6-the-ecosystem-is-its-tooling">The ecosystem is its tooling</a></li>
         <li><a href="#references">References</a></li>
       </ol></nav></aside><div class="article-body">
-<p class="lead"><strong>AI coding agents have exposed a missing layer between human intent and executable side effects.</strong> A person types a sentence, an agent edits a repository, and nothing between the two carries what the task permitted, what it had to preserve, and what counted as done. The model was the product; everything around it was scaffolding.</p>
-<p>The scaffolding is becoming the architecture, in public, one layer at a time. Within four weeks this summer:</p>
+<p class="lead"><strong>Software is heterogeneous by construction:</strong> it spans languages, type systems, intermediate representations, runtimes, protocols, and deployment targets. AI coding agents do not simplify that landscape; they move across it at machine speed, turning compositional correctness into a systems problem. An AI-native software stack therefore has to return to foundations: type theory for explicit contracts and invariants, category theory for composing tools and effects, and an open ecosystem in which critical interfaces can be inspected, extended, and independently checked.</p>
+<p>Four developments in summer 2026 made the emerging architecture concrete. Together, they point to four pillars: open models, typed agent harnesses, open compilers, and independently checkable proof infrastructure.</p>
 <ul>
 <li>an industry coalition published an open letter on open weights;</li>
-<li>Amazon made the largest gift in the Lean FRO's history;</li>
 <li>DeepSeek shipped an MIT-licensed agent harness;</li>
-<li>Modular open-sourced the Mojo compiler.</li>
+<li>Modular open-sourced the Mojo compiler;</li>
+<li>Amazon made the largest gift in the Lean FRO's history.</li>
 </ul>
 <p>My stance is neutral on open versus closed and exact about layers. Tan and colleagues argued at ICML 2026, in <em>If open source is to win, it must go public</em>, that "open source weights alone are inert" without the layers that activate them, the paper's "activation gap," and conceded that public AI "is not about replacing private labs." Their question is which layers must be public; mine is which must be open for an agent's work to be checked from outside the vendor.</p>
 <figure class="article-figure">
@@ -405,7 +405,7 @@
 <li>Anything outside software engineering.</li>
 <li>Auto-research, the loop that produces papers rather than software.</li>
 </ul>
-<p>Three threads, each revisited quarterly for as long as the stack keeps moving.</p>
+<p>Three evolving threads.</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
@@ -416,15 +416,15 @@
 <tbody>
 <tr>
 <td>The Goldilocks Zone of the Open Software Ecosystem</td>
-<td>10, tentative and evolving: this essay · from leaky abstractions to type-safe abstractions · languages, SDKs, and the holy wars · open compilers: Mojo, MLIR, and the pattern book for DSLs · open agent harnesses: runtimes with inverses · open proofs: Lean, CSLib, and the checker nobody owns · open weights, models, and environments: the letter, the activation gap, and RL on your own hardware · open protocols and portable evidence · incentives, licensing, and the open social contract · conclusion</td>
+<td>10, tentative and evolving: this essay · from leaky to type-safe abstractions · language and SDK design for the agent era: Mojo, Rust, and modern C++ · compiler infrastructure: MLIR, LLVM, and a pattern book for composable DSLs and libraries · agent harnesses, sandboxes, and the safe deployment pipeline · formal verification with the Rust toolchain: the ecosystem Mojo needs to build on · open weights, models, and environments: the letter and RL on your own hardware · open protocols and portable evidence · incentives, licensing, and the open social contract · conclusion</td>
 </tr>
 <tr>
 <td>Hybrid Analysis</td>
-<td>3: static vs. dynamic analysis · verification vs. validation · static + dynamic, verification + validation</td>
+<td>5: static + dynamic analysis · verification + validation · program synthesis + LLMs · mechanistic interpretability + influence functions; fixed models vs. continual learning · a shared analysis and evidence substrate</td>
 </tr>
 <tr>
 <td>Future of Software Engineering</td>
-<td>3: IDEs, CLIs, and harnesses · language wars in the agent era · review, acceptance, and ownership — and, across all three, how devtools unify the personas (software engineer, AI engineer, data and platform engineer) and whether generic tooling or specialized, extensible tooling wins</td>
+<td>5: the agentic development stack: IDEs, CLIs, agent harnesses, and LLMs · high-performance, safe languages for coding agents · protocol proliferation: LSP, ACP, MCP, A2A, and what comes next · engineering personas: software, AI, platform, security, and DevOps · composable tooling across engineering roles</td>
 </tr>
 </tbody>
 </table></div>
@@ -928,7 +928,7 @@
 </section>
       </div></div>
     </article></main>
-    <footer class="site-footer"><span>Shakthi Bachala</span><span>Open Ecosystem · Part 1 of 10</span><span>2026</span></footer>
+    <footer class="site-footer"><span>Shakthi Bachala</span><span>The Goldilocks Zone of the Open Software Ecosystem · Part 1 of 10</span><span>2026</span></footer>
   </div>
   <script src="/theme.js?v=20260821e" defer></script>
 </body>
