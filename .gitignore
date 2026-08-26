@@ -1,0 +1,15 @@
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# LaTeX build artifacts (docs/cv is built from .tex)
+*.aux
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.toc
+*.bbl
+*.blg
+*.log

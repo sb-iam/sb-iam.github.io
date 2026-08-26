@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 606" width="100%" role="img" aria-labelledby="f5-title f5-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f5-title">From intent to acceptance</title>
+  <desc id="f5-desc">Top-to-bottom graph: human intent becomes a natural-language task, is autoformalized, forks into an authorization policy (who may do what) and semantic obligations (what must remain true), rejoins in the agent harness with typed context, tools and effects, produces a repository mutation checked by compiler, analyzer and tests, yields evidence (proof, trace, test result, review packet, counterexample) and ends in human acceptance. A single feedback edge returns a refuted counterexample to autoformalization as a regression fixture.</desc>
+  <defs>
+    <marker id="f5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f5-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+  </defs>
+
+  <!-- main flow edges -->
+  <g fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#f5-arrow)">
+    <line x1="300" y1="48" x2="300" y2="71"/>
+    <line x1="300" y1="108" x2="300" y2="131"/>
+    <line x1="300" y1="336" x2="300" y2="359"/>
+    <line x1="300" y1="396" x2="300" y2="419"/>
+    <line x1="300" y1="456" x2="300" y2="479"/>
+    <line x1="300" y1="534" x2="300" y2="557"/>
+    <!-- fork -->
+    <path d="M300,168 V182 H170 V195"/>
+    <path d="M300,168 V182 H430 V195"/>
+    <!-- rejoin -->
+    <path d="M170,252 V266 H300 V279"/>
+    <path d="M430,252 V266 H300 V279"/>
+  </g>
+
+  <!-- feedback edge: counterexample -> autoformalization -->
+  <path d="M574,507 H616 V150 H421" fill="none" stroke="#c44a37" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#f5-arrow-red)"/>
+  <text x="624" y="323" font-size="14" font-weight="600" fill="#c44a37">
+    <tspan x="624" dy="0">refuted →</tspan>
+    <tspan x="624" dy="18">regression fixture</tspan>
+  </text>
+
+  <!-- 1 human intent -->
+  <rect x="210" y="12" width="180" height="36" rx="18" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="35.5" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">human intent</text>
+
+  <!-- 2 natural-language task -->
+  <rect x="180" y="72" width="240" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="95.5" font-size="15" text-anchor="middle" fill="currentColor">natural-language task</text>
+
+  <!-- 3 autoformalization -->
+  <rect x="180" y="132" width="240" height="36" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="300" y="155.5" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">autoformalization</text>
+
+  <!-- 4 fork -->
+  <rect x="60" y="196" width="220" height="56" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="170" y="219" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">authorization policy</text>
+  <text x="170" y="239" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">who may do what</text>
+
+  <rect x="320" y="196" width="220" height="56" rx="6" fill="rgba(31,168,214,0.16)" stroke="#1fa8d6" stroke-width="1.6"/>
+  <text x="430" y="219" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">semantic obligations</text>
+  <text x="430" y="239" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">what must remain true</text>
+
+  <!-- 5 agent harness -->
+  <rect x="155" y="280" width="290" height="56" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="303" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">agent harness</text>
+  <text x="300" y="323" font-size="14" text-anchor="middle" fill="currentColor" opacity="0.78">typed context · tools · effects</text>
+
+  <!-- 6 repository mutation -->
+  <rect x="180" y="360" width="240" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="383.5" font-size="15" text-anchor="middle" fill="currentColor">repository mutation</text>
+
+  <!-- 7 compiler · analyzer · tests -->
+  <rect x="170" y="420" width="260" height="36" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="443.5" font-size="15" text-anchor="middle" fill="currentColor">compiler · analyzer · tests</text>
+
+  <!-- 8 evidence -->
+  <rect x="16" y="480" width="568" height="54" rx="6" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <g font-size="15" text-anchor="middle" fill="currentColor">
+    <rect x="26" y="493" width="61" height="28" rx="14" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="56.5" y="512.3">proof</text>
+    <rect x="100" y="493" width="61" height="28" rx="14" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="130.5" y="512.3">trace</text>
+    <rect x="174" y="493" width="111" height="28" rx="14" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="229.5" y="512.3">test result</text>
+    <rect x="298" y="493" width="127" height="28" rx="14" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+    <text x="361.5" y="512.3">review packet</text>
+    <rect x="438" y="493" width="136" height="28" rx="14" fill="rgba(196,74,55,0.16)" stroke="#c44a37" stroke-width="1.2"/>
+    <text x="506" y="512.3">counterexample</text>
+  </g>
+
+  <!-- 9 human acceptance -->
+  <rect x="200" y="558" width="200" height="36" rx="18" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.2"/>
+  <text x="300" y="581.5" font-size="15" font-weight="600" text-anchor="middle" fill="currentColor">human acceptance</text>
+</svg>

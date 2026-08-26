@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 648" width="100%" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f3-title">The AI layer cake for agentic software</title>
+  <desc id="f3-desc">Six layers from human intent down to evidence, each stating what it commits, its open reference, and the appropriate openness boundary; a vertical arrow marks progressive commitment; a shaded band below marks cloud, chips and energy as out of scope.</desc>
+  <defs>
+    <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .h  { font-size: 14px; font-weight: 600; opacity: 0.78; letter-spacing: 0.08em; }
+      .n  { font-size: 16px; font-weight: 600; }
+      .c  { font-size: 15px; }
+      .r  { font-size: 15px; opacity: 0.78; }
+      .p  { font-size: 14px; text-anchor: middle; }
+      .g  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
+      .b  { font-size: 15px; opacity: 0.78; text-anchor: middle; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .open  { fill: rgba(31,168,214,0.16); stroke: #1fa8d6; stroke-width: 1.2; }
+      .either{ fill: rgba(199,131,7,0.16);  stroke: #c78307; stroke-width: 1.2; }
+      .rule  { stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- title -->
+  <text class="t" x="42" y="25">The AI layer cake for agentic software</text>
+
+  <!-- column headers -->
+  <text class="h" x="54"  y="56">LAYER</text>
+  <text class="h" x="178" y="56">COMMITS</text>
+  <text class="h" x="372" y="56">OPEN REFERENCE</text>
+  <text class="h" x="738" y="56" text-anchor="end">BOUNDARY</text>
+  <line class="rule" x1="42" y1="64" x2="750" y2="64"/>
+
+  <!-- left gutter: progressive commitment -->
+  <line x1="32" y1="74" x2="32" y2="584" stroke="currentColor" stroke-width="1.5" marker-end="url(#f3-arrow)"/>
+  <text class="g" transform="rotate(-90 22 329)" x="22" y="329">progressive commitment</text>
+
+  <!-- L1 Human intent: y=74 -->
+  <rect class="band" x="42" y="74" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="119.5">Human intent</text>
+  <text class="c" x="178" y="110">what was asked;</text>
+  <text class="c" x="178" y="128">who accepts risk</text>
+  <text class="r" x="372" y="119">—</text>
+  <rect class="either" x="670" y="103" width="68" height="22" rx="11"/>
+  <text class="p" x="704" y="118.8">either</text>
+
+  <!-- L2 Formal intent & policy: y=160 -->
+  <rect class="band" x="42" y="160" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="196">Formal intent</text>
+  <text class="n" x="54" y="215">&amp; policy</text>
+  <text class="c" x="178" y="196">task boundary,</text>
+  <text class="c" x="178" y="214">obligations stated</text>
+  <text class="r" x="372" y="196">Cedar · CSLib (Feb 2026) ·</text>
+  <text class="r" x="372" y="214">Lean FRO (Amazon, Jul 2026)</text>
+  <rect class="open" x="626" y="189" width="112" height="22" rx="11"/>
+  <text class="p" x="682" y="204.8">open semantics</text>
+
+  <!-- L3 Agent harness: y=246 -->
+  <rect class="band" x="42" y="246" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="282">Agent harness</text>
+  <text class="n" x="54" y="301">(runtime)</text>
+  <text class="c" x="178" y="273">effects recorded</text>
+  <text class="c" x="178" y="291">with inverses;</text>
+  <text class="c" x="178" y="309">model-visible logged</text>
+  <text class="r" x="372" y="282">DeepSeek Harness</text>
+  <text class="r" x="372" y="300">(Aug 2026) · Cordis · ACP</text>
+  <rect class="open" x="612" y="254" width="126" height="22" rx="11"/>
+  <text class="p" x="675" y="269.8">interface open</text>
+  <rect class="either" x="612" y="282" width="126" height="36" rx="8"/>
+  <text class="p" x="675" y="297.2">implementation</text>
+  <text class="p" x="675" y="312.2">either</text>
+
+  <!-- L4 Compiler & language: y=332 -->
+  <rect class="band" x="42" y="332" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="368">Compiler</text>
+  <text class="n" x="54" y="387">&amp; language</text>
+  <text class="c" x="178" y="359">structure checked;</text>
+  <text class="c" x="178" y="377">analysis hooks</text>
+  <text class="c" x="178" y="395">before lowering</text>
+  <text class="r" x="372" y="368">Mojo 1.0 + open compiler</text>
+  <text class="r" x="372" y="386">(Aug 2026) · MLIR · LLVM</text>
+  <rect class="open" x="612" y="340" width="126" height="22" rx="11"/>
+  <text class="p" x="675" y="355.8">interface open</text>
+  <rect class="either" x="612" y="368" width="126" height="36" rx="8"/>
+  <text class="p" x="675" y="383.2">implementation</text>
+  <text class="p" x="675" y="398.2">either</text>
+
+  <!-- L5 Executable system: y=418 -->
+  <rect class="band" x="42" y="418" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="454">Executable</text>
+  <text class="n" x="54" y="473">system</text>
+  <text class="c" x="178" y="454">behaviour observed;</text>
+  <text class="c" x="178" y="472">traces produced</text>
+  <text class="r" x="372" y="454">Zed · CLI · DGX Spark-class</text>
+  <text class="r" x="372" y="472">local models</text>
+  <rect class="either" x="670" y="447" width="68" height="22" rx="11"/>
+  <text class="p" x="704" y="462.8">either</text>
+
+  <!-- L6 Evidence / witness: y=504 -->
+  <rect class="band" x="42" y="504" width="708" height="80" rx="6"/>
+  <text class="n" x="54" y="540">Evidence /</text>
+  <text class="n" x="54" y="559">witness</text>
+  <text class="c" x="178" y="531">proved, tested,</text>
+  <text class="c" x="178" y="549">observed, judged,</text>
+  <text class="c" x="178" y="567">assumed</text>
+  <text class="r" x="372" y="540">portable formats ·</text>
+  <text class="r" x="372" y="558">environments (Prime Intellect)</text>
+  <rect class="open" x="626" y="533" width="112" height="22" rx="11"/>
+  <text class="p" x="682" y="548.8">portable</text>
+
+  <!-- below the boundary -->
+  <rect x="42" y="598" width="708" height="38" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="4 3"/>
+  <text class="b" x="396" y="622">cloud, chips, energy - below this series' boundary</text>
+</svg>
