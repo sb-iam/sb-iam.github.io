@@ -27,7 +27,7 @@ import sys
 import markdown
 
 HEADER = """<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,8 +38,8 @@ HEADER = """<!DOCTYPE html>
   <title>{title} - Shakthi Bachala</title>
   <script>
     (function () {{
-      try {{ var savedTheme = localStorage.getItem("sb-theme"); document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark"; }}
-      catch (error) {{ document.documentElement.dataset.theme = "dark"; }}
+      try {{ var savedTheme = localStorage.getItem("sb-theme-v2"); document.documentElement.dataset.theme = savedTheme === "dark" ? "dark" : "light"; }}
+      catch (error) {{ document.documentElement.dataset.theme = "light"; }}
     }})();
   </script>
   <link rel="stylesheet" href="../../styles.css?v={css_version}">
@@ -50,7 +50,7 @@ HEADER = """<!DOCTYPE html>
     <header class="site-header">
       <a class="brand" href="/" aria-label="Shakthi Bachala home"><span class="brand-mark">SB</span><span>Shakthi Bachala</span></a>
       <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/research-statement/">Research</a><a href="/blog/" aria-current="page">Blog</a><a href="/now/">Now</a></nav>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Light</span></button>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
     </header>
     <main id="article"><article>
       <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>{series}</span><span>{part}</span><span>{date}</span></div><h1>{title}</h1><p class="dek">{dek}</p></div></header>
@@ -64,7 +64,7 @@ FOOTER = """
     </article></main>
     <footer class="site-footer"><span>Shakthi Bachala</span><span>{series} · {part}</span><span>2026</span></footer>
   </div>
-  <script src="/theme.js?v=20260821e" defer></script>
+  <script src="/theme.js?v=20260828a" defer></script>
 </body>
 </html>
 """

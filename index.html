@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +10,10 @@
   <script>
     (function () {
       try {
-        var savedTheme = localStorage.getItem("sb-theme");
-        document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
+        var savedTheme = localStorage.getItem("sb-theme-v2");
+        document.documentElement.dataset.theme = savedTheme === "dark" ? "dark" : "light";
       } catch (error) {
-        document.documentElement.dataset.theme = "dark";
+        document.documentElement.dataset.theme = "light";
       }
     })();
   </script>
@@ -33,9 +33,9 @@
         <a href="/blog/">Blog</a>
         <a href="/now/">Now</a>
       </nav>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true">
         <span class="theme-swatch" aria-hidden="true"></span>
-        <span data-theme-label>Light</span>
+        <span data-theme-label>Dark</span>
       </button>
     </header>
 
@@ -152,7 +152,7 @@
       <span>&copy; 2026 Shakthi Bachala. All rights reserved.</span>
     </footer>
   </div>
-  <script src="/theme.js?v=20260821e" defer></script>
+  <script src="/theme.js?v=20260828a" defer></script>
   <script src="/home.js?v=20260827a" defer></script>
 </body>
 </html>
