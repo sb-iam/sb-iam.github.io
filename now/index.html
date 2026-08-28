@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Now - Shakthi Bachala">
+  <meta property="og:title" content="Now - Shakthi Bachala">
+  <meta property="og:description" content="Now - Shakthi Bachala">
+  <title>Now - Shakthi Bachala</title>
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem("sb-theme");
+        document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark";
+      } catch (error) {
+        document.documentElement.dataset.theme = "dark";
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="../styles.css?v=20260827h">
+</head>
+<body>
+  <a class="skip-link" href="#now-title">Skip to content</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Shakthi Bachala home">
+        <span class="brand-mark">SB</span>
+        <span>Shakthi Bachala</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/#about">About</a>
+        <a href="/research-statement/">Research</a>
+        <a href="/blog/">Blog</a>
+        <a href="/now/" aria-current="page">Now</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false">
+        <span class="theme-swatch" aria-hidden="true"></span>
+        <span data-theme-label>Light</span>
+      </button>
+    </header>
+
+    <main id="now">
+      <header class="hero article-hero simple-article-hero">
+        <div class="signal-grid" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <div class="article-meta"><span>Now</span></div>
+          <h1 id="now-title">Now</h1>
+        </div>
+      </header>
+    </main>
+
+    <footer class="site-footer">
+      <span>Shakthi Bachala</span>
+      <span>Now</span>
+      <span>2026</span>
+    </footer>
+  </div>
+  <script src="/theme.js?v=20260821e" defer></script>
+</body>
+</html>
