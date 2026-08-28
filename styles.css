@@ -176,6 +176,7 @@ button:focus-visible {
 .site-nav a {
   padding: 0.45rem 0;
   border-bottom: 1px solid transparent;
+  color: var(--cyan);
 }
 
 .site-nav a:hover,
@@ -221,15 +222,17 @@ button:focus-visible {
 
 .home-columns {
   display: grid;
-  grid-template-columns: minmax(280px, 0.95fr) minmax(360px, 1.15fr) minmax(260px, 0.78fr);
-  gap: 1px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 16px);
+  padding: clamp(8px, 1vw, 16px);
   border-bottom: 1px solid var(--line);
-  background: var(--line);
+  background: var(--bg);
 }
 
 .home-column {
   min-width: 0;
   padding: 32px;
+  border: 1px solid var(--line);
   background: var(--bg);
 }
 
@@ -350,9 +353,27 @@ button:focus-visible {
   margin-top: 0.75rem;
 }
 
+.section-route-link:hover {
+  color: var(--cyan);
+}
+
+.section-label-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+}
+
 .contact-compact .contact-list {
   font-size: 0.95rem;
   line-height: 1.45;
+}
+
+.cv-link-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0;
 }
 
 .hero {
@@ -384,7 +405,7 @@ button:focus-visible {
 
 .role-line {
   margin-bottom: 1rem;
-  color: var(--cyan);
+  color: var(--ink);
   font-size: 1.25rem;
   font-weight: 700;
 }
@@ -847,6 +868,11 @@ h3 {
 
 .contact-list a:hover {
   color: var(--cyan);
+}
+
+.contact-list .contact-link {
+  color: var(--cyan);
+  font-weight: 700;
 }
 
 .site-footer {
@@ -1357,6 +1383,7 @@ h3 {
 
 
 .dek a,
+.paper-link,
 .about-columns p a,
 .statement-facts dd a {
   color: var(--cyan);
