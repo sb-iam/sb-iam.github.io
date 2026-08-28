@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Shakthi Bachala's Fall 2026 blog roadmap: 50 tentative posts across Goldilocks Zone, AI Supercycle, Hybrid Analysis, Software 4.0, and The Holy Grails.">
+  <meta name="description" content="Shakthi Bachala's planned 50-post blog roadmap across Goldilocks Zone, AI Supercycle, Hybrid Analysis, Software 4.0, and The Holy Grails.">
   <meta property="og:title" content="Blog - Shakthi Bachala">
-  <meta property="og:description" content="A 50-post Fall 2026 roadmap across Goldilocks Zone, AI Supercycle, Hybrid Analysis, Software 4.0, and The Holy Grails.">
+  <meta property="og:description" content="A planned 50-post roadmap across Goldilocks Zone, AI Supercycle, Hybrid Analysis, Software 4.0, and The Holy Grails.">
   <title>Blog - Shakthi Bachala</title>
   <script>
     (function () {
-      try { var savedTheme = localStorage.getItem("sb-theme"); document.documentElement.dataset.theme = savedTheme === "light" ? "light" : "dark"; }
-      catch (error) { document.documentElement.dataset.theme = "dark"; }
+      try { var savedTheme = localStorage.getItem("sb-theme-v2"); document.documentElement.dataset.theme = savedTheme === "dark" ? "dark" : "light"; }
+      catch (error) { document.documentElement.dataset.theme = "light"; }
     })();
   </script>
   <link rel="stylesheet" href="../styles.css?v=20260821g">
@@ -20,94 +20,93 @@
   <div class="site-shell">
     <header class="site-header">
       <a class="brand" href="/" aria-label="Shakthi Bachala home"><span class="brand-mark">SB</span><span>Shakthi Bachala</span></a>
-      <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/#experience">Experience</a><a href="/research-statement/">Research</a><a href="/#publications">Publications</a><a href="/blog/" aria-current="page">Blog</a><a href="/#contact">Contact</a></nav>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Light</span></button>
+      <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/research-statement/">Research</a><a href="/blog/" aria-current="page">Blog</a><a href="/now/">Now</a></nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
     </header>
 
     <main id="threads">
       <header class="hero article-hero simple-article-hero threads-hero">
         <div class="signal-grid" aria-hidden="true"></div>
         <div class="hero-copy">
-          <div class="article-meta"><span>Blog</span><span>Fall 2026 roadmap</span></div>
+          <div class="article-meta"><span>Blog</span><span>Planned roadmap</span></div>
           <h1>Threads</h1>
           <div class="threads-intro">
-            <p class="dek">A tentative 50-post plan for the next three months. The sequence is organized as five technical threads: Goldilocks Zone, AI Supercycle, Hybrid Analysis, Software 4.0, and The Holy Grails.</p>
-            <p class="section-note">The published Summer 2026 essay remains the prologue. The other titles are working titles that will evolve from Markdown scratch pads into rendered posts.</p>
+            <p class="dek">This fall, the series explores AI engineering through five interconnected threads that bring together mathematics, systems engineering, and economics.</p>
             <p class="section-note">This is my personal blog. The views expressed here are my own and do not represent the University of Nebraska–Lincoln (UNL) or BMO.</p>
           </div>
         </div>
       </header>
 
-      <section class="threads-page" aria-label="Fall 2026 blog roadmap">
+      <section class="threads-page" aria-label="Planned blog roadmap">
         <article class="thread-panel" id="open-ecosystem">
           <p class="eyebrow">Thread 1 / 10 posts</p>
           <h2>Goldilocks Zone</h2>
           <p class="thread-dek">Compilers, protocols, open weights, proof infrastructure, policy semantics, interoperability, portable evidence, and their assembly into an AI-native stack.</p>
           <ol class="thread-parts">
             <li><a href="/blog/golden-era-open-ecosystem/">Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open-Weights Letter</a><span class="part-meta">Aug 21, 2026</span></li>
-            <li><span>From ModCon to One Language, Many IRs: Mojo 1.0, MLIR, LLVM, and the DSL Threshold</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Inside Mojo's Compiler: From LIT and KGEN to LLVM IR</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Auditing Mojo's Open Compiler: Reproducible Lowering and External Verification</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The Goldilocks Boundary: Open Connective Layers, Closed Competitive Leaves</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The Protocol Fabric: LSP, ACP, MCP, and A2A Without Vendor Lock-In</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The Activation Stack: What Open Weights Need Beyond Model Files</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Portable Evidence: Moving Proofs, Tests, Traces, and Receipts Between Tools</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Policy and Proof as Open Semantics: Cedar, Lean, and Independently Checkable Semantics</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Conclusion: The AI-Native Stack of the Open Ecosystem</span><span class="part-meta">Fall 2026</span></li>
+            <li><span>From ModCon to One Language, Many IRs: Mojo 1.0, MLIR, LLVM, and the DSL Threshold</span><span class="part-meta">Planned</span></li>
+            <li><span>Inside Mojo's Compiler: From LIT and KGEN to LLVM IR</span><span class="part-meta">Planned</span></li>
+            <li><span>Auditing Mojo's Open Compiler: Reproducible Lowering and External Verification</span><span class="part-meta">Planned</span></li>
+            <li><span>The Goldilocks Boundary: Open Connective Layers, Closed Competitive Leaves</span><span class="part-meta">Planned</span></li>
+            <li><span>The Protocol Fabric: LSP, ACP, MCP, and A2A Without Vendor Lock-In</span><span class="part-meta">Planned</span></li>
+            <li><span>The Activation Stack: What Open Weights Need Beyond Model Files</span><span class="part-meta">Planned</span></li>
+            <li><span>Portable Evidence: Moving Proofs, Tests, Traces, and Receipts Between Tools</span><span class="part-meta">Planned</span></li>
+            <li><span>Policy and Proof as Open Semantics: Cedar, Lean, and Independently Checkable Semantics</span><span class="part-meta">Planned</span></li>
+            <li><span>Conclusion: The AI-Native Stack of the Open Ecosystem</span><span class="part-meta">Planned</span></li>
           </ol>
         </article>
 
         <article class="thread-panel" id="ai-supercycle">
           <p class="eyebrow">Thread 2 / 10 posts</p>
           <h2>AI Supercycle</h2>
-          <p class="thread-dek">Subtitle: Economics and the Invisible Hand of the AI Supercycle. Economics only: capital intensity, scarcity rents, complements, market structure, standards, network effects, ownership, and value migration.</p>
+          <p class="thread-dek">Economics only: capital intensity, scarcity rents, complements, market structure, standards, network effects, ownership, and value migration.</p>
           <ol class="thread-parts">
-            <li><span>The AI Supercycle: Capital, Compute, and the New Industrial Flywheel</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Five Layers of Capital: Energy, Chips, Infrastructure, Models, and Applications</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Scarcity Rents: Power, Silicon, Data Centers, and the Price of Intelligence</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The Invisible Hand of Commoditization: When Foundational Layers Become Shared</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Open Source as Strategy: Common Goods, Catch-Up, and Competitive Complements</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Models, Tools, and Complements: Where Value Accrues in the Agent Economy</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Hyperscalers, Neoclouds, and AI Factories: The New Market Structure</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The Economics of Agentic Labor: Productivity, Marginal Cost, and Ownership</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Standards as Markets: Network Effects, Switching Costs, and Protocol Adoption</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>After the Gold Rush: Where Durable Value Remains in the AI Supercycle</span><span class="part-meta">Fall 2026</span></li>
+            <li><span>The AI Supercycle: Capital, Compute, and the New Industrial Flywheel</span><span class="part-meta">Planned</span></li>
+            <li><span>Five Layers of Capital: Energy, Chips, Infrastructure, Models, and Applications</span><span class="part-meta">Planned</span></li>
+            <li><span>Scarcity Rents: Power, Silicon, Data Centers, and the Price of Intelligence</span><span class="part-meta">Planned</span></li>
+            <li><span>The Invisible Hand of Commoditization: When Foundational Layers Become Shared</span><span class="part-meta">Planned</span></li>
+            <li><span>Open Source as Strategy: Common Goods, Catch-Up, and Competitive Complements</span><span class="part-meta">Planned</span></li>
+            <li><span>Models, Tools, and Complements: Where Value Accrues in the Agent Economy</span><span class="part-meta">Planned</span></li>
+            <li><span>Hyperscalers, Neoclouds, and AI Factories: The New Market Structure</span><span class="part-meta">Planned</span></li>
+            <li><span>The Economics of Agentic Labor: Productivity, Marginal Cost, and Ownership</span><span class="part-meta">Planned</span></li>
+            <li><span>Standards as Markets: Network Effects, Switching Costs, and Protocol Adoption</span><span class="part-meta">Planned</span></li>
+            <li><span>After the Gold Rush: Where Durable Value Remains in the AI Supercycle</span><span class="part-meta">Planned</span></li>
           </ol>
         </article>
 
         <article class="thread-panel" id="hybrid-analysis">
           <p class="eyebrow">Thread 3 / 10 posts</p>
           <h2>Hybrid Analysis</h2>
-          <p class="thread-dek">Subtitle: From Static Theory to the Dynamic World. Analysis methodology only: static reasoning, runtime observation, symbolic execution, concolic testing, verification, validation, synthesis, model behavior, drift, evidence graphs, and operational neuro-symbolic compilation.</p>
+          <p class="thread-dek">Analysis methodology only: static reasoning, runtime observation, symbolic execution, concolic testing, verification, validation, synthesis, model behavior, drift, evidence graphs, and operational neuro-symbolic compilation.</p>
           <ol class="thread-parts">
-            <li><span>From Static Theory to the Dynamic World: Why One View Is Never Enough</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Before Execution: Abstract Interpretation, Dataflow, and the Shape of Possibility</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>After Execution: Traces, Profiles, and the Facts Programs Reveal</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Joining the Views: Sound Over-Approximation Meets Runtime Evidence</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Paths Under Constraint: Symbolic Execution, Concolic Testing, and Solver-Guided Exploration</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Verification Is Not Validation: Proving the System and Testing the Claim</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Synthesis in the Loop: Counterexamples, Constraints, and Language Models</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Inside the Model: Mechanistic Interpretability and Influence Functions</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>A Moving Target: Continual Learning, Drift, and Time-Indexed Evidence</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The UNIVERSAL VIRTUAL GRAPH: Unification with Neuro-Symbolic Compilation</span><span class="part-meta">Fall 2026</span></li>
+            <li><span>From Static Theory to the Dynamic World: Why One View Is Never Enough</span><span class="part-meta">Planned</span></li>
+            <li><span>Before Execution: Abstract Interpretation, Dataflow, and the Shape of Possibility</span><span class="part-meta">Planned</span></li>
+            <li><span>After Execution: Traces, Profiles, and the Facts Programs Reveal</span><span class="part-meta">Planned</span></li>
+            <li><span>Joining the Views: Sound Over-Approximation Meets Runtime Evidence</span><span class="part-meta">Planned</span></li>
+            <li><span>Paths Under Constraint: Symbolic Execution, Concolic Testing, and Solver-Guided Exploration</span><span class="part-meta">Planned</span></li>
+            <li><span>Verification Is Not Validation: Proving the System and Testing the Claim</span><span class="part-meta">Planned</span></li>
+            <li><span>Synthesis in the Loop: Counterexamples, Constraints, and Language Models</span><span class="part-meta">Planned</span></li>
+            <li><span>Inside the Model: Mechanistic Interpretability and Influence Functions</span><span class="part-meta">Planned</span></li>
+            <li><span>A Moving Target: Continual Learning, Drift, and Time-Indexed Evidence</span><span class="part-meta">Planned</span></li>
+            <li><span>The UNIVERSAL VIRTUAL GRAPH: Unification with Neuro-Symbolic Compilation</span><span class="part-meta">Planned</span></li>
           </ol>
         </article>
 
         <article class="thread-panel" id="software-40">
           <p class="eyebrow">Thread 4 / 10 posts</p>
           <h2>Software 4.0</h2>
-          <p class="thread-dek">Subtitle: From Mathematics to Systems Engineering. Systems engineering only: generic programming, language design, negative-cost abstractions, typed agent work, engineering environments, roles, lifecycle ownership, and measured costs.</p>
+          <p class="thread-dek">Systems engineering only: generic programming, language design, negative-cost abstractions, typed agent work, engineering environments, roles, lifecycle ownership, and measured costs.</p>
           <ol class="thread-parts">
-            <li><span>Software 4.0: From Mathematics to Systems Engineering</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>From Algebra to Architecture: Generic Programming as an Engineering Method</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The Language Wars After Code Generation: What Still Matters When Agents Program</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Negative-Cost Abstractions: When Stronger Invariants Reduce Total Cost</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Systems Languages in the AI Era: Mojo, Rust, and the Search for a Unified Stack</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>A Type System for Agent Work: Intent, Capabilities, Effects, and Evidence</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>DeepSeek Harness and the Typed Agent Runtime</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The New Engineering Workbench: IDEs, CLIs, Sandboxes, and Agent Teams</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The Five-Persona System: Software, AI, Platform, Security, and DevOps</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Engineering Beyond Code: Review, Acceptance, Ownership, and the Software 4.0 SDLC</span><span class="part-meta">Fall 2026</span></li>
+            <li><span>Software 4.0: From Mathematics to Systems Engineering</span><span class="part-meta">Planned</span></li>
+            <li><span>From Algebra to Architecture: Generic Programming as an Engineering Method</span><span class="part-meta">Planned</span></li>
+            <li><span>The Language Wars After Code Generation: What Still Matters When Agents Program</span><span class="part-meta">Planned</span></li>
+            <li><span>Negative-Cost Abstractions: When Stronger Invariants Reduce Total Cost</span><span class="part-meta">Planned</span></li>
+            <li><span>Systems Languages in the AI Era: Mojo, Rust, and the Search for a Unified Stack</span><span class="part-meta">Planned</span></li>
+            <li><span>A Type System for Agent Work: Intent, Capabilities, Effects, and Evidence</span><span class="part-meta">Planned</span></li>
+            <li><span>DeepSeek Harness and the Typed Agent Runtime</span><span class="part-meta">Planned</span></li>
+            <li><span>The New Engineering Workbench: IDEs, CLIs, Sandboxes, and Agent Teams</span><span class="part-meta">Planned</span></li>
+            <li><span>The Five-Persona System: Software, AI, Platform, Security, and DevOps</span><span class="part-meta">Planned</span></li>
+            <li><span>Engineering Beyond Code: Review, Acceptance, Ownership, and the Software 4.0 SDLC</span><span class="part-meta">Planned</span></li>
           </ol>
         </article>
 
@@ -116,16 +115,16 @@
           <h2>The Holy Grails</h2>
           <p class="thread-dek">Mechanistic interpretability plus program analysis: decidability and complexity, finite abstraction, fixpoint semantics, neural IRs, neural verification, guided program synthesis, and neuro-symbolic compilation.</p>
           <ol class="thread-parts">
-            <li><span>The Holy Grails: Mechanistic Interpretability Meets Program Analysis</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>P = NP? First Name the Verification Problem</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>The Verification Space: Programs, Models, Properties, Environments, and Time</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Finite Answers to Infinite State Spaces: Abstraction, Widening, and Bounded Unrolling</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Fixpoints Are Not All the Same: Lattices, Recurrence, and Equilibrium Models</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>What Is a Neural IR? Features, Circuits, and Causal Abstractions</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Compile, Then Decompile: RASP, Tracr, and Ground-Truth Circuits</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Verifying Neural Networks: Abstract Domains, SMT, and Branch-and-Bound</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Gradient Descent Meets Symbolic Descent: Ndea and Guided Program Synthesis</span><span class="part-meta">Fall 2026</span></li>
-            <li><span>Neuro-Symbolic Compilation: Mapping the Verification Space</span><span class="part-meta">Fall 2026</span></li>
+            <li><span>The Holy Grails: Mechanistic Interpretability Meets Program Analysis</span><span class="part-meta">Planned</span></li>
+            <li><span>P vs. NP: Scaling Verification Through Bounded Approximation</span><span class="part-meta">Planned</span></li>
+            <li><span>The Verification Space: Programs, Models, Properties, Environments, and Time</span><span class="part-meta">Planned</span></li>
+            <li><span>Finite Answers to Infinite State Spaces: Abstraction, Widening, and Bounded Unrolling</span><span class="part-meta">Planned</span></li>
+            <li><span>Fixpoints Are Not All the Same: Lattices, Recurrence, and Equilibrium Models</span><span class="part-meta">Planned</span></li>
+            <li><span>What Is a Neural IR? Features, Circuits, and Causal Abstractions</span><span class="part-meta">Planned</span></li>
+            <li><span>Compile, Then Decompile: RASP, Tracr, and Ground-Truth Circuits</span><span class="part-meta">Planned</span></li>
+            <li><span>Verifying Neural Networks: Abstract Domains, SMT, and Branch-and-Bound</span><span class="part-meta">Planned</span></li>
+            <li><span>Gradient Descent Meets Symbolic Descent: Ndea and Guided Program Synthesis</span><span class="part-meta">Planned</span></li>
+            <li><span>Neuro-Symbolic Compilation: Mapping the Verification Space</span><span class="part-meta">Planned</span></li>
           </ol>
         </article>
       </section>
@@ -133,6 +132,6 @@
 
     <footer class="site-footer"><span>Shakthi Bachala</span><span>Blog</span><span>2026</span></footer>
   </div>
-  <script src="/theme.js?v=20260821e" defer></script>
+  <script src="/theme.js?v=20260828a" defer></script>
 </body>
 </html>
