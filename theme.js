@@ -1,12 +1,12 @@
 (function () {
-  var storageKey = "sb-theme";
+  var storageKey = "sb-theme-v2";
   var root = document.documentElement;
 
   function getStoredTheme() {
     try {
-      return localStorage.getItem(storageKey) === "light" ? "light" : "dark";
+      return localStorage.getItem(storageKey) === "dark" ? "dark" : "light";
     } catch (error) {
-      return root.dataset.theme === "light" ? "light" : "dark";
+      return root.dataset.theme === "dark" ? "dark" : "light";
     }
   }
 
