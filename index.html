@@ -17,7 +17,7 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="styles.css?v=20260821d">
+  <link rel="stylesheet" href="styles.css?v=20260827k">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -29,11 +29,9 @@
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#about">About</a>
-        <a href="#experience">Experience</a>
-        <a href="#research-home">Research</a>
-        <a href="#publications">Publications</a>
+        <a href="/research-statement/">Research</a>
         <a href="/blog/">Blog</a>
-        <a href="#contact">Contact</a>
+        <a href="/now/">Now</a>
       </nav>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light theme" aria-pressed="false">
         <span class="theme-swatch" aria-hidden="true"></span>
@@ -44,15 +42,10 @@
     <main id="main" class="home-columns" aria-label="Homepage overview">
       <section class="home-column profile-column" aria-labelledby="home-title">
         <div id="about" class="column-block intro-block">
-          <p class="eyebrow">Researcher in hybrid program analysis</p>
           <h1 id="home-title">Shakthi Bachala</h1>
           <p class="role-line">Ph.D. Researcher | Principal Cloud Engineer - AI</p>
-          <p class="dek">Ph.D. candidate in Computer Science at the University of Nebraska-Lincoln, advised by <a href="https://witawassrisaan.wordpress.com/" target="_blank" rel="noreferrer">Dr. Witawas Srisa-an</a>. My work is hybrid program analysis: static analysis, dynamic analysis, compiler infrastructure, and runtime evidence, combined to understand real software systems and the code that AI now writes.</p>
+          <p class="dek">Ph.D. candidate at the University of Nebraska-Lincoln, advised by <a href="https://witawassrisaan.wordpress.com/" target="_blank" rel="noreferrer">Dr. Witawas Srisa-an</a>. I study hybrid program analysis, combining static and dynamic analysis, compiler infrastructure, and runtime evidence for real and AI-generated software.</p>
           <p class="dek">Principal Cloud Engineer - AI at BMO, on sabbatical for the Ph.D., after leading 50+ engineers through enterprise cloud and AI infrastructure programs.</p>
-          <div class="hero-actions" aria-label="Primary links">
-            <a class="button primary" href="#publications">Publications</a>
-            <a class="button secondary" href="/research-statement/">Research Statement</a>
-          </div>
         </div>
 
         <section id="experience" class="column-block" aria-labelledby="experience-title">
@@ -62,28 +55,24 @@
             <h3>Engineering Leadership to Principal Cloud Engineer - AI (IC)</h3>
             <p class="meta-line">Bank of Montreal (BMO) | Cloud &amp; AI Infrastructure</p>
             <ul class="simple-list">
-              <li>Led a team of 50+ cloud engineers in enterprise-scale transformations.</li>
+              <li>Led a team of 50+ cloud engineers in enterprise-scale cloud transformation.</li>
               <li>Orchestrated 20+ PB data migration for the Bank of the West acquisition.</li>
               <li>Delivered an MLOps platform from sandbox to production in 15 business days on AWS.</li>
               <li>Pioneered GenAI infrastructure deployment for Azure in 2 weeks.</li>
               <li>Created Cloud Adoption Assist, reducing deployment time by 60%.</li>
               <li>Transitioned to Principal Cloud Engineer - AI to focus on hands-on AI and ML infrastructure work.</li>
             </ul>
-            <p class="section-note">For more details, see the <a href="/docs/cv/shakthi_bachala_cv.pdf">CV PDF</a>.</p>
+            <p class="section-note cv-link-row"><span>For more details, see the</span> <a class="button secondary" href="/docs/cv/shakthi_bachala_cv.pdf">CV PDF</a></p>
           </article>
         </section>
       </section>
 
       <section class="home-column research-column" aria-labelledby="research-title">
         <section id="research-home" class="column-block" aria-labelledby="research-title">
-          <p class="eyebrow">Research</p>
-          <h2 id="research-title">Hybrid program analysis, verification and synthesis for the current AI infrastructure</h2>
-          <p>My research comes out of the Android lineage: Jitana's virtual graph loader, which loads code into an analyzable graph on demand instead of reconstructing a whole program, and ReHAna, which recovered the code that reflection hides. The same principles now apply across the AI stack: static analysis, dynamic analysis, compiler infrastructure, and runtime evidence, combined so that software changes are easier to inspect, test, explain, and review.</p>
-          <p>VerifyD is the platform direction, with interpretability and verification as first-class citizens: static checks, dynamic checks, compiler-aware evidence, provenance, and human review for AI-assisted software engineering. The problem domain is Rust and Mojo tooling, built on the virtual graph loader.</p>
-          <div class="hero-actions">
-            <a class="button primary" href="/research-statement/">Research Statement</a>
-            <a class="button secondary" href="https://github.com/sb-iam" target="_blank" rel="noreferrer">GitHub Profile</a>
-          </div>
+          <p class="eyebrow"><a class="section-label-link" href="/research-statement/">Research</a></p>
+          <h2 id="research-title"><a class="section-route-link" href="/research-statement/">Hybrid program analysis for AI native infrastructure</a></h2>
+          <p>My research builds on the Android lineage: <a class="paper-link" href="/docs/Jitana-Journal.pdf" target="_blank" rel="noreferrer">Jitana</a>'s on-demand virtual graph loader and <a class="paper-link" href="/docs/rehana.pdf" target="_blank" rel="noreferrer">ReHAna</a>'s recovery of code hidden by Java reflection and dynamic code loading. I apply these principles across the AI stack, combining static and dynamic analysis, compiler infrastructure, and runtime evidence to make software changes easier to inspect, test, explain, and review.</p>
+          <p>VerifyD brings interpretability and verification into AI-assisted software engineering through static and dynamic checks, compiler-aware evidence, provenance, and human review. Its Rust and Mojo tooling builds on the virtual graph loader.</p>
         </section>
 
         <section id="publications" class="column-block" aria-labelledby="pub-title">
@@ -91,7 +80,7 @@
           <h2 id="pub-title">Publications</h2>
           <div class="publication-list">
             <article>
-              <h3>IAM: Interpretable AI with MLIR - A Compiler-Integrated Framework for Trustworthy Code Generation</h3>
+              <h3>Interpretable AI with MLIR (IAM): A Unified Framework for Neural Network Transparency</h3>
               <p>Shakthi Bachala. ICSE 2026 Doctoral Symposium.</p>
               <div class="publication-links">
                 <a href="/docs/shakthi_bachala_research_statement_icse.pdf" target="_blank" rel="noreferrer">PDF</a>
@@ -126,27 +115,18 @@
               </div>
             </article>
           </div>
-          <p class="section-note">For more details of the papers, see <a href="https://dblp.org/pid/200/1146.html" target="_blank" rel="noreferrer">DBLP</a>.</p>
         </section>
       </section>
 
       <aside id="blog" class="home-column writing-column" aria-labelledby="blog-title">
         <section class="column-block">
-          <p class="eyebrow">Blog</p>
-          <h2 id="blog-title">Threads</h2>
-          <div class="blog-thread-list">
+          <p class="eyebrow"><a class="section-label-link" href="/blog/">Blog</a></p>
+          <h2 id="blog-title"><a class="section-route-link" href="/blog/">Threads</a></h2>
+          <div class="blog-thread-list" data-blog-thread-list aria-live="polite" aria-busy="true">
             <article class="content-panel">
-              <h3>The Goldilocks Zone of the Open Software Ecosystem</h3>
-              <p>A ten-part series on open models, harnesses, compilers, proofs, protocols, incentives, and portable evidence. The plan is tentative and will evolve as the series develops.</p>
-              <a class="text-link" href="/blog/golden-era-open-ecosystem/">Part 1: Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open-Weights Letter</a>
-            </article>
-            <article class="content-panel">
-              <h3>Hybrid Analysis</h3>
-              <p>Notes on static analysis, dynamic analysis, Android analysis, compiler IR, and runtime evidence.</p>
-            </article>
-            <article class="content-panel">
-              <h3>Future of Software Engineering</h3>
-              <p>Notes on how software engineering changes when models, tools, and compilers work together.</p>
+              <h3>Threads are maintained on the Blog page</h3>
+              <p>The homepage loads the current thread titles and high-level details directly from the Blog.</p>
+              <a class="text-link" href="/blog/">View the Blog</a>
             </article>
           </div>
           <a class="text-link" href="/blog/">All threads and parts</a>
@@ -160,9 +140,9 @@
             <li>Toronto, Ontario, Canada</li>
             <li>University of Nebraska-Lincoln</li>
             <li>Bank of Montreal, currently on sabbatical</li>
-            <li><a href="https://www.linkedin.com/in/shakthi-bachala-09401510a/" target="_blank" rel="noreferrer">LinkedIn</a></li>
-            <li><a href="https://dblp.org/pid/200/1146.html" target="_blank" rel="noreferrer">DBLP</a></li>
-            <li><a href="https://github.com/sb-iam" target="_blank" rel="noreferrer">GitHub</a></li>
+            <li><a class="contact-link" href="https://www.linkedin.com/in/shakthi-bachala-09401510a/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+            <li><a class="contact-link" href="https://dblp.org/pid/200/1146.html" target="_blank" rel="noreferrer">DBLP</a></li>
+            <li><a class="contact-link" href="https://github.com/sb-iam" target="_blank" rel="noreferrer">GitHub</a></li>
           </ul>
         </section>
       </aside>
@@ -173,5 +153,6 @@
     </footer>
   </div>
   <script src="/theme.js?v=20260821e" defer></script>
+  <script src="/home.js?v=20260827a" defer></script>
 </body>
 </html>
