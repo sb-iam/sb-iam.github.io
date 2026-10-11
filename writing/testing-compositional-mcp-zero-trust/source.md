@@ -146,7 +146,7 @@ Three directions follow, each retaining the gate on the bytes.
 
 **A policy engine in place of hand-written rules.** The present rules are plain tables and a small checker, which suffices for a demonstration. The next step is a policy language proper, Cedar, with a schema, analysis and a single language shared by hosts and servers. The gate does not move into the engine: the engine answers whether an action is allowed, and the gate guarantees that the action it answered about is the one that left.
 
-**Typed gates in Mojo, C++ and Lean.** The permit-from-acknowledgement discipline is a type in Rust today. Small MCP SDKs for Mojo, C++ and Lean can carry the same discipline as zero-cost abstractions, so that the absence of a permit excludes a write at compile time rather than at run time. Such SDKs do not yet exist for MCP; they are the subject of a later part of this series.
+**Typed gates in Mojo, C++ and Lean.** MCP has no SDK for Mojo, C++ or Lean; all three are missing. The permit-from-acknowledgement discipline is a type in Rust today, and small MCP SDKs for these three languages can carry the same discipline as zero-cost abstractions, so that the absence of a permit excludes a write at compile time rather than at run time. Building those SDKs is the subject of a later part of this series.
 
 **Proofs from the same Rust source.** Charon and Aeneas can lift the rule checker and the gate's ordering logic from the Rust that ran on stage into Lean, so that the invariants are proved of the code rather than recounted per run. Synchronization to disk and the pipe remain the stated trust boundary; the proof covers what lies between them.
 
