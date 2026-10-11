@@ -40,6 +40,8 @@ The crate `jsonlite` is a small JSON parser without dependencies; its duplicate-
 | A | workspace: server to G, client of B | applies the patch, makes a real git commit, asks B to verify that commit | the whole plan, before serving; the request it received; every frame it sends |
 | B | test runner: server to A | runs exactly one `cargo test` on the commit, writes the summary file once, writes a receipt binding the file's bytes to the commit and the test | the whole plan, before serving; the request it received |
 
+![F3 — Four processes, one plan, one record: frozen inputs above, the chain in the middle, the run directory below, and two readers that only read.](diagrams/F3-four-processes-one-record.svg)
+
 **The inputs.** Every process reads the same three frozen files before it does anything. The *Program* is the plan: three steps, each naming the tool, the caller, the callee and the arguments, and, for the last step, the effect; the patch and the test name are literals inside it. The *policy* states which caller may use which tool toward which destination, and gives each destination a tenant and a clearance: the internal summary path is cleared for the project's restricted data, the public gist is not. The *consent* records the one effect the user approved, the summary written to the internal path.
 
 **The rules.** Five rules are applied. The first three are questions about the plan, the fourth is a question about the bytes, and the fifth binds the two.
