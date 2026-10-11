@@ -232,7 +232,7 @@ def main() -> int:
         out = out.replace(f"<p>{key}</p>", fig_html).replace(key, fig_html)
 
     # Tables, code, lead, references, next-in-series.
-    out = re.sub(r"<table>", '<div class="table-wrap"><table>', out)
+    out = re.sub(r"<table\b", '<div class="table-wrap"><table', out)  # Markdown and raw HTML tables alike
     out = re.sub(r"</table>", "</table></div>", out)
     out = re.sub(r"<pre><code([^>]*)>", r'<div class="essay-code"><pre><code\1>', out)
     out = re.sub(r"</code></pre>", "</code></pre></div>", out)

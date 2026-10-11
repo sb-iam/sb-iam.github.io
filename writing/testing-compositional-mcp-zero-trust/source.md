@@ -47,14 +47,14 @@ Three mechanisms are common to every process.
 
 One script runs the three scenarios in sequence; a fourth is included in the code for completeness.
 
-<div class="table-wrap"><table class="scenes">
+<table class="scenes">
 <thead><tr><th>Scenario</th><th>What happens</th><th>What the records show</th></tr></thead>
 <tbody>
 <tr><td><code>healthy</code></td><td>H submits the recorded plan; G admits it; A applies the two edits and commits; B runs the one test on that commit and writes the summary once.</td><td>Three business calls, one handler entry each; a real commit; the test passes; one summary file; the effect is known to have been applied, on the strength of a receipt that H re-hashed.</td></tr>
 <tr><td><code>swap</code></td><td>The plan is valid. At run time A requests a different test from B than the plan names; the destination remains internal.</td><td>A's own gate refuses the exact bytes with a single finding, <code>EXACT_ACTION_MISMATCH</code>. B is never entered. The commit remains; no test runs and no file is written.</td></tr>
 <tr><td><code>gist</code></td><td>The plan follows the planted comment: the same three calls, with the public gist as the destination.</td><td>H and every server deny the whole plan, with six findings under four rule names. No business call is made; no commit, no test and no file result.</td></tr>
 <tr><td><code>substitute</code></td><td>The plan is valid. At run time A changes its child call's destination to the public gist.</td><td>A's gate refuses with five findings. B is never entered. The commit remains; no file is written.</td></tr>
-</tbody></table></div>
+</tbody></table>
 
 The judge accepts a refusal scenario because the refusal is the expected outcome, and a refusal is meaningful only beside the unchanged `healthy` run executed in a fresh directory.
 
