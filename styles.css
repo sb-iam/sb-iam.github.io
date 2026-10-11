@@ -1748,3 +1748,16 @@ h3 {
     padding: 24px 20px 0;
   }
 }
+.article-body p a,
+.article-body li a,
+.article-body td a {
+  color: var(--cyan-strong);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+.article-body table.scenes th:first-child,
+.article-body table.scenes td:first-child {
+  width: 11%;
+  white-space: nowrap;
+}

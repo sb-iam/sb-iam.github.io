@@ -3,15 +3,15 @@
 Written 2026-10-11. The release order below is the owner's; the five-thread
 roadmap at the bottom is a copy of what `blog/index.html` shows on that date.
 
-## Series: Compositions and Abstractions for Coding
+## Series: Compositions and Abstractions for Software
 
 Point of view: compilers, programming languages and static analysis. Domain:
-coding only. Ten parts planned; the first three are set.
+software construction. Ten parts planned; the first three are set.
 
 | Part | Essay | Status | Release |
 |---|---|---|---|
 | 1 | Testing Compositional MCP in Zero Trust: the Toronto demo, the deck, the code | live: `blog/testing-compositional-mcp-zero-trust/` | Oct 11, 2026 |
-| 2 | Summer 2026: composition and abstraction from the process and incentive side | written, dormant until release; the Aug 21 page stays as it is until then | Oct 15, 2026 |
+| 2 | Summer 2026: the Mojo compiler, the Lean FRO, the DeepSeek harness, and Nvidia's acquisition of Hugging Face | written, dormant until release; the Aug 21 page stays as it is until then | Oct 15, 2026 |
 | 3 | The gang of four: Rust, Mojo, C++ and Lean | not written | Oct 18, 2026 |
 
 Conventions: each essay has its Markdown source under `writing/<slug>/source.md`

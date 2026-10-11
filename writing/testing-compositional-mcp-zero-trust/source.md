@@ -1,136 +1,138 @@
 <!-- Source of /blog/testing-compositional-mcp-zero-trust/. Build with tools/build_essay.py; see docs in that file. -->
 # Testing Compositional MCP in Zero Trust
 
-*Every call was allowed. The chain was not. One coding task through four processes, three scenarios, and a judge that trusts only what the processes wrote.*
+*Each call in a chain of MCP servers can be individually authorized while the chain as a whole violates what the user consented to. We describe a small, fully observed demonstration of checking the chain rather than its parts: one coding task, four processes, three scenarios, and an independent judge.*
 
-**Ten years from now, software will still be made of abstractions and compositions, and both will still have to be right.** Jeff Bezos used to say that he was asked constantly what would change in the next ten years and almost never what would not change, and that the second question was the more useful one, because a strategy can be built on what stays still. Ask it about programming and the answer is not a language or a model. Code has become cheap to produce. The cost has moved to the two questions that were always the hard ones: is this abstraction the right one, and does this composition of parts do what the person asked for. This series looks at both from one point of view, that of compilers, programming languages and static analysis, and in one domain only, the writing of code. This first essay is about composition at the protocol layer, where an agent's work is now chained through servers, and about what it takes to test the chain rather than its parts.
+**Composition and abstraction are the two most overused words in computer science, and they remain the two questions that decide whether software is correct.** Whatever changes in the next decade, software will still be assembled from parts, and the parts will still have to be the right ones and fit together as intended. Models have made code inexpensive to produce; they have not made its composition correct. This series examines both questions from the standpoint of compilers, programming languages and static analysis, within the domain of software construction. Later parts treat abstraction formally, from type theory, and show how zero-cost abstractions carry the same guarantees into Rust, Mojo, C++ and Lean. This first part is concerned with composition at the protocol layer, where an agent's work is now chained through servers, and with what is required to test such a chain.
 
-## 1. The question that will still be there
+## 1. The question that persists
 
-A coding agent today is a composition. An editor holds a session and a set of permissions; an agent plans; the plan reaches tools through servers; servers call other servers; somewhere at the end a file is written, a commit is made, a test runs. Each piece is reasonable on its own. Each piece has an interface, and most of the interfaces have a protocol. The failures that matter are not in the pieces. They are in the way the pieces are put together: a call that is permitted at every hop and still moves restricted data to a place the person never approved; a tool that is listed and therefore assumed to be allowed; an effect that happens before the decision that was supposed to precede it.
+A coding agent is a composition. An editor holds a session and a set of permissions; an agent produces a plan; the plan reaches tools through servers, and servers call further servers; at the end of the chain a file is written, a commit is made, or a test is run. Each component is reasonable in isolation, each exposes an interface, and most interfaces are governed by a protocol. The failures that matter, however, arise from the manner in which the components are combined: a call that is permitted at every hop and nonetheless moves restricted data to a destination the user never approved; a tool that is listed and is therefore assumed to be allowed; an effect that occurs before the decision that was supposed to precede it.
 
-The talk this essay comes from, at the MCP Dev Summit in Toronto on 5 October 2026, made one claim and showed one demo for it: test the whole flow, not just the building blocks. The demo is small on purpose, one task and four processes, and it is observed end to end on the official Rust SDK, not drawn. Everything below is in the published code, and every number comes from its own check file.
+The talk from which this essay is drawn, given at the MCP Dev Summit in Toronto on 5 October 2026, made a single claim and supported it with a single demonstration: the whole flow must be tested, not only its building blocks. The demonstration is deliberately small, one task and four processes, and it is observed end to end on the official Rust SDK rather than drawn. Every artifact discussed below is in the published code, and every statement about its behaviour is taken from the records that code writes.
 
 ## 2. The gap: every call allowed, the chain not
 
-Three protocols now describe a composed agent, and it helps to see them as three independent axes rather than three competitors. The Agent Client Protocol, ACP, is the axis of intent: who asked, and what was consented. The editor session lives here, with the prompt, the permissions and the workspace. Agent2Agent, A2A, is the axis of delegation: who acts for whom. Each hop hands a task to another agent and receives artifacts back, and the rule on this axis is attenuation; authority can only shrink. The Model Context Protocol, MCP, is the axis of reach: what the agent can touch. Tools, data and effects; each hop moves data and authority one server further, from a source through a gateway to a sink.
+Three protocols now describe a composed agent, and it is useful to regard them as three independent axes rather than as competitors. The Agent Client Protocol (ACP) is the axis of intent: who asked, and what was consented to. The editor session resides here, together with the prompt, the permissions and the workspace. Agent2Agent (A2A) is the axis of delegation: who acts on whose behalf. Each hop passes a task to another agent and receives artifacts in return, and the governing rule on this axis is attenuation: authority may only decrease. The Model Context Protocol (MCP) is the axis of reach: what the agent can touch. Tools, data and effects lie on this axis, and each hop moves data and authority one server further, from a source through a gateway to a sink.
 
 ![F2 — Three axes from one origin, the host. A single call is a point on one axis. A plan is a point in the whole space.](diagrams/F2-three-axes.svg)
 
-Per-call authorization checks a point on one axis. MCP's authorization layer does this well: a client presents a token for a server, the server checks its audience and scope, the call is allowed or not. That is necessary. It is also where the gap opens, because the thing a person consented to is a plan, and a plan is a point in the whole space. Three calls, each with a valid token, each to a tool that is listed, can together carry a restricted summary to a public destination. No single check sees it, because no single check sees more than one call.
+Per-call authorization checks a point on one axis. MCP's authorization layer performs this check well: a client presents a token to a server, the server verifies the token's audience and scope, and the call is admitted or rejected. The check is necessary. It is also where the gap opens, because what the user consented to is a plan, and a plan is a point in the whole space. Three calls, each carrying a valid token and each addressed to a listed tool, can together carry a restricted summary to a public destination. No single check detects the violation, because no single check observes more than one call.
 
 ![F1 — Three permitted calls, one violation: per-call authorization passes every hop, and the plan as a whole moves restricted output to a public sink.](diagrams/F1-three-calls-one-violation.svg)
 
-MCP is where the chain happens. An editor speaks ACP to one agent; an agent may delegate over A2A to a few; but reach is a chain of servers, each one a client of the next, and that is exactly the shape in which a gateway forwards, a workspace commits and a test runner writes. So the demo stays on the MCP axis, on the local problem, in the coding domain.
+MCP is where the chain forms. An editor speaks ACP to one agent, and an agent may delegate over A2A to a few others, but reach is a chain of servers in which each is a client of the next; this is precisely the shape in which a gateway forwards, a workspace commits and a test runner writes. The demonstration therefore remains on the MCP axis, on the local problem, and within software construction.
 
-## 3. The demo: one task, four processes
+## 3. The demonstration: one task, four processes
 
-The task is one sentence, and it is the text every process reads:
+The task is a single sentence, and it is the text that every process reads:
 
 > Fix the failing test `repeated_member_is_rejected` in crate `jsonlite`, commit the fix, run exactly that test on the commit, and record the result in `checks/jsonlite-summary.txt` inside the project. Keep the source and the test output inside the project.
 
-The crate is a small dependency-free JSON parser whose duplicate-key test fails before the approved patch and passes after it. A comment planted in its parser asks for the summary to be uploaded to a public gist. The comment is data; nothing in the demo reads it as an instruction, and one of the scenarios is what happens when a plan does.
+The crate is a small JSON parser without dependencies; its duplicate-key test fails before the approved patch and passes after it. A comment planted in the parser requests that the summary be uploaded to a public gist. The comment is data: nothing in the demonstration interprets it as an instruction, and one scenario examines what happens when a plan does.
 
-Four operating-system processes carry the task, all on the official Rust MCP SDK, `rmcp`, pinned at one Git revision, speaking MCP 2025-11-25 over stdio. H is the MCP host: it checks the plan, submits the one task, and later re-hashes a receipt before it believes anything happened. G, A and B are three MCP servers over stdio, each spawned by the process before it: G is a gateway that serves `submit_fix` to H and forwards it to A through its own gate; A is a workspace that applies the patch and makes a real git commit, then asks B to verify that commit; B is a test runner that runs exactly one `cargo test` on that commit, writes the summary file once, and writes a receipt binding the file's bytes to the commit and the test. G and A are also MCP clients of the next server down. That is the composition.
+Four operating-system processes carry the task. All run on the official Rust MCP SDK, `rmcp`, pinned to one Git revision, and speak MCP 2025-11-25 over stdio. H is the MCP host: it checks the plan, submits the task, and later re-hashes a receipt before it accepts that any effect occurred. G, A and B are three MCP servers over stdio, each spawned by its predecessor. G is a gateway that serves `submit_fix` to H and forwards the request to A through its own gate. A is a workspace that applies the patch, makes a real git commit, and asks B to verify that commit. B is a test runner that executes exactly one `cargo test` on the commit, writes the summary file once, and writes a receipt binding the file's bytes to the commit and the test. G and A are in addition MCP clients of the server below them. This chain is the composition under test.
 
 ![F3 — Four processes, one plan, one record: frozen inputs above, the chain in the middle, the run directory below, and two readers that only read.](diagrams/F3-four-processes-one-record.svg)
 
-Three things are the same in every process.
+Three mechanisms are common to every process.
 
-**The whole plan is checked before anything runs.** The plan is a Program with three nodes: tool, caller, callee, arguments, and for the last node an effect. The patch and the test name are literals inside it; B's commit argument refers to the output A will produce. H checks the Program before its first call, and every server checks it before it serves anything, each against the same frozen policy and the same frozen consent, and each records its own verdict durably. A denied process serves nothing. The rules are small: a policy row must exist for caller, tool and destination; the labels on the data must be allowed to flow into the sink; the admitted intent must cover the one effect; and the policy, not the proposal, decides which node is an effect node.
+**The whole plan is checked before anything runs.** The plan is a Program of three nodes, each naming a tool, a caller, a callee and arguments; the final node additionally names an effect. The patch and the test name are literals within the Program, and B's commit argument refers to the output that A will produce. H checks the Program before its first call, and every server checks it before serving anything, each against the same frozen policy and the same frozen consent, and each records its own verdict durably. A process whose verdict is a denial serves nothing. The rules are deliberately small: a policy row must exist for the caller, the tool and the destination; the labels on the data must be permitted to flow into the sink; the admitted intent must cover the single effect; and the policy, not the proposal, determines which node is an effect node.
 
-**Every outgoing frame is gated on its exact bytes.** The SDK builds the message, the transport serializes it once, and that buffer is what the gate decides on. It must equal the admitted node resolved against the inputs this process observed, and the node's rules run again on the actual bytes. The decision is a durable journal record, synced before anything depends on it; the permit to write is built only from the journal's acknowledgement; and the bytes of every decided or refused frame are retained under their hash.
+**Every outgoing frame is gated on its exact bytes.** The SDK constructs the message, the transport serializes it once, and that buffer is the object of the decision. The buffer must equal the admitted node resolved against the inputs this process has observed, and the node's rules are evaluated again on the actual bytes. The decision is a durable journal record, synchronized to disk before anything depends on it; the permit to write is constructed only from the journal's acknowledgement; and the bytes of every decided or refused frame are retained under their hash.
 
-**Everything is written down.** Each process keeps one hash-chained journal. The run directory holds the four journals, the retained frames, the git workspace, the summary file, the receipt and the panel the terminal printed. Nothing else writes there. Two readers read it: a judge, written in another language, that never runs the binary, never reads the runtime's own report, and re-derives the verdict against expectations that were frozen before the runtime was adapted; and a live page, fed by a loopback viewer that tails the journals, shows one card per record, and prints the judge's line verbatim.
+**Everything is recorded.** Each process maintains one hash-chained journal. The run directory contains the four journals, the retained frames, the git workspace, the summary file, the receipt and the panel printed to the terminal, and nothing else writes to it. Two readers consume it. The first is a judge, written in a different language, which never executes the binary, never reads the runtime's own report, and re-derives the verdict against expectations that were fixed before the runtime was adapted. The second is a live page, fed by a loopback viewer that tails the journals, displays one card per record, and prints the judge's verdict verbatim.
 
 ## 4. Three scenarios
 
-One script runs the three scenarios in a row, with Enter between them. A fourth is in the code for questions.
+One script runs the three scenarios in sequence; a fourth is included in the code for completeness.
 
-| Scene | What happens | What the records show | Judge |
-|---|---|---|---|
-| `healthy` | H submits the recorded plan; G admits it; A applies the two edits and commits; B runs the one test on that commit and writes the summary once | 3 business calls, 21 frames gated, one handler entry each, a real commit, `1 passed, 0 failed`, one file, effect `known_applied` from a receipt H re-hashed | PASS, 211 checks |
-| `swap` | The plan is fine; at run time A asks B for a different test than the plan names; the destination is still internal | A's own gate refuses the exact bytes with one finding, `EXACT_ACTION_MISMATCH`; 2 business calls, 1 refusal; B never entered; the commit stays, no test, no file | PASS, 178 checks |
-| `gist` | The plan follows the planted comment: the same three calls, with the public gist as the destination | H and every server deny the whole plan with six findings under four names; 15 handshake frames gated, 0 business calls; no commit, no test, no file | PASS, 124 checks |
-| `substitute` | The plan is fine; at run time A changes its child's destination to the public gist | A's gate refuses with five findings; B never entered; the commit stays, no file | PASS, 179 checks |
+<div class="table-wrap"><table class="scenes">
+<thead><tr><th>Scenario</th><th>What happens</th><th>What the records show</th></tr></thead>
+<tbody>
+<tr><td><code>healthy</code></td><td>H submits the recorded plan; G admits it; A applies the two edits and commits; B runs the one test on that commit and writes the summary once.</td><td>Three business calls, one handler entry each; a real commit; the test passes; one summary file; the effect is known to have been applied, on the strength of a receipt that H re-hashed.</td></tr>
+<tr><td><code>swap</code></td><td>The plan is valid. At run time A requests a different test from B than the plan names; the destination remains internal.</td><td>A's own gate refuses the exact bytes with a single finding, <code>EXACT_ACTION_MISMATCH</code>. B is never entered. The commit remains; no test runs and no file is written.</td></tr>
+<tr><td><code>gist</code></td><td>The plan follows the planted comment: the same three calls, with the public gist as the destination.</td><td>H and every server deny the whole plan, with six findings under four rule names. No business call is made; no commit, no test and no file result.</td></tr>
+<tr><td><code>substitute</code></td><td>The plan is valid. At run time A changes its child call's destination to the public gist.</td><td>A's gate refuses with five findings. B is never entered. The commit remains; no file is written.</td></tr>
+</tbody></table></div>
 
-The judge passes a refusal scene because the refusal is the frozen expectation, and a refusal only counts beside the unchanged `healthy` run in a fresh directory.
+The judge accepts a refusal scenario because the refusal is the expected outcome, and a refusal is meaningful only beside the unchanged `healthy` run executed in a fresh directory.
 
-The second scenario is the one to read slowly. Its plan is identical to the pass, and all four processes verified it. H and G run exactly as before, byte for byte. A makes its commit, then builds its call to B with one field changed. Its gate does not look at a request object; it looks at the serialized line about to go on the wire and compares it with the node it admitted. This is the whole difference: the line the admitted node resolves to, and the line A retained under its hash when it refused:
+The second scenario merits a closer reading. Its plan is identical to that of the first, and all four processes verified it. H and G execute exactly as before, byte for byte. A makes its commit and then constructs its call to B with one field altered. A's gate does not examine a request object; it examines the serialized line that is about to be written to the pipe and compares it with the node it admitted. The entire difference is the following, shown as the line the admitted node resolves to and the line A retained under its hash when it refused:
 
 ```text
 admitted  {"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"_meta":{"progressToken":1},"arguments":{"commit":"f79c4dc…","destination":"internal","test":"repeated_member_is_rejected"},"name":"tests.run_and_record"}}
 refused   {"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"_meta":{"progressToken":1},"arguments":{"commit":"f79c4dc…","destination":"internal","test":"some_other_test"},"name":"tests.run_and_record"}}
 ```
 
-The destination is still internal, so the consent, capability and label rules all hold and have nothing to say. Only the exact-action rule can see this, and it is enough: refused before release, the line never written, B never entered. The commit A made stays in the workspace, because a refusal stops the chain where it is and undoes nothing before it.
+Because the destination is still internal, the consent, capability and label rules are satisfied and have nothing to report. Only the exact-action rule can observe the alteration, and it suffices: the frame is refused before release, the line is never written, and B is never entered. The commit A made remains in the workspace, since a refusal halts the chain at the point of refusal and reverses nothing that preceded it.
 
-The third scenario fails earlier and wider. Same task, same three calls, one word changed: the destination is the public gist, as the planted comment asked. No policy row lets any caller ask for that destination, so `CAPABILITY_WITHOUT_PERMISSION` fires once per node, three times; B lists a gist tool, and listing is not permission. The workspace's output is labelled for one tenant and classified restricted, the gist is public on both counts, and summarizing does not declassify: `LABEL_TENANT` and `LABEL_CLASSIFICATION` fire on the sink node. The consent admits one effect, the summary to the internal path, and a comment in the code cannot widen it: `CONSENT_SCOPE_MISMATCH`. Six findings, four names, and every process records its own denial before anything is sent; the servers come up and list their tools, and that is all they ever do.
+The third scenario fails earlier and more broadly. The task and the three calls are unchanged; only the destination differs, and it is the public gist that the planted comment requested. No policy row permits any caller to name that destination, so `CAPABILITY_WITHOUT_PERMISSION` is raised once per node; B lists a gist tool, and listing does not constitute permission. The workspace's output is labelled with one tenant and classified as restricted, the gist is public on both counts, and summarization does not declassify, so `LABEL_TENANT` and `LABEL_CLASSIFICATION` are raised on the sink node. The consent admits a single effect, the summary written to the internal path, and a comment in source code cannot widen it, which raises `CONSENT_SCOPE_MISMATCH`. The result is six findings under four names, and every process records its own denial before anything is sent; the servers start and list their tools, and that is the extent of their activity.
 
 <figure class="article-figure article-video">
 <video controls muted playsinline preload="metadata" poster="demo-poster.png" width="1200" height="750">
 <source src="demo.mp4" type="video/mp4">
 </video>
-<figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code: <code>healthy</code> passes and the graph turns blue hop by hop; <code>swap</code> is refused at the workspace's gate by one rule and the A to B hop turns red; <code>gist</code> is denied by every process before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 52 seconds.</figcaption>
+<figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code. In <code>healthy</code> the plan is verified and the graph turns blue hop by hop; in <code>swap</code> the workspace's gate refuses by one rule and the A to B hop turns red; in <code>gist</code> every process denies the plan before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 52 seconds.</figcaption>
 </figure>
 
-## 5. What "bytes leave" means
+## 5. The gate on the serialized bytes
 
-The talk's one-liner was that the permit to write is a value you can only get from a synced journal record of the decision, so if the bytes were not checked there is no code path that can send them. Three ideas sit under that sentence.
+The talk summarized the mechanism in one sentence: the permit to write is a value obtainable only from a synchronized journal record of the decision, so that if the bytes were not checked, no code path exists that can send them. Three ideas underlie that sentence.
 
-**The time-of-check gap.** Inside A, the request exists as a struct, then as a JSON-RPC message, then as one serialized line, and then `write_all` puts that line into B's stdin. Checking the struct and then sending whatever ends up on the wire leaves a gap between the time of check and the time of use, and everything that touches the message in between is inside it. The gate checks the line, the last form before the write and the only form B will ever see, in the sender's own process, right before the write. Check and use are the same bytes. B checks what it received against its own copy of the plan node before it enters its handler, and the judge later confirms that sender and receiver retained identical bytes.
+**The time-of-check gap.** Within A, the request exists first as a struct, then as a JSON-RPC message, then as one serialized line, after which `write_all` places that line on B's standard input. Checking the struct and then sending whatever reaches the wire leaves an interval between the time of check and the time of use, and everything that touches the message in that interval lies inside it. The gate checks the line itself, the last form the request takes before the write and the only form B will ever see, within the sender's own process and immediately before the write. Check and use thus apply to the same bytes. B checks what it received against its own copy of the plan node before entering its handler, and the judge later confirms that sender and receiver retained identical bytes.
 
 ![F4 — Where the gate sits: on the one serialized line, after the SDK built it and before the write; the refusal path never constructs a permit.](diagrams/F4-where-the-gate-sits.svg)
 
-**The permit is a type the journal makes.** The gate's decision is written to the journal and synced; the journal then hands back an acknowledgement, and only the journal can construct one. The permit to write is a Rust value that can only be built from that acknowledgement. The refusal path never constructs the value, so there is no code path that writes; a send that is dropped after a decision is caught by a guard that records it. This is the same discipline as a resource handle whose destructor releases the lock, applied to a wire: ownership of the permit is ownership of the right to write once.
+**The permit is a type that only the journal can produce.** The gate's decision is written to the journal and synchronized; the journal then returns an acknowledgement, and only the journal can construct one. The permit to write is a Rust value that can be built only from that acknowledgement. The refusal path never constructs the value, so no code path writes; a send that is abandoned after a decision is detected by a guard that records the fact. The discipline is that of a resource handle whose destructor releases a lock, applied to a wire: ownership of the permit is ownership of the right to write once.
 
-**Process isolation is the boundary.** The four roles are four operating-system processes, not four tasks in one runtime, so one cannot reach another's memory. The only way A can influence B is the byte sequence it writes into the pipe, and that is exactly what the gate checks. Each process reads the frozen inputs itself and keeps its own copy of the plan, its own journal and its own retained frames. The honest limit is on the same page: they share one user and one filesystem, so isolation stops memory tampering, not filesystem tampering. B binds the commit to a clean tree at HEAD and then tests that tree in place, trusting the disk, and the panel's scope line says so on every run.
+**Process isolation is the boundary.** The four roles are four operating-system processes rather than four tasks in one runtime, so none can reach another's memory. The only means by which A can influence B is the byte sequence it writes into the pipe, and that sequence is exactly what the gate checks. Each process reads the frozen inputs itself and keeps its own copy of the plan, its own journal and its own retained frames. The limit is stated on the same page: the processes share one user and one filesystem, so isolation prevents tampering with memory but not with files. B binds the commit to a clean tree at HEAD and tests that tree in place, trusting the disk, and the panel's scope line records this on every run.
 
-## 6. The seven invariants
+## 6. Seven invariants
 
-The talk's abstract promised a zero-trust test matrix. It is seven properties of a composed run, none of them a property of one call. The demo shows five directly and is explicit about the other two.
+The talk's abstract promised a zero-trust test matrix. It consists of seven properties of a composed run, none of which is a property of a single call. The demonstration exhibits five directly and states the remaining two as limits.
 
-| | Invariant | In this demo |
+| | Invariant | In this demonstration |
 |---|---|---|
-| 1 | Authority never grows across hops | shown: `substitute`, A's own gate refuses the widened call |
-| 2 | Capability is not permission | shown: `gist`, B lists a gist tool and no policy row permits it |
-| 3 | Tokens are audience-bound | stated only: credentials are modeled on stdio; each server trusts the link it was given |
-| 4 | Restricted data stays out of unapproved sinks | shown: `gist` and `substitute`, the summary never reaches the gist |
-| 5 | Every effect has a prior decision | shown: every run, the judge checks the order inside each journal |
-| 6 | Retries and partial failures stay safe | stated only: no lost-reply or restart scene; the effect vocabulary already says `unknown` rather than `failed` |
-| 7 | The run is replayable | shown: every run, an independent recount from the records; the page reopens any finished run from disk |
+| 1 | Authority never grows across hops | exhibited: `substitute`, A's own gate refuses the widened call |
+| 2 | Capability is not permission | exhibited: `gist`, B lists a gist tool and no policy row permits it |
+| 3 | Tokens are audience-bound | stated: credentials are modeled on stdio; each server trusts the link it was given |
+| 4 | Restricted data stays out of unapproved sinks | exhibited: `gist` and `substitute`, the summary never reaches the gist |
+| 5 | Every effect has a prior decision | exhibited: every run, the judge checks the ordering within each journal |
+| 6 | Retries and partial failures stay safe | stated: no lost-reply or restart scenario; the effect vocabulary already distinguishes `unknown` from `failed` |
+| 7 | The run is replayable | exhibited: every run, an independent recount from the records; the page reopens any finished run from disk |
 
-MCP authorization still does its job per call. This matrix sits beside it, on the plan.
+MCP authorization continues to perform its per-call function. This matrix is applied alongside it, to the plan.
 
-## 7. What was observed, what was modeled
+## 7. What was observed and what was modeled
 
-| Part | Status |
+| Component | Status |
 |---|---|
 | MCP messages, four processes, the gate on the serialized bytes | observed: real `rmcp` over stdio |
 | The git commits, `cargo test` on the committed tree, the summary file | observed: real effects in the run directory |
 | The whole-plan check, the exact-action check, the refusals | observed, deterministic, from the frozen fixtures |
-| Credentials, identities | modeled: the policy table names actors; nothing is signed |
+| Credentials and identities | modeled: the policy table names actors; nothing is signed |
 | The fixture crate, the patch, the planted comment | synthetic fixtures |
-| A coding agent proposing the plan | not here: the plan is recorded |
+| A coding agent proposing the plan | absent: the plan is recorded |
 
-The limits, as the code states them. No HTTP, no token, no TLS: a refusal is the sender's own gate, and a process that bypassed its gate would not be stopped by the next one. One machine, one author, no lost-reply or restart scene. The judge is independent of the runtime's code and of its self-report, not of its inputs: it reads the same policy and Program files, so a wrong fixture would be wrong in both places and pass. The rules are small and hand-written, enough for three nodes and two sinks, with no schema and no analysis. The expectations for the original three scenes were frozen before the runtime was adapted; the `swap` scene's were written with it, and the file records that as a revision. The exact-action comparison is on canonical JSON, with the wire bytes retained beside it. The page was checked in one headless browser at one window size, 67 checks, as part of the same check that runs the four scenes and a leak scan. Each of these is a line in the published critique, with a severity.
+The limits are those the code itself states. There is no HTTP, no token and no TLS: a refusal is the sender's own gate, and a process that bypassed its gate would not be stopped by the next one. The demonstration runs on one machine, by one author, with no lost-reply or restart scenario. The judge is independent of the runtime's code and of its self-report, but not of its inputs: it reads the same policy and Program files, so a defective fixture would be defective in both places and would pass. The rules are small and hand-written, sufficient for three nodes and two sinks, with no schema and no analysis. The expectations for the original three scenarios were fixed before the runtime was adapted; those of the `swap` scenario were written alongside it, and the file records that as a revision. The exact-action comparison is performed on canonical JSON, with the wire bytes retained beside it. The page was checked in one headless browser at one window size, as part of the same check that runs the four scenarios and a leak scan. Each of these limits appears, with a severity, in the critique published with the code.
 
-## 8. What comes next
+## 8. Future work
 
-Three directions, all keeping the same gate on the bytes.
+Three directions follow, each retaining the gate on the bytes.
 
-**A policy engine instead of hand-written rules.** The rules today are plain tables and a small checker, which was right for a demo. The next step is a real policy language, Cedar, with a schema, analysis and one language across hosts and servers. What does not move into the engine is the gate: the engine answers whether an action is allowed; the gate guarantees that the action it answered about is the one that left.
+**A policy engine in place of hand-written rules.** The present rules are plain tables and a small checker, which suffices for a demonstration. The next step is a policy language proper, Cedar, with a schema, analysis and a single language shared by hosts and servers. The gate does not move into the engine: the engine answers whether an action is allowed, and the gate guarantees that the action it answered about is the one that left.
 
-**Typed gates in Mojo, C++ and Lean.** The permit-from-acknowledgement discipline is a type in Rust today. Small MCP SDKs for Mojo, C++ and Lean can carry the same discipline as zero-cost abstractions, so that no permit means no write, checked when the code is compiled rather than when it runs. Those SDKs are missing for MCP, and they are the subject of a later essay in this series.
+**Typed gates in Mojo, C++ and Lean.** The permit-from-acknowledgement discipline is a type in Rust today. Small MCP SDKs for Mojo, C++ and Lean can carry the same discipline as zero-cost abstractions, so that the absence of a permit excludes a write at compile time rather than at run time. Such SDKs do not yet exist for MCP; they are the subject of a later part of this series.
 
-**Proofs from the same Rust source.** Charon and Aeneas can lift the rule checker and the gate's ordering logic from the Rust that ran on stage into Lean, so the invariants are proved about the code rather than recounted per run. The sync to disk and the pipe remain the stated trust boundary; the proof covers what sits between them.
+**Proofs from the same Rust source.** Charon and Aeneas can lift the rule checker and the gate's ordering logic from the Rust that ran on stage into Lean, so that the invariants are proved of the code rather than recounted per run. Synchronization to disk and the pipe remain the stated trust boundary; the proof covers what lies between them.
 
 ## 9. The deck and the code
 
-- The talk deck, cover and twelve slides, as [PDF](/docs/testing-compositional-mcp-zero-trust-deck.pdf) and as a [web page](/docs/testing-compositional-mcp-zero-trust-deck.html).
-- The code, under the Apache License 2.0: [github.com/sb-iam/conferences/tree/main/2026-mcp-toronto](https://github.com/sb-iam/conferences/tree/main/2026-mcp-toronto). With Rust 1.91 through rustup, `git` and Python 3.9 or later: `./demo build`, then `./demo talk` for the three scenarios with the live page, or `./demo check` for all four scenes, the leak scan and the page check, which writes the check file the numbers above come from.
+- The talk deck, cover and twelve slides: [PDF](/docs/testing-compositional-mcp-zero-trust-deck.pdf) and [web page](/docs/testing-compositional-mcp-zero-trust-deck.html).
+- The code, under the Apache License 2.0, with instructions for building and running the scenarios: [github.com/sb-iam/conferences/tree/main/2026-mcp-toronto](https://github.com/sb-iam/conferences/tree/main/2026-mcp-toronto).
 
-Next in the series: Part 2, *Summer 2026*, composition and abstraction from the process and incentive side, on Oct 15, 2026; then Part 3, the gang of four, Rust, Mojo, C++ and Lean, on Oct 18, 2026.
+Next in the series: Part 2, *Summer 2026*: the Mojo compiler, the Lean FRO, the DeepSeek harness, and Nvidia's acquisition of Hugging Face, on Oct 15, 2026.
 
 ## References
 
@@ -141,4 +143,3 @@ Next in the series: Part 2, *Summer 2026*, composition and abstraction from the 
 5. Agent2Agent protocol. https://github.com/a2aproject/A2A
 6. Cedar policy language. https://www.cedarpolicy.com
 7. Charon and Aeneas, from Rust to Lean. https://github.com/AeneasVerif/aeneas
-8. Jeff Bezos on the question that does not change, AWS re:Invent fireside chat with Werner Vogels, November 2012.
