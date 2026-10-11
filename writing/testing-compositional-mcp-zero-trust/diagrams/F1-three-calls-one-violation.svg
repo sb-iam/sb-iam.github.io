@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="100%" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f1-title">Three permitted calls, one violation</title>
+  <desc id="f1-desc">A chain of four boxes, host, gateway, workspace and test runner, joined by three arrows. Each arrow carries a per-call badge reading allowed. Below the chain a labelled flow follows the workspace's output, acme and restricted, to a public gist, and a bracket under the whole chain reads: the plan, denied, four rule names, six findings.</desc>
+  <defs>
+    <marker id="f1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f1-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .n  { font-size: 16px; font-weight: 600; }
+      .r  { font-size: 14px; opacity: 0.78; }
+      .g  { font-size: 13px; opacity: 0.78; text-anchor: middle; }
+      .ok { font-size: 12px; font-weight: 700; fill: #1fa8d6; text-anchor: middle; }
+      .no { font-size: 14px; font-weight: 700; fill: #c44a37; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .sink { fill: rgba(196,74,55,0.10); stroke: #c44a37; stroke-opacity: 0.8; stroke-width: 1.2; }
+      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .flow { stroke: #c44a37; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+      .pill { fill: rgba(31,168,214,0.14); stroke: #1fa8d6; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <text class="t" x="12" y="25">Three permitted calls, one violation</text>
+
+  <!-- the chain -->
+  <rect class="band" x="12" y="70" width="150" height="66" rx="6"/>
+  <text class="n" x="24" y="96">H · host</text>
+  <text class="r" x="24" y="118">submits the plan</text>
+
+  <rect class="band" x="208" y="70" width="150" height="66" rx="6"/>
+  <text class="n" x="220" y="96">G · gateway</text>
+  <text class="r" x="220" y="118">forwards the fix</text>
+
+  <rect class="band" x="404" y="70" width="150" height="66" rx="6"/>
+  <text class="n" x="416" y="96">A · workspace</text>
+  <text class="r" x="416" y="118">commits the patch</text>
+
+  <rect class="band" x="600" y="70" width="148" height="66" rx="6"/>
+  <text class="n" x="612" y="96">B · test runner</text>
+  <text class="r" x="612" y="118">runs one test, writes</text>
+
+  <line class="link" x1="162" y1="103" x2="206" y2="103" marker-end="url(#f1-arrow)"/>
+  <line class="link" x1="358" y1="103" x2="402" y2="103" marker-end="url(#f1-arrow)"/>
+  <line class="link" x1="554" y1="103" x2="598" y2="103" marker-end="url(#f1-arrow)"/>
+
+  <!-- per-call badges -->
+  <rect class="pill" x="156" y="42" width="58" height="18" rx="9"/>
+  <text class="ok" x="185" y="55">allowed</text>
+  <rect class="pill" x="352" y="42" width="58" height="18" rx="9"/>
+  <text class="ok" x="381" y="55">allowed</text>
+  <rect class="pill" x="548" y="42" width="58" height="18" rx="9"/>
+  <text class="ok" x="577" y="55">allowed</text>
+  <text class="g" x="380" y="160">per-call authorization: each hop has a row, each tool is listed, each token fits</text>
+
+  <!-- the data flow to the public sink -->
+  <text class="s" x="416" y="196">output: acme · restricted</text>
+  <path class="flow" d="M479 202 C479 240 560 236 600 246" marker-end="url(#f1-arrow-red)"/>
+  <rect class="sink" x="600" y="226" width="148" height="56" rx="6"/>
+  <text class="n" x="612" y="250">public gist</text>
+  <text class="r" x="612" y="270">tenant public · clearance public</text>
+
+  <!-- the whole-plan verdict -->
+  <path class="link" d="M12 300 L12 312 L748 312 L748 300"/>
+  <text class="no" x="12" y="296">the whole plan: denied</text>
+  <text class="r" x="230" y="296">no permission row for the sink · the label flow breaks twice · the consent admits only the internal summary</text>
+</svg>

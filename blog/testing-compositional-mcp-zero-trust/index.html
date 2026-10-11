@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Every call was allowed. The chain was not. One coding task through four processes, three scenarios, and a judge that trusts only what the processes wrote.">
+  <meta property="og:title" content="Testing Compositional MCP in Zero Trust">
+  <meta property="og:description" content="Every call was allowed. The chain was not. One coding task through four processes, three scenarios, and a judge that trusts only what the processes wrote.">
+  <meta property="og:type" content="article">
+  <title>Testing Compositional MCP in Zero Trust - Shakthi Bachala</title>
+  <script>
+    (function () {
+      try { var savedTheme = localStorage.getItem("sb-theme-v2"); document.documentElement.dataset.theme = savedTheme === "dark" ? "dark" : "light"; }
+      catch (error) { document.documentElement.dataset.theme = "light"; }
+    })();
+  </script>
+  <link rel="stylesheet" href="../../styles.css?v=20261011a">
+</head>
+<body>
+  <a class="skip-link" href="#article">Skip to article</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Shakthi Bachala home"><span class="brand-mark">SB</span><span>Shakthi Bachala</span></a>
+      <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/research-statement/">Research</a><a href="/blog/" aria-current="page">Blog</a><a href="/now/">Now</a></nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
+    </header>
+    <main id="article"><article>
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><nav class="article-series-nav" aria-label="Series navigation"><span class="series-next">Next: Summer 2026 · Oct 15, 2026 &rarr;</span></nav><div class="hero-copy"><div class="article-meta"><span>Compositions and Abstractions for Coding</span><span>Part 1 of 10</span><span>Oct 11, 2026</span></div><h1>Testing Compositional MCP in Zero Trust</h1><p class="dek">Every call was allowed. The chain was not. One coding task through four processes, three scenarios, and a judge that trusts only what the processes wrote.</p></div></header>
+      <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
+        <li><a href="#1-the-question-that-will-still-be-there">The question that will still be there</a></li>
+        <li><a href="#2-the-gap-every-call-allowed-the-chain-not">The gap: every call allowed, the chain not</a></li>
+        <li><a href="#3-the-demo-one-task-four-processes">The demo: one task, four processes</a></li>
+        <li><a href="#4-three-scenarios">Three scenarios</a></li>
+        <li><a href="#5-what-bytes-leave-means">What "bytes leave" means</a></li>
+        <li><a href="#6-the-seven-invariants">The seven invariants</a></li>
+        <li><a href="#7-what-was-observed-what-was-modeled">What was observed, what was modeled</a></li>
+        <li><a href="#8-what-comes-next">What comes next</a></li>
+        <li><a href="#9-the-deck-and-the-code">The deck and the code</a></li>
+        <li><a href="#references">References</a></li>
+      </ol><div class="article-rail-movers"><button type="button" data-rail-move="-1" title="Previous section" aria-label="Previous section">&uarr;</button><button type="button" data-rail-move="1" title="Next section" aria-label="Next section">&darr;</button></div></nav></aside><div class="article-body">
+<p class="lead"><strong>Ten years from now, software will still be made of abstractions and compositions, and both will still have to be right.</strong> Jeff Bezos used to say that he was asked constantly what would change in the next ten years and almost never what would not change, and that the second question was the more useful one, because a strategy can be built on what stays still. Ask it about programming and the answer is not a language or a model. Code has become cheap to produce. The cost has moved to the two questions that were always the hard ones: is this abstraction the right one, and does this composition of parts do what the person asked for. This series looks at both from one point of view, that of compilers, programming languages and static analysis, and in one domain only, the writing of code. This first essay is about composition at the protocol layer, where an agent's work is now chained through servers, and about what it takes to test the chain rather than its parts.</p>
+<h2 id="1-the-question-that-will-still-be-there">1. The question that will still be there</h2>
+<p>A coding agent today is a composition. An editor holds a session and a set of permissions; an agent plans; the plan reaches tools through servers; servers call other servers; somewhere at the end a file is written, a commit is made, a test runs. Each piece is reasonable on its own. Each piece has an interface, and most of the interfaces have a protocol. The failures that matter are not in the pieces. They are in the way the pieces are put together: a call that is permitted at every hop and still moves restricted data to a place the person never approved; a tool that is listed and therefore assumed to be allowed; an effect that happens before the decision that was supposed to precede it.</p>
+<p>The talk this essay comes from, at the MCP Dev Summit in Toronto on 5 October 2026, made one claim and showed one demo for it: test the whole flow, not just the building blocks. The demo is small on purpose, one task and four processes, and it is observed end to end on the official Rust SDK, not drawn. Everything below is in the published code, and every number comes from its own check file.</p>
+<h2 id="2-the-gap-every-call-allowed-the-chain-not">2. The gap: every call allowed, the chain not</h2>
+<p>Three protocols now describe a composed agent, and it helps to see them as three independent axes rather than three competitors. The Agent Client Protocol, ACP, is the axis of intent: who asked, and what was consented. The editor session lives here, with the prompt, the permissions and the workspace. Agent2Agent, A2A, is the axis of delegation: who acts for whom. Each hop hands a task to another agent and receives artifacts back, and the rule on this axis is attenuation; authority can only shrink. The Model Context Protocol, MCP, is the axis of reach: what the agent can touch. Tools, data and effects; each hop moves data and authority one server further, from a source through a gateway to a sink.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f2-title">Three axes of a composed agent: intent, delegation, reach</title>
+  <desc id="f2-desc">Three axes from one origin labelled host. A horizontal axis, MCP, reach, carries three marks: source, gateway, sink. A vertical axis, A2A, delegation, carries client agent, remote agent, task and artifacts. A diagonal axis towards the viewer, ACP, intent, carries editor, coding agent, files and terminal. A note says a single call is a point on one axis and a plan is a point in the whole space.</desc>
+  <defs>
+    <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f2-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .n  { font-size: 15px; font-weight: 600; }
+      .r  { font-size: 13px; opacity: 0.78; }
+      .axis { stroke: currentColor; stroke-width: 1.4; fill: none; opacity: 0.8; }
+      .mcp  { stroke: #1fa8d6; stroke-width: 3; fill: none; }
+      .mark { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-width: 1.4; }
+      .dot  { fill: #1fa8d6; }
+      .grid { stroke: currentColor; stroke-opacity: 0.12; stroke-width: 1; fill: none; }
+    </style>
+  </defs>
+
+  <text class="t" x="12" y="25">Three axes of a composed agent</text>
+
+  <!-- faint floor grid -->
+  <path class="grid" d="M250 260 H700 M250 220 H700 M250 180 H700 M250 140 H700 M250 100 H700"/>
+  <path class="grid" d="M340 100 V260 M430 100 V260 M520 100 V260 M610 100 V260"/>
+
+  <!-- origin -->
+  <circle cx="250" cy="260" r="9" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="2.4"/>
+  <text class="n" x="266" y="282">host: where the three meet</text>
+
+  <!-- MCP axis, reach -->
+  <line class="mcp" x1="250" y1="260" x2="716" y2="260" marker-end="url(#f2-arrow-blue)"/>
+  <circle class="dot" cx="360" cy="260" r="7"/>
+  <circle class="dot" cx="480" cy="260" r="7"/>
+  <circle class="dot" cx="600" cy="260" r="7"/>
+  <text class="r" x="343" y="245">source</text>
+  <text class="r" x="458" y="245">gateway</text>
+  <text class="r" x="589" y="245">sink</text>
+  <text class="s" x="560" y="300">MCP · reach · this essay</text>
+  <text class="r" x="560" y="318">what the agent can touch: tools, data, effects;</text>
+  <text class="r" x="560" y="334">each hop moves data and authority one server further</text>
+
+  <!-- A2A axis, delegation -->
+  <line class="axis" x1="250" y1="260" x2="250" y2="52" marker-end="url(#f2-arrow)"/>
+  <circle class="mark" cx="250" cy="205" r="7"/>
+  <circle class="mark" cx="250" cy="150" r="7"/>
+  <circle class="mark" cx="250" cy="95" r="7"/>
+  <text class="r" x="264" y="209">client agent</text>
+  <text class="r" x="264" y="154">remote agent</text>
+  <text class="r" x="264" y="99">task and artifacts</text>
+  <text class="s" x="262" y="48">A2A · delegation</text>
+  <text class="r" x="390" y="48">who acts for whom; authority can only shrink</text>
+
+  <!-- ACP axis, intent -->
+  <line class="axis" x1="250" y1="260" x2="92" y2="345" marker-end="url(#f2-arrow)"/>
+  <rect class="mark" x="195" y="282" width="12" height="12" rx="2"/>
+  <rect class="mark" x="152" y="305" width="12" height="12" rx="2"/>
+  <rect class="mark" x="109" y="328" width="12" height="12" rx="2"/>
+  <text class="r" x="130" y="292" text-anchor="end">editor</text>
+  <text class="r" x="146" y="314" text-anchor="end">coding agent</text>
+  <text class="r" x="103" y="338" text-anchor="end">files and terminal</text>
+  <text class="s" x="12" y="196">ACP · intent</text>
+  <text class="r" x="12" y="214">who asked and what was</text>
+  <text class="r" x="12" y="230">consented; the prompt and</text>
+  <text class="r" x="12" y="246">the permissions live here</text>
+
+  <!-- the point -->
+  <text class="r" x="12" y="60">a call is a point on one axis;</text>
+  <text class="r" x="12" y="76">a plan is a point in the whole space</text>
+</svg>
+<figcaption><strong>F2</strong> Three axes from one origin, the host. A single call is a point on one axis. A plan is a point in the whole space.</figcaption>
+</figure>
+<p>Per-call authorization checks a point on one axis. MCP's authorization layer does this well: a client presents a token for a server, the server checks its audience and scope, the call is allowed or not. That is necessary. It is also where the gap opens, because the thing a person consented to is a plan, and a plan is a point in the whole space. Three calls, each with a valid token, each to a tool that is listed, can together carry a restricted summary to a public destination. No single check sees it, because no single check sees more than one call.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f1-title">Three permitted calls, one violation</title>
+  <desc id="f1-desc">A chain of four boxes, host, gateway, workspace and test runner, joined by three arrows. Each arrow carries a per-call badge reading allowed. Below the chain a labelled flow follows the workspace's output, acme and restricted, to a public gist, and a bracket under the whole chain reads: the plan, denied, four rule names, six findings.</desc>
+  <defs>
+    <marker id="f1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f1-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .n  { font-size: 16px; font-weight: 600; }
+      .r  { font-size: 14px; opacity: 0.78; }
+      .g  { font-size: 13px; opacity: 0.78; text-anchor: middle; }
+      .ok { font-size: 12px; font-weight: 700; fill: #1fa8d6; text-anchor: middle; }
+      .no { font-size: 14px; font-weight: 700; fill: #c44a37; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .sink { fill: rgba(196,74,55,0.10); stroke: #c44a37; stroke-opacity: 0.8; stroke-width: 1.2; }
+      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .flow { stroke: #c44a37; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+      .pill { fill: rgba(31,168,214,0.14); stroke: #1fa8d6; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <text class="t" x="12" y="25">Three permitted calls, one violation</text>
+
+  <!-- the chain -->
+  <rect class="band" x="12" y="70" width="150" height="66" rx="6"/>
+  <text class="n" x="24" y="96">H · host</text>
+  <text class="r" x="24" y="118">submits the plan</text>
+
+  <rect class="band" x="208" y="70" width="150" height="66" rx="6"/>
+  <text class="n" x="220" y="96">G · gateway</text>
+  <text class="r" x="220" y="118">forwards the fix</text>
+
+  <rect class="band" x="404" y="70" width="150" height="66" rx="6"/>
+  <text class="n" x="416" y="96">A · workspace</text>
+  <text class="r" x="416" y="118">commits the patch</text>
+
+  <rect class="band" x="600" y="70" width="148" height="66" rx="6"/>
+  <text class="n" x="612" y="96">B · test runner</text>
+  <text class="r" x="612" y="118">runs one test, writes</text>
+
+  <line class="link" x1="162" y1="103" x2="206" y2="103" marker-end="url(#f1-arrow)"/>
+  <line class="link" x1="358" y1="103" x2="402" y2="103" marker-end="url(#f1-arrow)"/>
+  <line class="link" x1="554" y1="103" x2="598" y2="103" marker-end="url(#f1-arrow)"/>
+
+  <!-- per-call badges -->
+  <rect class="pill" x="156" y="42" width="58" height="18" rx="9"/>
+  <text class="ok" x="185" y="55">allowed</text>
+  <rect class="pill" x="352" y="42" width="58" height="18" rx="9"/>
+  <text class="ok" x="381" y="55">allowed</text>
+  <rect class="pill" x="548" y="42" width="58" height="18" rx="9"/>
+  <text class="ok" x="577" y="55">allowed</text>
+  <text class="g" x="380" y="160">per-call authorization: each hop has a row, each tool is listed, each token fits</text>
+
+  <!-- the data flow to the public sink -->
+  <text class="s" x="416" y="196">output: acme · restricted</text>
+  <path class="flow" d="M479 202 C479 240 560 236 600 246" marker-end="url(#f1-arrow-red)"/>
+  <rect class="sink" x="600" y="226" width="148" height="56" rx="6"/>
+  <text class="n" x="612" y="250">public gist</text>
+  <text class="r" x="612" y="270">tenant public · clearance public</text>
+
+  <!-- the whole-plan verdict -->
+  <path class="link" d="M12 300 L12 312 L748 312 L748 300"/>
+  <text class="no" x="12" y="296">the whole plan: denied</text>
+  <text class="r" x="230" y="296">no permission row for the sink · the label flow breaks twice · the consent admits only the internal summary</text>
+</svg>
+<figcaption><strong>F1</strong> Three permitted calls, one violation: per-call authorization passes every hop, and the plan as a whole moves restricted output to a public sink.</figcaption>
+</figure>
+<p>MCP is where the chain happens. An editor speaks ACP to one agent; an agent may delegate over A2A to a few; but reach is a chain of servers, each one a client of the next, and that is exactly the shape in which a gateway forwards, a workspace commits and a test runner writes. So the demo stays on the MCP axis, on the local problem, in the coding domain.</p>
+<h2 id="3-the-demo-one-task-four-processes">3. The demo: one task, four processes</h2>
+<p>The task is one sentence, and it is the text every process reads:</p>
+<blockquote>
+<p>Fix the failing test <code>repeated_member_is_rejected</code> in crate <code>jsonlite</code>, commit the fix, run exactly that test on the commit, and record the result in <code>checks/jsonlite-summary.txt</code> inside the project. Keep the source and the test output inside the project.</p>
+</blockquote>
+<p>The crate is a small dependency-free JSON parser whose duplicate-key test fails before the approved patch and passes after it. A comment planted in its parser asks for the summary to be uploaded to a public gist. The comment is data; nothing in the demo reads it as an instruction, and one of the scenarios is what happens when a plan does.</p>
+<p>Four operating-system processes carry the task, all on the official Rust MCP SDK, <code>rmcp</code>, pinned at one Git revision, speaking MCP 2025-11-25 over stdio. H is the MCP host: it checks the plan, submits the one task, and later re-hashes a receipt before it believes anything happened. G, A and B are three MCP servers over stdio, each spawned by the process before it: G is a gateway that serves <code>submit_fix</code> to H and forwards it to A through its own gate; A is a workspace that applies the patch and makes a real git commit, then asks B to verify that commit; B is a test runner that runs exactly one <code>cargo test</code> on that commit, writes the summary file once, and writes a receipt binding the file's bytes to the commit and the test. G and A are also MCP clients of the next server down. That is the composition.</p>
+<figure class="article-figure hero-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f3-title">Four processes, one plan, one record</title>
+  <desc id="f3-desc">Top: a band of frozen inputs read by every process: Program, policy, consent, fixture crate. Middle: four boxes joined by stdio arrows: H the MCP host, G an MCP stdio server that forwards, A an MCP stdio server that applies the patch and commits, B an MCP stdio server that runs one test and writes the summary. Under each box the same three parts: checks the whole plan, gates its exact bytes, keeps a synced journal. Below: the run directory written only by the processes: journals, retained frames, git workspace, summary, receipt. Bottom: two readers, the judge that re-derives the verdict from the run directory alone, and the live page that tails the journals and never writes.</desc>
+  <defs>
+    <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f3-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
+      .n  { font-size: 15px; font-weight: 600; }
+      .r  { font-size: 12.5px; opacity: 0.78; }
+      .g  { font-size: 13px; opacity: 0.85; text-anchor: middle; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .proc { fill: rgba(128,128,128,0.08); stroke: currentColor; stroke-width: 1.4; }
+      .sink { fill: rgba(31,168,214,0.12); stroke: currentColor; stroke-width: 1.4; }
+      .dark { fill: rgba(128,128,128,0.22); stroke: currentColor; stroke-opacity: 0.6; stroke-width: 1.2; }
+      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
+      .lbl  { font-size: 11.5px; font-weight: 600; fill: #1fa8d6; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <text class="t" x="12" y="25">Four processes, one plan, one record</text>
+
+  <!-- frozen inputs -->
+  <rect class="band" x="12" y="42" width="736" height="32" rx="6"/>
+  <text class="g" x="380" y="63">frozen inputs, read by every process: Program · policy · consent · fixture crate</text>
+  <line class="link" x1="100" y1="74" x2="100" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="287" y1="74" x2="287" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="474" y1="74" x2="474" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="661" y1="74" x2="661" y2="104" marker-end="url(#f3-arrow)"/>
+
+  <!-- the four processes -->
+  <rect class="proc" x="12" y="106" width="176" height="96" rx="6"/>
+  <text class="s" x="22" y="126">H · MCP host</text>
+  <text class="r" x="22" y="146">checks the plan before</text>
+  <text class="r" x="22" y="162">its first call; one call</text>
+  <text class="r" x="22" y="178">to G; re-hashes the receipt</text>
+
+  <rect class="proc" x="199" y="106" width="176" height="96" rx="6"/>
+  <text class="s" x="209" y="126">G · MCP stdio server 1</text>
+  <text class="r" x="209" y="146">serves submit_fix to H;</text>
+  <text class="r" x="209" y="162">forwards it to A through</text>
+  <text class="r" x="209" y="178">its own gate</text>
+
+  <rect class="proc" x="386" y="106" width="176" height="96" rx="6"/>
+  <text class="s" x="396" y="126">A · MCP stdio server 2</text>
+  <text class="r" x="396" y="146">applies the patch, makes</text>
+  <text class="r" x="396" y="162">the git commit; asks B to</text>
+  <text class="r" x="396" y="178">verify that commit</text>
+
+  <rect class="sink" x="573" y="106" width="175" height="96" rx="6"/>
+  <text class="s" x="583" y="126">B · MCP stdio server 3</text>
+  <text class="r" x="583" y="146">runs exactly one cargo</text>
+  <text class="r" x="583" y="162">test on it; writes the</text>
+  <text class="r" x="583" y="178">summary once, a receipt</text>
+
+  <line class="hop" x1="188" y1="150" x2="197" y2="150" marker-end="url(#f3-arrow-blue)"/>
+  <line class="hop" x1="375" y1="150" x2="384" y2="150" marker-end="url(#f3-arrow-blue)"/>
+  <line class="hop" x1="562" y1="150" x2="571" y2="150" marker-end="url(#f3-arrow-blue)"/>
+  <text class="lbl" x="193" y="140">stdio</text>
+  <text class="lbl" x="380" y="140">stdio</text>
+  <text class="lbl" x="567" y="140">stdio</text>
+
+  <!-- what every process has -->
+  <text class="g" x="380" y="222">every process: checks the whole plan itself · gates the exact bytes it sends · keeps a synced, hash-chained journal</text>
+
+  <line class="link" x1="100" y1="230" x2="100" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="287" y1="230" x2="287" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="474" y1="230" x2="474" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="661" y1="230" x2="661" y2="254" marker-end="url(#f3-arrow)"/>
+
+  <!-- the run directory -->
+  <rect class="dark" x="12" y="256" width="736" height="34" rx="6"/>
+  <text class="g" x="380" y="278">the run directory, written only by the processes: journals · retained frames · git workspace · summary · receipt · panel</text>
+
+  <line class="link" x1="190" y1="290" x2="190" y2="326" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="570" y1="290" x2="570" y2="326" marker-end="url(#f3-arrow)"/>
+
+  <!-- the two readers -->
+  <rect class="band" x="12" y="328" width="356" height="80" rx="6"/>
+  <text class="n" x="24" y="352">Judge</text>
+  <text class="r" x="24" y="372">re-derives the verdict from the run directory alone,</text>
+  <text class="r" x="24" y="388">against expectations frozen before the code; never runs the binary</text>
+
+  <rect class="band" x="392" y="328" width="356" height="80" rx="6"/>
+  <text class="n" x="404" y="352">Live page</text>
+  <text class="r" x="404" y="372">tails the journals over loopback, one card per record;</text>
+  <text class="r" x="404" y="388">prints the judge's line verbatim; never writes</text>
+</svg>
+<figcaption><strong>F3</strong> Four processes, one plan, one record: frozen inputs above, the chain in the middle, the run directory below, and two readers that only read.</figcaption>
+</figure>
+<p>Three things are the same in every process.</p>
+<p><strong>The whole plan is checked before anything runs.</strong> The plan is a Program with three nodes: tool, caller, callee, arguments, and for the last node an effect. The patch and the test name are literals inside it; B's commit argument refers to the output A will produce. H checks the Program before its first call, and every server checks it before it serves anything, each against the same frozen policy and the same frozen consent, and each records its own verdict durably. A denied process serves nothing. The rules are small: a policy row must exist for caller, tool and destination; the labels on the data must be allowed to flow into the sink; the admitted intent must cover the one effect; and the policy, not the proposal, decides which node is an effect node.</p>
+<p><strong>Every outgoing frame is gated on its exact bytes.</strong> The SDK builds the message, the transport serializes it once, and that buffer is what the gate decides on. It must equal the admitted node resolved against the inputs this process observed, and the node's rules run again on the actual bytes. The decision is a durable journal record, synced before anything depends on it; the permit to write is built only from the journal's acknowledgement; and the bytes of every decided or refused frame are retained under their hash.</p>
+<p><strong>Everything is written down.</strong> Each process keeps one hash-chained journal. The run directory holds the four journals, the retained frames, the git workspace, the summary file, the receipt and the panel the terminal printed. Nothing else writes there. Two readers read it: a judge, written in another language, that never runs the binary, never reads the runtime's own report, and re-derives the verdict against expectations that were frozen before the runtime was adapted; and a live page, fed by a loopback viewer that tails the journals, shows one card per record, and prints the judge's line verbatim.</p>
+<h2 id="4-three-scenarios">4. Three scenarios</h2>
+<p>One script runs the three scenarios in a row, with Enter between them. A fourth is in the code for questions.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Scene</th>
+<th>What happens</th>
+<th>What the records show</th>
+<th>Judge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>healthy</code></td>
+<td>H submits the recorded plan; G admits it; A applies the two edits and commits; B runs the one test on that commit and writes the summary once</td>
+<td>3 business calls, 21 frames gated, one handler entry each, a real commit, <code>1 passed, 0 failed</code>, one file, effect <code>known_applied</code> from a receipt H re-hashed</td>
+<td>PASS, 211 checks</td>
+</tr>
+<tr>
+<td><code>swap</code></td>
+<td>The plan is fine; at run time A asks B for a different test than the plan names; the destination is still internal</td>
+<td>A's own gate refuses the exact bytes with one finding, <code>EXACT_ACTION_MISMATCH</code>; 2 business calls, 1 refusal; B never entered; the commit stays, no test, no file</td>
+<td>PASS, 178 checks</td>
+</tr>
+<tr>
+<td><code>gist</code></td>
+<td>The plan follows the planted comment: the same three calls, with the public gist as the destination</td>
+<td>H and every server deny the whole plan with six findings under four names; 15 handshake frames gated, 0 business calls; no commit, no test, no file</td>
+<td>PASS, 124 checks</td>
+</tr>
+<tr>
+<td><code>substitute</code></td>
+<td>The plan is fine; at run time A changes its child's destination to the public gist</td>
+<td>A's gate refuses with five findings; B never entered; the commit stays, no file</td>
+<td>PASS, 179 checks</td>
+</tr>
+</tbody>
+</table></div>
+<p>The judge passes a refusal scene because the refusal is the frozen expectation, and a refusal only counts beside the unchanged <code>healthy</code> run in a fresh directory.</p>
+<p>The second scenario is the one to read slowly. Its plan is identical to the pass, and all four processes verified it. H and G run exactly as before, byte for byte. A makes its commit, then builds its call to B with one field changed. Its gate does not look at a request object; it looks at the serialized line about to go on the wire and compares it with the node it admitted. This is the whole difference: the line the admitted node resolves to, and the line A retained under its hash when it refused:</p>
+<div class="essay-code"><pre><code class="language-text">admitted  {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;_meta&quot;:{&quot;progressToken&quot;:1},&quot;arguments&quot;:{&quot;commit&quot;:&quot;f79c4dc…&quot;,&quot;destination&quot;:&quot;internal&quot;,&quot;test&quot;:&quot;repeated_member_is_rejected&quot;},&quot;name&quot;:&quot;tests.run_and_record&quot;}}
+refused   {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;_meta&quot;:{&quot;progressToken&quot;:1},&quot;arguments&quot;:{&quot;commit&quot;:&quot;f79c4dc…&quot;,&quot;destination&quot;:&quot;internal&quot;,&quot;test&quot;:&quot;some_other_test&quot;},&quot;name&quot;:&quot;tests.run_and_record&quot;}}
+</code></pre></div>
+<p>The destination is still internal, so the consent, capability and label rules all hold and have nothing to say. Only the exact-action rule can see this, and it is enough: refused before release, the line never written, B never entered. The commit A made stays in the workspace, because a refusal stops the chain where it is and undoes nothing before it.</p>
+<p>The third scenario fails earlier and wider. Same task, same three calls, one word changed: the destination is the public gist, as the planted comment asked. No policy row lets any caller ask for that destination, so <code>CAPABILITY_WITHOUT_PERMISSION</code> fires once per node, three times; B lists a gist tool, and listing is not permission. The workspace's output is labelled for one tenant and classified restricted, the gist is public on both counts, and summarizing does not declassify: <code>LABEL_TENANT</code> and <code>LABEL_CLASSIFICATION</code> fire on the sink node. The consent admits one effect, the summary to the internal path, and a comment in the code cannot widen it: <code>CONSENT_SCOPE_MISMATCH</code>. Six findings, four names, and every process records its own denial before anything is sent; the servers come up and list their tools, and that is all they ever do.</p>
+<figure class="article-figure article-video">
+<video controls muted playsinline preload="metadata" poster="demo-poster.png" width="1200" height="750">
+<source src="demo.mp4" type="video/mp4">
+</video>
+<figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code: <code>healthy</code> passes and the graph turns blue hop by hop; <code>swap</code> is refused at the workspace's gate by one rule and the A to B hop turns red; <code>gist</code> is denied by every process before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 50 seconds.</figcaption>
+</figure>
+
+<h2 id="5-what-bytes-leave-means">5. What "bytes leave" means</h2>
+<p>The talk's one-liner was that the permit to write is a value you can only get from a synced journal record of the decision, so if the bytes were not checked there is no code path that can send them. Three ideas sit under that sentence.</p>
+<p><strong>The time-of-check gap.</strong> Inside A, the request exists as a struct, then as a JSON-RPC message, then as one serialized line, and then <code>write_all</code> puts that line into B's stdin. Checking the struct and then sending whatever ends up on the wire leaves a gap between the time of check and the time of use, and everything that touches the message in between is inside it. The gate checks the line, the last form before the write and the only form B will ever see, in the sender's own process, right before the write. Check and use are the same bytes. B checks what it received against its own copy of the plan node before it enters its handler, and the judge later confirms that sender and receiver retained identical bytes.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f4-title">Where the gate sits: on the last form of the request before the write</title>
+  <desc id="f4-desc">Inside process A, left to right: a request struct becomes a JSON-RPC message, then one serialized line. The gate takes that line: it compares it with the admitted plan node, runs the rules on the parsed bytes, writes a durable record and syncs it; the journal's acknowledgement is the only thing that can build a permit, and only a permit can write the line into the pipe to B. A lower branch shows the refusal: the bytes retained under their hash, a refused record, no permit, nothing written, B never entered.</desc>
+  <defs>
+    <marker id="f4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f4-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+    <marker id="f4-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
+      .n  { font-size: 14px; font-weight: 600; }
+      .r  { font-size: 12.5px; opacity: 0.78; }
+      .no { font-size: 12.5px; fill: #c44a37; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .gate { fill: rgba(31,168,214,0.12); stroke: #1fa8d6; stroke-width: 1.6; }
+      .outer { fill: none; stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; stroke-dasharray: 6 4; }
+      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
+      .bad  { stroke: #c44a37; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    </style>
+  </defs>
+
+  <text class="t" x="12" y="25">Where the gate sits</text>
+
+  <!-- process A -->
+  <rect class="outer" x="12" y="44" width="600" height="270" rx="8"/>
+  <text class="s" x="24" y="62">inside process A, the workspace</text>
+
+  <rect class="band" x="24" y="80" width="118" height="54" rx="6"/>
+  <text class="n" x="34" y="102">request struct</text>
+  <text class="r" x="34" y="120">a Rust value</text>
+
+  <rect class="band" x="168" y="80" width="118" height="54" rx="6"/>
+  <text class="n" x="178" y="102">JSON-RPC</text>
+  <text class="r" x="178" y="120">built by the SDK</text>
+
+  <rect class="band" x="312" y="80" width="130" height="54" rx="6"/>
+  <text class="n" x="322" y="102">one serialized line</text>
+  <text class="r" x="322" y="120">the only form B sees</text>
+
+  <line class="link" x1="142" y1="107" x2="166" y2="107" marker-end="url(#f4-arrow)"/>
+  <line class="link" x1="286" y1="107" x2="310" y2="107" marker-end="url(#f4-arrow)"/>
+  <line class="link" x1="442" y1="107" x2="466" y2="107" marker-end="url(#f4-arrow)"/>
+
+  <!-- the gate -->
+  <rect class="gate" x="468" y="72" width="130" height="152" rx="6"/>
+  <text class="n" x="478" y="94">the gate</text>
+  <text class="r" x="478" y="114">equals the admitted</text>
+  <text class="r" x="478" y="128">node? rules on the</text>
+  <text class="r" x="478" y="142">parsed bytes?</text>
+  <text class="r" x="478" y="164">durable record, fsync</text>
+  <text class="r" x="478" y="182">→ Ack (journal only)</text>
+  <text class="r" x="478" y="200">→ Permit (from Ack</text>
+  <text class="r" x="478" y="214">only) → write</text>
+
+  <!-- the write to B -->
+  <line class="hop" x1="598" y1="107" x2="700" y2="107" marker-end="url(#f4-arrow-blue)"/>
+  <text class="s" x="622" y="97">write</text>
+  <rect class="band" x="702" y="80" width="46" height="54" rx="6"/>
+  <text class="n" x="718" y="112">B</text>
+  <text class="r" x="618" y="128">the pipe: the only</text>
+  <text class="r" x="618" y="142">way A reaches B</text>
+
+  <!-- the refusal branch -->
+  <path class="bad" d="M533 224 V262" marker-end="url(#f4-arrow-red)"/>
+  <rect class="band" x="312" y="264" width="286" height="40" rx="6"/>
+  <text class="no" x="322" y="281">refused: bytes retained under their hash,</text>
+  <text class="no" x="322" y="296">a refused record, no Permit, nothing written</text>
+
+  <!-- what closes -->
+  <text class="r" x="24" y="166">check and use are the same bytes:</text>
+  <text class="r" x="24" y="182">no time-of-check gap between a</text>
+  <text class="r" x="24" y="198">checked object and the wire</text>
+  <text class="r" x="24" y="230">the refusal path never constructs</text>
+  <text class="r" x="24" y="246">a Permit, so there is no code</text>
+  <text class="r" x="24" y="262">path that can send unchecked bytes</text>
+  <text class="r" x="24" y="294">B checks the line against its own node too; the judge confirms both saw the same bytes</text>
+</svg>
+<figcaption><strong>F4</strong> Where the gate sits: on the one serialized line, after the SDK built it and before the write; the refusal path never constructs a permit.</figcaption>
+</figure>
+<p><strong>The permit is a type the journal makes.</strong> The gate's decision is written to the journal and synced; the journal then hands back an acknowledgement, and only the journal can construct one. The permit to write is a Rust value that can only be built from that acknowledgement. The refusal path never constructs the value, so there is no code path that writes; a send that is dropped after a decision is caught by a guard that records it. This is the same discipline as a resource handle whose destructor releases the lock, applied to a wire: ownership of the permit is ownership of the right to write once.</p>
+<p><strong>Process isolation is the boundary.</strong> The four roles are four operating-system processes, not four tasks in one runtime, so one cannot reach another's memory. The only way A can influence B is the byte sequence it writes into the pipe, and that is exactly what the gate checks. Each process reads the frozen inputs itself and keeps its own copy of the plan, its own journal and its own retained frames. The honest limit is on the same page: they share one user and one filesystem, so isolation stops memory tampering, not filesystem tampering. B binds the commit to a clean tree at HEAD and then tests that tree in place, trusting the disk, and the panel's scope line says so on every run.</p>
+<h2 id="6-the-seven-invariants">6. The seven invariants</h2>
+<p>The talk's abstract promised a zero-trust test matrix. It is seven properties of a composed run, none of them a property of one call. The demo shows five directly and is explicit about the other two.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Invariant</th>
+<th>In this demo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Authority never grows across hops</td>
+<td>shown: <code>substitute</code>, A's own gate refuses the widened call</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Capability is not permission</td>
+<td>shown: <code>gist</code>, B lists a gist tool and no policy row permits it</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Tokens are audience-bound</td>
+<td>stated only: credentials are modeled on stdio; each server trusts the link it was given</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Restricted data stays out of unapproved sinks</td>
+<td>shown: <code>gist</code> and <code>substitute</code>, the summary never reaches the gist</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Every effect has a prior decision</td>
+<td>shown: every run, the judge checks the order inside each journal</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Retries and partial failures stay safe</td>
+<td>stated only: no lost-reply or restart scene; the effect vocabulary already says <code>unknown</code> rather than <code>failed</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>The run is replayable</td>
+<td>shown: every run, an independent recount from the records; the page reopens any finished run from disk</td>
+</tr>
+</tbody>
+</table></div>
+<p>MCP authorization still does its job per call. This matrix sits beside it, on the plan.</p>
+<h2 id="7-what-was-observed-what-was-modeled">7. What was observed, what was modeled</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCP messages, four processes, the gate on the serialized bytes</td>
+<td>observed: real <code>rmcp</code> over stdio</td>
+</tr>
+<tr>
+<td>The git commits, <code>cargo test</code> on the committed tree, the summary file</td>
+<td>observed: real effects in the run directory</td>
+</tr>
+<tr>
+<td>The whole-plan check, the exact-action check, the refusals</td>
+<td>observed, deterministic, from the frozen fixtures</td>
+</tr>
+<tr>
+<td>Credentials, identities</td>
+<td>modeled: the policy table names actors; nothing is signed</td>
+</tr>
+<tr>
+<td>The fixture crate, the patch, the planted comment</td>
+<td>synthetic fixtures</td>
+</tr>
+<tr>
+<td>A coding agent proposing the plan</td>
+<td>not here: the plan is recorded</td>
+</tr>
+</tbody>
+</table></div>
+<p>The limits, as the code states them. No HTTP, no token, no TLS: a refusal is the sender's own gate, and a process that bypassed its gate would not be stopped by the next one. One machine, one author, no lost-reply or restart scene. The judge is independent of the runtime's code and of its self-report, not of its inputs: it reads the same policy and Program files, so a wrong fixture would be wrong in both places and pass. The rules are small and hand-written, enough for three nodes and two sinks, with no schema and no analysis. The expectations for the original three scenes were frozen before the runtime was adapted; the <code>swap</code> scene's were written with it, and the file records that as a revision. The exact-action comparison is on canonical JSON, with the wire bytes retained beside it. The page was checked in one headless browser at one window size, 67 checks, as part of the same check that runs the four scenes and a leak scan. Each of these is a line in the published critique, with a severity.</p>
+<h2 id="8-what-comes-next">8. What comes next</h2>
+<p>Three directions, all keeping the same gate on the bytes.</p>
+<p><strong>A policy engine instead of hand-written rules.</strong> The rules today are plain tables and a small checker, which was right for a demo. The next step is a real policy language, Cedar, with a schema, analysis and one language across hosts and servers. What does not move into the engine is the gate: the engine answers whether an action is allowed; the gate guarantees that the action it answered about is the one that left.</p>
+<p><strong>Typed gates in Mojo, C++ and Lean.</strong> The permit-from-acknowledgement discipline is a type in Rust today. Small MCP SDKs for Mojo, C++ and Lean can carry the same discipline as zero-cost abstractions, so that no permit means no write, checked when the code is compiled rather than when it runs. Those SDKs are missing for MCP, and they are the subject of a later essay in this series.</p>
+<p><strong>Proofs from the same Rust source.</strong> Charon and Aeneas can lift the rule checker and the gate's ordering logic from the Rust that ran on stage into Lean, so the invariants are proved about the code rather than recounted per run. The sync to disk and the pipe remain the stated trust boundary; the proof covers what sits between them.</p>
+<h2 id="9-the-deck-and-the-code">9. The deck and the code</h2>
+<ul>
+<li>The talk deck, cover and twelve slides, as <a href="/docs/testing-compositional-mcp-zero-trust-deck.pdf">PDF</a> and as a <a href="/docs/testing-compositional-mcp-zero-trust-deck.html">web page</a>.</li>
+<li>The code, under the Apache License 2.0: <a href="https://github.com/sb-iam/conferences/tree/main/2026-mcp-toronto" target="_blank" rel="noreferrer">github.com/sb-iam/conferences/tree/main/2026-mcp-toronto</a>. With Rust 1.91 through rustup, <code>git</code> and Python 3.9 or later: <code>./demo build</code>, then <code>./demo talk</code> for the three scenarios with the live page, or <code>./demo check</code> for all four scenes, the leak scan and the page check, which writes the check file the numbers above come from.</li>
+</ul>
+<p class="next-in-series">Next in the series: Part 2, <em>Summer 2026</em>, composition and abstraction from the process and incentive side, on Oct 15, 2026; then Part 3, the gang of four, Rust, Mojo, C++ and Lean, on Oct 18, 2026.</p>
+<section class="references">
+<h2 id="references">References</h2>
+<ol start="1">
+<li><em>Testing Compositional MCP in Zero Trust</em>, MCP Dev Summit Toronto, 5 October 2026. <a href="https://events.linuxfoundation.org/mcp-dev-summit-toronto/program/schedule/?id=1288277" target="_blank" rel="noreferrer">https://events.linuxfoundation.org/mcp-dev-summit-toronto/program/schedule/?id=1288277</a></li>
+<li>Model Context Protocol, specification 2025-11-25, including the authorization section. <a href="https://modelcontextprotocol.io/specification/2025-11-25" target="_blank" rel="noreferrer">https://modelcontextprotocol.io/specification/2025-11-25</a></li>
+<li>The official Rust SDK for MCP, <code>rmcp</code>, used at Git revision <code>ae2f9c9b45a2c98d24ee345406e79f507c9f9282</code>. <a href="https://github.com/modelcontextprotocol/rust-sdk" target="_blank" rel="noreferrer">https://github.com/modelcontextprotocol/rust-sdk</a></li>
+<li>Agent Client Protocol. <a href="https://agentclientprotocol.com" target="_blank" rel="noreferrer">https://agentclientprotocol.com</a></li>
+<li>Agent2Agent protocol. <a href="https://github.com/a2aproject/A2A" target="_blank" rel="noreferrer">https://github.com/a2aproject/A2A</a></li>
+<li>Cedar policy language. <a href="https://www.cedarpolicy.com" target="_blank" rel="noreferrer">https://www.cedarpolicy.com</a></li>
+<li>Charon and Aeneas, from Rust to Lean. <a href="https://github.com/AeneasVerif/aeneas" target="_blank" rel="noreferrer">https://github.com/AeneasVerif/aeneas</a></li>
+<li>Jeff Bezos on the question that does not change, AWS re:Invent fireside chat with Werner Vogels, November 2012.</li>
+</ol>
+</section>
+      </div></div>
+    </article></main>
+    <footer class="site-footer"><span>Shakthi Bachala</span><span>Compositions and Abstractions for Coding · Part 1 of 10</span><span>2026</span></footer>
+  </div>
+  <script>
+    (function () {
+      var heads = [].slice.call(document.querySelectorAll(".article-body h2[id]"));
+      var links = [].slice.call(document.querySelectorAll(".article-rail ol a"));
+      if (!heads.length) { return; }
+      function current() {
+        var y = window.scrollY + 140, i = -1;
+        heads.forEach(function (h, k) { if (h.getBoundingClientRect().top + window.scrollY <= y) { i = k; } });
+        return i;
+      }
+      function mark() {
+        var i = current();
+        links.forEach(function (a, k) { if (k === i) { a.setAttribute("aria-current", "true"); } else { a.removeAttribute("aria-current"); } });
+      }
+      [].slice.call(document.querySelectorAll("[data-rail-move]")).forEach(function (button) {
+        button.addEventListener("click", function () {
+          var i = current() + parseInt(button.getAttribute("data-rail-move"), 10);
+          if (i < 0) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+          if (i >= heads.length) { i = heads.length - 1; }
+          heads[i].scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+      window.addEventListener("scroll", mark, { passive: true });
+      mark();
+    })();
+  </script>
+  <script src="/theme.js?v=20260828a" defer></script>
+</body>
+</html>
