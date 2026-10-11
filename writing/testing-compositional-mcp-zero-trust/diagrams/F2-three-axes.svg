@@ -35,9 +35,10 @@
   <text class="r" x="343" y="245">source</text>
   <text class="r" x="458" y="245">gateway</text>
   <text class="r" x="589" y="245">sink</text>
-  <text class="s" x="560" y="300">MCP · reach · this essay</text>
-  <text class="r" x="560" y="318">what the agent can touch: tools, data, effects;</text>
-  <text class="r" x="560" y="334">each hop moves data and authority one server further</text>
+  <text class="s" x="480" y="300">MCP · reach · this essay</text>
+  <text class="r" x="480" y="318">what the agent can touch: tools, data, effects;</text>
+  <text class="r" x="480" y="334">each hop moves data and authority</text>
+  <text class="r" x="480" y="350">one server further</text>
 
   <!-- A2A axis, delegation -->
   <line class="axis" x1="250" y1="260" x2="250" y2="52" marker-end="url(#f2-arrow)"/>
@@ -55,9 +56,9 @@
   <rect class="mark" x="195" y="282" width="12" height="12" rx="2"/>
   <rect class="mark" x="152" y="305" width="12" height="12" rx="2"/>
   <rect class="mark" x="109" y="328" width="12" height="12" rx="2"/>
-  <text class="r" x="130" y="292" text-anchor="end">editor</text>
-  <text class="r" x="146" y="314" text-anchor="end">coding agent</text>
-  <text class="r" x="103" y="338" text-anchor="end">files and terminal</text>
+  <text class="r" x="185" y="292" text-anchor="end">editor</text>
+  <text class="r" x="142" y="315" text-anchor="end">coding agent</text>
+  <text class="r" x="99" y="338" text-anchor="end">files and terminal</text>
   <text class="s" x="12" y="196">ACP · intent</text>
   <text class="r" x="12" y="214">who asked and what was</text>
   <text class="r" x="12" y="230">consented; the prompt and</text>

@@ -71,7 +71,7 @@ The third scenario fails earlier and wider. Same task, same three calls, one wor
 <video controls muted playsinline preload="metadata" poster="demo-poster.png" width="1200" height="750">
 <source src="demo.mp4" type="video/mp4">
 </video>
-<figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code: <code>healthy</code> passes and the graph turns blue hop by hop; <code>swap</code> is refused at the workspace's gate by one rule and the A to B hop turns red; <code>gist</code> is denied by every process before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 50 seconds.</figcaption>
+<figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code: <code>healthy</code> passes and the graph turns blue hop by hop; <code>swap</code> is refused at the workspace's gate by one rule and the A to B hop turns red; <code>gist</code> is denied by every process before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 52 seconds.</figcaption>
 </figure>
 
 ## 5. What "bytes leave" means

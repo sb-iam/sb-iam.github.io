@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="100%" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 342" width="100%" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
   <title id="f4-title">Where the gate sits: on the last form of the request before the write</title>
   <desc id="f4-desc">Inside process A, left to right: a request struct becomes a JSON-RPC message, then one serialized line. The gate takes that line: it compares it with the admitted plan node, runs the rules on the parsed bytes, writes a durable record and syncs it; the journal's acknowledgement is the only thing that can build a permit, and only a permit can write the line into the pipe to B. A lower branch shows the refusal: the bytes retained under their hash, a refused record, no permit, nothing written, B never entered.</desc>
   <defs>
@@ -23,7 +23,7 @@
   <text class="t" x="12" y="25">Where the gate sits</text>
 
   <!-- process A -->
-  <rect class="outer" x="12" y="44" width="600" height="270" rx="8"/>
+  <rect class="outer" x="12" y="44" width="600" height="286" rx="8"/>
   <text class="s" x="24" y="62">inside process A, the workspace</text>
 
   <rect class="band" x="24" y="80" width="118" height="54" rx="6"/>
@@ -74,5 +74,7 @@
   <text class="r" x="24" y="230">the refusal path never constructs</text>
   <text class="r" x="24" y="246">a Permit, so there is no code</text>
   <text class="r" x="24" y="262">path that can send unchecked bytes</text>
-  <text class="r" x="24" y="294">B checks the line against its own node too; the judge confirms both saw the same bytes</text>
+  <text class="r" x="24" y="288">B checks the line against its own</text>
+  <text class="r" x="24" y="304">node too; the judge confirms both</text>
+  <text class="r" x="24" y="320">saw the same bytes</text>
 </svg>
