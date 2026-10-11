@@ -11,7 +11,7 @@ software construction. Ten parts planned; the first three are set.
 | Part | Essay | Status | Release |
 |---|---|---|---|
 | 1 | Testing Compositional MCP in Zero Trust: the Toronto demo, the deck, the code | live: `blog/testing-compositional-mcp-zero-trust/` | Oct 11, 2026 |
-| 2 | Summer 2026: the Goldilocks zone of the Mojo compiler, the DeepSeek agent harness, the funding of the Lean FRO, and Nvidia's acquisition of Hugging Face | written, dormant until release; the Aug 21 page stays as it is until then | Oct 15, 2026 |
+| 2 | Summer 2026, the Goldilocks zone: Mojo's open compiler, DeepSeek's agent harness, the Lean FRO's new funding, and Nvidia's purchase of Hugging Face | written, dormant until release; the Aug 21 page stays as it is until then | Oct 15, 2026 |
 | 3 | The gang of four: Rust, Mojo, C++ and Lean | not written | Oct 18, 2026 |
 
 Conventions: each essay has its Markdown source under `writing/<slug>/source.md`
