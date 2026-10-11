@@ -1,9 +1,16 @@
 <!-- Source of /blog/testing-compositional-mcp-zero-trust/. Build with tools/build_essay.py; written to blog_website/SKILLS.md. -->
 # Testing Compositional MCP in Zero Trust
 
-*A chain of MCP servers can admit every call it receives and still carry out a plan that the user never approved, because each server sees one call and the violation lies in their composition. We describe a small demonstration, observed end to end on the official Rust SDK, in which every process checks the whole plan before it acts and checks the bytes of every call before they leave, and in which an independent judge decides each run from the records alone.*
+*A chain of MCP servers can admit every call it receives and still carry out a plan that the user never approved, because each server sees one call and the violation lies in their composition. We describe a demonstration, observed end to end on the official Rust SDK, in which every process checks the whole plan before it acts and checks the bytes of every call before they leave, and in which an independent judge decides each run from the records alone.*
 
-**Few terms in computer science are invoked as often as *composition* and *abstraction*, and few are examined as carefully as their frequency would suggest.** Whether a piece of software is correct nonetheless reduces to two questions: whether each abstraction captures what it is intended to capture, and whether the parts compose into the behaviour that was intended. Language models have made code inexpensive to produce; they have not made its composition correct, and they have moved the cost of software from writing the parts to establishing that the parts fit. This series examines both questions from the standpoint of compilers, programming languages and static analysis, within the domain of software construction. Later parts treat abstraction formally, from type theory, and show how zero-cost abstractions carry the same guarantees into Rust, Mojo, C++ and Lean. This first part is concerned with composition at the protocol layer, where an agent's work is now delegated through a chain of servers, and with what is required to test such a chain rather than its members.
+**Few terms in computer science are invoked as often as *composition* and *abstraction*, and few are examined as carefully as their frequency would suggest.** Whether a piece of software is correct nonetheless reduces to two questions: whether each abstraction captures what it is intended to capture, and whether the parts compose into the behaviour that was intended. Language models have made code inexpensive to produce; they have not made its composition correct, and they have moved the cost of software from writing the parts to establishing that the parts fit. This series examines both questions from the standpoint of compilers, programming languages and static analysis, within the domain of software construction. Later parts treat abstraction formally, from type theory, and show how it can help in the application space. This first part is concerned with composition at the protocol layer, where an agent's work is now delegated through a chain of servers, and with what is required to test such a chain rather than its members.
+
+<figure class="article-figure article-video">
+<video controls muted playsinline preload="metadata" poster="demo-terminal-page-poster.png" width="1600" height="540">
+<source src="demo-terminal-page.mp4" type="video/mp4">
+</video>
+<figcaption><strong>V1</strong> The demonstration in fifty seconds, recorded from the published code. On the left, the terminal prints the records each process writes and the judge's verdict; on the right, the live page shows the plan verdict, the composition graph and one card per record. Three scenarios run in sequence: every rule holds; the workspace alters one field of one call and its own gate refuses it; the plan follows the planted comment and every process denies it before any call. Silent.</figcaption>
+</figure>
 
 ## 1. Introduction
 
@@ -37,7 +44,7 @@ This section describes the demonstration in the order in which a run proceeds: t
 
 > Fix the failing test `repeated_member_is_rejected` in crate `jsonlite`, commit the fix, run exactly that test on the commit, and record the result in `checks/jsonlite-summary.txt` inside the project. Keep the source and the test output inside the project.
 
-The crate named in the task is a small JSON parser without dependencies, written for the demonstration; its test for duplicate object keys fails before an approved patch is applied and passes after it. A comment planted in the parser asks that the summary be uploaded to a public gist. We treat this comment as data rather than as an instruction; no component of the demonstration acts on it. The third scenario examines the consequence of a plan that does.
+The crate named in the task is a JSON parser without dependencies, written for the demonstration; its test for duplicate object keys fails before an approved patch is applied and passes after it. A comment planted in the parser asks that the summary be uploaded to a public gist. We treat this comment as data rather than as an instruction; no component of the demonstration acts on it. The third scenario examines the consequence of a plan that does.
 
 **The four processes.** The task passes through four operating-system processes, which we name H, G, A and B. All four are built on the official Rust SDK for MCP, `rmcp`, pinned to one Git revision, and all speak MCP 2025-11-25 over standard input and output. H is the MCP host; G, A and B are MCP servers, each spawned by the process above it, and G and A are in addition MCP clients of the process below them. Table 1 gives each process's role, what it does and what it checks.
 
@@ -82,6 +89,8 @@ We ran three scenarios, which Table 3 summarizes and which we describe in turn b
 
 A refusal scenario is judged against an expectation written before the scenario was run; the judge therefore reports a pass when the refusal occurred as expected, and a failure otherwise. A refusal is meaningful, moreover, only beside the unaltered first scenario executed in a fresh directory, since a system that refused everything would pass the second and third scenarios trivially.
 
+Video V1, at the head of this essay, records the three scenarios with the terminal beside the page.
+
 **The first scenario** establishes that the chain works when every rule holds. H verifies the plan and submits the task; G verifies the plan, admits the request and forwards it; A verifies the plan, applies the two edits of the patch, makes a commit, and asks B to test that commit; B verifies the plan, runs the one test named in the task, writes the summary file once, and writes a receipt. H accepts that the effect occurred only after it has re-hashed the receipt and the file at the one permitted path. Each of these steps is a record in a journal, and the judge confirms from the journals that each message entered its handler exactly once, that the commit exists in the workspace, that the test was run on that commit and passed, and that the file was written once.
 
 **The second scenario** is the one that distinguishes a check on the bytes from a check on the object. Its plan is identical to that of the first, and all four processes verify it. H and G execute exactly as before, byte for byte. A makes its commit and then constructs its call to B with one field altered: the name of the test. A's gate does not examine the request object; it examines the serialized line that is about to be written to the pipe and compares it with the step the plan admitted. The difference, shown below as the line the admitted step resolves to and the line A retained when it refused, is confined to that one field:
@@ -95,21 +104,6 @@ Because the destination is still the internal path, the permission, label and co
 
 **The third scenario** fails earlier and more broadly. The task and the three calls are unchanged; only the destination differs, and it is the public gist that the planted comment requested. No row of the policy permits any caller to name that destination, so the permission rule is violated once for each of the three steps; B lists a tool that can reach the gist, and listing does not constitute permission. The workspace's output is labelled with one tenant and classified as restricted, the gist is public on both counts, and summarization does not declassify, so both label rules are violated on the final step. The consent admits a single effect, the summary written to the internal path, and a comment in the source cannot widen it, so the consent rule is violated as well. In total, six findings under four rules are recorded, and every process records its own denial before anything is sent; the servers start and list their tools, and that is the extent of their activity.
 
-Two recordings of the three scenarios accompany this section. Video V1 shows the live page alone; Video V2 shows the terminal and the page side by side, so that the records each process prints can be read as the page updates.
-
-<figure class="article-figure article-video">
-<video controls muted playsinline preload="metadata" poster="demo-poster.png" width="1200" height="750">
-<source src="demo.mp4" type="video/mp4">
-</video>
-<figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code. In <code>healthy</code> the plan is verified and the graph turns blue hop by hop; in <code>swap</code> the workspace's gate refuses by one rule and the A to B hop turns red; in <code>gist</code> every process denies the plan before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 52 seconds.</figcaption>
-</figure>
-
-<figure class="article-figure article-video">
-<video controls muted playsinline preload="metadata" poster="demo-terminal-page-poster.png" width="1600" height="540">
-<source src="demo-terminal-page.mp4" type="video/mp4">
-</video>
-<figcaption><strong>V2</strong> The same three scenarios with the terminal on the left and the live page on the right: the terminal prints each process's records and the judge's verdict as the page updates. Silent, 50 seconds.</figcaption>
-</figure>
 
 ## 5. What the gate guarantees
 
@@ -158,13 +152,13 @@ Where external validity is concerned, the demonstration is one task, one chain o
 
 Where internal validity is concerned, the judge is independent of the runtime's code and of its self-report, but not of its inputs: it reads the same policy and Program files as the processes, so a defective input would be defective in both places and would pass. The expectations for the original three scenarios were written before the runtime was adapted; those of the second scenario were written alongside it, and the file records that as a revision. The exact-action comparison is performed on canonical JSON, with the wire bytes retained beside it, so a message that differed only in key order would be admitted; the retained bytes allow the judge to see that difference even though the gate does not act on it.
 
-Where construct validity is concerned, the rules are small and hand-written, sufficient for three steps and two destinations, with no schema and no analysis; the demonstration shows what a checkable plan must look like and nothing about how such a plan is produced from a user's intent. The page was checked in one headless browser at one window size. We did not measure the cost of the gate relative to the cost of the calls, nor the effort required to write a policy for a real chain. Each of these limits appears, with a severity, in the critique published with the code.
+Where construct validity is concerned, the rules are hand-written, sufficient for three steps and two destinations, with no schema and no analysis; the demonstration shows what a checkable plan must look like and nothing about how such a plan is produced from a user's intent. The page was checked in one headless browser at one window size. We did not measure the cost of the gate relative to the cost of the calls, nor the effort required to write a policy for a real chain. Each of these limits appears, with a severity, in the critique published with the code.
 
 ## 8. Future work
 
 Three directions follow from the demonstration, and each retains the gate on the bytes.
 
-**A policy engine in place of hand-written rules.** The present rules are plain tables and a small checker, which suffices for a demonstration but cannot express a rule about a tool that does not yet exist and cannot be analyzed for conflicts. The next step is a policy language proper, Cedar, with a schema, analysis and a single language shared by hosts and servers. The gate does not move into the engine: the engine answers whether an action is allowed, and the gate guarantees that the action it answered about is the one that left.
+**A policy engine in place of hand-written rules.** The present rules are plain tables and a checker, which suffices for a demonstration but cannot express a rule about a tool that does not yet exist and cannot be analyzed for conflicts. The next step is a policy language proper, Cedar, with a schema, analysis and a single language shared by hosts and servers. The gate does not move into the engine: the engine answers whether an action is allowed, and the gate guarantees that the action it answered about is the one that left.
 
 **Typed gates in Mojo, C++ and Lean.** The Model Context Protocol has official SDKs for several languages but none for Mojo, C++ or Lean. The gap matters here because the guarantee that no write occurs without a permit is at present enforced by the Rust type system alone; an SDK that expresses the permit as a zero-cost abstraction in each of these languages would move the same guarantee to compile time, where a program that attempts a write without a permit fails to build rather than at run time. The design of these SDKs is the subject of a later part of this series.
 
