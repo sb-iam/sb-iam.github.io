@@ -155,7 +155,7 @@ Three directions follow, each retaining the gate on the bytes.
 - The talk deck, cover and twelve slides: [PDF](/docs/testing-compositional-mcp-zero-trust-deck.pdf) and [web page](/docs/testing-compositional-mcp-zero-trust-deck.html).
 - The code, under the Apache License 2.0, with instructions for building and running the scenarios: [github.com/sb-iam/conferences/tree/main/2026-mcp-toronto](https://github.com/sb-iam/conferences/tree/main/2026-mcp-toronto).
 
-Next in the series: Part 2, *Summer 2026*: the Mojo compiler, the Lean FRO, the DeepSeek harness, and Nvidia's acquisition of Hugging Face, on Oct 15, 2026.
+Next in the series: Part 2, *Summer 2026*: the Mojo compiler, the Lean FRO, the DeepSeek harness, and Nvidia's acquisition of Hugging Face.
 
 ## References
 
