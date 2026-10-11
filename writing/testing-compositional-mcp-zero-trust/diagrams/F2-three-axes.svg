@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 360" width="100%" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f2-title">Three axes of a composed agent: intent, delegation, reach</title>
+  <desc id="f2-desc">Three axes from one origin labelled host. A horizontal axis, MCP, reach, carries three marks: source, gateway, sink. A vertical axis, A2A, delegation, carries client agent, remote agent, task and artifacts. A diagonal axis towards the viewer, ACP, intent, carries editor, coding agent, files and terminal. A note says a single call is a point on one axis and a plan is a point in the whole space.</desc>
+  <defs>
+    <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f2-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .n  { font-size: 15px; font-weight: 600; }
+      .r  { font-size: 13px; opacity: 0.78; }
+      .axis { stroke: currentColor; stroke-width: 1.4; fill: none; opacity: 0.8; }
+      .mcp  { stroke: #1fa8d6; stroke-width: 3; fill: none; }
+      .mark { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-width: 1.4; }
+      .dot  { fill: #1fa8d6; }
+      .grid { stroke: currentColor; stroke-opacity: 0.12; stroke-width: 1; fill: none; }
+    </style>
+  </defs>
+
+  <text class="t" x="12" y="25">Three axes of a composed agent</text>
+
+  <!-- faint floor grid -->
+  <path class="grid" d="M250 260 H700 M250 220 H700 M250 180 H700 M250 140 H700 M250 100 H700"/>
+  <path class="grid" d="M340 100 V260 M430 100 V260 M520 100 V260 M610 100 V260"/>
+
+  <!-- origin -->
+  <circle cx="250" cy="260" r="9" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="2.4"/>
+  <text class="n" x="266" y="282">host: where the three meet</text>
+
+  <!-- MCP axis, reach -->
+  <line class="mcp" x1="250" y1="260" x2="716" y2="260" marker-end="url(#f2-arrow-blue)"/>
+  <circle class="dot" cx="360" cy="260" r="7"/>
+  <circle class="dot" cx="480" cy="260" r="7"/>
+  <circle class="dot" cx="600" cy="260" r="7"/>
+  <text class="r" x="343" y="245">source</text>
+  <text class="r" x="458" y="245">gateway</text>
+  <text class="r" x="589" y="245">sink</text>
+  <text class="s" x="560" y="300">MCP · reach · this essay</text>
+  <text class="r" x="560" y="318">what the agent can touch: tools, data, effects;</text>
+  <text class="r" x="560" y="334">each hop moves data and authority one server further</text>
+
+  <!-- A2A axis, delegation -->
+  <line class="axis" x1="250" y1="260" x2="250" y2="52" marker-end="url(#f2-arrow)"/>
+  <circle class="mark" cx="250" cy="205" r="7"/>
+  <circle class="mark" cx="250" cy="150" r="7"/>
+  <circle class="mark" cx="250" cy="95" r="7"/>
+  <text class="r" x="264" y="209">client agent</text>
+  <text class="r" x="264" y="154">remote agent</text>
+  <text class="r" x="264" y="99">task and artifacts</text>
+  <text class="s" x="262" y="48">A2A · delegation</text>
+  <text class="r" x="390" y="48">who acts for whom; authority can only shrink</text>
+
+  <!-- ACP axis, intent -->
+  <line class="axis" x1="250" y1="260" x2="92" y2="345" marker-end="url(#f2-arrow)"/>
+  <rect class="mark" x="195" y="282" width="12" height="12" rx="2"/>
+  <rect class="mark" x="152" y="305" width="12" height="12" rx="2"/>
+  <rect class="mark" x="109" y="328" width="12" height="12" rx="2"/>
+  <text class="r" x="130" y="292" text-anchor="end">editor</text>
+  <text class="r" x="146" y="314" text-anchor="end">coding agent</text>
+  <text class="r" x="103" y="338" text-anchor="end">files and terminal</text>
+  <text class="s" x="12" y="196">ACP · intent</text>
+  <text class="r" x="12" y="214">who asked and what was</text>
+  <text class="r" x="12" y="230">consented; the prompt and</text>
+  <text class="r" x="12" y="246">the permissions live here</text>
+
+  <!-- the point -->
+  <text class="r" x="12" y="60">a call is a point on one axis;</text>
+  <text class="r" x="12" y="76">a plan is a point in the whole space</text>
+</svg>

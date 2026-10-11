@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="100%" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f4-title">Where the gate sits: on the last form of the request before the write</title>
+  <desc id="f4-desc">Inside process A, left to right: a request struct becomes a JSON-RPC message, then one serialized line. The gate takes that line: it compares it with the admitted plan node, runs the rules on the parsed bytes, writes a durable record and syncs it; the journal's acknowledgement is the only thing that can build a permit, and only a permit can write the line into the pipe to B. A lower branch shows the refusal: the bytes retained under their hash, a refused record, no permit, nothing written, B never entered.</desc>
+  <defs>
+    <marker id="f4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f4-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+    <marker id="f4-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+    <style>
+      .t  { font-size: 18px; font-weight: 600; }
+      .s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
+      .n  { font-size: 14px; font-weight: 600; }
+      .r  { font-size: 12.5px; opacity: 0.78; }
+      .no { font-size: 12.5px; fill: #c44a37; }
+      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .gate { fill: rgba(31,168,214,0.12); stroke: #1fa8d6; stroke-width: 1.6; }
+      .outer { fill: none; stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; stroke-dasharray: 6 4; }
+      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
+      .bad  { stroke: #c44a37; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+    </style>
+  </defs>
+
+  <text class="t" x="12" y="25">Where the gate sits</text>
+
+  <!-- process A -->
+  <rect class="outer" x="12" y="44" width="600" height="270" rx="8"/>
+  <text class="s" x="24" y="62">inside process A, the workspace</text>
+
+  <rect class="band" x="24" y="80" width="118" height="54" rx="6"/>
+  <text class="n" x="34" y="102">request struct</text>
+  <text class="r" x="34" y="120">a Rust value</text>
+
+  <rect class="band" x="168" y="80" width="118" height="54" rx="6"/>
+  <text class="n" x="178" y="102">JSON-RPC</text>
+  <text class="r" x="178" y="120">built by the SDK</text>
+
+  <rect class="band" x="312" y="80" width="130" height="54" rx="6"/>
+  <text class="n" x="322" y="102">one serialized line</text>
+  <text class="r" x="322" y="120">the only form B sees</text>
+
+  <line class="link" x1="142" y1="107" x2="166" y2="107" marker-end="url(#f4-arrow)"/>
+  <line class="link" x1="286" y1="107" x2="310" y2="107" marker-end="url(#f4-arrow)"/>
+  <line class="link" x1="442" y1="107" x2="466" y2="107" marker-end="url(#f4-arrow)"/>
+
+  <!-- the gate -->
+  <rect class="gate" x="468" y="72" width="130" height="152" rx="6"/>
+  <text class="n" x="478" y="94">the gate</text>
+  <text class="r" x="478" y="114">equals the admitted</text>
+  <text class="r" x="478" y="128">node? rules on the</text>
+  <text class="r" x="478" y="142">parsed bytes?</text>
+  <text class="r" x="478" y="164">durable record, fsync</text>
+  <text class="r" x="478" y="182">→ Ack (journal only)</text>
+  <text class="r" x="478" y="200">→ Permit (from Ack</text>
+  <text class="r" x="478" y="214">only) → write</text>
+
+  <!-- the write to B -->
+  <line class="hop" x1="598" y1="107" x2="700" y2="107" marker-end="url(#f4-arrow-blue)"/>
+  <text class="s" x="622" y="97">write</text>
+  <rect class="band" x="702" y="80" width="46" height="54" rx="6"/>
+  <text class="n" x="718" y="112">B</text>
+  <text class="r" x="618" y="128">the pipe: the only</text>
+  <text class="r" x="618" y="142">way A reaches B</text>
+
+  <!-- the refusal branch -->
+  <path class="bad" d="M533 224 V262" marker-end="url(#f4-arrow-red)"/>
+  <rect class="band" x="312" y="264" width="286" height="40" rx="6"/>
+  <text class="no" x="322" y="281">refused: bytes retained under their hash,</text>
+  <text class="no" x="322" y="296">a refused record, no Permit, nothing written</text>
+
+  <!-- what closes -->
+  <text class="r" x="24" y="166">check and use are the same bytes:</text>
+  <text class="r" x="24" y="182">no time-of-check gap between a</text>
+  <text class="r" x="24" y="198">checked object and the wire</text>
+  <text class="r" x="24" y="230">the refusal path never constructs</text>
+  <text class="r" x="24" y="246">a Permit, so there is no code</text>
+  <text class="r" x="24" y="262">path that can send unchecked bytes</text>
+  <text class="r" x="24" y="294">B checks the line against its own node too; the judge confirms both saw the same bytes</text>
+</svg>
