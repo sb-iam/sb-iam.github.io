@@ -303,7 +303,7 @@
 <tr><td><code>swap</code></td><td>The plan is valid. At run time A requests a different test from B than the plan names; the destination remains internal.</td><td>A's own gate refuses the exact bytes with a single finding, <code>EXACT_ACTION_MISMATCH</code>. B is never entered. The commit remains; no test runs and no file is written.</td></tr>
 <tr><td><code>gist</code></td><td>The plan follows the planted comment: the same three calls, with the public gist as the destination.</td><td>H and every server deny the whole plan, with six findings under four rule names. No business call is made; no commit, no test and no file result.</td></tr>
 <tr><td><code>substitute</code></td><td>The plan is valid. At run time A changes its child call's destination to the public gist.</td><td>A's gate refuses with five findings. B is never entered. The commit remains; no file is written.</td></tr>
-</tbody></table></div></div>
+</tbody></table></div>
 
 <p>The judge accepts a refusal scenario because the refusal is the expected outcome, and a refusal is meaningful only beside the unchanged <code>healthy</code> run executed in a fresh directory.</p>
 <p>The second scenario merits a closer reading. Its plan is identical to that of the first, and all four processes verified it. H and G execute exactly as before, byte for byte. A makes its commit and then constructs its call to B with one field altered. A's gate does not examine a request object; it examines the serialized line that is about to be written to the pipe and compares it with the node it admitted. The entire difference is the following, shown as the line the admitted node resolves to and the line A retained under its hash when it refused:</p>
