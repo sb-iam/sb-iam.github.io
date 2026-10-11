@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" width="100%" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" width="100%" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
   <title id="f1-title">Three permitted calls, one violation</title>
   <desc id="f1-desc">A chain of four boxes, host, gateway, workspace and test runner, joined by three arrows. Each arrow carries a per-call badge reading allowed. Below the chain a labelled flow follows the workspace's output, acme and restricted, to a public gist, and a bracket under the whole chain reads: the plan, denied, four rule names, six findings.</desc>
   <defs>
@@ -55,12 +55,14 @@
   <!-- the data flow to the public sink -->
   <text class="s" x="416" y="196">output: acme · restricted</text>
   <path class="flow" d="M479 202 C479 240 560 236 600 246" marker-end="url(#f1-arrow-red)"/>
-  <rect class="sink" x="600" y="226" width="148" height="56" rx="6"/>
-  <text class="n" x="612" y="250">public gist</text>
-  <text class="r" x="612" y="270">tenant public · clearance public</text>
+  <rect class="sink" x="600" y="222" width="148" height="64" rx="6"/>
+  <text class="n" x="612" y="242">public gist</text>
+  <text class="r" x="612" y="259">tenant: public</text>
+  <text class="r" x="612" y="275">clearance: public</text>
 
   <!-- the whole-plan verdict -->
-  <path class="link" d="M12 300 L12 312 L748 312 L748 300"/>
-  <text class="no" x="12" y="296">the whole plan: denied</text>
-  <text class="r" x="230" y="296">no permission row for the sink · the label flow breaks twice · the consent admits only the internal summary</text>
+  <text class="no" x="12" y="304">the whole plan: denied</text>
+  <text class="r" x="230" y="304">no permission row for the sink · the label flow breaks twice ·</text>
+  <text class="r" x="230" y="320">the consent admits only the internal summary</text>
+  <path class="link" d="M12 324 L12 332 L748 332 L748 324"/>
 </svg>

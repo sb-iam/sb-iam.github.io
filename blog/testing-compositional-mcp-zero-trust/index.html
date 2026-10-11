@@ -82,9 +82,10 @@
   <text class="r" x="343" y="245">source</text>
   <text class="r" x="458" y="245">gateway</text>
   <text class="r" x="589" y="245">sink</text>
-  <text class="s" x="560" y="300">MCP · reach · this essay</text>
-  <text class="r" x="560" y="318">what the agent can touch: tools, data, effects;</text>
-  <text class="r" x="560" y="334">each hop moves data and authority one server further</text>
+  <text class="s" x="480" y="300">MCP · reach · this essay</text>
+  <text class="r" x="480" y="318">what the agent can touch: tools, data, effects;</text>
+  <text class="r" x="480" y="334">each hop moves data and authority</text>
+  <text class="r" x="480" y="350">one server further</text>
 
   <!-- A2A axis, delegation -->
   <line class="axis" x1="250" y1="260" x2="250" y2="52" marker-end="url(#f2-arrow)"/>
@@ -102,9 +103,9 @@
   <rect class="mark" x="195" y="282" width="12" height="12" rx="2"/>
   <rect class="mark" x="152" y="305" width="12" height="12" rx="2"/>
   <rect class="mark" x="109" y="328" width="12" height="12" rx="2"/>
-  <text class="r" x="130" y="292" text-anchor="end">editor</text>
-  <text class="r" x="146" y="314" text-anchor="end">coding agent</text>
-  <text class="r" x="103" y="338" text-anchor="end">files and terminal</text>
+  <text class="r" x="185" y="292" text-anchor="end">editor</text>
+  <text class="r" x="142" y="315" text-anchor="end">coding agent</text>
+  <text class="r" x="99" y="338" text-anchor="end">files and terminal</text>
   <text class="s" x="12" y="196">ACP · intent</text>
   <text class="r" x="12" y="214">who asked and what was</text>
   <text class="r" x="12" y="230">consented; the prompt and</text>
@@ -118,7 +119,7 @@
 </figure>
 <p>Per-call authorization checks a point on one axis. MCP's authorization layer does this well: a client presents a token for a server, the server checks its audience and scope, the call is allowed or not. That is necessary. It is also where the gap opens, because the thing a person consented to is a plan, and a plan is a point in the whole space. Three calls, each with a valid token, each to a tool that is listed, can together carry a restricted summary to a public destination. No single check sees it, because no single check sees more than one call.</p>
 <figure class="article-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 340" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f1-title">Three permitted calls, one violation</title>
   <desc id="f1-desc">A chain of four boxes, host, gateway, workspace and test runner, joined by three arrows. Each arrow carries a per-call badge reading allowed. Below the chain a labelled flow follows the workspace's output, acme and restricted, to a public gist, and a bracket under the whole chain reads: the plan, denied, four rule names, six findings.</desc>
   <defs>
@@ -175,14 +176,16 @@
   <!-- the data flow to the public sink -->
   <text class="s" x="416" y="196">output: acme · restricted</text>
   <path class="flow" d="M479 202 C479 240 560 236 600 246" marker-end="url(#f1-arrow-red)"/>
-  <rect class="sink" x="600" y="226" width="148" height="56" rx="6"/>
-  <text class="n" x="612" y="250">public gist</text>
-  <text class="r" x="612" y="270">tenant public · clearance public</text>
+  <rect class="sink" x="600" y="222" width="148" height="64" rx="6"/>
+  <text class="n" x="612" y="242">public gist</text>
+  <text class="r" x="612" y="259">tenant: public</text>
+  <text class="r" x="612" y="275">clearance: public</text>
 
   <!-- the whole-plan verdict -->
-  <path class="link" d="M12 300 L12 312 L748 312 L748 300"/>
-  <text class="no" x="12" y="296">the whole plan: denied</text>
-  <text class="r" x="230" y="296">no permission row for the sink · the label flow breaks twice · the consent admits only the internal summary</text>
+  <text class="no" x="12" y="304">the whole plan: denied</text>
+  <text class="r" x="230" y="304">no permission row for the sink · the label flow breaks twice ·</text>
+  <text class="r" x="230" y="320">the consent admits only the internal summary</text>
+  <path class="link" d="M12 324 L12 332 L748 332 L748 324"/>
 </svg>
 <figcaption><strong>F1</strong> Three permitted calls, one violation: per-call authorization passes every hop, and the plan as a whole moves restricted output to a public sink.</figcaption>
 </figure>
@@ -197,7 +200,7 @@
 <figure class="article-figure hero-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f3-title">Four processes, one plan, one record</title>
-  <desc id="f3-desc">Top: a band of frozen inputs read by every process: Program, policy, consent, fixture crate. Middle: four boxes joined by stdio arrows: H the MCP host, G an MCP stdio server that forwards, A an MCP stdio server that applies the patch and commits, B an MCP stdio server that runs one test and writes the summary. Under each box the same three parts: checks the whole plan, gates its exact bytes, keeps a synced journal. Below: the run directory written only by the processes: journals, retained frames, git workspace, summary, receipt. Bottom: two readers, the judge that re-derives the verdict from the run directory alone, and the live page that tails the journals and never writes.</desc>
+  <desc id="f3-desc">Top: a band of frozen inputs read by every process: Program, policy, consent, fixture crate. Middle: four boxes joined by stdio arrows: H the MCP host, G an MCP server that forwards, A an MCP server that applies the patch and commits, B an MCP server that runs one test and writes the summary. Under the boxes one line: every process checks the whole plan itself, gates the exact bytes it sends, keeps a synced hash-chained journal. Below: the run directory written only by the processes: journals, retained frames, git workspace, summary, receipt, panel. Bottom: two readers, the judge that re-derives the verdict from the run directory alone, and the live page that tails the journals and never writes.</desc>
   <defs>
     <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <marker id="f3-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
@@ -213,7 +216,7 @@
       .dark { fill: rgba(128,128,128,0.22); stroke: currentColor; stroke-opacity: 0.6; stroke-width: 1.2; }
       .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
       .hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
-      .lbl  { font-size: 11.5px; font-weight: 600; fill: #1fa8d6; text-anchor: middle; }
+      .lbl  { font-size: 11px; font-weight: 600; fill: #1fa8d6; text-anchor: middle; }
     </style>
   </defs>
 
@@ -222,50 +225,50 @@
   <!-- frozen inputs -->
   <rect class="band" x="12" y="42" width="736" height="32" rx="6"/>
   <text class="g" x="380" y="63">frozen inputs, read by every process: Program · policy · consent · fixture crate</text>
-  <line class="link" x1="100" y1="74" x2="100" y2="104" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="287" y1="74" x2="287" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="90" y1="74" x2="90" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="282" y1="74" x2="282" y2="104" marker-end="url(#f3-arrow)"/>
   <line class="link" x1="474" y1="74" x2="474" y2="104" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="661" y1="74" x2="661" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="666" y1="74" x2="666" y2="104" marker-end="url(#f3-arrow)"/>
 
-  <!-- the four processes -->
-  <rect class="proc" x="12" y="106" width="176" height="96" rx="6"/>
+  <!-- the four processes, 156 wide with 36 between them -->
+  <rect class="proc" x="12" y="106" width="156" height="96" rx="6"/>
   <text class="s" x="22" y="126">H · MCP host</text>
   <text class="r" x="22" y="146">checks the plan before</text>
   <text class="r" x="22" y="162">its first call; one call</text>
-  <text class="r" x="22" y="178">to G; re-hashes the receipt</text>
+  <text class="r" x="22" y="178">to G; re-hashes receipt</text>
 
-  <rect class="proc" x="199" y="106" width="176" height="96" rx="6"/>
-  <text class="s" x="209" y="126">G · MCP stdio server 1</text>
-  <text class="r" x="209" y="146">serves submit_fix to H;</text>
-  <text class="r" x="209" y="162">forwards it to A through</text>
-  <text class="r" x="209" y="178">its own gate</text>
+  <rect class="proc" x="204" y="106" width="156" height="96" rx="6"/>
+  <text class="s" x="214" y="126">G · MCP server 1</text>
+  <text class="r" x="214" y="146">serves submit_fix to H;</text>
+  <text class="r" x="214" y="162">forwards it to A through</text>
+  <text class="r" x="214" y="178">its own gate</text>
 
-  <rect class="proc" x="386" y="106" width="176" height="96" rx="6"/>
-  <text class="s" x="396" y="126">A · MCP stdio server 2</text>
-  <text class="r" x="396" y="146">applies the patch, makes</text>
-  <text class="r" x="396" y="162">the git commit; asks B to</text>
-  <text class="r" x="396" y="178">verify that commit</text>
+  <rect class="proc" x="396" y="106" width="156" height="96" rx="6"/>
+  <text class="s" x="406" y="126">A · MCP server 2</text>
+  <text class="r" x="406" y="146">applies the patch, makes</text>
+  <text class="r" x="406" y="162">the git commit; asks B to</text>
+  <text class="r" x="406" y="178">verify that commit</text>
 
-  <rect class="sink" x="573" y="106" width="175" height="96" rx="6"/>
-  <text class="s" x="583" y="126">B · MCP stdio server 3</text>
-  <text class="r" x="583" y="146">runs exactly one cargo</text>
-  <text class="r" x="583" y="162">test on it; writes the</text>
-  <text class="r" x="583" y="178">summary once, a receipt</text>
+  <rect class="sink" x="588" y="106" width="156" height="96" rx="6"/>
+  <text class="s" x="598" y="126">B · MCP server 3</text>
+  <text class="r" x="598" y="146">runs exactly one cargo</text>
+  <text class="r" x="598" y="162">test on it; writes the</text>
+  <text class="r" x="598" y="178">summary once, a receipt</text>
 
-  <line class="hop" x1="188" y1="150" x2="197" y2="150" marker-end="url(#f3-arrow-blue)"/>
-  <line class="hop" x1="375" y1="150" x2="384" y2="150" marker-end="url(#f3-arrow-blue)"/>
-  <line class="hop" x1="562" y1="150" x2="571" y2="150" marker-end="url(#f3-arrow-blue)"/>
-  <text class="lbl" x="193" y="140">stdio</text>
-  <text class="lbl" x="380" y="140">stdio</text>
-  <text class="lbl" x="567" y="140">stdio</text>
+  <line class="hop" x1="170" y1="156" x2="201" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <line class="hop" x1="362" y1="156" x2="393" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <line class="hop" x1="554" y1="156" x2="585" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <text class="lbl" x="186" y="148">stdio</text>
+  <text class="lbl" x="378" y="148">stdio</text>
+  <text class="lbl" x="570" y="148">stdio</text>
 
   <!-- what every process has -->
   <text class="g" x="380" y="222">every process: checks the whole plan itself · gates the exact bytes it sends · keeps a synced, hash-chained journal</text>
 
-  <line class="link" x1="100" y1="230" x2="100" y2="254" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="287" y1="230" x2="287" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="90" y1="230" x2="90" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="282" y1="230" x2="282" y2="254" marker-end="url(#f3-arrow)"/>
   <line class="link" x1="474" y1="230" x2="474" y2="254" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="661" y1="230" x2="661" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="link" x1="666" y1="230" x2="666" y2="254" marker-end="url(#f3-arrow)"/>
 
   <!-- the run directory -->
   <rect class="dark" x="12" y="256" width="736" height="34" rx="6"/>
@@ -278,7 +281,7 @@
   <rect class="band" x="12" y="328" width="356" height="80" rx="6"/>
   <text class="n" x="24" y="352">Judge</text>
   <text class="r" x="24" y="372">re-derives the verdict from the run directory alone,</text>
-  <text class="r" x="24" y="388">against expectations frozen before the code; never runs the binary</text>
+  <text class="r" x="24" y="388">against expectations frozen before the code; never runs it</text>
 
   <rect class="band" x="392" y="328" width="356" height="80" rx="6"/>
   <text class="n" x="404" y="352">Live page</text>
@@ -340,14 +343,14 @@ refused   {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quo
 <video controls muted playsinline preload="metadata" poster="demo-poster.png" width="1200" height="750">
 <source src="demo.mp4" type="video/mp4">
 </video>
-<figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code: <code>healthy</code> passes and the graph turns blue hop by hop; <code>swap</code> is refused at the workspace's gate by one rule and the A to B hop turns red; <code>gist</code> is denied by every process before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 50 seconds.</figcaption>
+<figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code: <code>healthy</code> passes and the graph turns blue hop by hop; <code>swap</code> is refused at the workspace's gate by one rule and the A to B hop turns red; <code>gist</code> is denied by every process before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 52 seconds.</figcaption>
 </figure>
 
 <h2 id="5-what-bytes-leave-means">5. What "bytes leave" means</h2>
 <p>The talk's one-liner was that the permit to write is a value you can only get from a synced journal record of the decision, so if the bytes were not checked there is no code path that can send them. Three ideas sit under that sentence.</p>
 <p><strong>The time-of-check gap.</strong> Inside A, the request exists as a struct, then as a JSON-RPC message, then as one serialized line, and then <code>write_all</code> puts that line into B's stdin. Checking the struct and then sending whatever ends up on the wire leaves a gap between the time of check and the time of use, and everything that touches the message in between is inside it. The gate checks the line, the last form before the write and the only form B will ever see, in the sender's own process, right before the write. Check and use are the same bytes. B checks what it received against its own copy of the plan node before it enters its handler, and the judge later confirms that sender and receiver retained identical bytes.</p>
 <figure class="article-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 342" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f4-title">Where the gate sits: on the last form of the request before the write</title>
   <desc id="f4-desc">Inside process A, left to right: a request struct becomes a JSON-RPC message, then one serialized line. The gate takes that line: it compares it with the admitted plan node, runs the rules on the parsed bytes, writes a durable record and syncs it; the journal's acknowledgement is the only thing that can build a permit, and only a permit can write the line into the pipe to B. A lower branch shows the refusal: the bytes retained under their hash, a refused record, no permit, nothing written, B never entered.</desc>
   <defs>
@@ -372,7 +375,7 @@ refused   {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quo
   <text class="t" x="12" y="25">Where the gate sits</text>
 
   <!-- process A -->
-  <rect class="outer" x="12" y="44" width="600" height="270" rx="8"/>
+  <rect class="outer" x="12" y="44" width="600" height="286" rx="8"/>
   <text class="s" x="24" y="62">inside process A, the workspace</text>
 
   <rect class="band" x="24" y="80" width="118" height="54" rx="6"/>
@@ -423,7 +426,9 @@ refused   {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quo
   <text class="r" x="24" y="230">the refusal path never constructs</text>
   <text class="r" x="24" y="246">a Permit, so there is no code</text>
   <text class="r" x="24" y="262">path that can send unchecked bytes</text>
-  <text class="r" x="24" y="294">B checks the line against its own node too; the judge confirms both saw the same bytes</text>
+  <text class="r" x="24" y="288">B checks the line against its own</text>
+  <text class="r" x="24" y="304">node too; the judge confirms both</text>
+  <text class="r" x="24" y="320">saw the same bytes</text>
 </svg>
 <figcaption><strong>F4</strong> Where the gate sits: on the one serialized line, after the SDK built it and before the write; the refusal path never constructs a permit.</figcaption>
 </figure>
