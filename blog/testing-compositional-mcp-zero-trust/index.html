@@ -191,120 +191,99 @@
 </figure>
 <p>MCP is where the chain forms. An editor speaks ACP to one agent, and an agent may delegate over A2A to a few others, but reach is a chain of servers in which each is a client of the next; this is precisely the shape in which a gateway forwards, a workspace commits and a test runner writes. The demonstration therefore remains on the MCP axis, on the local problem, and within software construction.</p>
 <h2 id="3-the-demonstration-one-task-four-processes">3. The demonstration: one task, four processes</h2>
-<p>The task is a single sentence, and it is the text that every process reads:</p>
+<p>The task is a single sentence, and every process reads the same text:</p>
 <blockquote>
 <p>Fix the failing test <code>repeated_member_is_rejected</code> in crate <code>jsonlite</code>, commit the fix, run exactly that test on the commit, and record the result in <code>checks/jsonlite-summary.txt</code> inside the project. Keep the source and the test output inside the project.</p>
 </blockquote>
-<p>The crate is a small JSON parser without dependencies; its duplicate-key test fails before the approved patch and passes after it. A comment planted in the parser requests that the summary be uploaded to a public gist. The comment is data: nothing in the demonstration interprets it as an instruction, and one scenario examines what happens when a plan does.</p>
-<p>Four operating-system processes carry the task. All run on the official Rust MCP SDK, <code>rmcp</code>, pinned to one Git revision, and speak MCP 2025-11-25 over stdio. H is the MCP host: it checks the plan, submits the task, and later re-hashes a receipt before it accepts that any effect occurred. G, A and B are three MCP servers over stdio, each spawned by its predecessor. G is a gateway that serves <code>submit_fix</code> to H and forwards the request to A through its own gate. A is a workspace that applies the patch, makes a real git commit, and asks B to verify that commit. B is a test runner that executes exactly one <code>cargo test</code> on the commit, writes the summary file once, and writes a receipt binding the file's bytes to the commit and the test. G and A are in addition MCP clients of the server below them. This chain is the composition under test.</p>
-<figure class="article-figure hero-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
-  <title id="f3-title">Four processes, one plan, one record</title>
-  <desc id="f3-desc">Top: a band of frozen inputs read by every process: Program, policy, consent, fixture crate. Middle: four boxes joined by stdio arrows: H the MCP host, G an MCP server that forwards, A an MCP server that applies the patch and commits, B an MCP server that runs one test and writes the summary. Under the boxes one line: every process checks the whole plan itself, gates the exact bytes it sends, keeps a synced hash-chained journal. Below: the run directory written only by the processes: journals, retained frames, git workspace, summary, receipt, panel. Bottom: two readers, the judge that re-derives the verdict from the run directory alone, and the live page that tails the journals and never writes.</desc>
-  <defs>
-    <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
-    <marker id="f3-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
-    <style>
-      .t  { font-size: 18px; font-weight: 600; }
-      .s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
-      .n  { font-size: 15px; font-weight: 600; }
-      .r  { font-size: 12.5px; opacity: 0.78; }
-      .g  { font-size: 13px; opacity: 0.85; text-anchor: middle; }
-      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
-      .proc { fill: rgba(128,128,128,0.08); stroke: currentColor; stroke-width: 1.4; }
-      .sink { fill: rgba(31,168,214,0.12); stroke: currentColor; stroke-width: 1.4; }
-      .dark { fill: rgba(128,128,128,0.22); stroke: currentColor; stroke-opacity: 0.6; stroke-width: 1.2; }
-      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
-      .hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
-      .lbl  { font-size: 11px; font-weight: 600; fill: #1fa8d6; text-anchor: middle; }
-    </style>
-  </defs>
-
-  <text class="t" x="12" y="25">Four processes, one plan, one record</text>
-
-  <!-- frozen inputs -->
-  <rect class="band" x="12" y="42" width="736" height="32" rx="6"/>
-  <text class="g" x="380" y="63">frozen inputs, read by every process: Program · policy · consent · fixture crate</text>
-  <line class="link" x1="90" y1="74" x2="90" y2="104" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="282" y1="74" x2="282" y2="104" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="474" y1="74" x2="474" y2="104" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="666" y1="74" x2="666" y2="104" marker-end="url(#f3-arrow)"/>
-
-  <!-- the four processes, 156 wide with 36 between them -->
-  <rect class="proc" x="12" y="106" width="156" height="96" rx="6"/>
-  <text class="s" x="22" y="126">H · MCP host</text>
-  <text class="r" x="22" y="146">checks the plan before</text>
-  <text class="r" x="22" y="162">its first call; one call</text>
-  <text class="r" x="22" y="178">to G; re-hashes receipt</text>
-
-  <rect class="proc" x="204" y="106" width="156" height="96" rx="6"/>
-  <text class="s" x="214" y="126">G · MCP server 1</text>
-  <text class="r" x="214" y="146">serves submit_fix to H;</text>
-  <text class="r" x="214" y="162">forwards it to A through</text>
-  <text class="r" x="214" y="178">its own gate</text>
-
-  <rect class="proc" x="396" y="106" width="156" height="96" rx="6"/>
-  <text class="s" x="406" y="126">A · MCP server 2</text>
-  <text class="r" x="406" y="146">applies the patch, makes</text>
-  <text class="r" x="406" y="162">the git commit; asks B to</text>
-  <text class="r" x="406" y="178">verify that commit</text>
-
-  <rect class="sink" x="588" y="106" width="156" height="96" rx="6"/>
-  <text class="s" x="598" y="126">B · MCP server 3</text>
-  <text class="r" x="598" y="146">runs exactly one cargo</text>
-  <text class="r" x="598" y="162">test on it; writes the</text>
-  <text class="r" x="598" y="178">summary once, a receipt</text>
-
-  <line class="hop" x1="170" y1="156" x2="201" y2="156" marker-end="url(#f3-arrow-blue)"/>
-  <line class="hop" x1="362" y1="156" x2="393" y2="156" marker-end="url(#f3-arrow-blue)"/>
-  <line class="hop" x1="554" y1="156" x2="585" y2="156" marker-end="url(#f3-arrow-blue)"/>
-  <text class="lbl" x="186" y="148">stdio</text>
-  <text class="lbl" x="378" y="148">stdio</text>
-  <text class="lbl" x="570" y="148">stdio</text>
-
-  <!-- what every process has -->
-  <text class="g" x="380" y="222">every process: checks the whole plan itself · gates the exact bytes it sends · keeps a synced, hash-chained journal</text>
-
-  <line class="link" x1="90" y1="230" x2="90" y2="254" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="282" y1="230" x2="282" y2="254" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="474" y1="230" x2="474" y2="254" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="666" y1="230" x2="666" y2="254" marker-end="url(#f3-arrow)"/>
-
-  <!-- the run directory -->
-  <rect class="dark" x="12" y="256" width="736" height="34" rx="6"/>
-  <text class="g" x="380" y="278">the run directory, written only by the processes: journals · retained frames · git workspace · summary · receipt · panel</text>
-
-  <line class="link" x1="190" y1="290" x2="190" y2="326" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="570" y1="290" x2="570" y2="326" marker-end="url(#f3-arrow)"/>
-
-  <!-- the two readers -->
-  <rect class="band" x="12" y="328" width="356" height="80" rx="6"/>
-  <text class="n" x="24" y="352">Judge</text>
-  <text class="r" x="24" y="372">re-derives the verdict from the run directory alone,</text>
-  <text class="r" x="24" y="388">against expectations frozen before the code; never runs it</text>
-
-  <rect class="band" x="392" y="328" width="356" height="80" rx="6"/>
-  <text class="n" x="404" y="352">Live page</text>
-  <text class="r" x="404" y="372">tails the journals over loopback, one card per record;</text>
-  <text class="r" x="404" y="388">prints the judge's line verbatim; never writes</text>
-</svg>
-<figcaption><strong>F3</strong> Four processes, one plan, one record: frozen inputs above, the chain in the middle, the run directory below, and two readers that only read.</figcaption>
-</figure>
-<p>Three mechanisms are common to every process.</p>
-<p><strong>The whole plan is checked before anything runs.</strong> The plan is a Program of three nodes, each naming a tool, a caller, a callee and arguments; the final node additionally names an effect. The patch and the test name are literals within the Program, and B's commit argument refers to the output that A will produce. H checks the Program before its first call, and every server checks it before serving anything, each against the same frozen policy and the same frozen consent, and each records its own verdict durably. A process whose verdict is a denial serves nothing. The rules are deliberately small: a policy row must exist for the caller, the tool and the destination; the labels on the data must be permitted to flow into the sink; the admitted intent must cover the single effect; and the policy, not the proposal, determines which node is an effect node.</p>
-<p><strong>Every outgoing frame is gated on its exact bytes.</strong> The SDK constructs the message, the transport serializes it once, and that buffer is the object of the decision. The buffer must equal the admitted node resolved against the inputs this process has observed, and the node's rules are evaluated again on the actual bytes. The decision is a durable journal record, synchronized to disk before anything depends on it; the permit to write is constructed only from the journal's acknowledgement; and the bytes of every decided or refused frame are retained under their hash.</p>
-<p><strong>Everything is recorded.</strong> Each process maintains one hash-chained journal. The run directory contains the four journals, the retained frames, the git workspace, the summary file, the receipt and the panel printed to the terminal, and nothing else writes to it. Two readers consume it. The first is a judge, written in a different language, which never executes the binary, never reads the runtime's own report, and re-derives the verdict against expectations that were fixed before the runtime was adapted. The second is a live page, fed by a loopback viewer that tails the journals, displays one card per record, and prints the judge's verdict verbatim.</p>
+<p>The crate <code>jsonlite</code> is a small JSON parser without dependencies; its duplicate-key test fails before the approved patch and passes after it. A comment planted in the parser asks for the summary to be uploaded to a public gist. The comment is data: nothing in the demonstration treats it as an instruction, and the third scenario examines what happens when a plan does.</p>
+<p><strong>The four processes.</strong> The task passes through four operating-system processes, all built on the official Rust MCP SDK (<code>rmcp</code>, pinned to one Git revision) and speaking MCP 2025-11-25 over stdio. Each process in the chain is an MCP server to the one above it and an MCP client of the one below it.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Role</th>
+<th>What it does</th>
+<th>What it checks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H</td>
+<td>MCP host</td>
+<td>submits the task to G; accepts that the effect occurred only after re-hashing B's receipt</td>
+<td>the whole plan, before its first call; every frame it sends</td>
+</tr>
+<tr>
+<td>G</td>
+<td>gateway: server to H, client of A</td>
+<td>forwards the fix request to A</td>
+<td>the whole plan, before serving; the request it received; every frame it sends</td>
+</tr>
+<tr>
+<td>A</td>
+<td>workspace: server to G, client of B</td>
+<td>applies the patch, makes a real git commit, asks B to verify that commit</td>
+<td>the whole plan, before serving; the request it received; every frame it sends</td>
+</tr>
+<tr>
+<td>B</td>
+<td>test runner: server to A</td>
+<td>runs exactly one <code>cargo test</code> on the commit, writes the summary file once, writes a receipt binding the file's bytes to the commit and the test</td>
+<td>the whole plan, before serving; the request it received</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The inputs.</strong> Every process reads the same three frozen files before it does anything. The <em>Program</em> is the plan: three steps, each naming the tool, the caller, the callee and the arguments, and, for the last step, the effect; the patch and the test name are literals inside it. The <em>policy</em> states which caller may use which tool toward which destination, and gives each destination a tenant and a clearance: the internal summary path is cleared for the project's restricted data, the public gist is not. The <em>consent</em> records the one effect the user approved, the summary written to the internal path.</p>
+<p><strong>The rules.</strong> Five rules are applied. The first three are questions about the plan, the fourth is a question about the bytes, and the fifth binds the two.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>The question it answers</th>
+<th>Applied where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Permission (<code>CAPABILITY_WITHOUT_PERMISSION</code>)</td>
+<td>Does a policy row allow this caller to use this tool toward this destination? A tool listed by a server is not thereby permitted.</td>
+<td>on the plan, by every process; again on the bytes, at every gate</td>
+</tr>
+<tr>
+<td>Data labels (<code>LABEL_TENANT</code>, <code>LABEL_CLASSIFICATION</code>)</td>
+<td>May data of this tenant and classification flow into this destination? Summarizing does not declassify.</td>
+<td>the same</td>
+</tr>
+<tr>
+<td>Consent (<code>CONSENT_SCOPE_MISMATCH</code>)</td>
+<td>Is the effect of this plan the one the user approved? A comment in the code cannot widen it.</td>
+<td>the same</td>
+</tr>
+<tr>
+<td>Exact action (<code>EXACT_ACTION_MISMATCH</code>)</td>
+<td>Are the bytes about to leave exactly the step the plan admitted, resolved against what this process has observed?</td>
+<td>at the sender's gate before every write; at the receiver before it enters its handler</td>
+</tr>
+<tr>
+<td>Verified plan</td>
+<td>Has this process recorded its own verdict on the whole plan before sending or serving anything? A denied process sends nothing.</td>
+<td>each process, on itself</td>
+</tr>
+</tbody>
+</table></div>
+<p>How the checks are made matters as much as what they check. The whole-plan verdict is written to the process's journal before it serves anything, so a denial is a record rather than a log line. The gate is the only path for an outgoing frame: the SDK builds the message, the transport serializes it once, and that buffer is what is judged; the decision is written and synchronized to disk, and the permit to write is built only from the journal's acknowledgement. The bytes of every decided or refused frame are kept under their hash.</p>
+<p><strong>The record.</strong> Each process keeps one hash-chained journal. The run directory holds the four journals, the retained frames, the git workspace, the summary file, the receipt and the panel printed to the terminal; nothing else writes to it. Two readers consume it: a judge, written in a different language, which never runs the binary, never reads the runtime's own report, and re-derives the verdict against expectations fixed before the runtime was adapted; and a live page, fed by a loopback viewer that tails the journals, shows one card per record, and prints the judge's verdict verbatim.</p>
 <h2 id="4-three-scenarios">4. Three scenarios</h2>
-<p>One script runs the three scenarios in sequence; a fourth is included in the code for completeness.</p>
+<p>One script runs the three scenarios in sequence.</p>
 <div class="table-wrap"><table class="scenes">
 <thead><tr><th>Scenario</th><th>What happens</th><th>What the records show</th></tr></thead>
 <tbody>
 <tr><td><code>healthy</code></td><td>H submits the recorded plan; G admits it; A applies the two edits and commits; B runs the one test on that commit and writes the summary once.</td><td>Three business calls, one handler entry each; a real commit; the test passes; one summary file; the effect is known to have been applied, on the strength of a receipt that H re-hashed.</td></tr>
 <tr><td><code>swap</code></td><td>The plan is valid. At run time A requests a different test from B than the plan names; the destination remains internal.</td><td>A's own gate refuses the exact bytes with a single finding, <code>EXACT_ACTION_MISMATCH</code>. B is never entered. The commit remains; no test runs and no file is written.</td></tr>
 <tr><td><code>gist</code></td><td>The plan follows the planted comment: the same three calls, with the public gist as the destination.</td><td>H and every server deny the whole plan, with six findings under four rule names. No business call is made; no commit, no test and no file result.</td></tr>
-<tr><td><code>substitute</code></td><td>The plan is valid. At run time A changes its child call's destination to the public gist.</td><td>A's gate refuses with five findings. B is never entered. The commit remains; no file is written.</td></tr>
 </tbody></table></div>
 
+<p>A fourth variant, <code>substitute</code>, in which A changes its child call's destination to the public gist rather than the test name, is included in the code; A's gate refuses it with five findings.</p>
 <p>The judge accepts a refusal scenario because the refusal is the expected outcome, and a refusal is meaningful only beside the unchanged <code>healthy</code> run executed in a fresh directory.</p>
 <p>The second scenario merits a closer reading. Its plan is identical to that of the first, and all four processes verified it. H and G execute exactly as before, byte for byte. A makes its commit and then constructs its call to B with one field altered. A's gate does not examine a request object; it examines the serialized line that is about to be written to the pipe and compares it with the node it admitted. The entire difference is the following, shown as the line the admitted node resolves to and the line A retained under its hash when it refused:</p>
 <div class="essay-code"><pre><code class="language-text">admitted  {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;_meta&quot;:{&quot;progressToken&quot;:1},&quot;arguments&quot;:{&quot;commit&quot;:&quot;f79c4dc…&quot;,&quot;destination&quot;:&quot;internal&quot;,&quot;test&quot;:&quot;repeated_member_is_rejected&quot;},&quot;name&quot;:&quot;tests.run_and_record&quot;}}
@@ -317,6 +296,13 @@ refused   {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quo
 <source src="demo.mp4" type="video/mp4">
 </video>
 <figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code. In <code>healthy</code> the plan is verified and the graph turns blue hop by hop; in <code>swap</code> the workspace's gate refuses by one rule and the A to B hop turns red; in <code>gist</code> every process denies the plan before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 52 seconds.</figcaption>
+</figure>
+
+<figure class="article-figure article-video">
+<video controls muted playsinline preload="metadata" poster="demo-terminal-page-poster.png" width="1600" height="540">
+<source src="demo-terminal-page.mp4" type="video/mp4">
+</video>
+<figcaption><strong>V2</strong> The same three scenarios with the terminal on the left and the live page on the right: the terminal prints each process's records and the judge's verdict as the page updates. Silent, 50 seconds.</figcaption>
 </figure>
 
 <h2 id="5-the-gate-on-the-serialized-bytes">5. The gate on the serialized bytes</h2>

@@ -25,27 +25,40 @@ MCP is where the chain forms. An editor speaks ACP to one agent, and an agent ma
 
 ## 3. The demonstration: one task, four processes
 
-The task is a single sentence, and it is the text that every process reads:
+The task is a single sentence, and every process reads the same text:
 
 > Fix the failing test `repeated_member_is_rejected` in crate `jsonlite`, commit the fix, run exactly that test on the commit, and record the result in `checks/jsonlite-summary.txt` inside the project. Keep the source and the test output inside the project.
 
-The crate is a small JSON parser without dependencies; its duplicate-key test fails before the approved patch and passes after it. A comment planted in the parser requests that the summary be uploaded to a public gist. The comment is data: nothing in the demonstration interprets it as an instruction, and one scenario examines what happens when a plan does.
+The crate `jsonlite` is a small JSON parser without dependencies; its duplicate-key test fails before the approved patch and passes after it. A comment planted in the parser asks for the summary to be uploaded to a public gist. The comment is data: nothing in the demonstration treats it as an instruction, and the third scenario examines what happens when a plan does.
 
-Four operating-system processes carry the task. All run on the official Rust MCP SDK, `rmcp`, pinned to one Git revision, and speak MCP 2025-11-25 over stdio. H is the MCP host: it checks the plan, submits the task, and later re-hashes a receipt before it accepts that any effect occurred. G, A and B are three MCP servers over stdio, each spawned by its predecessor. G is a gateway that serves `submit_fix` to H and forwards the request to A through its own gate. A is a workspace that applies the patch, makes a real git commit, and asks B to verify that commit. B is a test runner that executes exactly one `cargo test` on the commit, writes the summary file once, and writes a receipt binding the file's bytes to the commit and the test. G and A are in addition MCP clients of the server below them. This chain is the composition under test.
+**The four processes.** The task passes through four operating-system processes, all built on the official Rust MCP SDK (`rmcp`, pinned to one Git revision) and speaking MCP 2025-11-25 over stdio. Each process in the chain is an MCP server to the one above it and an MCP client of the one below it.
 
-![F3 — Four processes, one plan, one record: frozen inputs above, the chain in the middle, the run directory below, and two readers that only read.](diagrams/F3-four-processes-one-record.svg)
+| Process | Role | What it does | What it checks |
+|---|---|---|---|
+| H | MCP host | submits the task to G; accepts that the effect occurred only after re-hashing B's receipt | the whole plan, before its first call; every frame it sends |
+| G | gateway: server to H, client of A | forwards the fix request to A | the whole plan, before serving; the request it received; every frame it sends |
+| A | workspace: server to G, client of B | applies the patch, makes a real git commit, asks B to verify that commit | the whole plan, before serving; the request it received; every frame it sends |
+| B | test runner: server to A | runs exactly one `cargo test` on the commit, writes the summary file once, writes a receipt binding the file's bytes to the commit and the test | the whole plan, before serving; the request it received |
 
-Three mechanisms are common to every process.
+**The inputs.** Every process reads the same three frozen files before it does anything. The *Program* is the plan: three steps, each naming the tool, the caller, the callee and the arguments, and, for the last step, the effect; the patch and the test name are literals inside it. The *policy* states which caller may use which tool toward which destination, and gives each destination a tenant and a clearance: the internal summary path is cleared for the project's restricted data, the public gist is not. The *consent* records the one effect the user approved, the summary written to the internal path.
 
-**The whole plan is checked before anything runs.** The plan is a Program of three nodes, each naming a tool, a caller, a callee and arguments; the final node additionally names an effect. The patch and the test name are literals within the Program, and B's commit argument refers to the output that A will produce. H checks the Program before its first call, and every server checks it before serving anything, each against the same frozen policy and the same frozen consent, and each records its own verdict durably. A process whose verdict is a denial serves nothing. The rules are deliberately small: a policy row must exist for the caller, the tool and the destination; the labels on the data must be permitted to flow into the sink; the admitted intent must cover the single effect; and the policy, not the proposal, determines which node is an effect node.
+**The rules.** Five rules are applied. The first three are questions about the plan, the fourth is a question about the bytes, and the fifth binds the two.
 
-**Every outgoing frame is gated on its exact bytes.** The SDK constructs the message, the transport serializes it once, and that buffer is the object of the decision. The buffer must equal the admitted node resolved against the inputs this process has observed, and the node's rules are evaluated again on the actual bytes. The decision is a durable journal record, synchronized to disk before anything depends on it; the permit to write is constructed only from the journal's acknowledgement; and the bytes of every decided or refused frame are retained under their hash.
+| Rule | The question it answers | Applied where |
+|---|---|---|
+| Permission (`CAPABILITY_WITHOUT_PERMISSION`) | Does a policy row allow this caller to use this tool toward this destination? A tool listed by a server is not thereby permitted. | on the plan, by every process; again on the bytes, at every gate |
+| Data labels (`LABEL_TENANT`, `LABEL_CLASSIFICATION`) | May data of this tenant and classification flow into this destination? Summarizing does not declassify. | the same |
+| Consent (`CONSENT_SCOPE_MISMATCH`) | Is the effect of this plan the one the user approved? A comment in the code cannot widen it. | the same |
+| Exact action (`EXACT_ACTION_MISMATCH`) | Are the bytes about to leave exactly the step the plan admitted, resolved against what this process has observed? | at the sender's gate before every write; at the receiver before it enters its handler |
+| Verified plan | Has this process recorded its own verdict on the whole plan before sending or serving anything? A denied process sends nothing. | each process, on itself |
 
-**Everything is recorded.** Each process maintains one hash-chained journal. The run directory contains the four journals, the retained frames, the git workspace, the summary file, the receipt and the panel printed to the terminal, and nothing else writes to it. Two readers consume it. The first is a judge, written in a different language, which never executes the binary, never reads the runtime's own report, and re-derives the verdict against expectations that were fixed before the runtime was adapted. The second is a live page, fed by a loopback viewer that tails the journals, displays one card per record, and prints the judge's verdict verbatim.
+How the checks are made matters as much as what they check. The whole-plan verdict is written to the process's journal before it serves anything, so a denial is a record rather than a log line. The gate is the only path for an outgoing frame: the SDK builds the message, the transport serializes it once, and that buffer is what is judged; the decision is written and synchronized to disk, and the permit to write is built only from the journal's acknowledgement. The bytes of every decided or refused frame are kept under their hash.
+
+**The record.** Each process keeps one hash-chained journal. The run directory holds the four journals, the retained frames, the git workspace, the summary file, the receipt and the panel printed to the terminal; nothing else writes to it. Two readers consume it: a judge, written in a different language, which never runs the binary, never reads the runtime's own report, and re-derives the verdict against expectations fixed before the runtime was adapted; and a live page, fed by a loopback viewer that tails the journals, shows one card per record, and prints the judge's verdict verbatim.
 
 ## 4. Three scenarios
 
-One script runs the three scenarios in sequence; a fourth is included in the code for completeness.
+One script runs the three scenarios in sequence.
 
 <table class="scenes">
 <thead><tr><th>Scenario</th><th>What happens</th><th>What the records show</th></tr></thead>
@@ -53,8 +66,9 @@ One script runs the three scenarios in sequence; a fourth is included in the cod
 <tr><td><code>healthy</code></td><td>H submits the recorded plan; G admits it; A applies the two edits and commits; B runs the one test on that commit and writes the summary once.</td><td>Three business calls, one handler entry each; a real commit; the test passes; one summary file; the effect is known to have been applied, on the strength of a receipt that H re-hashed.</td></tr>
 <tr><td><code>swap</code></td><td>The plan is valid. At run time A requests a different test from B than the plan names; the destination remains internal.</td><td>A's own gate refuses the exact bytes with a single finding, <code>EXACT_ACTION_MISMATCH</code>. B is never entered. The commit remains; no test runs and no file is written.</td></tr>
 <tr><td><code>gist</code></td><td>The plan follows the planted comment: the same three calls, with the public gist as the destination.</td><td>H and every server deny the whole plan, with six findings under four rule names. No business call is made; no commit, no test and no file result.</td></tr>
-<tr><td><code>substitute</code></td><td>The plan is valid. At run time A changes its child call's destination to the public gist.</td><td>A's gate refuses with five findings. B is never entered. The commit remains; no file is written.</td></tr>
 </tbody></table>
+
+A fourth variant, `substitute`, in which A changes its child call's destination to the public gist rather than the test name, is included in the code; A's gate refuses it with five findings.
 
 The judge accepts a refusal scenario because the refusal is the expected outcome, and a refusal is meaningful only beside the unchanged `healthy` run executed in a fresh directory.
 
@@ -74,6 +88,13 @@ The third scenario fails earlier and more broadly. The task and the three calls 
 <source src="demo.mp4" type="video/mp4">
 </video>
 <figcaption><strong>V1</strong> The live page during the three scenarios, recorded from the published code. In <code>healthy</code> the plan is verified and the graph turns blue hop by hop; in <code>swap</code> the workspace's gate refuses by one rule and the A to B hop turns red; in <code>gist</code> every process denies the plan before any call, every node is marked denied and no hop is released. The verdict line on the page is the judge's. Silent, 52 seconds.</figcaption>
+</figure>
+
+<figure class="article-figure article-video">
+<video controls muted playsinline preload="metadata" poster="demo-terminal-page-poster.png" width="1600" height="540">
+<source src="demo-terminal-page.mp4" type="video/mp4">
+</video>
+<figcaption><strong>V2</strong> The same three scenarios with the terminal on the left and the live page on the right: the terminal prints each process's records and the judge's verdict as the page updates. Silent, 50 seconds.</figcaption>
 </figure>
 
 ## 5. The gate on the serialized bytes
