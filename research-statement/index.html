@@ -334,7 +334,90 @@
 
             <section id="languages">
               <h2>C++, Rust, Lean and Mojo</h2>
-              <p>C++, Rust, Lean and Mojo are the first-class languages of this research: the work is written in these four, and code in any other language is generated from them. Each has its own task. Lean states an abstraction and the properties claimed of it. Mojo, which is built on MLIR, implements it on heterogeneous hardware. C++ and Rust connect it to existing systems, because LLVM and MLIR are written in C++ and both Android and the Linux kernel accept Rust.</p>
+              <p>C++, Rust, Lean and Mojo are the first-class languages of this research: the work is written in these four, and code in any other language is generated from them. Each has its own task (Figure F3). Lean states an abstraction and the properties claimed of it. Mojo, which is built on MLIR, implements it on heterogeneous hardware. C++ and Rust connect it to existing systems, because LLVM and MLIR are written in C++ and both Android and the Linux kernel accept Rust.</p>
+              <figure class="article-figure">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+                <title id="f3-title">The four first-class languages and what each does with an abstraction</title>
+                <desc id="f3-desc">One box on the left, the abstraction, is a program representation that is constructed incrementally and refined as analysis requires, with properties verified statically and validated on observed executions. Four language boxes on the right each carry an edge to it. Lean, a proof assistant and programming language, states the abstraction and the properties claimed of it. Mojo, which is built on MLIR and compiles for CPUs and GPUs, implements it. C++, the language of LLVM and MLIR, connects it to existing compiler infrastructure. Rust, which Android and the Linux kernel accept, connects it to existing systems code. Code in any other language is generated from these four.</desc>
+                <defs>
+                  <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+                  <style>
+                    .f3k  { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+                    .f3h  { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
+                    .f3id { font-size: 12px; font-weight: 750; opacity: 0.5; }
+                    .f3r  { font-size: 12px; opacity: 0.84; }
+                    .f3e  { font-size: 11.5px; opacity: 0.62; text-anchor: middle; font-style: italic; }
+                    .f3c  { font-size: 12.5px; opacity: 0.72; text-anchor: middle; }
+                    .f3box{ fill: rgba(128,128,128,0.07); stroke-width: 1.3; }
+                    .f3sep{ stroke-width: 1; opacity: 0.4; }
+                    .f3link{ stroke: currentColor; stroke-width: 1.4; opacity: 0.6; fill: none; }
+                  </style>
+                </defs>
+
+                <text class="f3k" x="410" y="20">C++, RUST, LEAN AND MOJO: THE FIRST-CLASS LANGUAGES</text>
+
+                <g transform="translate(0,14)">
+                <!-- The abstraction that the four languages serve -->
+                <rect class="f3box" x="16" y="134" width="248" height="172" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
+                <text class="f3h" x="32" y="160" fill="#b8860b">ABSTRACTION</text>
+                <line class="f3sep" x1="32" y1="170" x2="248" y2="170" stroke="#b8860b"/>
+                <text class="f3r" x="32" y="190">a program representation</text>
+                <text class="f3r" x="32" y="209">constructed incrementally</text>
+                <text class="f3r" x="32" y="228">refined as analysis requires</text>
+                <line class="f3sep" x1="32" y1="242" x2="248" y2="242" stroke="#b8860b"/>
+                <text class="f3r" x="32" y="264">properties verified statically</text>
+                <text class="f3r" x="32" y="283">validated on observed executions</text>
+
+                <!-- 1 Lean -->
+                <rect class="f3box" x="470" y="26" width="334" height="88" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
+                <text class="f3id" x="486" y="52">1</text>
+                <text class="f3h" x="506" y="52" fill="#c44a37">LEAN</text>
+                <line class="f3sep" x1="486" y1="62" x2="788" y2="62" stroke="#c44a37"/>
+                <text class="f3r" x="486" y="82">a proof assistant and programming language</text>
+                <text class="f3r" x="486" y="101">definitions, theorems and checked proofs</text>
+
+                <!-- 2 Mojo -->
+                <rect class="f3box" x="470" y="126" width="334" height="88" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
+                <text class="f3id" x="486" y="152">2</text>
+                <text class="f3h" x="506" y="152" fill="#8b6fc0">MOJO</text>
+                <line class="f3sep" x1="486" y1="162" x2="788" y2="162" stroke="#8b6fc0"/>
+                <text class="f3r" x="486" y="182">built on MLIR</text>
+                <text class="f3r" x="486" y="201">compiles for CPUs and GPUs</text>
+
+                <!-- 3 C++ -->
+                <rect class="f3box" x="470" y="226" width="334" height="88" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
+                <text class="f3id" x="486" y="252">3</text>
+                <text class="f3h" x="506" y="252" fill="#1fa8d6">C++</text>
+                <line class="f3sep" x1="486" y1="262" x2="788" y2="262" stroke="#1fa8d6"/>
+                <text class="f3r" x="486" y="282">the language of LLVM and MLIR</text>
+                <text class="f3r" x="486" y="301">existing compiler infrastructure</text>
+
+                <!-- 4 Rust -->
+                <rect class="f3box" x="470" y="326" width="334" height="88" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
+                <text class="f3id" x="486" y="352">4</text>
+                <text class="f3h" x="506" y="352" fill="#4f9d69">RUST</text>
+                <line class="f3sep" x1="486" y1="362" x2="788" y2="362" stroke="#4f9d69"/>
+                <text class="f3r" x="486" y="382">accepted by Android and the Linux kernel</text>
+                <text class="f3r" x="486" y="401">existing systems code</text>
+
+                <!-- one edge per language, labeled with what the language does -->
+                <path class="f3link" d="M470,70 C 400,70 340,164 268,176" marker-end="url(#f3-arrow)"/>
+                <text class="f3e" x="372" y="94">states</text>
+
+                <path class="f3link" d="M470,170 C 410,170 330,204 268,208" marker-end="url(#f3-arrow)"/>
+                <text class="f3e" x="372" y="171">implements</text>
+
+                <path class="f3link" d="M470,270 C 410,270 330,236 268,232" marker-end="url(#f3-arrow)"/>
+                <text class="f3e" x="372" y="274">connects</text>
+
+                <path class="f3link" d="M470,370 C 400,370 340,276 268,264" marker-end="url(#f3-arrow)"/>
+                <text class="f3e" x="372" y="357">connects</text>
+
+                <text class="f3c" x="410" y="446">Code in any other language is generated from these four.</text>
+                </g>
+              </svg>
+              <figcaption><strong>F3</strong> The first-class languages of this research and the task of each with respect to an abstraction.</figcaption>
+              </figure>
             </section>
 
             <section id="direction">
