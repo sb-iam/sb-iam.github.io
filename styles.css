@@ -758,6 +758,10 @@ h3 {
   white-space: pre;
 }
 
+.text-link.no-arrow::after {
+  content: none;
+}
+
 .text-link.on-paper {
   color: var(--cyan-strong);
   border-bottom-color: var(--cyan-strong);
