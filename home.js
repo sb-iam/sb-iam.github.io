@@ -35,7 +35,7 @@
         var firstPublishedPost = panel.querySelector(".thread-parts a[href]");
         if (firstPublishedPost) {
           var postLink = document.createElement("a");
-          postLink.className = "text-link";
+          postLink.className = "text-link no-arrow";
           postLink.href = firstPublishedPost.getAttribute("href");
           postLink.textContent = firstPublishedPost.textContent.trim();
           card.appendChild(postLink);
