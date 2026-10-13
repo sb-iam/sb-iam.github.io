@@ -3,7 +3,7 @@
 Written 2026-10-11. The release order below is the owner's; the five-thread
 roadmap at the bottom is a copy of what `blog/index.html` shows on that date.
 
-## Series: Compositions and Abstractions for Software
+## Series: Composition and Abstraction for Software Verification and Validation
 
 Point of view: compilers, programming languages and static analysis. Domain:
 software construction. Ten parts planned; the first three are set.
