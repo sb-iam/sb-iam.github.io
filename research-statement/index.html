@@ -94,9 +94,9 @@
               <p>Jitana and ReHAna are the foundation of my research lineage. Jitana addressed scalable hybrid analysis for interacting Android applications. ReHAna focused on reflective code, where runtime behavior intentionally hides important targets from ordinary static analysis.</p>
               <p>A single Jitana session can hold several large applications at once. The classloader graph below is what the analysis actually sees.</p>
               <figure class="article-figure">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 476" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
-                <title id="f1-title">Jitana classloader graph after analyzing four large apps</title>
-                <desc id="f1-desc">One System classloader on the left holds nine platform dex files. Four application classloaders on the right, SuperDepth, Facebook, Instagram, and JohnNESLite, each carry a parent_loader edge back to the System classloader, so every application's classes stay encapsulated and two classes with the same name in different apps resolve without collision.</desc>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 490" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+                <title id="f1-title">Jitana class-loader graph after analyzing four large apps</title>
+                <desc id="f1-desc">One system class loader on the left holds nine platform DEX files. Four application class loaders on the right, SuperDepth, Facebook, Instagram, and JohnNESLite, each carry a parent_loader edge back to the system class loader, so every application's classes stay encapsulated and two classes with the same name in different apps remain distinct.</desc>
                 <defs>
                   <marker id="f1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
                   <style>
@@ -112,9 +112,10 @@
                   </style>
                 </defs>
 
-                <text class="f1k" x="410" y="20">ONE SESSION. FOUR APPS. NO NAME COLLISIONS.</text>
+                <text class="f1k" x="410" y="20">JITANA: ONE CLASS-LOADER GRAPH FOR FOUR APPS</text>
 
-                <!-- System classloader: the identity anchor -->
+                <g transform="translate(0,14)">
+                <!-- System class loader -->
                 <rect class="f1box" x="16" y="110" width="248" height="208" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
                 <text class="f1id" x="32" y="136">0</text>
                 <text class="f1h" x="52" y="136" fill="#b8860b">SYSTEM</text>
@@ -160,23 +161,24 @@
                 <line class="f1sep" x1="486" y1="365" x2="788" y2="365" stroke="#4f9d69"/>
                 <text class="f1r" x="486" y="385">johnneslite_classes.dex</text>
 
-                <!-- parent_loader edges, all returning to the System classloader -->
+                <!-- parent_loader edges, all returning to the System class loader -->
                 <path class="f1link" d="M470,62 C 400,62 340,140 268,152" marker-end="url(#f1-arrow)"/>
-                <text class="f1e" x="372" y="96">parent_loader</text>
+                <text class="f1e" x="372" y="70">parent_loader</text>
 
                 <path class="f1link" d="M470,171 C 410,171 330,182 268,186" marker-end="url(#f1-arrow)"/>
-                <text class="f1e" x="372" y="167">parent_loader</text>
+                <text class="f1e" x="372" y="165">parent_loader</text>
 
                 <path class="f1link" d="M470,281 C 410,281 330,244 268,236" marker-end="url(#f1-arrow)"/>
-                <text class="f1e" x="372" y="296">parent_loader</text>
+                <text class="f1e" x="372" y="287">parent_loader</text>
 
                 <path class="f1link" d="M470,365 C 400,365 340,282 268,268" marker-end="url(#f1-arrow)"/>
-                <text class="f1e" x="372" y="350">parent_loader</text>
+                <text class="f1e" x="372" y="362">parent_loader</text>
 
-                <text class="f1c" x="410" y="438">Every application classloader keeps a parent_loader edge back to the System loader.</text>
+                <text class="f1c" x="410" y="438">Every application class loader keeps a parent_loader edge back to the System loader.</text>
                 <text class="f1c" x="410" y="458">Classes stay encapsulated per app; identical names in different apps never collide.</text>
+                </g>
               </svg>
-              <figcaption><strong>F1</strong> Classloader graph after analyzing four large apps simultaneously in a single Jitana session. The System loader is the identity anchor: every application binds back to it, which is what lets one analysis hold several large applications at once without their class namespaces running together. Redrawn after Figure 4 of <a class="text-link on-paper" href="/docs/Jitana-Journal.pdf" target="_blank" rel="noreferrer">Jitana, Journal of Computer Languages, 2019</a>.</figcaption>
+              <figcaption><strong>F1</strong> The class-loader graph of one Jitana analysis that holds four apps. Facebook and Instagram each ship a class named <code>android.support.v4.app.Fragment</code>, and the two remain distinct because each belongs to its own loader. Facebook's loader holds the file shipped in its package and the three files that the app loaded at run time. Redrawn after Figure 4 of <a class="paper-link" href="/docs/Jitana-Journal.pdf" target="_blank" rel="noreferrer">Jitana, Journal of Computer Languages, 2019</a>.</figcaption>
               </figure>
               <p>Those projects shaped how I think about software analysis. Static facts are necessary but incomplete. Runtime observations are necessary but incomplete. Useful analysis comes from composing them carefully and keeping track of what each method can and cannot claim.</p>
             </section>
