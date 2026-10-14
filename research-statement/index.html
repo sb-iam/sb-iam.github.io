@@ -195,7 +195,7 @@
               <figure class="article-figure">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 340" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
                 <title id="f2-title">JITAC architecture: Rust control plane, Virtual Incremental Graph Loader, Mojo data plane</title>
-                <desc id="f2-desc">Three boxes in a row. The Rust control plane holds auth and the Cedar gate, the IDE, ACP and CLI surfaces, the cloud SDK and receipts, and lifecycle and storage. The Virtual Incremental Graph Loader holds the typed program graph, results and identity, on-demand context, and sealed snapshots. The Mojo data plane holds inference through MAX, Nabla-Mojo training, RLVR loops, and analysis and evaluation. An arrow with a head at each end joins each plane to the loader, and an arc carries results and observations from the data plane back to the control plane. Beneath the three boxes, two horizontal bars span the figure: C++, MLIR and LLVM, and below it Lean and Cedar.</desc>
+                <desc id="f2-desc">Three boxes in a row. The Rust control plane holds auth and the Cedar gate, the IDE, ACP and CLI surfaces, the cloud SDK and receipts, and lifecycle and storage. The Virtual Incremental Graph Loader holds the typed program graph, results and identity, on-demand context, and sealed snapshots. The Mojo data plane holds inference through MAX, Nabla-Mojo training, RLVR loops, and analysis and evaluation. An arrow with a head at each end joins each plane to the loader, and an arc carries results and observations from the data plane back to the control plane. Beneath the three boxes, two horizontal bars span the figure: Lean and Cedar, and below it C++, MLIR and LLVM.</desc>
                 <defs>
                   <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
                   <marker id="f2-arrow-back" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="currentColor"/></marker>
@@ -254,13 +254,13 @@
                 <line class="f2link" x1="535" y1="141" x2="559" y2="141" marker-start="url(#f2-arrow-back)" marker-end="url(#f2-arrow)"/>
 
                 <!-- the horizontal layers beneath the planes -->
-                <rect class="f2box" x="16" y="240" width="788" height="36" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
-                <text class="f2h" x="410" y="263" text-anchor="middle" fill="#4f9d69">C++ / MLIR / LLVM</text>
+                <rect class="f2box" x="16" y="240" width="788" height="36" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
+                <text class="f2h" x="410" y="263" text-anchor="middle" fill="#c44a37">LEAN / CEDAR</text>
 
-                <rect class="f2box" x="16" y="286" width="788" height="36" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
-                <text class="f2h" x="410" y="309" text-anchor="middle" fill="#c44a37">LEAN / CEDAR</text>
+                <rect class="f2box" x="16" y="286" width="788" height="36" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
+                <text class="f2h" x="410" y="309" text-anchor="middle" fill="#4f9d69">C++ / MLIR / LLVM</text>
               </svg>
-              <figcaption><strong>F2</strong> The architecture of JITAC. Arrows denote the exchange of data between components. The two horizontal layers are common to both planes: the compiler infrastructure of MLIR and LLVM, written in C++, and the specification and policy languages Lean and Cedar.</figcaption>
+              <figcaption><strong>F2</strong> The architecture of JITAC. Arrows denote the exchange of data between components. The two horizontal layers are common to both planes: the specification and policy languages Lean and Cedar, and the compiler infrastructure of MLIR and LLVM, written in C++.</figcaption>
               </figure>
             </section>
 
