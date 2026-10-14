@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 434" width="100%" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f2-title">C++, Lean, Mojo and Rust: the infrastructure they share, the interfaces that exist between them, and the mappings proposed in this research</title>
+  <desc id="f2-desc">Four language boxes sit at the corners: Lean at the top left, Mojo at the top right, Rust at the bottom left and C++ at the bottom right. Two boxes in the middle, MLIR above LLVM, are C++ libraries and are drawn in the color of C++. Arrows show routes of code toward machine code: Mojo is parsed into its own MLIR dialects, MLIR is lowered to LLVM, C++ reaches LLVM through Clang and, optionally, MLIR through ClangIR, Rust reaches LLVM as rustc's default back end, and Lean reaches LLVM through C and Clang. Plain lines name relationships that exist: Aeneas translates Rust into Lean, and Cedar tests its Rust implementation against a Lean model; between Lean and MLIR, the Lean-MLIR research project verifies rewrites of SSA intermediate representations in Lean. Two dashed lines are proposals that do not exist: dialect semantics stated in Lean, between Lean and MLIR, and Lean abstractions mapped to Mojo parameters, an arc from Lean to Mojo. A bar across the bottom states that calls between all four cross the C ABI, which carries data and not ownership, lifetimes or proofs.</desc>
+  <defs>
+    <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .f2-k    { font-size: 12px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+      .f2-h    { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
+      .f2-r    { font-size: 13px; opacity: 0.84; }
+      .f2-e    { font-size: 13px; opacity: 0.8; }
+      .f2-box  { fill: rgba(128,128,128,0.07); stroke-width: 1.3; }
+      .f2-infra{ fill: rgba(31,168,214,0.06); stroke: #1fa8d6; stroke-opacity: 0.75; stroke-width: 1.2; }
+      .f2-sep  { stroke-width: 1; opacity: 0.4; }
+      .f2-link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+      .f2-opt  { stroke: currentColor; stroke-width: 1.1; opacity: 0.5; fill: none; }
+      .f2-rel  { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+      .f2-prop { stroke: #b8860b; stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+      .f2-pt   { font-size: 13px; font-style: italic; fill: #b8860b; }
+      .f2-abi  { fill: rgba(128,128,128,0.05); stroke: currentColor; stroke-opacity: 0.4; stroke-width: 1.1; }
+      .f2-leg  { font-size: 12px; opacity: 0.72; }
+    </style>
+  </defs>
+
+  <text class="f2-k" x="420" y="18">FOUR LANGUAGES, THE INFRASTRUCTURE THEY SHARE, AND THEIR INTERFACES</text>
+
+  <!-- proposed: Lean abstractions as Mojo parameters -->
+  <path class="f2-prop" d="M140,58 C140,44 700,44 700,58"/>
+  <text class="f2-pt" x="420" y="40" text-anchor="middle">proposed: Lean abstractions mapped to Mojo parameters</text>
+
+  <!-- Lean -->
+  <rect class="f2-box" x="16" y="58" width="184" height="82" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
+  <text class="f2-h" x="30" y="82" fill="#c44a37">LEAN</text>
+  <line class="f2-sep" x1="30" y1="91" x2="186" y2="91" stroke="#c44a37"/>
+  <text class="f2-r" x="30" y="110">programs, statements,</text>
+  <text class="f2-r" x="30" y="128">kernel-checked proofs</text>
+
+  <!-- Mojo -->
+  <rect class="f2-box" x="640" y="58" width="184" height="82" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
+  <text class="f2-h" x="654" y="82" fill="#8b6fc0">MOJO</text>
+  <line class="f2-sep" x1="654" y1="91" x2="810" y2="91" stroke="#8b6fc0"/>
+  <text class="f2-r" x="654" y="110">parameters and kernels</text>
+  <text class="f2-r" x="654" y="128">for CPUs and GPUs</text>
+
+  <!-- Rust -->
+  <rect class="f2-box" x="16" y="226" width="184" height="82" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
+  <text class="f2-h" x="30" y="250" fill="#4f9d69">RUST</text>
+  <line class="f2-sep" x1="30" y1="259" x2="186" y2="259" stroke="#4f9d69"/>
+  <text class="f2-r" x="30" y="278">ownership checked on</text>
+  <text class="f2-r" x="30" y="296">MIR; Cargo, crates.io</text>
+
+  <!-- C++ -->
+  <rect class="f2-box" x="640" y="226" width="184" height="82" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
+  <text class="f2-h" x="654" y="250" fill="#1fa8d6">C++</text>
+  <line class="f2-sep" x1="654" y1="259" x2="810" y2="259" stroke="#1fa8d6"/>
+  <text class="f2-r" x="654" y="278">templates, constexpr;</text>
+  <text class="f2-r" x="654" y="296">the language of LLVM</text>
+
+  <!-- shared infrastructure, written in C++ -->
+  <rect class="f2-infra" x="340" y="64" width="160" height="58" rx="4"/>
+  <text class="f2-h" x="420" y="88" text-anchor="middle">MLIR</text>
+  <text class="f2-e" x="420" y="108" text-anchor="middle">a C++ library</text>
+  <rect class="f2-infra" x="340" y="232" width="160" height="58" rx="4"/>
+  <text class="f2-h" x="420" y="256" text-anchor="middle">LLVM</text>
+  <text class="f2-e" x="420" y="276" text-anchor="middle">a C++ library</text>
+
+  <!-- routes toward machine code (arrows) -->
+  <path class="f2-link" d="M640,96 L502,96" marker-end="url(#f2-arrow)"/>
+  <text class="f2-e" x="571" y="88" text-anchor="middle">Mojo dialects</text>
+  <path class="f2-link" d="M420,122 L420,230" marker-end="url(#f2-arrow)"/>
+  <text class="f2-e" x="428" y="180">lowered</text>
+  <path class="f2-link" d="M640,262 L502,262" marker-end="url(#f2-arrow)"/>
+  <text class="f2-e" x="571" y="254" text-anchor="middle">Clang</text>
+  <path class="f2-opt" d="M676,226 L504,121" marker-end="url(#f2-arrow)"/>
+  <text class="f2-e" x="620" y="168">optional:</text>
+  <text class="f2-e" x="620" y="184">ClangIR</text>
+  <path class="f2-link" d="M200,266 L338,264" marker-end="url(#f2-arrow)"/>
+  <text class="f2-e" x="270" y="256" text-anchor="middle">rustc</text>
+  <path class="f2-link" d="M200,134 L342,231" marker-end="url(#f2-arrow)"/>
+  <text class="f2-e" x="292" y="170">C, then</text>
+  <text class="f2-e" x="292" y="186">Clang</text>
+
+  <!-- Lean and MLIR: existing research (solid) and a proposal (dashed) -->
+  <path class="f2-rel" d="M200,78 L340,78"/>
+  <text class="f2-e" x="270" y="71" text-anchor="middle">research: Lean-MLIR</text>
+  <path class="f2-prop" d="M200,118 L340,118"/>
+  <text class="f2-pt" x="270" y="98" text-anchor="middle">proposed: dialect</text>
+  <text class="f2-pt" x="270" y="112" text-anchor="middle">semantics in Lean</text>
+
+  <!-- Rust and Lean: Aeneas and Cedar (relationships, both exist) -->
+  <path class="f2-rel" d="M190,140 L190,226"/>
+  <text class="f2-e" x="24" y="162">Aeneas translates Rust</text>
+  <text class="f2-e" x="24" y="178">into Lean; Cedar tests</text>
+  <text class="f2-e" x="24" y="194">its Rust implementation</text>
+  <text class="f2-e" x="24" y="210">against a Lean model</text>
+
+  <!-- the C ABI -->
+  <rect class="f2-abi" x="16" y="336" width="808" height="44" rx="4"/>
+  <text class="f2-h" x="30" y="363">C ABI</text>
+  <text class="f2-r" x="96" y="363">calls between all four cross it; it carries data, not ownership, lifetimes or proofs</text>
+
+  <!-- legend -->
+  <path class="f2-link" d="M16,414 L50,414" marker-end="url(#f2-arrow)"/>
+  <text class="f2-leg" x="58" y="418">route toward machine code</text>
+  <path class="f2-rel" d="M250,414 L284,414"/>
+  <text class="f2-leg" x="292" y="418">relationship that exists</text>
+  <path class="f2-prop" d="M462,414 L496,414"/>
+  <text class="f2-leg" x="504" y="418">proposed in this research; does not exist</text>
+</svg>

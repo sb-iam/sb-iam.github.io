@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 624" width="100%" role="img" aria-labelledby="f1-title f1-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f1-title">The compiler's view of C++, Rust, Mojo and Lean: where each compiler expands, checks, keeps, specializes and lowers generic code</title>
+  <desc id="f1-desc">Four lanes, one per compiler, run left to right through five stages: expand, check, keep in a library, specialize and lower. C++ in Clang: the preprocessor works on tokens; the non-dependent parts of a template are checked at its definition and the rest per instance; a library keeps templates as source in headers, parsed again in each translation unit; a template is instantiated when it is referenced and constant expressions are evaluated by the front end; instances are lowered to LLVM IR, with ClangIR, an MLIR dialect, as an optional route. Rust in rustc: declarative and procedural macros, the latter compiled Rust run on tokens; generic bodies are checked once against their trait bounds and borrow checking runs on MIR; a crate keeps generic MIR in its metadata; reachable instances are monomorphized and generic constants are evaluated there; LLVM IR is the default back end, with Cranelift and GCC as optional back ends. Mojo: no user macros, and parameters are folded as the source is parsed; the parser checks types and proves requirements, and a lifetime checker runs on the MLIR; a package keeps the parsed MLIR before lifetime checking and elaboration; the elaborator specializes on demand with an interpreter for compile-time code and fixes the target; the Mojo dialects lower to LLVM IR and to code for CPUs and GPUs. Lean: macros, syntax extensions and tactics are compiled Lean run inside the compiler; the elaborator sends every declaration to the kernel, which accepts or rejects it and emits no code; an olean file keeps the checked terms and the compiler's intermediate form; the compiler specializes instance arguments by default and lowers through C to Clang and LLVM; compilation is not checked by the kernel.</desc>
+  <defs>
+    <marker id="f1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .f1-k    { font-size: 12px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+      .f1-col  { font-size: 12px; font-weight: 750; letter-spacing: 0.07em; opacity: 0.66; text-anchor: middle; }
+      .f1-lang { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
+      .f1-tool { font-size: 13px; opacity: 0.7; }
+      .f1-r    { font-size: 13px; opacity: 0.86; }
+      .f1-opt  { font-size: 13px; opacity: 0.7; font-style: italic; }
+      .f1-note { font-size: 13px; opacity: 0.8; font-style: italic; }
+      .f1-cell { fill: rgba(128,128,128,0.07); stroke-width: 1.2; }
+      .f1-link { stroke: currentColor; stroke-width: 1.3; opacity: 0.6; fill: none; }
+      .f1-kern { fill: rgba(196,74,55,0.08); stroke: #c44a37; stroke-width: 1.5; }
+    </style>
+  </defs>
+
+  <text class="f1-k" x="420" y="20">WHERE EACH COMPILER CHECKS, KEEPS AND SPECIALIZES GENERIC CODE</text>
+
+  <!-- stage headings; each lane reads left to right -->
+  <text class="f1-col" x="92" y="48">EXPAND</text>
+  <text class="f1-col" x="256" y="48">CHECK</text>
+  <text class="f1-col" x="420" y="48">KEEP IN A LIBRARY</text>
+  <text class="f1-col" x="584" y="48">SPECIALIZE</text>
+  <text class="f1-col" x="748" y="48">LOWER</text>
+
+  <!-- C++ -->
+  <text class="f1-lang" x="16" y="74" fill="#1fa8d6">C++</text>
+  <text class="f1-tool" x="62" y="74">Clang</text>
+  <rect class="f1-cell" x="16" y="84" width="152" height="84" rx="3" stroke="#1fa8d6"/>
+  <text class="f1-r" x="26" y="105">preprocessor,</text>
+  <text class="f1-r" x="26" y="122">on tokens</text>
+  <rect class="f1-cell" x="180" y="84" width="152" height="84" rx="3" stroke="#1fa8d6"/>
+  <text class="f1-r" x="190" y="105">non-dependent parts</text>
+  <text class="f1-r" x="190" y="122">at the definition</text>
+  <rect class="f1-cell" x="344" y="84" width="152" height="84" rx="3" stroke="#1fa8d6"/>
+  <text class="f1-r" x="354" y="105">templates as source</text>
+  <text class="f1-r" x="354" y="122">in headers, parsed</text>
+  <text class="f1-r" x="354" y="139">wherever included</text>
+  <rect class="f1-cell" x="508" y="84" width="152" height="84" rx="3" stroke="#1fa8d6"/>
+  <text class="f1-r" x="518" y="105">instantiated when</text>
+  <text class="f1-r" x="518" y="122">referenced; the</text>
+  <text class="f1-r" x="518" y="139">dependent parts</text>
+  <text class="f1-r" x="518" y="156">checked here</text>
+  <rect class="f1-cell" x="672" y="84" width="152" height="84" rx="3" stroke="#1fa8d6"/>
+  <text class="f1-r" x="682" y="105">LLVM IR, with</text>
+  <text class="f1-r" x="682" y="122">instances only</text>
+  <text class="f1-opt" x="682" y="139">optional: ClangIR</text>
+  <path class="f1-link" d="M168,126 L179,126" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M332,126 L343,126" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M496,126 L507,126" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M660,126 L671,126" marker-end="url(#f1-arrow)"/>
+
+  <!-- RUST -->
+  <text class="f1-lang" x="16" y="194" fill="#4f9d69">RUST</text>
+  <text class="f1-tool" x="72" y="194">rustc</text>
+  <rect class="f1-cell" x="16" y="204" width="152" height="84" rx="3" stroke="#4f9d69"/>
+  <text class="f1-r" x="26" y="225">macros on tokens;</text>
+  <text class="f1-r" x="26" y="242">procedural macros</text>
+  <text class="f1-r" x="26" y="259">are compiled Rust</text>
+  <rect class="f1-cell" x="180" y="204" width="152" height="84" rx="3" stroke="#4f9d69"/>
+  <text class="f1-r" x="190" y="225">generic bodies once</text>
+  <text class="f1-r" x="190" y="242">against trait</text>
+  <text class="f1-r" x="190" y="259">bounds; borrows</text>
+  <text class="f1-r" x="190" y="276">checked on MIR</text>
+  <rect class="f1-cell" x="344" y="204" width="152" height="84" rx="3" stroke="#4f9d69"/>
+  <text class="f1-r" x="354" y="225">generic MIR in the</text>
+  <text class="f1-r" x="354" y="242">crate&#x27;s metadata</text>
+  <rect class="f1-cell" x="508" y="204" width="152" height="84" rx="3" stroke="#4f9d69"/>
+  <text class="f1-r" x="518" y="225">reachable instances</text>
+  <text class="f1-r" x="518" y="242">only; generic</text>
+  <text class="f1-r" x="518" y="259">constants evaluated</text>
+  <text class="f1-r" x="518" y="276">here</text>
+  <rect class="f1-cell" x="672" y="204" width="152" height="84" rx="3" stroke="#4f9d69"/>
+  <text class="f1-r" x="682" y="225">LLVM IR</text>
+  <text class="f1-opt" x="682" y="242">optional: Cranelift</text>
+  <text class="f1-opt" x="682" y="259">or GCC</text>
+  <path class="f1-link" d="M168,246 L179,246" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M332,246 L343,246" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M496,246 L507,246" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M660,246 L671,246" marker-end="url(#f1-arrow)"/>
+
+  <!-- MOJO -->
+  <text class="f1-lang" x="16" y="314" fill="#8b6fc0">MOJO</text>
+  <text class="f1-tool" x="74" y="314">mojo</text>
+  <rect class="f1-cell" x="16" y="324" width="152" height="84" rx="3" stroke="#8b6fc0"/>
+  <text class="f1-r" x="26" y="345">no user macros;</text>
+  <text class="f1-r" x="26" y="362">source parsed</text>
+  <text class="f1-r" x="26" y="379">directly into MLIR</text>
+  <rect class="f1-cell" x="180" y="324" width="152" height="84" rx="3" stroke="#8b6fc0"/>
+  <text class="f1-r" x="190" y="345">parser checks types</text>
+  <text class="f1-r" x="190" y="362">against traits;</text>
+  <text class="f1-r" x="190" y="379">lifetimes on MLIR</text>
+  <rect class="f1-cell" x="344" y="324" width="152" height="84" rx="3" stroke="#8b6fc0"/>
+  <text class="f1-r" x="354" y="345">parsed MLIR, before</text>
+  <text class="f1-r" x="354" y="362">lifetime checks</text>
+  <text class="f1-r" x="354" y="379">and elaboration</text>
+  <rect class="f1-cell" x="508" y="324" width="152" height="84" rx="3" stroke="#8b6fc0"/>
+  <text class="f1-r" x="518" y="345">elaborated on</text>
+  <text class="f1-r" x="518" y="362">demand, with an</text>
+  <text class="f1-r" x="518" y="379">interpreter on IR;</text>
+  <text class="f1-r" x="518" y="396">target fixed here</text>
+  <rect class="f1-cell" x="672" y="324" width="152" height="84" rx="3" stroke="#8b6fc0"/>
+  <text class="f1-r" x="682" y="345">Mojo dialects to</text>
+  <text class="f1-r" x="682" y="362">LLVM IR, for CPUs</text>
+  <text class="f1-r" x="682" y="379">and GPUs</text>
+  <path class="f1-link" d="M168,366 L179,366" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M332,366 L343,366" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M496,366 L507,366" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M660,366 L671,366" marker-end="url(#f1-arrow)"/>
+
+  <!-- LEAN -->
+  <text class="f1-lang" x="16" y="434" fill="#c44a37">LEAN</text>
+  <text class="f1-tool" x="70" y="434">lean</text>
+  <rect class="f1-cell" x="16" y="444" width="152" height="84" rx="3" stroke="#c44a37"/>
+  <text class="f1-r" x="26" y="465">macros, syntax and</text>
+  <text class="f1-r" x="26" y="482">tactics: compiled</text>
+  <text class="f1-r" x="26" y="499">Lean run inside</text>
+  <text class="f1-r" x="26" y="516">the compiler</text>
+  <rect class="f1-cell" x="180" y="444" width="152" height="84" rx="3" stroke="#c44a37"/>
+  <text class="f1-r" x="190" y="465">elaborator; each</text>
+  <text class="f1-r" x="190" y="482">declaration goes</text>
+  <text class="f1-r" x="190" y="499">to the kernel</text>
+  <rect class="f1-cell" x="344" y="444" width="152" height="84" rx="3" stroke="#c44a37"/>
+  <text class="f1-r" x="354" y="465">.olean: checked</text>
+  <text class="f1-r" x="354" y="482">terms and the</text>
+  <text class="f1-r" x="354" y="499">compiler&#x27;s form</text>
+  <rect class="f1-cell" x="508" y="444" width="152" height="84" rx="3" stroke="#c44a37"/>
+  <text class="f1-r" x="518" y="465">instance arguments</text>
+  <text class="f1-r" x="518" y="482">specialized by</text>
+  <text class="f1-r" x="518" y="499">default</text>
+  <rect class="f1-cell" x="672" y="444" width="152" height="84" rx="3" stroke="#c44a37"/>
+  <text class="f1-r" x="682" y="465">to C, then Clang</text>
+  <text class="f1-r" x="682" y="482">and LLVM</text>
+  <path class="f1-link" d="M168,486 L179,486" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M332,486 L343,486" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M496,486 L507,486" marker-end="url(#f1-arrow)"/>
+  <path class="f1-link" d="M660,486 L671,486" marker-end="url(#f1-arrow)"/>
+
+  <!-- the kernel: proof checking, separate from compilation -->
+  <path class="f1-link" d="M256,528 L256,555" marker-end="url(#f1-arrow)"/>
+  <rect class="f1-kern" x="180" y="556" width="316" height="54" rx="3"/>
+  <text class="f1-lang" x="194" y="579" fill="#c44a37">KERNEL</text>
+  <text class="f1-r" x="270" y="579">accepts or rejects each</text>
+  <text class="f1-r" x="194" y="599">declaration; it emits no code</text>
+  <path class="f1-link" d="M508,536 L508,544 L824,544 L824,536" opacity="0.45"/>
+  <path class="f1-link" d="M666,544 L666,560" opacity="0.45"/>
+  <text class="f1-note" x="520" y="580">compiled from the same definitions;</text>
+  <text class="f1-note" x="520" y="599">the kernel does not check the code</text>
+</svg>

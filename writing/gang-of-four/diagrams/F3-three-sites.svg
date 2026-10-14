@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 592" width="100%" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f3-title">An Android device, a desktop workstation and a cloud: what the toolchain of each of the four languages supports on each site today</title>
+  <desc id="f3-desc">Three columns, one per site. The Android device is an arm64 system on a chip with a CPU, a GPU and an NPU. The desktop is a Mac with Apple silicon, or a Linux or Windows workstation with a GPU. The cloud is Linux servers, x86-64 and arm64, with NVIDIA or AMD GPUs. One row per language. C++: the Android platform and the NDK through Clang on the device; Clang, GCC and MSVC with CUDA and HIP on the desktop; Clang and GCC with CUDA and HIP in the cloud. Rust: the Android platform and NDK targets at tier 2; Linux, macOS and Windows hosts; Linux servers, with GPU targets experimental. Mojo: no supported target on Android, with a Hexagon NPU back end announced; Apple silicon CPU and GPU, Linux with NVIDIA or AMD GPUs, and Windows only through WSL on the desktop; NVIDIA and AMD GPUs and MAX serving models in the cloud, with TPU, Trainium and Cloud AI 100 announced. Lean: no supported target on Android; on the desktop the kernel checks proofs and compiled programs run on Linux, macOS and Windows; in the cloud the kernel checks proofs in continuous integration and programs run on Linux. Below the grid, solid arrows show transfers that exist: C++ and Rust cross-compiled from the desktop for Android, Linux builds deployed from the desktop to the cloud, and network calls from the device to models served in the cloud. A dashed line across all three sites is the proposed role of JITAC: deciding at run time what to load, how to specialize it and where to run it, and recording each decision.</desc>
+  <defs>
+    <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f3-arrow-back" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="currentColor"/></marker>
+    <marker id="f3-parrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+    <marker id="f3-parrow-back" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="#b8860b"/></marker>
+    <style>
+      .f3-k    { font-size: 12px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+      .f3-site { font-size: 14.5px; font-weight: 750; letter-spacing: 0.04em; }
+      .f3-hw   { font-size: 12.5px; opacity: 0.75; }
+      .f3-lang { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
+      .f3-r    { font-size: 13px; opacity: 0.88; }
+      .f3-none { font-size: 13px; opacity: 0.6; }
+      .f3-ann  { font-size: 13px; opacity: 0.62; font-style: italic; }
+      .f3-head { fill: rgba(128,128,128,0.1); stroke: currentColor; stroke-opacity: 0.45; stroke-width: 1.1; }
+      .f3-cell { fill: rgba(128,128,128,0.07); stroke-width: 1.2; }
+      .f3-empty{ fill: rgba(128,128,128,0.035); stroke: none; }
+      .f3-link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+      .f3-e    { font-size: 13px; opacity: 0.82; }
+      .f3-prop { stroke: #b8860b; stroke-width: 1.5; stroke-dasharray: 6 4; fill: none; }
+      .f3-pt   { font-size: 13px; font-style: italic; fill: #b8860b; }
+      .f3-leg  { font-size: 12px; opacity: 0.72; }
+      .f3-legi { font-size: 12px; opacity: 0.62; font-style: italic; }
+    </style>
+  </defs>
+
+  <text class="f3-k" x="420" y="18">AN ANDROID DEVICE, A DESKTOP AND A CLOUD: WHERE EACH TOOLCHAIN RUNS TODAY</text>
+
+  <!-- sites -->
+  <rect class="f3-head" x="84" y="32" width="242" height="66" rx="4"/>
+  <text class="f3-site" x="96" y="54">ANDROID DEVICE (AOSP)</text>
+  <text class="f3-hw" x="96" y="74">arm64 SoC: CPU, GPU and NPU</text>
+  <rect class="f3-head" x="332" y="32" width="242" height="66" rx="4"/>
+  <text class="f3-site" x="344" y="54">DESKTOP</text>
+  <text class="f3-hw" x="344" y="74">Apple silicon Mac; Linux or</text>
+  <text class="f3-hw" x="344" y="90">Windows workstation with a GPU</text>
+  <rect class="f3-head" x="580" y="32" width="242" height="66" rx="4"/>
+  <text class="f3-site" x="592" y="54">CLOUD</text>
+  <text class="f3-hw" x="592" y="74">Linux servers, x86-64, arm64,</text>
+  <text class="f3-hw" x="592" y="90">with NVIDIA or AMD GPUs</text>
+
+  <!-- C++ -->
+  <text class="f3-lang" x="16" y="142" fill="#1fa8d6">C++</text>
+  <rect class="f3-cell" x="84" y="110" width="242" height="54" rx="3" stroke="#1fa8d6"/>
+  <text class="f3-r" x="96" y="133">Android platform; NDK apps</text>
+  <text class="f3-r" x="96" y="150">and libraries, through Clang</text>
+  <rect class="f3-cell" x="332" y="110" width="242" height="54" rx="3" stroke="#1fa8d6"/>
+  <text class="f3-r" x="344" y="133">Clang, GCC, MSVC; GPU code</text>
+  <text class="f3-r" x="344" y="150">through CUDA and HIP</text>
+  <rect class="f3-cell" x="580" y="110" width="242" height="54" rx="3" stroke="#1fa8d6"/>
+  <text class="f3-r" x="592" y="133">Clang, GCC; GPU code</text>
+  <text class="f3-r" x="592" y="150">through CUDA and HIP</text>
+
+  <!-- RUST -->
+  <text class="f3-lang" x="16" y="204" fill="#4f9d69">RUST</text>
+  <rect class="f3-cell" x="84" y="172" width="242" height="54" rx="3" stroke="#4f9d69"/>
+  <text class="f3-r" x="96" y="195">Android platform components;</text>
+  <text class="f3-r" x="96" y="212">NDK targets at tier 2</text>
+  <rect class="f3-cell" x="332" y="172" width="242" height="54" rx="3" stroke="#4f9d69"/>
+  <text class="f3-r" x="344" y="195">Linux, macOS and Windows</text>
+  <text class="f3-r" x="344" y="212">hosts</text>
+  <rect class="f3-cell" x="580" y="172" width="242" height="54" rx="3" stroke="#4f9d69"/>
+  <text class="f3-r" x="592" y="195">Linux hosts; GPU targets</text>
+  <text class="f3-r" x="592" y="212">experimental</text>
+
+  <!-- MOJO -->
+  <text class="f3-lang" x="16" y="283" fill="#8b6fc0">MOJO</text>
+  <rect class="f3-empty" x="84" y="234" width="242" height="88" rx="3"/>
+  <text class="f3-none" x="96" y="265">no supported target</text>
+  <text class="f3-ann" x="96" y="282">announced: Hexagon NPU</text>
+  <text class="f3-ann" x="96" y="299">back end</text>
+  <rect class="f3-cell" x="332" y="234" width="242" height="88" rx="3" stroke="#8b6fc0"/>
+  <text class="f3-r" x="344" y="257">Apple silicon, CPU and GPU;</text>
+  <text class="f3-r" x="344" y="274">Linux with NVIDIA or AMD</text>
+  <text class="f3-r" x="344" y="291">GPUs; Windows only</text>
+  <text class="f3-r" x="344" y="308">through WSL</text>
+  <rect class="f3-cell" x="580" y="234" width="242" height="88" rx="3" stroke="#8b6fc0"/>
+  <text class="f3-r" x="592" y="257">NVIDIA and AMD GPUs;</text>
+  <text class="f3-r" x="592" y="274">MAX serves models</text>
+  <text class="f3-ann" x="592" y="291">announced: TPU, Trainium</text>
+  <text class="f3-ann" x="592" y="308">and Cloud AI 100</text>
+
+  <!-- LEAN -->
+  <text class="f3-lang" x="16" y="371" fill="#c44a37">LEAN</text>
+  <rect class="f3-empty" x="84" y="330" width="242" height="72" rx="3"/>
+  <text class="f3-none" x="96" y="370">no supported target</text>
+  <rect class="f3-cell" x="332" y="330" width="242" height="72" rx="3" stroke="#c44a37"/>
+  <text class="f3-r" x="344" y="353">kernel checks proofs;</text>
+  <text class="f3-r" x="344" y="370">programs on Linux, macOS</text>
+  <text class="f3-r" x="344" y="387">and Windows</text>
+  <rect class="f3-cell" x="580" y="330" width="242" height="72" rx="3" stroke="#c44a37"/>
+  <text class="f3-r" x="592" y="362">kernel checks proofs in CI;</text>
+  <text class="f3-r" x="592" y="379">programs on Linux</text>
+
+  <!-- transfers that exist (solid) -->
+  <path class="f3-link" d="M453,406 L453,424"/>
+  <path class="f3-link" d="M453,424 L233,424 L233,408" marker-end="url(#f3-arrow)"/>
+  <text class="f3-e" x="343" y="442" text-anchor="middle">C++ and Rust cross-compiled for Android</text>
+  <path class="f3-link" d="M453,424 L673,424 L673,408" marker-end="url(#f3-arrow)"/>
+  <text class="f3-e" x="563" y="442" text-anchor="middle">Linux builds deployed</text>
+  <path class="f3-link" d="M195,410 L195,466 L711,466 L711,410" marker-start="url(#f3-arrow-back)" marker-end="url(#f3-arrow)"/>
+  <text class="f3-e" x="453" y="484" text-anchor="middle">network calls from the device to models served in the cloud</text>
+
+  <!-- proposed (dashed) -->
+  <text class="f3-pt" x="453" y="514" text-anchor="middle">proposed, JITAC: decide at run time what to load, how to specialize it</text>
+  <text class="f3-pt" x="453" y="530" text-anchor="middle">and where to run it, and record each decision</text>
+  <path class="f3-prop" d="M92,542 L814,542" marker-start="url(#f3-parrow-back)" marker-end="url(#f3-parrow)"/>
+
+  <!-- legend -->
+  <rect class="f3-cell" x="16" y="566" width="22" height="14" rx="2" stroke="currentColor" stroke-opacity="0.6"/>
+  <text class="f3-leg" x="44" y="577">supported today</text>
+  <text class="f3-legi" x="156" y="577">italics: announced, not supported</text>
+  <path class="f3-link" d="M384,573 L418,573" marker-end="url(#f3-arrow)"/>
+  <text class="f3-leg" x="426" y="577">transfer that exists</text>
+  <path class="f3-prop" d="M566,573 L600,573"/>
+  <text class="f3-leg" x="608" y="577">proposed; does not exist</text>
+</svg>
