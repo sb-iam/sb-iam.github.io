@@ -62,68 +62,68 @@
     <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <marker id="f2-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
     <style>
-      .t  { font-size: 18px; font-weight: 600; }
-      .s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
-      .n  { font-size: 15px; font-weight: 600; }
-      .r  { font-size: 13px; opacity: 0.78; }
-      .axis { stroke: currentColor; stroke-width: 1.4; fill: none; opacity: 0.8; }
-      .mcp  { stroke: #1fa8d6; stroke-width: 3; fill: none; }
-      .mark { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-width: 1.4; }
-      .dot  { fill: #1fa8d6; }
-      .grid { stroke: currentColor; stroke-opacity: 0.12; stroke-width: 1; fill: none; }
+      .f2-t  { font-size: 18px; font-weight: 600; }
+      .f2-s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .f2-n  { font-size: 15px; font-weight: 600; }
+      .f2-r  { font-size: 13px; opacity: 0.78; }
+      .f2-axis { stroke: currentColor; stroke-width: 1.4; fill: none; opacity: 0.8; }
+      .f2-mcp  { stroke: #1fa8d6; stroke-width: 3; fill: none; }
+      .f2-mark { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-width: 1.4; }
+      .f2-dot  { fill: #1fa8d6; }
+      .f2-grid { stroke: currentColor; stroke-opacity: 0.12; stroke-width: 1; fill: none; }
     </style>
   </defs>
 
-  <text class="t" x="12" y="25">Three axes of a composed agent</text>
+  <text class="f2-t" x="12" y="25">Three axes of a composed agent</text>
 
   <!-- faint floor grid -->
-  <path class="grid" d="M250 260 H700 M250 220 H700 M250 180 H700 M250 140 H700 M250 100 H700"/>
-  <path class="grid" d="M340 100 V260 M430 100 V260 M520 100 V260 M610 100 V260"/>
+  <path class="f2-grid" d="M250 260 H700 M250 220 H700 M250 180 H700 M250 140 H700 M250 100 H700"/>
+  <path class="f2-grid" d="M340 100 V260 M430 100 V260 M520 100 V260 M610 100 V260"/>
 
   <!-- origin -->
   <circle cx="250" cy="260" r="9" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="2.4"/>
-  <text class="n" x="266" y="282">host: where the three meet</text>
+  <text class="f2-n" x="266" y="282">host: where the three meet</text>
 
   <!-- MCP axis, reach -->
-  <line class="mcp" x1="250" y1="260" x2="716" y2="260" marker-end="url(#f2-arrow-blue)"/>
-  <circle class="dot" cx="360" cy="260" r="7"/>
-  <circle class="dot" cx="480" cy="260" r="7"/>
-  <circle class="dot" cx="600" cy="260" r="7"/>
-  <text class="r" x="343" y="245">source</text>
-  <text class="r" x="458" y="245">gateway</text>
-  <text class="r" x="589" y="245">sink</text>
-  <text class="s" x="480" y="300">MCP · reach · this essay</text>
-  <text class="r" x="480" y="318">what the agent can touch: tools, data, effects;</text>
-  <text class="r" x="480" y="334">each hop moves data and authority</text>
-  <text class="r" x="480" y="350">one server further</text>
+  <line class="f2-mcp" x1="250" y1="260" x2="716" y2="260" marker-end="url(#f2-arrow-blue)"/>
+  <circle class="f2-dot" cx="360" cy="260" r="7"/>
+  <circle class="f2-dot" cx="480" cy="260" r="7"/>
+  <circle class="f2-dot" cx="600" cy="260" r="7"/>
+  <text class="f2-r" x="343" y="245">source</text>
+  <text class="f2-r" x="458" y="245">gateway</text>
+  <text class="f2-r" x="589" y="245">sink</text>
+  <text class="f2-s" x="480" y="300">MCP · reach · this essay</text>
+  <text class="f2-r" x="480" y="318">what the agent can touch: tools, data, effects;</text>
+  <text class="f2-r" x="480" y="334">each hop moves data and authority</text>
+  <text class="f2-r" x="480" y="350">one server further</text>
 
   <!-- A2A axis, delegation -->
-  <line class="axis" x1="250" y1="260" x2="250" y2="52" marker-end="url(#f2-arrow)"/>
-  <circle class="mark" cx="250" cy="205" r="7"/>
-  <circle class="mark" cx="250" cy="150" r="7"/>
-  <circle class="mark" cx="250" cy="95" r="7"/>
-  <text class="r" x="264" y="209">client agent</text>
-  <text class="r" x="264" y="154">remote agent</text>
-  <text class="r" x="264" y="99">task and artifacts</text>
-  <text class="s" x="262" y="48">A2A · delegation</text>
-  <text class="r" x="390" y="48">who acts for whom; authority can only shrink</text>
+  <line class="f2-axis" x1="250" y1="260" x2="250" y2="52" marker-end="url(#f2-arrow)"/>
+  <circle class="f2-mark" cx="250" cy="205" r="7"/>
+  <circle class="f2-mark" cx="250" cy="150" r="7"/>
+  <circle class="f2-mark" cx="250" cy="95" r="7"/>
+  <text class="f2-r" x="264" y="209">client agent</text>
+  <text class="f2-r" x="264" y="154">remote agent</text>
+  <text class="f2-r" x="264" y="99">task and artifacts</text>
+  <text class="f2-s" x="262" y="48">A2A · delegation</text>
+  <text class="f2-r" x="390" y="48">who acts for whom; authority can only shrink</text>
 
   <!-- ACP axis, intent -->
-  <line class="axis" x1="250" y1="260" x2="92" y2="345" marker-end="url(#f2-arrow)"/>
-  <rect class="mark" x="195" y="282" width="12" height="12" rx="2"/>
-  <rect class="mark" x="152" y="305" width="12" height="12" rx="2"/>
-  <rect class="mark" x="109" y="328" width="12" height="12" rx="2"/>
-  <text class="r" x="185" y="292" text-anchor="end">editor</text>
-  <text class="r" x="142" y="315" text-anchor="end">coding agent</text>
-  <text class="r" x="99" y="338" text-anchor="end">files and terminal</text>
-  <text class="s" x="12" y="196">ACP · intent</text>
-  <text class="r" x="12" y="214">who asked and what was</text>
-  <text class="r" x="12" y="230">consented; the prompt and</text>
-  <text class="r" x="12" y="246">the permissions live here</text>
+  <line class="f2-axis" x1="250" y1="260" x2="92" y2="345" marker-end="url(#f2-arrow)"/>
+  <rect class="f2-mark" x="195" y="282" width="12" height="12" rx="2"/>
+  <rect class="f2-mark" x="152" y="305" width="12" height="12" rx="2"/>
+  <rect class="f2-mark" x="109" y="328" width="12" height="12" rx="2"/>
+  <text class="f2-r" x="185" y="292" text-anchor="end">editor</text>
+  <text class="f2-r" x="142" y="315" text-anchor="end">coding agent</text>
+  <text class="f2-r" x="99" y="338" text-anchor="end">files and terminal</text>
+  <text class="f2-s" x="12" y="196">ACP · intent</text>
+  <text class="f2-r" x="12" y="214">who asked and what was</text>
+  <text class="f2-r" x="12" y="230">consented; the prompt and</text>
+  <text class="f2-r" x="12" y="246">the permissions live here</text>
 
   <!-- the point -->
-  <text class="r" x="12" y="60">a call is a point on one axis;</text>
-  <text class="r" x="12" y="76">a plan is a point in the whole space</text>
+  <text class="f2-r" x="12" y="60">a call is a point on one axis;</text>
+  <text class="f2-r" x="12" y="76">a plan is a point in the whole space</text>
 </svg>
 <figcaption><strong>F2</strong> Three axes from one origin, the host. A single call is a point on one axis; a plan is a point in the whole space.</figcaption>
 </figure>
@@ -136,66 +136,66 @@
     <marker id="f1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <marker id="f1-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
     <style>
-      .t  { font-size: 18px; font-weight: 600; }
-      .s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
-      .n  { font-size: 16px; font-weight: 600; }
-      .r  { font-size: 14px; opacity: 0.78; }
-      .g  { font-size: 13px; opacity: 0.78; text-anchor: middle; }
-      .ok { font-size: 12px; font-weight: 700; fill: #1fa8d6; text-anchor: middle; }
-      .no { font-size: 14px; font-weight: 700; fill: #c44a37; }
-      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
-      .sink { fill: rgba(196,74,55,0.10); stroke: #c44a37; stroke-opacity: 0.8; stroke-width: 1.2; }
-      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
-      .flow { stroke: #c44a37; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
-      .pill { fill: rgba(31,168,214,0.14); stroke: #1fa8d6; stroke-width: 1; }
+      .f1-t  { font-size: 18px; font-weight: 600; }
+      .f1-s  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .f1-n  { font-size: 16px; font-weight: 600; }
+      .f1-r  { font-size: 14px; opacity: 0.78; }
+      .f1-g  { font-size: 13px; opacity: 0.78; text-anchor: middle; }
+      .f1-ok { font-size: 12px; font-weight: 700; fill: #1fa8d6; text-anchor: middle; }
+      .f1-no { font-size: 14px; font-weight: 700; fill: #c44a37; }
+      .f1-band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .f1-sink { fill: rgba(196,74,55,0.10); stroke: #c44a37; stroke-opacity: 0.8; stroke-width: 1.2; }
+      .f1-link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .f1-flow { stroke: #c44a37; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+      .f1-pill { fill: rgba(31,168,214,0.14); stroke: #1fa8d6; stroke-width: 1; }
     </style>
   </defs>
 
-  <text class="t" x="12" y="25">Three permitted calls, one violation</text>
+  <text class="f1-t" x="12" y="25">Three permitted calls, one violation</text>
 
   <!-- the chain -->
-  <rect class="band" x="12" y="70" width="150" height="66" rx="6"/>
-  <text class="n" x="24" y="96">H · host</text>
-  <text class="r" x="24" y="118">submits the plan</text>
+  <rect class="f1-band" x="12" y="70" width="150" height="66" rx="6"/>
+  <text class="f1-n" x="24" y="96">H · host</text>
+  <text class="f1-r" x="24" y="118">submits the plan</text>
 
-  <rect class="band" x="208" y="70" width="150" height="66" rx="6"/>
-  <text class="n" x="220" y="96">G · gateway</text>
-  <text class="r" x="220" y="118">forwards the fix</text>
+  <rect class="f1-band" x="208" y="70" width="150" height="66" rx="6"/>
+  <text class="f1-n" x="220" y="96">G · gateway</text>
+  <text class="f1-r" x="220" y="118">forwards the fix</text>
 
-  <rect class="band" x="404" y="70" width="150" height="66" rx="6"/>
-  <text class="n" x="416" y="96">A · workspace</text>
-  <text class="r" x="416" y="118">commits the patch</text>
+  <rect class="f1-band" x="404" y="70" width="150" height="66" rx="6"/>
+  <text class="f1-n" x="416" y="96">A · workspace</text>
+  <text class="f1-r" x="416" y="118">commits the patch</text>
 
-  <rect class="band" x="600" y="70" width="148" height="66" rx="6"/>
-  <text class="n" x="612" y="96">B · test runner</text>
-  <text class="r" x="612" y="118">runs one test, writes</text>
+  <rect class="f1-band" x="600" y="70" width="148" height="66" rx="6"/>
+  <text class="f1-n" x="612" y="96">B · test runner</text>
+  <text class="f1-r" x="612" y="118">runs one test, writes</text>
 
-  <line class="link" x1="162" y1="103" x2="206" y2="103" marker-end="url(#f1-arrow)"/>
-  <line class="link" x1="358" y1="103" x2="402" y2="103" marker-end="url(#f1-arrow)"/>
-  <line class="link" x1="554" y1="103" x2="598" y2="103" marker-end="url(#f1-arrow)"/>
+  <line class="f1-link" x1="162" y1="103" x2="206" y2="103" marker-end="url(#f1-arrow)"/>
+  <line class="f1-link" x1="358" y1="103" x2="402" y2="103" marker-end="url(#f1-arrow)"/>
+  <line class="f1-link" x1="554" y1="103" x2="598" y2="103" marker-end="url(#f1-arrow)"/>
 
   <!-- per-call badges -->
-  <rect class="pill" x="156" y="42" width="58" height="18" rx="9"/>
-  <text class="ok" x="185" y="55">allowed</text>
-  <rect class="pill" x="352" y="42" width="58" height="18" rx="9"/>
-  <text class="ok" x="381" y="55">allowed</text>
-  <rect class="pill" x="548" y="42" width="58" height="18" rx="9"/>
-  <text class="ok" x="577" y="55">allowed</text>
-  <text class="g" x="380" y="160">per-call authorization: each hop has a row, each tool is listed, each token fits</text>
+  <rect class="f1-pill" x="156" y="42" width="58" height="18" rx="9"/>
+  <text class="f1-ok" x="185" y="55">allowed</text>
+  <rect class="f1-pill" x="352" y="42" width="58" height="18" rx="9"/>
+  <text class="f1-ok" x="381" y="55">allowed</text>
+  <rect class="f1-pill" x="548" y="42" width="58" height="18" rx="9"/>
+  <text class="f1-ok" x="577" y="55">allowed</text>
+  <text class="f1-g" x="380" y="160">per-call authorization: each hop has a row, each tool is listed, each token fits</text>
 
   <!-- the data flow to the public sink -->
-  <text class="s" x="416" y="196">output: acme · restricted</text>
-  <path class="flow" d="M479 202 C479 240 560 236 600 246" marker-end="url(#f1-arrow-red)"/>
-  <rect class="sink" x="600" y="222" width="148" height="64" rx="6"/>
-  <text class="n" x="612" y="242">public gist</text>
-  <text class="r" x="612" y="259">tenant: public</text>
-  <text class="r" x="612" y="275">clearance: public</text>
+  <text class="f1-s" x="416" y="196">output: acme · restricted</text>
+  <path class="f1-flow" d="M479 202 C479 240 560 236 600 246" marker-end="url(#f1-arrow-red)"/>
+  <rect class="f1-sink" x="600" y="222" width="148" height="64" rx="6"/>
+  <text class="f1-n" x="612" y="242">public gist</text>
+  <text class="f1-r" x="612" y="259">tenant: public</text>
+  <text class="f1-r" x="612" y="275">clearance: public</text>
 
   <!-- the whole-plan verdict -->
-  <text class="no" x="12" y="304">the whole plan: denied</text>
-  <text class="r" x="230" y="304">no permission row for the sink · the label flow breaks twice ·</text>
-  <text class="r" x="230" y="320">the consent admits only the internal summary</text>
-  <path class="link" d="M12 324 L12 332 L748 332 L748 324"/>
+  <text class="f1-no" x="12" y="304">the whole plan: denied</text>
+  <text class="f1-r" x="230" y="304">no permission row for the sink · the label flow breaks twice ·</text>
+  <text class="f1-r" x="230" y="320">the consent admits only the internal summary</text>
+  <path class="f1-link" d="M12 324 L12 332 L748 332 L748 324"/>
 </svg>
 <figcaption><strong>F1</strong> Three permitted calls, one violation: per-call authorization passes every hop, and the plan as a whole moves restricted output to a public sink.</figcaption>
 </figure>
@@ -253,88 +253,88 @@
     <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <marker id="f3-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
     <style>
-      .t  { font-size: 18px; font-weight: 600; }
-      .s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
-      .n  { font-size: 15px; font-weight: 600; }
-      .r  { font-size: 12.5px; opacity: 0.78; }
-      .g  { font-size: 13px; opacity: 0.85; text-anchor: middle; }
-      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
-      .proc { fill: rgba(128,128,128,0.08); stroke: currentColor; stroke-width: 1.4; }
-      .sink { fill: rgba(31,168,214,0.12); stroke: currentColor; stroke-width: 1.4; }
-      .dark { fill: rgba(128,128,128,0.22); stroke: currentColor; stroke-opacity: 0.6; stroke-width: 1.2; }
-      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
-      .hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
-      .lbl  { font-size: 11px; font-weight: 600; fill: #1fa8d6; text-anchor: middle; }
+      .f3-t  { font-size: 18px; font-weight: 600; }
+      .f3-s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
+      .f3-n  { font-size: 15px; font-weight: 600; }
+      .f3-r  { font-size: 12.5px; opacity: 0.78; }
+      .f3-g  { font-size: 13px; opacity: 0.85; text-anchor: middle; }
+      .f3-band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .f3-proc { fill: rgba(128,128,128,0.08); stroke: currentColor; stroke-width: 1.4; }
+      .f3-sink { fill: rgba(31,168,214,0.12); stroke: currentColor; stroke-width: 1.4; }
+      .f3-dark { fill: rgba(128,128,128,0.22); stroke: currentColor; stroke-opacity: 0.6; stroke-width: 1.2; }
+      .f3-link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .f3-hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
+      .f3-lbl  { font-size: 11px; font-weight: 600; fill: #1fa8d6; text-anchor: middle; }
     </style>
   </defs>
 
-  <text class="t" x="12" y="25">Four processes, one plan, one record</text>
+  <text class="f3-t" x="12" y="25">Four processes, one plan, one record</text>
 
   <!-- frozen inputs -->
-  <rect class="band" x="12" y="42" width="736" height="32" rx="6"/>
-  <text class="g" x="380" y="63">frozen inputs, read by every process: Program · policy · consent · fixture crate</text>
-  <line class="link" x1="90" y1="74" x2="90" y2="104" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="282" y1="74" x2="282" y2="104" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="474" y1="74" x2="474" y2="104" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="666" y1="74" x2="666" y2="104" marker-end="url(#f3-arrow)"/>
+  <rect class="f3-band" x="12" y="42" width="736" height="32" rx="6"/>
+  <text class="f3-g" x="380" y="63">frozen inputs, read by every process: Program · policy · consent · fixture crate</text>
+  <line class="f3-link" x1="90" y1="74" x2="90" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="282" y1="74" x2="282" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="474" y1="74" x2="474" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="666" y1="74" x2="666" y2="104" marker-end="url(#f3-arrow)"/>
 
   <!-- the four processes, 156 wide with 36 between them -->
-  <rect class="proc" x="12" y="106" width="156" height="96" rx="6"/>
-  <text class="s" x="22" y="126">H · MCP host</text>
-  <text class="r" x="22" y="146">checks the plan before</text>
-  <text class="r" x="22" y="162">its first call; one call</text>
-  <text class="r" x="22" y="178">to G; re-hashes receipt</text>
+  <rect class="f3-proc" x="12" y="106" width="156" height="96" rx="6"/>
+  <text class="f3-s" x="22" y="126">H · MCP host</text>
+  <text class="f3-r" x="22" y="146">checks the plan before</text>
+  <text class="f3-r" x="22" y="162">its first call; one call</text>
+  <text class="f3-r" x="22" y="178">to G; re-hashes receipt</text>
 
-  <rect class="proc" x="204" y="106" width="156" height="96" rx="6"/>
-  <text class="s" x="214" y="126">G · MCP server 1</text>
-  <text class="r" x="214" y="146">serves submit_fix to H;</text>
-  <text class="r" x="214" y="162">forwards it to A through</text>
-  <text class="r" x="214" y="178">its own gate</text>
+  <rect class="f3-proc" x="204" y="106" width="156" height="96" rx="6"/>
+  <text class="f3-s" x="214" y="126">G · MCP server 1</text>
+  <text class="f3-r" x="214" y="146">serves submit_fix to H;</text>
+  <text class="f3-r" x="214" y="162">forwards it to A through</text>
+  <text class="f3-r" x="214" y="178">its own gate</text>
 
-  <rect class="proc" x="396" y="106" width="156" height="96" rx="6"/>
-  <text class="s" x="406" y="126">A · MCP server 2</text>
-  <text class="r" x="406" y="146">applies the patch, makes</text>
-  <text class="r" x="406" y="162">the git commit; asks B to</text>
-  <text class="r" x="406" y="178">verify that commit</text>
+  <rect class="f3-proc" x="396" y="106" width="156" height="96" rx="6"/>
+  <text class="f3-s" x="406" y="126">A · MCP server 2</text>
+  <text class="f3-r" x="406" y="146">applies the patch, makes</text>
+  <text class="f3-r" x="406" y="162">the git commit; asks B to</text>
+  <text class="f3-r" x="406" y="178">verify that commit</text>
 
-  <rect class="sink" x="588" y="106" width="156" height="96" rx="6"/>
-  <text class="s" x="598" y="126">B · MCP server 3</text>
-  <text class="r" x="598" y="146">runs exactly one cargo</text>
-  <text class="r" x="598" y="162">test on it; writes the</text>
-  <text class="r" x="598" y="178">summary once, a receipt</text>
+  <rect class="f3-sink" x="588" y="106" width="156" height="96" rx="6"/>
+  <text class="f3-s" x="598" y="126">B · MCP server 3</text>
+  <text class="f3-r" x="598" y="146">runs exactly one cargo</text>
+  <text class="f3-r" x="598" y="162">test on it; writes the</text>
+  <text class="f3-r" x="598" y="178">summary once, a receipt</text>
 
-  <line class="hop" x1="170" y1="156" x2="201" y2="156" marker-end="url(#f3-arrow-blue)"/>
-  <line class="hop" x1="362" y1="156" x2="393" y2="156" marker-end="url(#f3-arrow-blue)"/>
-  <line class="hop" x1="554" y1="156" x2="585" y2="156" marker-end="url(#f3-arrow-blue)"/>
-  <text class="lbl" x="186" y="148">stdio</text>
-  <text class="lbl" x="378" y="148">stdio</text>
-  <text class="lbl" x="570" y="148">stdio</text>
+  <line class="f3-hop" x1="170" y1="156" x2="201" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <line class="f3-hop" x1="362" y1="156" x2="393" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <line class="f3-hop" x1="554" y1="156" x2="585" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <text class="f3-lbl" x="186" y="148">stdio</text>
+  <text class="f3-lbl" x="378" y="148">stdio</text>
+  <text class="f3-lbl" x="570" y="148">stdio</text>
 
   <!-- what every process has -->
-  <text class="g" x="380" y="222">every process: checks the whole plan itself · gates the exact bytes it sends · keeps a synced, hash-chained journal</text>
+  <text class="f3-g" x="380" y="222">every process: checks the whole plan itself · gates the exact bytes it sends · keeps a synced, hash-chained journal</text>
 
-  <line class="link" x1="90" y1="230" x2="90" y2="254" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="282" y1="230" x2="282" y2="254" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="474" y1="230" x2="474" y2="254" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="666" y1="230" x2="666" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="90" y1="230" x2="90" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="282" y1="230" x2="282" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="474" y1="230" x2="474" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="666" y1="230" x2="666" y2="254" marker-end="url(#f3-arrow)"/>
 
   <!-- the run directory -->
-  <rect class="dark" x="12" y="256" width="736" height="34" rx="6"/>
-  <text class="g" x="380" y="278">the run directory, written only by the processes: journals · retained frames · git workspace · summary · receipt · panel</text>
+  <rect class="f3-dark" x="12" y="256" width="736" height="34" rx="6"/>
+  <text class="f3-g" x="380" y="278">the run directory, written only by the processes: journals · retained frames · git workspace · summary · receipt · panel</text>
 
-  <line class="link" x1="190" y1="290" x2="190" y2="326" marker-end="url(#f3-arrow)"/>
-  <line class="link" x1="570" y1="290" x2="570" y2="326" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="190" y1="290" x2="190" y2="326" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="570" y1="290" x2="570" y2="326" marker-end="url(#f3-arrow)"/>
 
   <!-- the two readers -->
-  <rect class="band" x="12" y="328" width="356" height="80" rx="6"/>
-  <text class="n" x="24" y="352">Judge</text>
-  <text class="r" x="24" y="372">re-derives the verdict from the run directory alone,</text>
-  <text class="r" x="24" y="388">against expectations frozen before the code; never runs it</text>
+  <rect class="f3-band" x="12" y="328" width="356" height="80" rx="6"/>
+  <text class="f3-n" x="24" y="352">Judge</text>
+  <text class="f3-r" x="24" y="372">re-derives the verdict from the run directory alone,</text>
+  <text class="f3-r" x="24" y="388">against expectations frozen before the code; never runs it</text>
 
-  <rect class="band" x="392" y="328" width="356" height="80" rx="6"/>
-  <text class="n" x="404" y="352">Live page</text>
-  <text class="r" x="404" y="372">tails the journals over loopback, one card per record;</text>
-  <text class="r" x="404" y="388">prints the judge's line verbatim; never writes</text>
+  <rect class="f3-band" x="392" y="328" width="356" height="80" rx="6"/>
+  <text class="f3-n" x="404" y="352">Live page</text>
+  <text class="f3-r" x="404" y="372">tails the journals over loopback, one card per record;</text>
+  <text class="f3-r" x="404" y="388">prints the judge's line verbatim; never writes</text>
 </svg>
 <figcaption><strong>F3</strong> Four processes, one plan, one record: frozen inputs above, the chain in the middle, the run directory below, and two readers that only read.</figcaption>
 </figure>
@@ -409,77 +409,77 @@ refused   {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quo
     <marker id="f4-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
     <marker id="f4-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
     <style>
-      .t  { font-size: 18px; font-weight: 600; }
-      .s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
-      .n  { font-size: 14px; font-weight: 600; }
-      .r  { font-size: 12.5px; opacity: 0.78; }
-      .no { font-size: 12.5px; fill: #c44a37; }
-      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
-      .gate { fill: rgba(31,168,214,0.12); stroke: #1fa8d6; stroke-width: 1.6; }
-      .outer { fill: none; stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; stroke-dasharray: 6 4; }
-      .link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
-      .hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
-      .bad  { stroke: #c44a37; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+      .f4-t  { font-size: 18px; font-weight: 600; }
+      .f4-s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
+      .f4-n  { font-size: 14px; font-weight: 600; }
+      .f4-r  { font-size: 12.5px; opacity: 0.78; }
+      .f4-no { font-size: 12.5px; fill: #c44a37; }
+      .f4-band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .f4-gate { fill: rgba(31,168,214,0.12); stroke: #1fa8d6; stroke-width: 1.6; }
+      .f4-outer { fill: none; stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; stroke-dasharray: 6 4; }
+      .f4-link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .f4-hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
+      .f4-bad  { stroke: #c44a37; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
     </style>
   </defs>
 
-  <text class="t" x="12" y="25">Where the gate sits</text>
+  <text class="f4-t" x="12" y="25">Where the gate sits</text>
 
   <!-- process A -->
-  <rect class="outer" x="12" y="44" width="600" height="286" rx="8"/>
-  <text class="s" x="24" y="62">inside process A, the workspace</text>
+  <rect class="f4-outer" x="12" y="44" width="600" height="286" rx="8"/>
+  <text class="f4-s" x="24" y="62">inside process A, the workspace</text>
 
-  <rect class="band" x="24" y="80" width="118" height="54" rx="6"/>
-  <text class="n" x="34" y="102">request struct</text>
-  <text class="r" x="34" y="120">a Rust value</text>
+  <rect class="f4-band" x="24" y="80" width="118" height="54" rx="6"/>
+  <text class="f4-n" x="34" y="102">request struct</text>
+  <text class="f4-r" x="34" y="120">a Rust value</text>
 
-  <rect class="band" x="168" y="80" width="118" height="54" rx="6"/>
-  <text class="n" x="178" y="102">JSON-RPC</text>
-  <text class="r" x="178" y="120">built by the SDK</text>
+  <rect class="f4-band" x="168" y="80" width="118" height="54" rx="6"/>
+  <text class="f4-n" x="178" y="102">JSON-RPC</text>
+  <text class="f4-r" x="178" y="120">built by the SDK</text>
 
-  <rect class="band" x="312" y="80" width="130" height="54" rx="6"/>
-  <text class="n" x="322" y="102">one serialized line</text>
-  <text class="r" x="322" y="120">the only form B sees</text>
+  <rect class="f4-band" x="312" y="80" width="130" height="54" rx="6"/>
+  <text class="f4-n" x="322" y="102">one serialized line</text>
+  <text class="f4-r" x="322" y="120">the only form B sees</text>
 
-  <line class="link" x1="142" y1="107" x2="166" y2="107" marker-end="url(#f4-arrow)"/>
-  <line class="link" x1="286" y1="107" x2="310" y2="107" marker-end="url(#f4-arrow)"/>
-  <line class="link" x1="442" y1="107" x2="466" y2="107" marker-end="url(#f4-arrow)"/>
+  <line class="f4-link" x1="142" y1="107" x2="166" y2="107" marker-end="url(#f4-arrow)"/>
+  <line class="f4-link" x1="286" y1="107" x2="310" y2="107" marker-end="url(#f4-arrow)"/>
+  <line class="f4-link" x1="442" y1="107" x2="466" y2="107" marker-end="url(#f4-arrow)"/>
 
   <!-- the gate -->
-  <rect class="gate" x="468" y="72" width="130" height="152" rx="6"/>
-  <text class="n" x="478" y="94">the gate</text>
-  <text class="r" x="478" y="114">equals the admitted</text>
-  <text class="r" x="478" y="128">node? rules on the</text>
-  <text class="r" x="478" y="142">parsed bytes?</text>
-  <text class="r" x="478" y="164">durable record, fsync</text>
-  <text class="r" x="478" y="182">→ Ack (journal only)</text>
-  <text class="r" x="478" y="200">→ Permit (from Ack</text>
-  <text class="r" x="478" y="214">only) → write</text>
+  <rect class="f4-gate" x="468" y="72" width="130" height="152" rx="6"/>
+  <text class="f4-n" x="478" y="94">the gate</text>
+  <text class="f4-r" x="478" y="114">equals the admitted</text>
+  <text class="f4-r" x="478" y="128">node? rules on the</text>
+  <text class="f4-r" x="478" y="142">parsed bytes?</text>
+  <text class="f4-r" x="478" y="164">durable record, fsync</text>
+  <text class="f4-r" x="478" y="182">→ Ack (journal only)</text>
+  <text class="f4-r" x="478" y="200">→ Permit (from Ack</text>
+  <text class="f4-r" x="478" y="214">only) → write</text>
 
   <!-- the write to B -->
-  <line class="hop" x1="598" y1="107" x2="700" y2="107" marker-end="url(#f4-arrow-blue)"/>
-  <text class="s" x="622" y="97">write</text>
-  <rect class="band" x="702" y="80" width="46" height="54" rx="6"/>
-  <text class="n" x="718" y="112">B</text>
-  <text class="r" x="618" y="128">the pipe: the only</text>
-  <text class="r" x="618" y="142">way A reaches B</text>
+  <line class="f4-hop" x1="598" y1="107" x2="700" y2="107" marker-end="url(#f4-arrow-blue)"/>
+  <text class="f4-s" x="622" y="97">write</text>
+  <rect class="f4-band" x="702" y="80" width="46" height="54" rx="6"/>
+  <text class="f4-n" x="718" y="112">B</text>
+  <text class="f4-r" x="618" y="128">the pipe: the only</text>
+  <text class="f4-r" x="618" y="142">way A reaches B</text>
 
   <!-- the refusal branch -->
-  <path class="bad" d="M533 224 V262" marker-end="url(#f4-arrow-red)"/>
-  <rect class="band" x="312" y="264" width="286" height="40" rx="6"/>
-  <text class="no" x="322" y="281">refused: bytes retained under their hash,</text>
-  <text class="no" x="322" y="296">a refused record, no Permit, nothing written</text>
+  <path class="f4-bad" d="M533 224 V262" marker-end="url(#f4-arrow-red)"/>
+  <rect class="f4-band" x="312" y="264" width="286" height="40" rx="6"/>
+  <text class="f4-no" x="322" y="281">refused: bytes retained under their hash,</text>
+  <text class="f4-no" x="322" y="296">a refused record, no Permit, nothing written</text>
 
   <!-- what closes -->
-  <text class="r" x="24" y="166">check and use are the same bytes:</text>
-  <text class="r" x="24" y="182">no time-of-check gap between a</text>
-  <text class="r" x="24" y="198">checked object and the wire</text>
-  <text class="r" x="24" y="230">the refusal path never constructs</text>
-  <text class="r" x="24" y="246">a Permit, so there is no code</text>
-  <text class="r" x="24" y="262">path that can send unchecked bytes</text>
-  <text class="r" x="24" y="288">B checks the line against its own</text>
-  <text class="r" x="24" y="304">node too; the judge confirms both</text>
-  <text class="r" x="24" y="320">saw the same bytes</text>
+  <text class="f4-r" x="24" y="166">check and use are the same bytes:</text>
+  <text class="f4-r" x="24" y="182">no time-of-check gap between a</text>
+  <text class="f4-r" x="24" y="198">checked object and the wire</text>
+  <text class="f4-r" x="24" y="230">the refusal path never constructs</text>
+  <text class="f4-r" x="24" y="246">a Permit, so there is no code</text>
+  <text class="f4-r" x="24" y="262">path that can send unchecked bytes</text>
+  <text class="f4-r" x="24" y="288">B checks the line against its own</text>
+  <text class="f4-r" x="24" y="304">node too; the judge confirms both</text>
+  <text class="f4-r" x="24" y="320">saw the same bytes</text>
 </svg>
 <figcaption><strong>F4</strong> Where the gate sits: on the one serialized line, after the SDK built it and before the write; the refusal path never constructs a permit.</figcaption>
 </figure>
