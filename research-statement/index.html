@@ -89,7 +89,7 @@
                   </div>
                 </dl>
               </div>
-              <p>Static analysis conventionally assumes a closed world, in which all of the code is present before analysis begins. The assumption fails wherever code is loaded, generated or compiled at run time. For example, in one release of Facebook for Android we found 3,918 classes by static analysis and 23,621, six times as many, after capturing three files that the app loaded as it ran. A closed-world analysis can take such code into account only by starting again.</p>
+              <p>Static analysis conventionally assumes a closed world, in which all of the code is present before analysis begins. The assumption fails wherever code is loaded, generated or compiled at run time. For example, in one release of Facebook for Android we found 3,918 classes by static analysis and 23,621, six times as many, after capturing three files that the app loaded as it ran. Hybrid analyses built on closed-world frameworks capture such code and then repeat the static analysis on the whole program.</p>
             </section>
 
             <section id="lineage">
@@ -181,9 +181,9 @@
                 <text class="f1c" x="410" y="458">Classes stay encapsulated per app; identical names in different apps never collide.</text>
                 </g>
               </svg>
-              <figcaption><strong>F1</strong> The class-loader graph of one Jitana analysis that holds four apps. Facebook and Instagram each ship a class named <code>android.support.v4.app.Fragment</code>, and the two remain distinct because each belongs to its own loader. Facebook's loader holds the file shipped in its package and the three files that the app loaded at run time. Redrawn after Figure 4 of <a class="paper-link" href="/docs/Jitana-Journal.pdf" target="_blank" rel="noreferrer">Jitana, Journal of Computer Languages, 2019</a>.</figcaption>
+              <figcaption><strong>F1</strong> The class-loader graph of one Jitana analysis that holds four apps. Facebook and Instagram each ship a class named <code>android.support.v4.app.Fragment</code>, and the two remain distinct because each belongs to its own loader. Three of the four files in Facebook's loader were loaded at run time. Redrawn after Figure 4 of <a class="paper-link" href="/docs/Jitana-Journal.pdf" target="_blank" rel="noreferrer">Jitana, Journal of Computer Languages, 2019</a>.</figcaption>
               </figure>
-              <p>ReHAna's Virtual Class-Loader follows the class loader of a running app. When the app loads classes through reflection or dynamic code loading, ReHAna adds their analysis to the existing graphs, so that the cost of analysis is proportional to the code that is new. Across 21 apps, ReHAna slowed execution by a factor of at most 1.32, whereas StaDynA, an earlier hybrid analysis for the same task, slowed it by as much as 5.71.</p>
+              <p>ReHAna's Virtual Class-Loader follows the class loader of a running app. When the app loads classes through reflection or dynamic code loading, ReHAna analyzes them as they are loaded and adds the results to the existing graphs; the code already analyzed is not analyzed again. Across 21 apps, ReHAna slowed execution by a factor of at most 1.32, whereas StaDynA, an earlier hybrid analysis for the same task, slowed it by as much as 5.71.</p>
             </section>
 
             <section id="jitac">
