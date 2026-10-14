@@ -188,102 +188,83 @@
 
             <section id="jitac">
               <h2>JITAC: Just-in-Time Abstractions for Code</h2>
-              <p>Four principles of the virtual graph loader can be stated without reference to Android.</p>
+              <p>JITAC carries the virtual graph loader from the classes of an Android app to compiled computation. A neural network model, for example, is compiled for the hardware on which it runs, and an analysis of its source therefore misses the code that executes, as an analysis of an Android package misses the classes loaded later.</p>
+              <p>For such programs I propose a virtual incremental loader, which keeps two tasks of the virtual graph loader and adds a third.</p>
               <ol>
-                <li>A unit of code is identified by its namespace and its name.</li>
-                <li>Only the loader creates nodes, and only when a unit is required.</li>
-                <li>Static results and observations of the running program are recorded on the same nodes.</li>
-                <li>When a unit is added, analysis resumes from the new nodes.</li>
+                <li>It constructs the representation of a unit of code, as nodes and edges of one program graph, only when an analysis or the running program requires that unit.</li>
+                <li>It records static results and observations of an execution on the same nodes, so that what an analysis predicts can be compared with what is observed.</li>
+                <li>When a unit is added or changed, it updates the analyses that depend on that unit and keeps the others; the virtual graph loader handles only units that are added.</li>
               </ol>
-              <p>JITAC takes these principles from the virtual graph loader to a virtual incremental loader for programs written in C++, Rust, Lean and Mojo. These are the first-class languages of this research: code in any other language is generated from them. Lean states an abstraction, Mojo computes it on heterogeneous hardware, and C++ and Rust connect it to existing systems (Figure F2).</p>
+              <p>C++, Rust, Lean and Mojo are the first-class languages of this research, and the first phase of JITAC is bounded to two of them (Figure F2). Rust controls, Mojo computes, and the virtual incremental loader connects them: it holds the code of both in one program graph, across the foreign function interface (FFI) through which the two call each other. C++ and Lean follow in the second phase.</p>
               <figure class="article-figure">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 504" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
-                <title id="f2-title">JITAC design: one graph for the four first-class languages, joined at the foreign function interface</title>
-                <desc id="f2-desc">One box on the left, the Virtual Incremental Loader, keeps one graph for the four languages, loads a unit only when a call requires it, and joins a foreign call to its definition only if name and signature agree. Four language boxes on the right each carry an edge labeled FFI to the loader. Lean states an abstraction and its properties and is loaded one module at a time. Mojo computes it on CPUs and GPUs, through MLIR, and is loaded one package at a time. C++ connects it to LLVM and MLIR and is loaded one translation unit at a time. Rust connects it to Android and the Linux kernel and is loaded one crate at a time. Each language calls the others only through the FFI, under the C ABI. JITAC is a design under construction and has not yet been evaluated.</desc>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 240" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+                <title id="f2-title">JITAC design: Rust control plane, Virtual Incremental Loader, Mojo data plane</title>
+                <desc id="f2-desc">Three boxes in a row. On the left, the Rust control plane: editor and command line, agent protocols, lifecycle and storage. On the right, the Mojo data plane: model inference, analysis and evaluation, on CPUs and GPUs through MLIR. Between them, the Virtual Incremental Loader: one program graph, built as required, which holds static results and observations and is updated when the code changes. An edge labeled FFI joins each plane to the loader. Below the row, a dashed box joined to the loader by a dashed edge labeled phase 2 holds C++, for LLVM and MLIR, and Lean, for abstractions and their properties.</desc>
                 <defs>
                   <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+                  <marker id="f2-arrow-back" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="currentColor"/></marker>
                   <style>
                     .f2k  { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
                     .f2h  { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
-                    .f2id { font-size: 12px; font-weight: 750; opacity: 0.5; }
+                    .f2s  { font-size: 11px; letter-spacing: 0.09em; fill-opacity: 0.78; }
+                    .f2t  { font-size: 12px; font-weight: 400; letter-spacing: 0; fill: currentColor; fill-opacity: 0.84; }
                     .f2r  { font-size: 12px; opacity: 0.84; }
                     .f2e  { font-size: 11.5px; opacity: 0.62; text-anchor: middle; font-style: italic; }
-                    .f2c  { font-size: 12.5px; opacity: 0.72; text-anchor: middle; }
+                    .f2p  { font-size: 11.5px; opacity: 0.62; font-style: italic; }
                     .f2box{ fill: rgba(128,128,128,0.07); stroke-width: 1.3; }
                     .f2sep{ stroke-width: 1; opacity: 0.4; }
                     .f2link{ stroke: currentColor; stroke-width: 1.4; opacity: 0.6; fill: none; }
                   </style>
                 </defs>
 
-                <text class="f2k" x="410" y="20">JITAC: ONE GRAPH FOR FOUR LANGUAGES</text>
+                <text class="f2k" x="410" y="20">JITAC: ONE PROGRAM GRAPH BETWEEN CONTROL AND COMPUTATION</text>
 
                 <g transform="translate(0,14)">
+                <!-- Rust control plane -->
+                <rect class="f2box" x="16" y="26" width="208" height="114" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
+                <text class="f2h" x="32" y="52" fill="#1fa8d6">RUST<tspan class="f2s" dx="8">CONTROL PLANE</tspan></text>
+                <line class="f2sep" x1="32" y1="62" x2="208" y2="62" stroke="#1fa8d6"/>
+                <text class="f2r" x="32" y="82">editor and command line</text>
+                <text class="f2r" x="32" y="101">agent protocols</text>
+                <text class="f2r" x="32" y="120">lifecycle and storage</text>
+
                 <!-- Virtual Incremental Loader -->
-                <rect class="f2box" x="16" y="154" width="292" height="132" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
-                <text class="f2h" x="32" y="180" fill="#b8860b">VIRTUAL INCREMENTAL LOADER</text>
-                <line class="f2sep" x1="32" y1="190" x2="292" y2="190" stroke="#b8860b"/>
-                <text class="f2r" x="32" y="210">one graph for the four languages</text>
-                <text class="f2r" x="32" y="229">loads a unit only when a call requires it</text>
-                <text class="f2r" x="32" y="248">joins a foreign call to its definition</text>
-                <text class="f2r" x="32" y="267">only if name and signature agree</text>
+                <rect class="f2box" x="264" y="26" width="292" height="114" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
+                <text class="f2h" x="280" y="52" fill="#b8860b">VIRTUAL INCREMENTAL LOADER</text>
+                <line class="f2sep" x1="280" y1="62" x2="540" y2="62" stroke="#b8860b"/>
+                <text class="f2r" x="280" y="82">one program graph, built as required</text>
+                <text class="f2r" x="280" y="101">static results and observations</text>
+                <text class="f2r" x="280" y="120">updated when the code changes</text>
 
-                <!-- 1 Lean -->
-                <rect class="f2box" x="500" y="26" width="304" height="88" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
-                <text class="f2id" x="516" y="52">1</text>
-                <text class="f2h" x="536" y="52" fill="#c44a37">LEAN</text>
-                <line class="f2sep" x1="516" y1="62" x2="788" y2="62" stroke="#c44a37"/>
-                <text class="f2r" x="516" y="82">states an abstraction and its properties</text>
-                <text class="f2r" x="516" y="101">loaded one module at a time</text>
+                <!-- Mojo data plane -->
+                <rect class="f2box" x="596" y="26" width="208" height="114" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
+                <text class="f2h" x="612" y="52" fill="#8b6fc0">MOJO<tspan class="f2s" dx="8">DATA PLANE</tspan></text>
+                <line class="f2sep" x1="612" y1="62" x2="788" y2="62" stroke="#8b6fc0"/>
+                <text class="f2r" x="612" y="82">model inference</text>
+                <text class="f2r" x="612" y="101">analysis and evaluation</text>
+                <text class="f2r" x="612" y="120">CPUs and GPUs, via MLIR</text>
 
-                <!-- 2 Mojo -->
-                <rect class="f2box" x="500" y="126" width="304" height="88" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
-                <text class="f2id" x="516" y="152">2</text>
-                <text class="f2h" x="536" y="152" fill="#8b6fc0">MOJO</text>
-                <line class="f2sep" x1="516" y1="162" x2="788" y2="162" stroke="#8b6fc0"/>
-                <text class="f2r" x="516" y="182">computes it on CPUs and GPUs, through MLIR</text>
-                <text class="f2r" x="516" y="201">loaded one package at a time</text>
+                <!-- the foreign function interface between Rust and Mojo, on either side of the loader -->
+                <line class="f2link" x1="228" y1="83" x2="260" y2="83" marker-start="url(#f2-arrow-back)" marker-end="url(#f2-arrow)"/>
+                <text class="f2e" x="244" y="73">FFI</text>
+                <line class="f2link" x1="560" y1="83" x2="592" y2="83" marker-start="url(#f2-arrow-back)" marker-end="url(#f2-arrow)"/>
+                <text class="f2e" x="576" y="73">FFI</text>
 
-                <!-- 3 C++ -->
-                <rect class="f2box" x="500" y="226" width="304" height="88" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
-                <text class="f2id" x="516" y="252">3</text>
-                <text class="f2h" x="536" y="252" fill="#1fa8d6">C++</text>
-                <line class="f2sep" x1="516" y1="262" x2="788" y2="262" stroke="#1fa8d6"/>
-                <text class="f2r" x="516" y="282">connects it to LLVM and MLIR</text>
-                <text class="f2r" x="516" y="301">loaded one translation unit at a time</text>
-
-                <!-- 4 Rust -->
-                <rect class="f2box" x="500" y="326" width="304" height="88" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
-                <text class="f2id" x="516" y="352">4</text>
-                <text class="f2h" x="536" y="352" fill="#4f9d69">RUST</text>
-                <line class="f2sep" x1="516" y1="362" x2="788" y2="362" stroke="#4f9d69"/>
-                <text class="f2r" x="516" y="382">connects it to Android and the Linux kernel</text>
-                <text class="f2r" x="516" y="401">loaded one crate at a time</text>
-
-                <!-- FFI edges: the foreign calls of each language, joined by the loader -->
-                <path class="f2link" d="M500,70 C 430,70 380,166 312,178" marker-end="url(#f2-arrow)"/>
-                <text class="f2e" x="406" y="99">FFI</text>
-
-                <path class="f2link" d="M500,170 C 440,170 372,204 312,208" marker-end="url(#f2-arrow)"/>
-                <text class="f2e" x="406" y="175">FFI</text>
-
-                <path class="f2link" d="M500,270 C 440,270 372,236 312,232" marker-end="url(#f2-arrow)"/>
-                <text class="f2e" x="406" y="271">FFI</text>
-
-                <path class="f2link" d="M500,370 C 430,370 380,274 312,262" marker-end="url(#f2-arrow)"/>
-                <text class="f2e" x="406" y="347">FFI</text>
-
-                <text class="f2c" x="410" y="451">Each language calls the others only through the FFI, under the C ABI.</text>
-                <text class="f2c" x="410" y="471">A design: JITAC is under construction and has not yet been evaluated.</text>
+                <!-- phase 2: C++ and Lean -->
+                <line class="f2link" x1="410" y1="166" x2="410" y2="144" stroke-dasharray="4 3" marker-end="url(#f2-arrow)"/>
+                <text class="f2p" x="420" y="159">phase 2</text>
+                <rect class="f2box" x="16" y="166" width="788" height="44" rx="4" stroke="currentColor" stroke-opacity="0.5" stroke-dasharray="5 4"/>
+                <text class="f2h" x="213" y="193" text-anchor="middle" fill="#4f9d69">C++<tspan class="f2t" dx="10">LLVM and MLIR</tspan></text>
+                <text class="f2h" x="607" y="193" text-anchor="middle" fill="#c44a37">LEAN<tspan class="f2t" dx="10">abstractions and their properties</tspan></text>
                 </g>
               </svg>
-              <figcaption><strong>F2</strong> The design of JITAC. Each language is loaded in units of its own kind. An edge stands for the foreign calls of one language, which the virtual incremental loader joins to their definitions in one graph.</figcaption>
+              <figcaption><strong>F2</strong> The design of JITAC. Solid boxes belong to the first phase and the dashed box to the second.</figcaption>
               </figure>
-              <p>The four languages call one another only through the foreign function interface (FFI), where the compiler of the caller sees only a declaration of the callee. An analysis of one language therefore stops at a foreign call, as a closed-world analysis of an Android app stops at a class loaded at run time. The virtual incremental loader loads the unit that defines the callee, in whichever language it is written, into the graph of the caller, and joins the call to the definition only if the two agree in name and in signature. These calls rest on the Application Binary Interface (ABI), which I take as given: my work addresses the systems code, compilers, applications and clusters above it.</p>
             </section>
 
             <section id="direction">
               <h2>Current Direction</h2>
-              <p>My dissertation carries the method from Android to neural network models compiled by MAX, a framework from Modular whose kernels are written in Mojo: static analysis predicts the behavior of an execution, the execution is observed, and the two are reconciled. The measured results in this statement are those of Jitana and ReHAna; JITAC is under construction and has not yet been evaluated, and papers on it are in preparation.</p>
+              <p>My dissertation applies the method to neural network models compiled by MAX, a framework from Modular whose kernels are written in Mojo: static analysis predicts the behavior of an execution, the execution is observed, and the two are reconciled. The measured results in this statement are those of Jitana and ReHAna; JITAC is under construction and has not yet been evaluated, and papers on it are in preparation.</p>
             </section>
 
             <section id="publications">
