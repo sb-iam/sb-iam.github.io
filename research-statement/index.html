@@ -193,72 +193,59 @@
               <p>A just-in-time abstraction represents only the part of a program that an analysis has reached, and it is refined as the program loads, generates or changes code, while the results already obtained are kept. Static and dynamic analysis operate on the same representation, which is built on the intermediate representations of compilers, so that a property is verified statically where static analysis suffices and validated on observed executions where it does not.</p>
               <p>We are building JITAC using virtual incremental graph loading, which carries the virtual graph loader of Jitana from Android to compiled computation, and from code that is added to code that changes. It has a control plane in Rust and a data plane in Mojo (Figure F2).</p>
               <figure class="article-figure">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 340" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 286" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
                 <title id="f2-title">JITAC architecture: Rust control plane, Virtual Incremental Graph Loader, Mojo data plane</title>
-                <desc id="f2-desc">Three boxes in a row. The Rust control plane holds auth and the Cedar gate, the IDE, ACP and CLI surfaces, the cloud SDK and receipts, and lifecycle and storage. The Virtual Incremental Graph Loader holds the typed program graph, results and identity, on-demand context, and sealed snapshots. The Mojo data plane holds inference through MAX, Nabla-Mojo training, RLVR loops, and analysis and evaluation. An arrow with a head at each end joins each plane to the loader, and an arc carries results and observations from the data plane back to the control plane. Beneath the three boxes, two horizontal bars span the figure: Lean and Cedar, and below it C++, MLIR and LLVM.</desc>
+                <desc id="f2-desc">Three boxes in a row under the title JITAC: one program graph between control and computation. The Rust control plane holds authorization with Cedar, the IDE, CLI and agents, and lifecycle and storage. The Virtual Incremental Graph Loader holds the typed program graph, which is built as analysis requires and updated as code changes. The Mojo data plane holds inference with MAX, training with Nabla-Mojo, and analysis and evaluation. An arrow with a head at each end joins each plane to the loader. Beneath the three boxes, two horizontal bars span the figure: Lean and Cedar, and below it C++, MLIR and LLVM.</desc>
                 <defs>
                   <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
                   <marker id="f2-arrow-back" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="currentColor"/></marker>
-                  <marker id="f2-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
                   <style>
                     .f2k  { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
                     .f2h  { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
-                    .f2id { font-size: 12px; font-weight: 750; opacity: 0.5; }
                     .f2r  { font-size: 12px; opacity: 0.84; }
                     .f2box{ fill: rgba(128,128,128,0.07); stroke-width: 1.3; }
                     .f2sep{ stroke-width: 1; opacity: 0.4; }
                     .f2link{ stroke: currentColor; stroke-width: 1.4; opacity: 0.6; fill: none; }
-                    .f2ret { stroke: #b8860b; stroke-width: 1.4; opacity: 0.9; fill: none; }
                   </style>
                 </defs>
 
-                <text class="f2k" x="410" y="20">RESULTS AND OBSERVATIONS RETURN TO THE CONTROL PLANE</text>
-                <path class="f2ret" d="M684,56 C 684,34 624,32 410,32 C 196,32 136,34 136,56" marker-end="url(#f2-arrow-gold)"/>
+                <text class="f2k" x="410" y="20">JITAC: ONE PROGRAM GRAPH BETWEEN CONTROL AND COMPUTATION</text>
 
-                <!-- 1 Rust control plane -->
-                <rect class="f2box" x="16" y="56" width="240" height="170" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
-                <text class="f2id" x="32" y="91">1</text>
-                <text class="f2h" x="52" y="91" fill="#1fa8d6">RUST CONTROL PLANE</text>
-                <line class="f2sep" x1="32" y1="110" x2="240" y2="110" stroke="#1fa8d6"/>
-                <text class="f2r" x="32" y="132">Auth + Cedar gate</text>
-                <text class="f2r" x="32" y="151">IDE / ACP / CLI</text>
-                <text class="f2r" x="32" y="170">cloud SDK + receipts</text>
-                <line class="f2sep" x1="32" y1="186" x2="240" y2="186" stroke="#1fa8d6"/>
-                <text class="f2r" x="32" y="208">lifecycle + storage</text>
+                <!-- Rust control plane -->
+                <rect class="f2box" x="16" y="40" width="240" height="132" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
+                <text class="f2h" x="32" y="75" fill="#1fa8d6">RUST CONTROL PLANE</text>
+                <line class="f2sep" x1="32" y1="94" x2="240" y2="94" stroke="#1fa8d6"/>
+                <text class="f2r" x="32" y="116">authorization with Cedar</text>
+                <text class="f2r" x="32" y="135">IDE, CLI and agents</text>
+                <text class="f2r" x="32" y="154">lifecycle and storage</text>
 
-                <!-- 2 Virtual Incremental Graph Loader -->
-                <rect class="f2box" x="290" y="56" width="240" height="170" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
-                <text class="f2id" x="306" y="82">2</text>
-                <text class="f2h" x="326" y="82" fill="#b8860b">VIRTUAL INCREMENTAL</text>
-                <text class="f2h" x="326" y="100" fill="#b8860b">GRAPH LOADER</text>
-                <line class="f2sep" x1="306" y1="110" x2="514" y2="110" stroke="#b8860b"/>
-                <text class="f2r" x="306" y="132">typed program graph</text>
-                <text class="f2r" x="306" y="151">results + identity</text>
-                <text class="f2r" x="306" y="170">on-demand context</text>
-                <line class="f2sep" x1="306" y1="186" x2="514" y2="186" stroke="#b8860b"/>
-                <text class="f2r" x="306" y="208">sealed snapshots</text>
+                <!-- Virtual Incremental Graph Loader -->
+                <rect class="f2box" x="290" y="40" width="240" height="132" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
+                <text class="f2h" x="306" y="66" fill="#b8860b">VIRTUAL INCREMENTAL</text>
+                <text class="f2h" x="306" y="84" fill="#b8860b">GRAPH LOADER</text>
+                <line class="f2sep" x1="306" y1="94" x2="514" y2="94" stroke="#b8860b"/>
+                <text class="f2r" x="306" y="116">typed program graph</text>
+                <text class="f2r" x="306" y="135">built as analysis requires</text>
+                <text class="f2r" x="306" y="154">updated as code changes</text>
 
-                <!-- 3 Mojo data plane -->
-                <rect class="f2box" x="564" y="56" width="240" height="170" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
-                <text class="f2id" x="580" y="91">3</text>
-                <text class="f2h" x="600" y="91" fill="#8b6fc0">MOJO DATA PLANE</text>
-                <line class="f2sep" x1="580" y1="110" x2="788" y2="110" stroke="#8b6fc0"/>
-                <text class="f2r" x="580" y="132">inference / MAX</text>
-                <text class="f2r" x="580" y="151">Nabla-Mojo training</text>
-                <text class="f2r" x="580" y="170">RLVR loops</text>
-                <line class="f2sep" x1="580" y1="186" x2="788" y2="186" stroke="#8b6fc0"/>
-                <text class="f2r" x="580" y="208">analysis + evaluation</text>
+                <!-- Mojo data plane -->
+                <rect class="f2box" x="564" y="40" width="240" height="132" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
+                <text class="f2h" x="580" y="75" fill="#8b6fc0">MOJO DATA PLANE</text>
+                <line class="f2sep" x1="580" y1="94" x2="788" y2="94" stroke="#8b6fc0"/>
+                <text class="f2r" x="580" y="116">inference with MAX</text>
+                <text class="f2r" x="580" y="135">training with Nabla-Mojo</text>
+                <text class="f2r" x="580" y="154">analysis and evaluation</text>
 
                 <!-- each plane exchanges data with the loader in both directions -->
-                <line class="f2link" x1="261" y1="141" x2="285" y2="141" marker-start="url(#f2-arrow-back)" marker-end="url(#f2-arrow)"/>
-                <line class="f2link" x1="535" y1="141" x2="559" y2="141" marker-start="url(#f2-arrow-back)" marker-end="url(#f2-arrow)"/>
+                <line class="f2link" x1="261" y1="106" x2="285" y2="106" marker-start="url(#f2-arrow-back)" marker-end="url(#f2-arrow)"/>
+                <line class="f2link" x1="535" y1="106" x2="559" y2="106" marker-start="url(#f2-arrow-back)" marker-end="url(#f2-arrow)"/>
 
                 <!-- the horizontal layers beneath the planes -->
-                <rect class="f2box" x="16" y="240" width="788" height="36" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
-                <text class="f2h" x="410" y="263" text-anchor="middle" fill="#c44a37">LEAN / CEDAR</text>
+                <rect class="f2box" x="16" y="186" width="788" height="36" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
+                <text class="f2h" x="410" y="209" text-anchor="middle" fill="#c44a37">LEAN / CEDAR</text>
 
-                <rect class="f2box" x="16" y="286" width="788" height="36" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
-                <text class="f2h" x="410" y="309" text-anchor="middle" fill="#4f9d69">C++ / MLIR / LLVM</text>
+                <rect class="f2box" x="16" y="232" width="788" height="36" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
+                <text class="f2h" x="410" y="255" text-anchor="middle" fill="#4f9d69">C++ / MLIR / LLVM</text>
               </svg>
               <figcaption><strong>F2</strong> The architecture of JITAC. Arrows denote the exchange of data between components. The two horizontal layers are common to both planes: the specification and policy languages Lean and Cedar, and the compiler infrastructure of MLIR and LLVM, written in C++.</figcaption>
               </figure>
