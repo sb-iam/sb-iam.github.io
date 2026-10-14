@@ -1,11 +1,12 @@
 # Research Statement: archived figures
 
-Archived from `research-statement/index.html` on 2026-10-13, when the figure of
-JITAC returned to the Rust control plane, the loader and the Mojo data plane.
-Kept here to be revisited. Each figure is as it last appeared on the page, and
-none of them describes the current design; the Research Statement does. The ink
-and the background of the page's light theme are set on the root element of
-each file so that it can be opened by itself.
+Archived from `research-statement/index.html` on 2026-10-13, when the second
+figure of the page returned to the VerifyD architecture: the Rust control
+plane, the Virtual Graph Loader and the Mojo data plane. Kept here to be
+revisited. Each figure is as it last appeared on the page, and none of them
+describes the current design; the Research Statement does. The ink and the
+background of the page's light theme are set on the root element of each file
+so that it can be opened by itself.
 
 | File | Caption on the page | Replaced by |
 |---|---|---|
