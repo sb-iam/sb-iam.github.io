@@ -1,0 +1,50 @@
+<svg style="color:#101418;background:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 324" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f2-title">VerifyD: proposed system in Mojo, with JITAC between developer tools and model computation</title>
+  <desc id="f2-desc">An outer frame labels the proposed VerifyD system in Mojo. Three boxes run from left to right. Applications and tools include the IDE, CLI, agents, execution lifecycle, and storage. JITAC contains the Virtual Incremental Loader, program representations, and dependencies. Model computation includes inference, Nabla-Mojo training, sensitivity, and interpretation. Arrows connect the three boxes, and a return arrow labeled Results and observations leads from model computation back to applications and tools.</desc>
+  <defs>
+    <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .f2h { font-size: 18px; font-weight: 700; }
+      .f2r { font-size: 17px; }
+      .f2frame { fill: none; stroke: currentColor; stroke-width: 1; stroke-opacity: 0.25; }
+      .f2box { fill: rgba(128,128,128,0.05); stroke-width: 1.5; }
+      .f2sep { stroke: currentColor; stroke-width: 1; opacity: 0.25; }
+      .f2link { stroke: currentColor; stroke-width: 1.6; fill: none; }
+    </style>
+  </defs>
+
+  <rect class="f2frame" x="2" y="2" width="816" height="320" rx="6"/>
+  <text class="f2h" x="24" y="33">VerifyD: proposed system in Mojo</text>
+
+  <text class="f2r" x="410" y="63" text-anchor="middle">Results and observations</text>
+  <path class="f2link" d="M678,96 V88 Q678,78 668,78 H152 Q142,78 142,88 V96" marker-end="url(#f2-arrow)"/>
+
+  <!-- Applications and tools -->
+  <rect class="f2box" x="20" y="100" width="244" height="204" rx="4" stroke="var(--cyan-strong, #0d728b)"/>
+  <text class="f2h" x="36" y="128">Applications and tools</text>
+  <line class="f2sep" x1="36" y1="141" x2="248" y2="141"/>
+  <text class="f2r" x="36" y="180">IDE, CLI and agents</text>
+  <text class="f2r" x="36" y="218">Execution lifecycle</text>
+  <text class="f2r" x="36" y="256">Storage</text>
+
+  <!-- JITAC program abstractions -->
+  <rect class="f2box" x="288" y="100" width="244" height="204" rx="4" stroke="var(--gold, #b8860b)"/>
+  <text class="f2h" x="304" y="128">JITAC</text>
+  <line class="f2sep" x1="304" y1="141" x2="516" y2="141"/>
+  <text class="f2r" x="304" y="170">Virtual Incremental</text>
+  <text class="f2r" x="304" y="192">Loader</text>
+  <text class="f2r" x="304" y="236">Program representations</text>
+  <text class="f2r" x="304" y="270">Dependencies</text>
+
+  <!-- Model computation -->
+  <rect class="f2box" x="556" y="100" width="244" height="204" rx="4" stroke="var(--purple, #8b6fc0)"/>
+  <text class="f2h" x="572" y="128">Model computation</text>
+  <line class="f2sep" x1="572" y1="141" x2="784" y2="141"/>
+  <text class="f2r" x="572" y="174">Inference</text>
+  <text class="f2r" x="572" y="210">Nabla-Mojo training</text>
+  <text class="f2r" x="572" y="250">Sensitivity and</text>
+  <text class="f2r" x="572" y="272">interpretation</text>
+
+  <line class="f2link" x1="268" y1="202" x2="284" y2="202" marker-end="url(#f2-arrow)"/>
+  <line class="f2link" x1="536" y1="202" x2="552" y2="202" marker-end="url(#f2-arrow)"/>
+</svg>
