@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 430" width="100%" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="f3-title">Four processes, one plan, one record</title>
+  <desc id="f3-desc">Top: a band of frozen inputs read by every process: Program, policy, consent, fixture crate. Middle: four boxes joined by stdio arrows: H the MCP host, G an MCP server that forwards, A an MCP server that applies the patch and commits, B an MCP server that runs one test and writes the summary. Under the boxes one line: every process checks the whole plan itself, gates the exact bytes it sends, keeps a synced hash-chained journal. Below: the run directory written only by the processes: journals, retained frames, git workspace, summary, receipt, panel. Bottom: two readers, the judge that re-derives the verdict from the run directory alone, and the live page that tails the journals and never writes.</desc>
+  <defs>
+    <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <marker id="f3-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+    <style>
+      .f3-t  { font-size: 18px; font-weight: 600; }
+      .f3-s  { font-size: 13px; font-weight: 600; fill: #1fa8d6; }
+      .f3-n  { font-size: 15px; font-weight: 600; }
+      .f3-r  { font-size: 12.5px; opacity: 0.78; }
+      .f3-g  { font-size: 13px; opacity: 0.85; text-anchor: middle; }
+      .f3-band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .f3-proc { fill: rgba(128,128,128,0.08); stroke: currentColor; stroke-width: 1.4; }
+      .f3-sink { fill: rgba(31,168,214,0.12); stroke: currentColor; stroke-width: 1.4; }
+      .f3-dark { fill: rgba(128,128,128,0.22); stroke: currentColor; stroke-opacity: 0.6; stroke-width: 1.2; }
+      .f3-link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .f3-hop  { stroke: #1fa8d6; stroke-width: 2.4; fill: none; }
+      .f3-lbl  { font-size: 11px; font-weight: 600; fill: #1fa8d6; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <text class="f3-t" x="12" y="25">Four processes, one plan, one record</text>
+
+  <!-- frozen inputs -->
+  <rect class="f3-band" x="12" y="42" width="736" height="32" rx="6"/>
+  <text class="f3-g" x="380" y="63">frozen inputs, read by every process: Program · policy · consent · fixture crate</text>
+  <line class="f3-link" x1="90" y1="74" x2="90" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="282" y1="74" x2="282" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="474" y1="74" x2="474" y2="104" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="666" y1="74" x2="666" y2="104" marker-end="url(#f3-arrow)"/>
+
+  <!-- the four processes, 156 wide with 36 between them -->
+  <rect class="f3-proc" x="12" y="106" width="156" height="96" rx="6"/>
+  <text class="f3-s" x="22" y="126">H · MCP host</text>
+  <text class="f3-r" x="22" y="146">checks the plan before</text>
+  <text class="f3-r" x="22" y="162">its first call; one call</text>
+  <text class="f3-r" x="22" y="178">to G; re-hashes receipt</text>
+
+  <rect class="f3-proc" x="204" y="106" width="156" height="96" rx="6"/>
+  <text class="f3-s" x="214" y="126">G · MCP server 1</text>
+  <text class="f3-r" x="214" y="146">serves submit_fix to H;</text>
+  <text class="f3-r" x="214" y="162">forwards it to A through</text>
+  <text class="f3-r" x="214" y="178">its own gate</text>
+
+  <rect class="f3-proc" x="396" y="106" width="156" height="96" rx="6"/>
+  <text class="f3-s" x="406" y="126">A · MCP server 2</text>
+  <text class="f3-r" x="406" y="146">applies the patch, makes</text>
+  <text class="f3-r" x="406" y="162">the git commit; asks B to</text>
+  <text class="f3-r" x="406" y="178">verify that commit</text>
+
+  <rect class="f3-sink" x="588" y="106" width="156" height="96" rx="6"/>
+  <text class="f3-s" x="598" y="126">B · MCP server 3</text>
+  <text class="f3-r" x="598" y="146">runs exactly one cargo</text>
+  <text class="f3-r" x="598" y="162">test on it; writes the</text>
+  <text class="f3-r" x="598" y="178">summary once, a receipt</text>
+
+  <line class="f3-hop" x1="170" y1="156" x2="201" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <line class="f3-hop" x1="362" y1="156" x2="393" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <line class="f3-hop" x1="554" y1="156" x2="585" y2="156" marker-end="url(#f3-arrow-blue)"/>
+  <text class="f3-lbl" x="186" y="148">stdio</text>
+  <text class="f3-lbl" x="378" y="148">stdio</text>
+  <text class="f3-lbl" x="570" y="148">stdio</text>
+
+  <!-- what every process has -->
+  <text class="f3-g" x="380" y="222">every process: checks the whole plan itself · gates the exact bytes it sends · keeps a synced, hash-chained journal</text>
+
+  <line class="f3-link" x1="90" y1="230" x2="90" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="282" y1="230" x2="282" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="474" y1="230" x2="474" y2="254" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="666" y1="230" x2="666" y2="254" marker-end="url(#f3-arrow)"/>
+
+  <!-- the run directory -->
+  <rect class="f3-dark" x="12" y="256" width="736" height="34" rx="6"/>
+  <text class="f3-g" x="380" y="278">the run directory, written only by the processes: journals · retained frames · git workspace · summary · receipt · panel</text>
+
+  <line class="f3-link" x1="190" y1="290" x2="190" y2="326" marker-end="url(#f3-arrow)"/>
+  <line class="f3-link" x1="570" y1="290" x2="570" y2="326" marker-end="url(#f3-arrow)"/>
+
+  <!-- the two readers -->
+  <rect class="f3-band" x="12" y="328" width="356" height="80" rx="6"/>
+  <text class="f3-n" x="24" y="352">Judge</text>
+  <text class="f3-r" x="24" y="372">re-derives the verdict from the run directory alone,</text>
+  <text class="f3-r" x="24" y="388">against expectations frozen before the code; never runs it</text>
+
+  <rect class="f3-band" x="392" y="328" width="356" height="80" rx="6"/>
+  <text class="f3-n" x="404" y="352">Live page</text>
+  <text class="f3-r" x="404" y="372">tails the journals over loopback, one card per record;</text>
+  <text class="f3-r" x="404" y="388">prints the judge's line verbatim; never writes</text>
+</svg>
