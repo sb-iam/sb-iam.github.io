@@ -16,7 +16,13 @@ Conventions in the Markdown source:
   ```fences```                 -> .essay-code panels
   ## References                -> everything after it is wrapped in .references
   A final paragraph starting "Next:" or "Next in the series" -> .next-in-series
+  Raw HTML blocks pass through: a video is a <figure class="article-figure article-video">
+  with a <video> inside, its files copied next to the built page by hand.
 Figures whose filename contains "F3" get the hero-figure class.
+
+Series navigation in the hero's top-right corner: --prev LABEL [--prev-url URL] and
+--next LABEL [--next-url URL]; a label without a URL is plain text. The rail gets two
+movers (previous and next section) and marks the section in view.
 """
 import argparse
 import html
@@ -49,22 +55,69 @@ HEADER = """<!DOCTYPE html>
   <div class="site-shell">
     <header class="site-header">
       <a class="brand" href="/" aria-label="Shakthi Bachala home"><span class="brand-mark">SB</span><span>Shakthi Bachala</span></a>
-      <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/research-statement/">Research</a><a href="/blog/" aria-current="page">Blog</a><a href="/now/">Now</a></nav>
+      <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/research-statement/">Research</a><a href="/blog/" aria-current="page">Blog</a></nav>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
     </header>
     <main id="article"><article>
-      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>{series}</span><span>{part}</span><span>{date}</span></div><h1>{title}</h1><p class="dek">{dek}</p></div></header>
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div>{series_nav}<div class="hero-copy"><div class="article-meta"><span>{series}</span><span>{part}</span><span>{date}</span></div><h1>{title}</h1><p class="dek">{dek}</p></div></header>
       <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
 {rail}
-      </ol></nav></aside><div class="article-body">
+      </ol>{movers}</nav></aside><div class="article-body">
 """
+
+MOVERS = ('<div class="article-rail-movers"><button type="button" data-rail-move="-1" title="Previous section" aria-label="Previous section">&uarr;</button>'
+          '<button type="button" data-rail-move="1" title="Next section" aria-label="Next section">&darr;</button></div>')
+
+RAIL_SCRIPT = """  <script>
+    (function () {
+      var heads = [].slice.call(document.querySelectorAll(".article-body h2[id]"));
+      var links = [].slice.call(document.querySelectorAll(".article-rail ol a"));
+      if (!heads.length) { return; }
+      function current() {
+        var y = window.scrollY + 140, i = -1;
+        heads.forEach(function (h, k) { if (h.getBoundingClientRect().top + window.scrollY <= y) { i = k; } });
+        return i;
+      }
+      function mark() {
+        var i = current();
+        links.forEach(function (a, k) { if (k === i) { a.setAttribute("aria-current", "true"); } else { a.removeAttribute("aria-current"); } });
+      }
+      [].slice.call(document.querySelectorAll("[data-rail-move]")).forEach(function (button) {
+        button.addEventListener("click", function () {
+          var i = current() + parseInt(button.getAttribute("data-rail-move"), 10);
+          if (i < 0) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+          if (i >= heads.length) { i = heads.length - 1; }
+          heads[i].scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+      window.addEventListener("scroll", mark, { passive: true });
+      mark();
+    })();
+  </script>
+"""
+
+
+def series_nav(prev, prev_url, nxt, next_url):
+    """The top-right corner of the hero: previous and next essay in the series, text when no link yet."""
+    items = []
+    for cls, label, url, arrow in (("series-prev", prev, prev_url, "&larr; Prev: "), ("series-next", nxt, next_url, "Next: ")):
+        if not label:
+            continue
+        text = arrow + html.escape(label) + (" &rarr;" if cls == "series-next" else "")
+        if url:
+            items.append(f'<a class="{cls}" href="{html.escape(url, quote=True)}">{text}</a>')
+        else:
+            items.append(f'<span class="{cls}">{text}</span>')
+    if not items:
+        return ""
+    return '<nav class="article-series-nav" aria-label="Series navigation">' + "".join(items) + "</nav>"
 
 FOOTER = """
       </div></div>
     </article></main>
     <footer class="site-footer"><span>Shakthi Bachala</span><span>{series} · {part}</span><span>2026</span></footer>
   </div>
-  <script src="/theme.js?v=20260828a" defer></script>
+{rail_script}  <script src="/theme.js?v=20260828a" defer></script>
 </body>
 </html>
 """
@@ -99,6 +152,10 @@ def main() -> int:
     ap.add_argument("--part", required=True)
     ap.add_argument("--date", required=True)
     ap.add_argument("--css-version", default="20260821d")
+    ap.add_argument("--prev", default="", help="label of the previous essay in the series")
+    ap.add_argument("--prev-url", default="", help="its URL, once it exists")
+    ap.add_argument("--next", default="", help="label of the next essay in the series")
+    ap.add_argument("--next-url", default="", help="its URL, once it exists")
     args = ap.parse_args()
 
     src = pathlib.Path(args.source).resolve()
@@ -175,7 +232,7 @@ def main() -> int:
         out = out.replace(f"<p>{key}</p>", fig_html).replace(key, fig_html)
 
     # Tables, code, lead, references, next-in-series.
-    out = re.sub(r"<table>", '<div class="table-wrap"><table>', out)
+    out = re.sub(r"<table\b", '<div class="table-wrap"><table', out)  # Markdown and raw HTML tables alike
     out = re.sub(r"</table>", "</table></div>", out)
     out = re.sub(r"<pre><code([^>]*)>", r'<div class="essay-code"><pre><code\1>', out)
     out = re.sub(r"</code></pre>", "</code></pre></div>", out)
@@ -233,8 +290,9 @@ def main() -> int:
     page = HEADER.format(
         title=html.escape(title, quote=True), description=description, css_version=args.css_version,
         series=html.escape(args.series), part=html.escape(args.part), date=html.escape(args.date),
-        dek=html.escape(dek), rail="\n".join(rail),
-    ) + out + FOOTER.format(series=html.escape(args.series), part=html.escape(args.part))
+        dek=html.escape(dek), rail="\n".join(rail), movers=MOVERS,
+        series_nav=series_nav(args.prev, args.prev_url, args.next, args.next_url),
+    ) + out + FOOTER.format(series=html.escape(args.series), part=html.escape(args.part), rail_script=RAIL_SCRIPT)
 
     out_dir = pathlib.Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)

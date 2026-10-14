@@ -758,6 +758,10 @@ h3 {
   white-space: pre;
 }
 
+.text-link.no-arrow::after {
+  content: none;
+}
+
 .text-link.on-paper {
   color: var(--cyan-strong);
   border-bottom-color: var(--cyan-strong);
@@ -1676,4 +1680,91 @@ h3 {
     left: 20px;
     max-width: none;
   }
+}
+
+/* Essays: series navigation in the hero corner, rail movers, embedded video (2026-10-11). */
+.writing-article-hero {
+  position: relative;
+}
+.article-series-nav {
+  position: absolute;
+  top: 26px;
+  right: 34px;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 1.2rem;
+  max-width: 40%;
+  text-align: right;
+  line-height: 1.5;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--paper-muted);
+}
+.article-series-nav a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+.article-series-nav a:hover,
+.article-series-nav a:focus-visible {
+  color: var(--cyan-strong);
+  text-decoration: underline;
+}
+.article-rail-movers {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.3rem;
+}
+.article-rail-movers button {
+  width: 2.3rem;
+  height: 2.3rem;
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--paper-ink);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.article-rail-movers button:hover,
+.article-rail-movers button:focus-visible {
+  border-color: var(--cyan-strong);
+  color: var(--cyan-strong);
+}
+.article-rail ol a[aria-current="true"] {
+  color: var(--cyan-strong);
+}
+.article-body h2 {
+  scroll-margin-top: 110px;
+}
+.article-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #000;
+  border: 1px solid var(--paper-line);
+}
+@media (max-width: 760px) {
+  .article-series-nav {
+    position: static;
+    justify-content: flex-start;
+    padding: 24px 20px 0;
+  }
+}
+.article-body p a,
+.article-body li a,
+.article-body td a {
+  color: var(--cyan-strong);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+.article-body table.scenes th:first-child,
+.article-body table.scenes td:first-child {
+  width: 11%;
+  white-space: nowrap;
 }

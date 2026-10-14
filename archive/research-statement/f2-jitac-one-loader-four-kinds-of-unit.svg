@@ -1,0 +1,130 @@
+<svg style="color:#101418;background:#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 542" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f2-title">JITAC design: one Virtual Incremental Loader for four kinds of unit</title>
+  <desc id="f2-desc">On the left, three boxes are stacked. Static analysis, at the top, requires a unit from the Virtual Incremental Loader and receives new nodes from it. The running program, at the bottom, reveals units and supplies observations. The loader, in the middle, resolves a namespace and a name to one unit, loads a unit only when it is required, and is the only creator of nodes; a small graph inside it shows nodes that were loaded earlier and nodes that are added now. On the right, four kinds of unit are stacked above a line marked ABI, and the loader loads each: a container image at the cluster level, a class at the application level, a model kernel at the compiler level, and a shared library at the systems level.</desc>
+  <defs>
+    <marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+    <style>
+      .f2k  { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+      .f2h  { font-size: 14.5px; font-weight: 750; letter-spacing: 0.03em; }
+      .f2id { font-size: 12px; font-weight: 750; opacity: 0.5; }
+      .f2lv { font-size: 10.5px; font-weight: 750; letter-spacing: 0.09em; opacity: 0.5; text-anchor: end; }
+      .f2r  { font-size: 12px; opacity: 0.84; }
+      .f2m  { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.82; }
+      .f2e  { font-size: 11.5px; opacity: 0.62; font-style: italic; }
+      .f2l  { font-size: 11px; opacity: 0.62; text-anchor: middle; }
+      .f2c  { font-size: 12.5px; opacity: 0.72; text-anchor: middle; }
+      .f2box{ fill: rgba(128,128,128,0.07); stroke-width: 1.3; }
+      .f2sep{ stroke-width: 1; opacity: 0.4; }
+      .f2link{ stroke: currentColor; stroke-width: 1.4; opacity: 0.6; fill: none; }
+      .f2old{ fill: currentColor; opacity: 0.4; }
+      .f2olde{ stroke: currentColor; stroke-width: 1.1; opacity: 0.4; fill: none; }
+      .f2new{ fill: #b8860b; }
+      .f2newe{ stroke: #b8860b; stroke-width: 1.5; fill: none; }
+    </style>
+  </defs>
+
+  <text class="f2k" x="410" y="20">JITAC: ONE INCREMENTAL LOADER FOR FOUR KINDS OF UNIT</text>
+
+  <!-- Static analysis: the first source of demand -->
+  <rect class="f2box" x="16" y="40" width="292" height="74" rx="4" stroke="currentColor" stroke-opacity="0.5"/>
+  <text class="f2h" x="32" y="66">STATIC ANALYSIS</text>
+  <line class="f2sep" x1="32" y1="76" x2="292" y2="76" stroke="currentColor"/>
+  <text class="f2r" x="32" y="98">reachability, call graph, points-to</text>
+
+  <line class="f2link" x1="72" y1="116" x2="72" y2="156" marker-end="url(#f2-arrow)"/>
+  <text class="f2e" x="82" y="141">requires a unit</text>
+  <line class="f2link" x1="196" y1="158" x2="196" y2="118" marker-end="url(#f2-arrow)"/>
+  <text class="f2e" x="206" y="141">new nodes</text>
+
+  <!-- Virtual Incremental Loader -->
+  <rect class="f2box" x="16" y="160" width="292" height="206" rx="4" stroke="#b8860b" stroke-opacity="1" stroke-width="1.9" fill="rgba(184,134,11,0.07)"/>
+  <text class="f2h" x="32" y="186" fill="#b8860b">VIRTUAL INCREMENTAL LOADER</text>
+  <line class="f2sep" x1="32" y1="196" x2="292" y2="196" stroke="#b8860b"/>
+  <text class="f2r" x="32" y="216">resolves (namespace, name) to one unit</text>
+  <text class="f2r" x="32" y="235">loads a unit only when it is required</text>
+  <text class="f2r" x="32" y="254">only the loader creates nodes</text>
+  <line class="f2sep" x1="32" y1="268" x2="292" y2="268" stroke="#b8860b"/>
+
+  <!-- The graph: nodes loaded earlier, and the nodes of a unit added now -->
+  <path class="f2olde" d="M48,306 L84,288 L120,306 L156,288 M48,306 L84,324 L120,306 L156,324"/>
+  <path class="f2newe" d="M156,288 L198,306 L236,288 L274,306 M156,324 L198,306 L236,324 L274,306"/>
+  <circle class="f2old" cx="48" cy="306" r="4.5"/>
+  <circle class="f2old" cx="84" cy="288" r="4.5"/>
+  <circle class="f2old" cx="84" cy="324" r="4.5"/>
+  <circle class="f2old" cx="120" cy="306" r="4.5"/>
+  <circle class="f2old" cx="156" cy="288" r="4.5"/>
+  <circle class="f2old" cx="156" cy="324" r="4.5"/>
+  <circle class="f2new" cx="198" cy="306" r="5"/>
+  <circle class="f2new" cx="236" cy="288" r="5"/>
+  <circle class="f2new" cx="236" cy="324" r="5"/>
+  <circle class="f2new" cx="274" cy="306" r="5"/>
+  <text class="f2l" x="102" y="353">loaded earlier</text>
+  <text class="f2l" x="236" y="353" fill="#b8860b" opacity="1" font-weight="750">added now</text>
+
+  <line class="f2link" x1="72" y1="410" x2="72" y2="370" marker-end="url(#f2-arrow)"/>
+  <text class="f2e" x="82" y="395">reveals a unit</text>
+  <line class="f2link" x1="196" y1="410" x2="196" y2="370" marker-end="url(#f2-arrow)"/>
+  <text class="f2e" x="206" y="395">observations</text>
+
+  <!-- Running program: the second source of demand -->
+  <rect class="f2box" x="16" y="412" width="292" height="74" rx="4" stroke="currentColor" stroke-opacity="0.5"/>
+  <text class="f2h" x="32" y="438">RUNNING PROGRAM</text>
+  <line class="f2sep" x1="32" y1="448" x2="292" y2="448" stroke="currentColor"/>
+  <text class="f2r" x="32" y="470">loads and executes units as it runs</text>
+
+  <!-- 4 Container image, cluster -->
+  <rect class="f2box" x="500" y="40" width="304" height="86" rx="4" stroke="#4f9d69" stroke-opacity="0.9"/>
+  <text class="f2id" x="516" y="66">4</text>
+  <text class="f2h" x="536" y="66" fill="#4f9d69">CONTAINER IMAGE</text>
+  <text class="f2lv" x="788" y="66">CLUSTER</text>
+  <line class="f2sep" x1="516" y1="76" x2="788" y2="76" stroke="#4f9d69"/>
+  <text class="f2m" x="516" y="96">(repository, tag)</text>
+  <text class="f2r" x="516" y="114">container runtime, OCI format</text>
+
+  <!-- 3 Class, application -->
+  <rect class="f2box" x="500" y="146" width="304" height="86" rx="4" stroke="#1fa8d6" stroke-opacity="0.9"/>
+  <text class="f2id" x="516" y="172">3</text>
+  <text class="f2h" x="536" y="172" fill="#1fa8d6">CLASS</text>
+  <text class="f2lv" x="788" y="172">APPLICATION</text>
+  <line class="f2sep" x1="516" y1="182" x2="788" y2="182" stroke="#1fa8d6"/>
+  <text class="f2m" x="516" y="202">(class loader, descriptor)</text>
+  <text class="f2r" x="516" y="220">Android runtime, DEX file</text>
+
+  <!-- 2 Model kernel, compiler -->
+  <rect class="f2box" x="500" y="252" width="304" height="86" rx="4" stroke="#8b6fc0" stroke-opacity="0.9"/>
+  <text class="f2id" x="516" y="278">2</text>
+  <text class="f2h" x="536" y="278" fill="#8b6fc0">MODEL KERNEL</text>
+  <text class="f2lv" x="788" y="278">COMPILER</text>
+  <line class="f2sep" x1="516" y1="288" x2="788" y2="288" stroke="#8b6fc0"/>
+  <text class="f2m" x="516" y="308">(package, kernel name)</text>
+  <text class="f2r" x="516" y="326">MAX graph compiler, Mojo package</text>
+
+  <!-- 1 Shared library, systems -->
+  <rect class="f2box" x="500" y="358" width="304" height="86" rx="4" stroke="#c44a37" stroke-opacity="0.9"/>
+  <text class="f2id" x="516" y="384">1</text>
+  <text class="f2h" x="536" y="384" fill="#c44a37">SHARED LIBRARY</text>
+  <text class="f2lv" x="788" y="384">SYSTEMS</text>
+  <line class="f2sep" x1="516" y1="394" x2="788" y2="394" stroke="#c44a37"/>
+  <text class="f2m" x="516" y="414">(linker namespace, soname)</text>
+  <text class="f2r" x="516" y="432">dynamic linker, ELF object</text>
+
+  <!-- The ABI: the line this work does not cross -->
+  <line x1="500" y1="466" x2="804" y2="466" stroke="currentColor" stroke-width="1.6" opacity="0.75"/>
+  <text class="f2id" x="500" y="484">ABI</text>
+  <text class="f2e" x="804" y="484" text-anchor="end">below this line, taken as given</text>
+
+  <!-- loads edges, from the loader to each kind of unit -->
+  <path class="f2link" d="M308,200 C 384,200 420,83 496,83" marker-end="url(#f2-arrow)"/>
+  <text class="f2e" x="402" y="115" text-anchor="middle">loads</text>
+
+  <path class="f2link" d="M308,240 C 384,240 420,189 496,189" marker-end="url(#f2-arrow)"/>
+  <text class="f2e" x="402" y="198" text-anchor="middle">loads</text>
+
+  <path class="f2link" d="M308,286 C 384,286 420,295 496,295" marker-end="url(#f2-arrow)"/>
+  <text class="f2e" x="402" y="306" text-anchor="middle">loads</text>
+
+  <path class="f2link" d="M308,326 C 384,326 420,401 496,401" marker-end="url(#f2-arrow)"/>
+  <text class="f2e" x="402" y="389" text-anchor="middle">loads</text>
+
+  <text class="f2c" x="410" y="522">A design: JITAC is under construction and has not yet been evaluated.</text>
+</svg>
