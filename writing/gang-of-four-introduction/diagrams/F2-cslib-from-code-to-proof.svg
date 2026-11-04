@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 628" width="100%" role="img" aria-labelledby="gics-title gics-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="gics-title">CSLib and Boole IVL: theories, prototype and proposed Mojo connection</title>
+  <desc id="gics-desc">Adapted from Figure 5 of the CSLib white paper, with a uniform row for the front-end languages in the paper’s vision. Separate status notes use repository documentation checked on 3 November 2026. The left pillar shows reusable computer-science theories built on Mathlib. The right pillar shows the envisioned route from source programs to Boole: intermediate verification language, then verification conditions and Lean proofs. A documented Rust/Verus prototype uses trusted translation for one function. Boole compiles to Strata Core; its SMT-level route still trusts verification-condition generation, SMT encoding and the lifting into Lean. The shallow route through Loom and Velvet is envisioned integration, although those projects exist independently. The paper lists five prover families; this does not assert that all five are connected to Boole. Mojo is the author-proposed connection, not a language named by the paper or an implementation supplied by this work. Generated-condition proofs must not be confused with a proof of source-program correctness.</desc>
+  <defs>
+    <marker id="gics-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor" /></marker>
+    <marker id="gics-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b" /></marker>
+    <style>
+      .gics-t  { font-size: 18px; font-weight: 600; }
+      .gics-s  { font-size: 13px; font-weight: 600; fill: #c44a37; }
+      .gics-h  { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; opacity: 0.66; }
+      .gics-r  { font-size: 12.5px; opacity: 0.8; }
+      .gics-c  { font-size: 12.5px; opacity: 0.85; text-anchor: middle; }
+      .gics-o  { font-size: 11px; opacity: 0.7; font-style: italic; text-anchor: middle; }
+      .gics-g  { font-size: 11.5px; font-style: italic; fill: #b8860b; text-anchor: middle; }
+      .gics-leg { font-size: 11.5px; opacity: 0.75; }
+      .gics-band { fill: rgba(128,128,128,0.08); stroke: currentColor; stroke-opacity: 0.4; stroke-width: 1.2; }
+      .gics-box { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-opacity: 0.6; stroke-width: 1.1; }
+      .gics-lean { fill: rgba(196,74,55,0.08); stroke: #c44a37; stroke-width: 1.3; }
+      .gics-env { fill: none; stroke: currentColor; stroke-opacity: 0.55; stroke-width: 1.1; stroke-dasharray: 2 3; }
+      .gics-prop { fill: none; stroke: #b8860b; stroke-width: 1.4; stroke-dasharray: 6 4; }
+      .gics-link { stroke: currentColor; stroke-width: 1.2; opacity: 0.65; fill: none; }
+      .gics-elink { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 2 3; fill: none; }
+    </style>
+  </defs>
+
+  <text class="gics-t" x="12" y="25">CSLib and Boole IVL: theories and the route from code to proofs</text>
+
+  
+  <text class="gics-h" x="12" y="54">PILLAR 1 · REUSABLE THEORIES</text>
+  <rect class="gics-band" x="12" y="62" width="236" height="424" rx="6" />
+  <text class="gics-s" x="24" y="84">CSLib, on Mathlib</text>
+  <text class="gics-r" x="24" y="104">examples in the repository:</text>
+  <rect class="gics-box" x="24" y="114" width="104" height="26" rx="6" /><text class="gics-c" x="76" y="131">algorithms</text>
+  <rect class="gics-box" x="134" y="114" width="104" height="26" rx="6" /><text class="gics-c" x="186" y="131">computability</text>
+  <rect class="gics-box" x="24" y="146" width="104" height="26" rx="6" /><text class="gics-c" x="76" y="163">cryptography</text>
+  <rect class="gics-box" x="134" y="146" width="104" height="26" rx="6" /><text class="gics-c" x="186" y="163">foundations</text>
+  <rect class="gics-box" x="24" y="178" width="104" height="26" rx="6" /><text class="gics-c" x="76" y="195">languages</text>
+  <rect class="gics-box" x="134" y="178" width="104" height="26" rx="6" /><text class="gics-c" x="186" y="195">logics</text>
+  <rect class="gics-box" x="24" y="210" width="104" height="26" rx="6" /><text class="gics-c" x="76" y="227">machine learning</text>
+  <rect class="gics-box" x="134" y="210" width="104" height="26" rx="6" /><text class="gics-c" x="186" y="227">probability</text>
+  <line class="gics-link" x1="130" y1="246" x2="130" y2="270" marker-end="url(#gics-arrow)" />
+  <rect class="gics-lean" x="24" y="272" width="214" height="62" rx="6" />
+  <text class="gics-s" x="36" y="292">Mathlib</text>
+  <text class="gics-r" x="36" y="310">mathematical definitions</text>
+  <text class="gics-r" x="36" y="326">and reusable theorems</text>
+  <text class="gics-r" x="24" y="362">Lean checks theorem proofs;</text>
+  <text class="gics-r" x="24" y="378">a statement about code in the</text>
+  <text class="gics-r" x="24" y="394">other three can reuse these</text>
+  <text class="gics-r" x="24" y="410">abstractions or define its own</text>
+
+  
+  <text class="gics-h" x="270" y="54">PILLAR 2 · CODE REASONING · THE WHITE PAPER'S VISION</text>
+  <rect class="gics-band" x="270" y="62" width="478" height="424" rx="6" />
+
+  
+  <rect class="gics-env" x="282" y="72" width="70" height="26" rx="6" /><text class="gics-c" x="317" y="89">Rust</text>
+  <rect class="gics-env" x="358" y="72" width="70" height="26" rx="6" /><text class="gics-c" x="393" y="89">Python</text>
+  <rect class="gics-env" x="434" y="72" width="70" height="26" rx="6" /><text class="gics-c" x="469" y="89">C, C++</text>
+  <rect class="gics-env" x="510" y="72" width="70" height="26" rx="6" /><text class="gics-c" x="545" y="89">Java</text>
+  <text class="gics-o" x="620" y="89">+ Lean specs</text>
+  <rect class="gics-prop" x="668" y="72" width="70" height="26" rx="6" /><text class="gics-g" x="703" y="89">Mojo</text>
+  
+  <line class="gics-elink" x1="317" y1="98" x2="440" y2="130" marker-end="url(#gics-arrow)" />
+  <line class="gics-elink" x1="393" y1="98" x2="450" y2="130" marker-end="url(#gics-arrow)" />
+  <line class="gics-elink" x1="469" y1="98" x2="460" y2="130" marker-end="url(#gics-arrow)" />
+  <line class="gics-elink" x1="545" y1="98" x2="470" y2="130" marker-end="url(#gics-arrow)" />
+  <path class="gics-prop" d="M703,98 L703,116 L560,116 L510,130" marker-end="url(#gics-arrow-gold)" />
+
+  
+  <rect class="gics-lean" x="372" y="132" width="170" height="54" rx="6" />
+  <text class="gics-c" x="457" y="151">Boole: intermediate</text>
+  <text class="gics-o" x="640" y="146">a prototype, in its own package;</text>
+  <text class="gics-o" x="640" y="160">compiles to Strata's Core dialect</text>
+  <text class="gics-c" x="457" y="174">verification language</text>
+
+  
+  <line class="gics-elink" x1="412" y1="186" x2="412" y2="212" marker-end="url(#gics-arrow)" />
+  <line class="gics-link" x1="502" y1="186" x2="502" y2="212" marker-end="url(#gics-arrow)" />
+  <rect class="gics-env" x="320" y="214" width="164" height="40" rx="6" />
+  <text class="gics-c" x="405" y="231">shallow embedding: Loom</text><text class="gics-c" x="405" y="246">and Velvet; path envisioned</text>
+  <rect class="gics-box" x="490" y="214" width="150" height="40" rx="6" />
+  <text class="gics-c" x="565" y="231">deep embedding: Strata;</text><text class="gics-c" x="565" y="246">prototype path exists</text>
+
+  
+  <line class="gics-elink" x1="405" y1="254" x2="405" y2="282" marker-end="url(#gics-arrow)" />
+  <line class="gics-link" x1="565" y1="254" x2="565" y2="282" marker-end="url(#gics-arrow)" />
+  <rect class="gics-lean" x="330" y="284" width="310" height="30" rx="6" />
+  <text class="gics-c" x="485" y="303">verification conditions, as Lean goals</text>
+  <text class="gics-o" x="512" y="333">Generated conditions are not yet linked to source correctness by a full proof.</text>
+
+  
+  <line class="gics-link" x1="485" y1="340" x2="485" y2="364" marker-end="url(#gics-arrow)" />
+  <rect class="gics-box" x="282" y="366" width="80" height="36" rx="6" /><text class="gics-c" x="322" y="388">Grind</text>
+  <rect class="gics-box" x="370" y="366" width="80" height="36" rx="6" /><text class="gics-c" x="410" y="388">Lean SMT</text>
+  <rect class="gics-box" x="458" y="366" width="92" height="36" rx="6" /><text class="gics-c" x="504" y="388">Lean Hammer</text>
+  <rect class="gics-env" x="558" y="366" width="86" height="36" rx="6" /><text class="gics-c" x="601" y="379">LLM-based</text><text class="gics-c" x="601" y="396">provers</text>
+  <rect class="gics-env" x="652" y="366" width="86" height="36" rx="6" /><text class="gics-c" x="695" y="379">other AI-based</text><text class="gics-c" x="695" y="396">provers</text>
+  <text class="gics-r" x="282" y="424">Prototype trust: source translation, VC generation, SMT encoding</text>
+  <text class="gics-r" x="282" y="440">and the lifting of SMT terms into Lean, alongside the Lean kernel.</text>
+  <text class="gics-r" x="282" y="456">The intended route proves the translations and VC generation</text>
+  <text class="gics-r" x="282" y="472">correct relative to the chosen source semantics and specification.</text>
+
+  
+  <rect class="gics-box" x="12" y="502" width="22" height="14" rx="3" /><text class="gics-leg" x="40" y="513">component or prototype exists</text>
+  <rect class="gics-env" x="244" y="502" width="22" height="14" rx="3" /><text class="gics-leg" x="272" y="513">envisioned integration</text>
+  <rect class="gics-prop" x="430" y="502" width="22" height="14" rx="3" /><text class="gics-leg" x="458" y="513">Mojo: proposed here; not implemented by this work</text>
+  <text class="gics-r" x="12" y="548">Rust/Verus: a documented one-function prototype; its source translation remains trusted.</text>
+  <text class="gics-r" x="12" y="568">Loom and Velvet exist independently; their Boole integration is envisioned.</text>
+  <text class="gics-r" x="12" y="588">The five prover families follow the paper; their inclusion does not claim five working Boole back ends.</text>
+  <text class="gics-leg" x="12" y="612">Sources: <a href="https://arxiv.org/html/2602.04846v1#S2.F5" style="text-decoration: underline">CSLib white paper, Figure 5</a>; <a href="https://github.com/leanprover/cslib" style="text-decoration: underline">CSLib</a>; <a href="https://github.com/strata-org/Strata-Boole" style="text-decoration: underline">Strata-Boole</a>. Checked 3 Nov 2026.</text></svg>
