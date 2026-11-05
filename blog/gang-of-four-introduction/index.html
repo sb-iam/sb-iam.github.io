@@ -51,7 +51,7 @@
 <h2 id="2-four-languages-on-their-own-terms">2. Four languages on their own terms</h2>
 <p><strong>C++ provides foundational infrastructure for native systems and the compilers used to implement them.</strong> LLVM, Clang and MLIR support compilation, and CUDA libraries such as CUTLASS provide established accelerator implementations. The Mojo compiler and MAX graph compiler also contain substantial C++ components, although rustc uses Rust and Lean's front end uses Lean. [3, 4]</p>
 <p>C++ templates specialize code after arguments become available, with dependent checks performed on the resulting instances. Concepts constrain arguments without proving that a body uses only the operations those constraints require. A type-correct program can still have undefined behaviour, so compilation success alone establishes neither memory correctness nor the intended functional property. We prefer Rust or Mojo for suitable new components while retaining required C/C++ dependencies. [5]</p>
-<p><strong>Rust combines native execution with ownership checks and an established asynchronous programming model.</strong> Its borrow checker analyzes the mid-level intermediate representation, MIR, before native code generation, and monomorphization generates specialized code for each concrete use of a generic body. Its memory guarantees depend on the contracts around <code>unsafe</code> code and foreign implementations: a Rust caller can invoke an incorrectly implemented foreign function despite passing Rust's checks. Verification must cover that function's contract and the adapter that transfers its arguments. [6, 7, 8]</p>
+<p><strong>Rust combines native execution with ownership checks and an established asynchronous programming model.</strong> Its borrow checker analyzes the mid-level intermediate representation, MIR, before native code generation, and monomorphization generates specialized code for required concrete instances of a generic body. Its memory guarantees depend on the contracts around <code>unsafe</code> code and foreign implementations: a Rust caller can invoke an incorrectly implemented foreign function despite passing Rust's checks. Verification must cover that function's contract and the adapter that transfers its arguments. [6, 7, 8]</p>
 <p><strong>Lean provides a language for definitions, specifications and proofs, with a kernel that checks proof terms.</strong> An accepted proof establishes its elaborated statement under the definitions and axioms it uses, not that the statement expresses the author's intended requirement. Lean's compiler and runtime are separate from proof checking, so imported environments, external functions and native evaluation each add conditions to a result. [9, 11]</p>
 <p>Mathlib provides reusable definitions and theorems that proof-search systems such as LeanDojo's ReProver retrieve when constructing candidate proofs. <a href="https://github.com/leanprover/cslib" target="_blank" rel="noreferrer">CSLib</a> develops computer-science theories and prototype infrastructure for reasoning about programs written in other languages. Figure F2 distinguishes CSLib's theories from the code-reasoning vision and the Boole/Strata prototype. CSLib's contributing guide calls the translation "not fully foundational" and the connecting metatheorem "a major long-term goal", so a proved generated condition depends on the translation and condition generator being sound. [2, 10]</p>
 <figure class="article-figure">
@@ -165,7 +165,7 @@
   <text class="gics-r" x="12" y="568">Loom and Velvet exist independently; their Boole integration is envisioned.</text>
   <text class="gics-r" x="12" y="588">The five prover families follow the paper; their inclusion does not claim five working Boole back ends.</text>
   <text class="gics-leg" x="12" y="612">Sources: <a href="https://arxiv.org/html/2602.04846v1#S2.F5" target="_blank" rel="noreferrer" style="text-decoration: underline">CSLib white paper, Figure 5</a>; <a href="https://github.com/leanprover/cslib" target="_blank" rel="noreferrer" style="text-decoration: underline">CSLib</a>; <a href="https://github.com/strata-org/Strata-Boole" target="_blank" rel="noreferrer" style="text-decoration: underline">Strata-Boole</a>. Checked 3 Nov 2026.</text></svg>
-<figcaption><strong>F2</strong> CSLib and Boole IVL, adapted from Figure 5 of the CSLib white paper. Rust, Python, C/C++ and Java share one styling as languages in its code-reasoning vision. Mojo is our addition and is not named in that paper. Source links appear within the figure.</figcaption>
+<figcaption><strong>F2</strong> CSLib and Boole IVL, adapted from Figure 5 of the CSLib white paper. Rust, Python, C/C++ and Java share one styling as languages in its code-reasoning vision. Mojo is our addition and is not named in that paper.</figcaption>
 </figure>
 <p><strong>Mojo specializes numerical code for heterogeneous hardware through a compiler built around MLIR.</strong> The Multi-Level Intermediate Representation (MLIR) framework represents programs at several abstraction levels. Mojo parameters provide typed compile-time values for specialization, including specialization for a selected target, and MAX uses Mojo kernels within its graph-compilation system. On 22 October 2026, Modular released the source of MAX's graph compiler, runtime and device extensibility components, which Figure F5 in Section 5 summarizes. [4, 12]</p>
 <p>Mojo's maturity limits which surrounding services we can assume today. Its <a href="https://github.com/modular/modular/blob/main/Mojo/proposals/async-design.md" target="_blank" rel="noreferrer">async proposal</a> describes unfinished internal support, and the examined built-in targets do not include WebAssembly. These are availability limits, not claims that the language can never support those uses. [13, 14]</p>
@@ -189,17 +189,123 @@
 </figure>
 <p>Metaprogramming is broader than partial evaluation, because it includes programs that construct or transform other programs. C++ templates, Rust macros, Lean metaprograms and Mojo parameters act at different stages on different representations, and treating them as one mechanism would hide the conditions a verifier needs. Compile-time computation also has an execution context of its own, since Rust procedural macros and Lean metaprograms can perform input and output. [5, 7, 12, 18]</p>
 <p>Generic-body checking also differs from checking a particular compile-time value. Rust can accept a generic body against its trait bounds and later reject a value-dependent constant during code generation, and <code>cargo check</code> omits that final stage. Lean makes some conditions explicit as propositions that callers must prove, C++ enforces dependent conditions at instantiation, and Mojo evaluates parameter-dependent conditions while elaborating a use. A proof obligation, a constant assertion and a type constraint are not interchangeable merely because each can reject a program. [6, 19]</p>
-<p>Mojo parameters express compile-time choices, including element types and vector widths, within ordinary definitions. The <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/Mojo/docs/stdlib/internal/pop_dialect.md#L5-L20" target="_blank" rel="noreferrer">Parametric Operations (POP) dialect</a> represents operations whose types or attributes still depend on those parameters, and elaboration resolves them into concrete operations before lowering toward LLVM IR. For compiler details see the <a href="https://github.com/modular/modular/blob/main/Mojo/docs/compiler/manual/PassesAndIR.md" target="_blank" rel="noreferrer">passes and representations manual</a> and the <a href="https://github.com/modular/modular/blob/main/Mojo/docs/compiler/DesignOverview.md" target="_blank" rel="noreferrer">original design overview</a>. [12]</p>
-<p>Hybrid analysis connects static models with observations of particular executions. Static reasoning may assume a buffer length or target capability, and runtime checks test those conditions at selected boundaries. A contradicted assumption invalidates the earlier result until the system re-establishes the condition or selects another implementation.</p>
+<p>Mojo parameters express compile-time choices, including element types and vector widths, within ordinary definitions. The <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/Mojo/docs/stdlib/internal/pop_dialect.md#L5-L20" target="_blank" rel="noreferrer">Parametric Operations (POP) dialect</a> represents operations whose types or attributes may still depend on those parameters. Elaboration resolves these dependencies into concrete operations before subsequent lowering toward LLVM IR. For current compiler details, see the <a href="https://github.com/modular/modular/blob/main/Mojo/docs/compiler/manual/PassesAndIR.md" target="_blank" rel="noreferrer">passes and representations manual</a>. The <a href="https://github.com/modular/modular/blob/main/Mojo/docs/compiler/DesignOverview.md" target="_blank" rel="noreferrer">original design overview</a> provides historical background. [12]</p>
+<p>Hybrid analysis connects static models with observations of particular executions. Static reasoning may assume a buffer length or target capability, and runtime checks test those conditions at selected boundaries. When a monitored assumption fails, the earlier result no longer justifies that execution. Any alternative implementation needs evidence that applies to it.</p>
 <h2 id="5-the-ecosystem-and-future-directions">5. The ecosystem and future directions</h2>
 <p>The compilation infrastructure connects these languages without composing their verification guarantees. Clang lowers C++ to LLVM IR, rustc's default backend targets LLVM, Mojo uses MLIR before LLVM lowering, and Lean's compiler emits C for a native compiler. Sharing a backend does not show that ownership rules or logical properties survive every intervening lowering. [3, 6, 11, 12]</p>
-<p>CUDA Rust offers two experimental NVIDIA routes: cuda-oxide lowers Rust MIR through pliron and LLVM to PTX, and cutile-rs compiles tile computations through CUDA Tile IR. Pliron is a separate framework inspired by MLIR, not part of rustc's default compilation. MAX supports CPUs and GPUs from NVIDIA, AMD and Apple, and later essays compare CUDA Rust, particularly cutile-rs, with MAX through their designs and measured performance. [20, 25]</p>
-<p>Figure F5 shows how MAX compiles a graph and executes the resulting model. The graph compiler combines operations and compiles generated Mojo alongside kernel implementations for the selected target. The Modular Executor Format (MEF) carries the compiled model to GraphRT, the executor of the Modular Low-level Runtime (MLRT), whose Driver manages device memory and kernel execution. At ModCon in August 2026, members of the Modular team told me they were working on training, and a unified platform for inference and training is a direction we examine later in this series. [4, 16, 21]</p>
+<p>CUDA Rust offers two experimental NVIDIA routes: cuda-oxide lowers Rust MIR through pliron and LLVM to PTX, and cutile-rs compiles tile computations through CUDA Tile IR. Pliron is a separate framework inspired by MLIR, not part of rustc's default compilation.</p>
+<p>MAX supports CPUs and GPUs from NVIDIA, AMD and Apple. [25] Later essays compare CUDA Rust with MAX in design and measured performance, with particular attention to cutile-rs, whose route through CUDA Tile IR to cubin has no PTX stage. [20, 25]</p>
+<p>Modular's <a href="https://www.modular.com/blog/26-7" target="_blank" rel="noreferrer">release of the source</a> for the MAX graph compiler and the MLRT runtime gives the compiler community a substantial production implementation to study. I am planning a separate series on graph compilers that follows a model through graph optimization, kernel compilation and runtime execution. Each essay works through concrete examples, examining the implementation choices and how correctness is checked at each stage.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 604" role="img" aria-labelledby="gimod-title gimod-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="gimod-title">The Modular Stack</title>
+  <desc id="gimod-desc">The Modular stack in seven layers: frameworks, framework dialects, graph compiler, kernel compiler, kernel graph, runtime and hardware. MAP performs kernel fusion before MOGG code generation. Mojo compiles kernels, and MEF carries the model executable to the runtime. Framework and hardware boxes reproduce the documentation’s architectural view. The colours follow the documentation’s diagram, and their reading as representations, components and hardware is our inference; the document does not state it.</desc>
+  <defs>
+    <marker id="gimod-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor" /></marker>
+    <style>
+      .gimod-t  { font-size: 18px; font-weight: 600; }
+      .gimod-s  { font-size: 13px; font-weight: 600; }
+      .gimod-r  { font-size: 12.5px; opacity: 0.78; }
+      .gimod-c  { font-size: 12.5px; fill: #1f1f1f; text-anchor: middle; }
+      .gimod-n  { font-size: 11.5px; opacity: 0.7; }
+      .gimod-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; opacity: 0.66; }
+      .gimod-band { fill: rgba(128,128,128,0.06); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .gimod-box { fill: #dae8fc; stroke: #6c8ebf; stroke-width: 1.1; }
+      .gimod-hw { fill: #e1d5e7; stroke: #9673a6; stroke-width: 1.1; }
+      .gimod-leg { font-size: 11.5px; opacity: 0.75; }
+      .gimod-rep { fill: #fff2cc; stroke: #d6b656; stroke-width: 1.1; }
+      .gimod-key { fill: #dae8fc; stroke: #6c8ebf; stroke-width: 1.1; }
+      .gimod-link { stroke: currentColor; stroke-width: 1.2; opacity: 0.6; fill: none; }
+      .gimod-ord { fill: #159bc7; }
+      .gimod-ordt { font-size: 8.5px; font-weight: 700; fill: #ffffff; text-anchor: middle; }
+      .gimod-brace { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; fill: none; }
+    </style>
+  </defs>
+
+  <text class="gimod-t" x="12" y="25">The Modular Stack</text>
+  <rect class="gimod-band" x="12" y="58" width="562" height="46" rx="6" />
+  <text class="gimod-s" x="22" y="86">Framework</text>
+  <rect class="gimod-rep" x="124" y="66" width="130" height="30" rx="15" /><text class="gimod-c" x="189" y="85">TensorFlow op graph</text>
+  <rect class="gimod-rep" x="262" y="66" width="120" height="30" rx="15" /><text class="gimod-c" x="322" y="85">PyTorch op graph</text>
+  <rect class="gimod-rep" x="390" y="66" width="176" height="30" rx="15" /><text class="gimod-c" x="478" y="85">XGBoost, scikit-learn</text>
+  <text class="gimod-n" x="586" y="70">MAX Graph API in Python:</text>
+  <text class="gimod-n" x="586" y="84">supported public IR producer</text>
+  <rect class="gimod-band" x="12" y="110" width="562" height="46" rx="6" />
+  <text class="gimod-s" x="22" y="138">Framework dialects</text>
+  <rect class="gimod-box" x="262" y="118" width="100" height="30" rx="6" /><text class="gimod-c" x="312" y="137">MTFL dialect</text>
+  <rect class="gimod-box" x="370" y="118" width="90" height="30" rx="6" /><text class="gimod-c" x="415" y="137">TF dialect</text>
+  <rect class="gimod-box" x="468" y="118" width="98" height="30" rx="6" /><text class="gimod-c" x="517" y="137">others</text>
+  <text class="gimod-n" x="586" y="131">MAX Graph API</text>
+  <text class="gimod-n" x="586" y="145">builds the MO graph directly</text>
+
+  
+  <rect class="gimod-band" x="12" y="162" width="562" height="130" rx="6" />
+  <text class="gimod-s" x="22" y="190">Graph compiler</text>
+  <rect class="gimod-box" x="262" y="170" width="304" height="26" rx="6" /><text class="gimod-c" x="414" y="187">graph importer</text>
+  <rect class="gimod-rep" x="262" y="200" width="148" height="26" rx="13" /><text class="gimod-c" x="336" y="217">RMO representation</text>
+  <rect class="gimod-rep" x="418" y="200" width="148" height="26" rx="13" /><text class="gimod-c" x="492" y="217">MO representation</text>
+  <rect class="gimod-rep" x="262" y="230" width="148" height="26" rx="13" /><text class="gimod-c" x="336" y="247">MAP representation</text>
+  <rect class="gimod-box" x="418" y="230" width="148" height="26" rx="6" /><text class="gimod-c" x="492" y="247">kernel fusion</text>
+  <rect class="gimod-rep" x="262" y="260" width="148" height="26" rx="13" /><text class="gimod-c" x="336" y="277">MOGG representation</text>
+  <rect class="gimod-box" x="418" y="260" width="148" height="26" rx="6" /><text class="gimod-c" x="492" y="277">kernel code generation</text>
+  <text class="gimod-n" x="586" y="203">C++ on MLIR</text>
+  <text class="gimod-n" x="586" y="217">public path: MO, MAP,</text>
+  <text class="gimod-n" x="586" y="231">MOGG, MGP, in that order,</text>
+  <text class="gimod-n" x="586" y="245">MO optimizations; MAP fusion</text>
+  <rect class="gimod-band" x="12" y="298" width="562" height="46" rx="6" />
+  <text class="gimod-s" x="22" y="326">Kernel compiler</text>
+  <rect class="gimod-box" x="262" y="306" width="148" height="30" rx="6" /><text class="gimod-c" x="336" y="325">KGEN, generated kernels</text>
+  <rect class="gimod-key" x="418" y="306" width="148" height="30" rx="6" /><text class="gimod-c" x="492" y="325">hand-written kernels</text>
+  <text class="gimod-n" x="586" y="318">Mojo kernel implementations,</text>
+  <text class="gimod-n" x="586" y="332">compiled by Mojo</text>
+
+  
+  <rect class="gimod-band" x="12" y="350" width="562" height="78" rx="6" />
+  <text class="gimod-s" x="22" y="394">Kernel graph</text>
+  <rect class="gimod-rep" x="262" y="356" width="304" height="20" rx="10" /><text class="gimod-c" x="414" y="370">MGP representation</text>
+  <rect class="gimod-box" x="262" y="379" width="304" height="20" rx="6" /><text class="gimod-c" x="414" y="393">graph exporter, MLIR to MEF</text>
+  <rect class="gimod-rep" x="262" y="402" width="304" height="20" rx="10" /><text class="gimod-c" x="414" y="416">MEF: the bytes that cross to the runtime</text>
+  <text class="gimod-n" x="586" y="386">C++</text>
+  <text class="gimod-n" x="586" y="400">MEF: model-executable</text>
+  <text class="gimod-n" x="586" y="414">boundary, even in-process</text>
+
+  
+  <rect class="gimod-band" x="12" y="434" width="562" height="70" rx="6" />
+  <text class="gimod-s" x="22" y="474">Runtime</text>
+  <rect class="gimod-box" x="262" y="440" width="304" height="18" rx="6" /><text class="gimod-c" x="414" y="453">GraphRT</text>
+  <rect class="gimod-box" x="262" y="461" width="304" height="18" rx="6" /><text class="gimod-c" x="414" y="474">AsyncRT: AsyncValue, concurrent work queue</text>
+  <rect class="gimod-box" x="262" y="482" width="304" height="18" rx="6" /><text class="gimod-c" x="414" y="495">Driver: DeviceContext</text>
+  <text class="gimod-n" x="586" y="455">C++ runtime and driver</text>
+  <text class="gimod-n" x="586" y="469">host scheduling and I/O;</text>
+  <text class="gimod-n" x="586" y="483">HAL behind a build flag</text>
+
+  
+  <rect class="gimod-band" x="12" y="510" width="562" height="38" rx="6" />
+  <text class="gimod-s" x="22" y="534">Hardware</text>
+  <rect class="gimod-hw" x="262" y="516" width="96" height="26" rx="6" /><text class="gimod-c" x="310" y="533">CPU</text>
+  <rect class="gimod-hw" x="366" y="516" width="96" height="26" rx="6" /><text class="gimod-c" x="414" y="533">GPU</text>
+  <rect class="gimod-hw" x="470" y="516" width="96" height="26" rx="6" /><text class="gimod-c" x="518" y="533">ASIC</text>
+  <text class="gimod-n" x="586" y="524">supported CPUs and GPUs</text>
+  <text class="gimod-n" x="586" y="538">through device interfaces</text>
+
+  
+  <rect class="gimod-rep" x="12" y="562" width="26" height="14" rx="7" /><text class="gimod-leg" x="44" y="573">program representations and artifacts</text>
+  <rect class="gimod-box" x="262" y="562" width="26" height="14" rx="3" /><text class="gimod-leg" x="294" y="573">compiler and runtime facilities</text>
+  <rect class="gimod-hw" x="482" y="562" width="26" height="14" rx="3" /><text class="gimod-leg" x="514" y="573">hardware</text>
+  <text class="gimod-leg" x="12" y="591">The colour reading is our inference from the documentation’s diagram; the document itself does not state it.</text>
+</svg>
+<figcaption>The Modular stack, redrawn from the graph-compiler documentation. The colour reading is our inference, as the figure states.</figcaption>
+</figure>
+<p><strong>Source:</strong> <a href="https://github.com/modular/modular/blob/main/GraphCompiler/docs/GraphCompiler.md" target="_blank" rel="noreferrer">Modular Graph Compiler</a></p>
+<p>Figure F5 shows how MAX compiles a graph and executes the resulting model. The graph compiler combines operations and compiles generated Mojo alongside kernel implementations for the selected target. The Modular Executor Format (MEF) carries the compiled model to GraphRT, the executor of the Modular Low-level Runtime (MLRT), whose Driver manages device memory and kernel execution. [4, 16]</p>
+<p>At ModCon in August 2026, members of the Modular team mentioned that training in MAX is planned, and a unified platform for inference and training is a direction we examine later in this series. [21]</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 594" role="img" aria-labelledby="gi4-title gi4-desc" fill="currentColor" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" width="100%"><title id="gi4-title">MAX graph compilation and inference execution</title><desc id="gi4-desc">A Python graph interface feeds the C++ graph compiler. The graph compiler transforms the graph, selects kernels, emits Mojo and invokes the Mojo compiler within graph compilation. The resulting MEF bytes go to the runtime. Cached and supplied precompiled MEF are alternative inputs that bypass fresh compilation. Runtime device support depends on supported hardware, operations and models. </desc><defs><style>.gi4-title{font-size:23px;font-weight:650} .gi4-head{font-size:17px;font-weight:650;fill:#159bc7} .gi4-body{font-size:15px} .gi4-small{font-size:13px;opacity:.8} .gi4-gold{fill:#ad7d13} .gi4-box{fill:rgba(128,128,128,.07);stroke:currentColor;stroke-opacity:.4;stroke-width:1.2} .gi4-blue{fill:rgba(31,168,214,.08);stroke:#159bc7;stroke-width:1.3} .gi4-proposal{fill:rgba(184,134,11,.06);stroke:#ad7d13;stroke-dasharray:7 5;stroke-width:1.4} .gi4-line{fill:none;stroke:currentColor;stroke-width:1.5;opacity:.65}</style><marker id="gi4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker></defs><text class="gi4-title" x="20" y="32">MAX: graph compilation and inference execution</text><text class="gi4-small" x="20" y="58">Simplified from the examined implementation; support depends on the target and model.</text><rect class="gi4-box" x="20" y="88" width="240" height="109" rx="7"/><text class="gi4-head" x="36" y="118">Python graph interface</text><text class="gi4-body" x="36" y="148">Construct the computation</text><text class="gi4-body" x="36" y="171">Supply graph and target</text><path class="gi4-line" d="M260,142 L318,142" marker-end="url(#gi4-arrow)"/><rect class="gi4-blue" x="320" y="88" width="620" height="210" rx="7"/><text class="gi4-head" x="338" y="118">Graph compiler · C++ infrastructure</text><text class="gi4-body" x="338" y="148">Transform the graph and select compatible kernels</text><text class="gi4-body" x="338" y="171">Emit Mojo and invoke the Mojo compiler within graph compilation</text><rect class="gi4-box" x="340" y="209" width="580" height="64" rx="7"/><text class="gi4-head" x="356" y="235">Mojo kernels and generated code</text><text class="gi4-body" x="356" y="258">Parameters specialize computation for the selected processor.</text><path class="gi4-line" d="M630,298 L630,348" marker-end="url(#gi4-arrow)"/><rect class="gi4-box" x="320" y="350" width="620" height="73" rx="7"/><text class="gi4-head" x="338" y="380">MEF · Modular Executor Format</text><text class="gi4-body" x="338" y="404">Compiled executable bytes accepted by the runtime</text><rect class="gi4-box" x="20" y="320" width="240" height="103" rx="7"/><text class="gi4-head" x="36" y="350">Other load paths</text><text class="gi4-body" x="36" y="380">Cached MEF</text><text class="gi4-body" x="36" y="403">Supplied precompiled MEF</text><path class="gi4-line" d="M260,386 L318,386" marker-end="url(#gi4-arrow)"/><path class="gi4-line" d="M630,423 L630,463" marker-end="url(#gi4-arrow)"/><rect class="gi4-box" x="320" y="465" width="620" height="76" rx="7"/><text class="gi4-head" x="338" y="495">Runtime and device support</text><text class="gi4-body" x="338" y="520">Execute on supported CPUs and GPUs, subject to hardware and model limits.</text><text class="gi4-small" x="20" y="574">Inference execution on supported CPUs and GPUs.</text></svg>
 <figcaption><strong>F5</strong> A simplified MAX graph-compilation path at the examined revision. Mojo compilation occurs within graph compilation. The runtime consumes MEF, whether newly compiled, cached or supplied precompiled. The figure describes the inference execution path.</figcaption>
 </figure>
-<p>Existing verification connections demonstrate narrower composition. Aeneas translates a supported subset of Rust through Charon into functional programs, including Lean definitions, but its fragment excludes unsafe code and concurrency. Cedar implements its authorization engine in Rust, proves properties in a Lean model, and compares the two by differential randomized testing, which supplies evidence of agreement without proving equivalence for every input. CXX checks Rust–C++ signatures and generates adapters, but ownership transfer, buffer validity and failure handling remain contracts that the implementation and its users must satisfy. [8, 22, 23]</p>
+<p>Existing verification connections demonstrate narrower composition. Aeneas translates a supported subset of Rust through Charon into functional programs, including Lean definitions, but its fragment excludes unsafe code and concurrency. [22]</p>
+<p>Cedar implements its authorization engine in Rust, proves properties in a Lean model, and compares the two by differential randomized testing, which supplies evidence of agreement without proving equivalence for every input. [23]</p>
+<p>CXX checks Rust–C++ signatures and generates adapters, but ownership transfer, buffer validity and failure handling remain contracts that the implementation and its users must satisfy. [8]</p>
 <p>Lean-MLIR formalizes intermediate languages and proves selected rewrites. We propose to examine selected Mojo and MAX representations in the same way, which requires stating their semantics and proving that particular translations preserve the properties under consideration. Figure F6 compares the compilation routes and separates native code generation from logical proof checking. [3, 6, 11, 12, 20, 24]</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 658" role="img" aria-labelledby="gilower-title gilower-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
@@ -363,15 +469,23 @@
 </tr>
 </tbody>
 </table></div>
-<p>The proposed composition must relate these results rather than collect them. A property about a logical model needs a justified connection to the code selected at runtime, and an adapter must preserve the contract assumed on each side. The remaining essays develop this argument through C++, Rust, Lean and Mojo, then consider their composition, as a programme rather than an accomplished result.</p>
-<p class="next-in-series">Next in the series: Part 2, C++: The Foundational Infrastructure.</p>
+<p>Verification across languages requires a justified connection between the logical model and the code that executes. Adapters must preserve the contracts assumed by the components they connect.</p>
+<p>We will examine verification from the perspective of a full-stack engineer building software and AI systems. Worked examples with theorem provers and analysis tools will show what each result establishes, its assumptions, and what remains unverified.</p>
+<p>The remaining essays are tentatively planned as follows:</p>
+<ul>
+<li><strong>Part 2: C++: The Foundational Infrastructure.</strong></li>
+<li><strong>Part 3: Rust: Ownership, Concurrency and Verification.</strong></li>
+<li><strong>Part 4: Lean: Mathlib, CSLib and Autoformalization.</strong></li>
+<li><strong>Part 5: Mojo: Specialization and Heterogeneous Computing.</strong></li>
+<li><strong>Part 6: The Future of Verifiable Software.</strong></li>
+</ul>
 <section class="references">
 <h2 id="references">References</h2>
 <ol start="1">
 <li>N. Mündler-Sasahara et al., <em>Generative Compilation: On-the-Fly Compiler Feedback as AI Generates Code</em>, 2026. <a href="https://arxiv.org/abs/2607.13921" target="_blank" rel="noreferrer">Paper</a>.</li>
 <li>K. Yang et al., <em>LeanDojo: Theorem Proving with Retrieval-Augmented Language Models</em>, NeurIPS 2023. <a href="https://arxiv.org/abs/2306.15626" target="_blank" rel="noreferrer">Paper</a>.</li>
 <li>LLVM, <a href="https://llvm.org/" target="_blank" rel="noreferrer">project overview</a>, <a href="https://clang.llvm.org/" target="_blank" rel="noreferrer">Clang</a>, and <a href="https://mlir.llvm.org/" target="_blank" rel="noreferrer">MLIR</a>. NVIDIA, <a href="https://github.com/NVIDIA/cutlass" target="_blank" rel="noreferrer">CUTLASS</a>. Clang, <a href="https://clang.llvm.org/docs/CIR/index.html" target="_blank" rel="noreferrer">optional ClangIR</a>.</li>
-<li>Modular, <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/README.md" target="_blank" rel="noreferrer">repository overview at the examined revision</a> and <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/GraphCompiler/docs/ArchitectureSpecification.md" target="_blank" rel="noreferrer">graph compiler architecture</a>; <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/GraphCompiler/docs/High-Level_Modular_Stack_Diagram.png" target="_blank" rel="noreferrer">stack diagram</a>; <a href="https://github.com/modular/modular/blob/main/GraphCompiler/docs/GraphCompiler.md" target="_blank" rel="noreferrer">graph-compiler documentation</a>; <a href="https://www.modular.com/blog/26-7" target="_blank" rel="noreferrer">Modular 26.7 release announcement, 22 October 2026</a>.</li>
+<li>Modular, <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/README.md" target="_blank" rel="noreferrer">repository overview at the examined revision</a> and <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/GraphCompiler/docs/ArchitectureSpecification.md" target="_blank" rel="noreferrer">graph compiler architecture</a>; <a href="https://github.com/modular/modular/blob/main/GraphCompiler/docs/GraphCompiler.md" target="_blank" rel="noreferrer">graph-compiler documentation</a>; <a href="https://www.modular.com/blog/26-7" target="_blank" rel="noreferrer">Modular 26.7 release announcement, 22 October 2026</a>.</li>
 <li>C++ working draft: <a href="https://eel.is/c++draft/temp.inst" target="_blank" rel="noreferrer">template instantiation</a>, <a href="https://eel.is/c++draft/temp.constr" target="_blank" rel="noreferrer">constraints</a>, <a href="https://eel.is/c++draft/expr.const" target="_blank" rel="noreferrer">constant expressions</a>, and <a href="https://eel.is/c++draft/basic.def.odr" target="_blank" rel="noreferrer">one-definition rule</a>, and <a href="https://eel.is/c++draft/defns.undefined" target="_blank" rel="noreferrer">undefined behaviour</a>.</li>
 <li>Rust Compiler Development Guide: <a href="https://rustc-dev-guide.rust-lang.org/overview.html" target="_blank" rel="noreferrer">overview</a>, <a href="https://rustc-dev-guide.rust-lang.org/borrow-check.html" target="_blank" rel="noreferrer">MIR borrow checking</a>, <a href="https://rustc-dev-guide.rust-lang.org/backend/monomorph.html" target="_blank" rel="noreferrer">monomorphization</a>, and <a href="https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html" target="_blank" rel="noreferrer">libraries and metadata</a>, and <a href="https://blog.rust-lang.org/2019/11/07/Async-await-stable.html" target="_blank" rel="noreferrer">stable async</a>.</li>
 <li>Rust Reference: <a href="https://doc.rust-lang.org/reference/behavior-considered-undefined.html" target="_blank" rel="noreferrer">undefined behaviour</a>, <a href="https://doc.rust-lang.org/reference/linkage.html" target="_blank" rel="noreferrer">linkage</a>, and <a href="https://doc.rust-lang.org/reference/procedural-macros.html" target="_blank" rel="noreferrer">procedural macros</a>, <a href="https://doc.rust-lang.org/reference/trait-bounds.html#bound-satisfaction" target="_blank" rel="noreferrer">trait bounds</a>, and <a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html" target="_blank" rel="noreferrer">platform support</a>.</li>
