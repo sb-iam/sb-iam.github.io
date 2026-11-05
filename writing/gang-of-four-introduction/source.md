@@ -37,7 +37,7 @@ Mathlib provides reusable definitions and theorems that proof-search systems suc
 
 ![F2 — CSLib and Boole IVL, adapted from Figure 5 of the CSLib white paper. Rust, Python, C/C++ and Java share one styling as languages in its code-reasoning vision. Mojo is our addition and is not named in that paper.](diagrams/F2-cslib-from-code-to-proof.svg)
 
-**Mojo specializes numerical code for heterogeneous hardware through a compiler built around MLIR.** The Multi-Level Intermediate Representation (MLIR) framework represents programs at several abstraction levels. Mojo parameters provide typed compile-time values for specialization, including specialization for a selected target, and MAX uses Mojo kernels within its graph-compilation system. On 22 October 2026, Modular released the source of MAX's graph compiler, runtime and device extensibility components, which Figure F5 in Section 5 summarizes. [4, 12]
+**Mojo specializes numerical code for heterogeneous hardware through a compiler built around MLIR.** The Multi-Level Intermediate Representation (MLIR) framework represents programs at several abstraction levels. Mojo parameters provide typed compile-time values for specialization, including specialization for a selected target, and MAX uses Mojo kernels within its graph-compilation system. On 22 October 2026, Modular released the source of MAX's graph compiler, runtime and device extensibility components, which Figure F6 in Section 5 summarizes. [4, 12]
 
 Mojo's maturity limits which surrounding services we can assume today. Its [async proposal](https://github.com/modular/modular/blob/main/Mojo/proposals/async-design.md) describes unfinished internal support, and the examined built-in targets do not include WebAssembly. These are availability limits, not claims that the language can never support those uses. [13, 14]
 
@@ -83,15 +83,15 @@ MAX supports CPUs and GPUs from NVIDIA, AMD and Apple. [25] Later essays compare
 
 Modular's [release of the source](https://www.modular.com/blog/26-7) for the MAX graph compiler and the MLRT runtime gives the compiler community a substantial production implementation to study. I am planning a separate series on graph compilers that follows a model through graph optimization, kernel compilation and runtime execution. Each essay works through concrete examples, examining the implementation choices and how correctness is checked at each stage.
 
-![The Modular stack, redrawn from the graph-compiler documentation. The colour reading is our inference, as the figure states.](diagrams/F5-modular-stack.svg)
+![F5 — The Modular stack, redrawn from the graph-compiler documentation. The colour reading is our inference, as the figure states.](diagrams/F5-modular-stack.svg)
 
 **Source:** [Modular Graph Compiler](https://github.com/modular/modular/blob/main/GraphCompiler/docs/GraphCompiler.md)
 
-Figure F5 shows how MAX compiles a graph and executes the resulting model. The graph compiler combines operations and compiles generated Mojo alongside kernel implementations for the selected target. The Modular Executor Format (MEF) carries the compiled model to GraphRT, the executor of the Modular Low-level Runtime (MLRT), whose Driver manages device memory and kernel execution. [4, 16]
+Figure F6 shows how MAX compiles a graph and executes the resulting model. The graph compiler combines operations and compiles generated Mojo alongside kernel implementations for the selected target. The Modular Executor Format (MEF) carries the compiled model to GraphRT, the executor of the Modular Low-level Runtime (MLRT), whose Driver manages device memory and kernel execution. [4, 16]
 
 At ModCon in August 2026, members of the Modular team mentioned that training in MAX is planned, and a unified platform for inference and training is a direction we examine later in this series. [21]
 
-![F5 — A simplified MAX graph-compilation path at the examined revision. Mojo compilation occurs within graph compilation. The runtime consumes MEF, whether newly compiled, cached or supplied precompiled. The figure describes the inference execution path.](diagrams/F6-max-computation.svg)
+![F6 — A simplified MAX graph-compilation path at the examined revision. Mojo compilation occurs within graph compilation. The runtime consumes MEF, whether newly compiled, cached or supplied precompiled. The figure describes the inference execution path.](diagrams/F6-max-computation.svg)
 
 Existing verification connections demonstrate narrower composition. Aeneas translates a supported subset of Rust through Charon into functional programs, including Lean definitions, but its fragment excludes unsafe code and concurrency. [22]
 
@@ -99,9 +99,9 @@ Cedar implements its authorization engine in Rust, proves properties in a Lean m
 
 CXX checks Rust–C++ signatures and generates adapters, but ownership transfer, buffer validity and failure handling remain contracts that the implementation and its users must satisfy. [8]
 
-Lean-MLIR formalizes intermediate languages and proves selected rewrites. We propose to examine selected Mojo and MAX representations in the same way, which requires stating their semantics and proving that particular translations preserve the properties under consideration. Figure F6 compares the compilation routes and separates native code generation from logical proof checking. [3, 6, 11, 12, 20, 24]
+Lean-MLIR formalizes intermediate languages and proves selected rewrites. We propose to examine selected Mojo and MAX representations in the same way, which requires stating their semantics and proving that particular translations preserve the properties under consideration. Figure F7 compares the compilation routes and separates native code generation from logical proof checking. [3, 6, 11, 12, 20, 24]
 
-![F6 — How each language reaches the machine. Solid arrows show the illustrated native routes. Dashed arrows identify optional or experimental routes. Lean-MLIR formalizes selected intermediate languages and rewrites, without providing a verified connection to Mojo. Lean's C-to-LLVM path uses its bundled Clang toolchain.](diagrams/F7-how-each-reaches-the-machine.svg)
+![F7 — How each language reaches the machine. Solid arrows show the illustrated native routes. Dashed arrows identify optional or experimental routes. Lean-MLIR formalizes selected intermediate languages and rewrites, without providing a verified connection to Mojo. Lean's C-to-LLVM path uses its bundled Clang toolchain.](diagrams/F7-how-each-reaches-the-machine.svg)
 
 ## 6. What exists today, and what remains to establish
 
