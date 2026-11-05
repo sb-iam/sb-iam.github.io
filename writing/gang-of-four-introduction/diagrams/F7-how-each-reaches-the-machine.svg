@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 658" width="100%" role="img" aria-labelledby="gilower-title gilower-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor">
+  <title id="gilower-title">How each language reaches the machine</title>
+  <desc id="gilower-desc">Clang, rustc, Mojo and Lean use distinct compilation representations. The illustrated native routes reach LLVM IR. Optional ClangIR and Rust backends remain separate. CUDA Rust has separate experimental cuda-oxide and cutile-rs routes: MIR through pliron and LLVM to PTX, and macro-based kernels through CUDA Tile IR to cubin. Lean logical proof checking is separate from executable compilation. Lean-MLIR research proves selected rewrites, not these complete compiler pipelines.</desc>
+  <defs>
+    <marker id="gilower-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor" /></marker>
+    <marker id="gilower-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b" /></marker>
+    <style>
+      .gilower-t  { font-size: 18px; font-weight: 600; }
+      .gilower-s  { font-size: 13px; font-weight: 600; }
+      .gilower-h  { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; opacity: 0.66; text-anchor: middle; }
+      .gilower-r  { font-size: 12px; opacity: 0.82; text-anchor: middle; }
+      .gilower-o  { font-size: 11px; opacity: 0.7; font-style: italic; }
+      .gilower-g  { font-size: 11px; font-style: italic; fill: #b8860b; }
+      .gilower-leg { font-size: 11.5px; opacity: 0.75; }
+      .gilower-box { fill: rgba(128,128,128,0.08); stroke: currentColor; stroke-width: 1.2; }
+      .gilower-ir  { fill: rgba(184,134,11,0.10); stroke: #b8860b; stroke-width: 1.1; }
+      .gilower-llvm { fill: rgba(31,168,214,0.10); stroke: #1fa8d6; stroke-width: 1.2; }
+      .gilower-kern { fill: rgba(196,74,55,0.08); stroke: #c44a37; stroke-width: 1.3; }
+      .gilower-link { stroke: currentColor; stroke-width: 1.2; opacity: 0.65; fill: none; }
+      .gilower-opt  { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+      .gilower-prop { stroke: #b8860b; stroke-width: 1.4; stroke-dasharray: 6 4; fill: none; }
+      .gilower-sem { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 2 3; fill: none; opacity: 0.85; }
+      .gilower-semt { font-size: 11px; font-style: italic; fill: #c44a37; }
+    </style>
+  </defs>
+
+  <text class="gilower-t" x="12" y="25">How each language reaches the machine</text>
+  <text class="gilower-h" x="126" y="52">FRONT END</text>
+  <text class="gilower-h" x="334" y="52">ITS OWN REPRESENTATIONS</text>
+  <text class="gilower-h" x="537" y="52">LLVM</text>
+  <text class="gilower-h" x="676" y="52">MACHINE</text>
+
+  
+  <text class="gilower-s" x="12" y="88" fill="#1fa8d6">C++</text>
+  <rect class="gilower-box" x="68" y="64" width="116" height="40" rx="6" />
+  <text class="gilower-r" x="126" y="81">Clang parses;</text><text class="gilower-r" x="126" y="96">Sema checks</text>
+  <rect class="gilower-ir" x="196" y="64" width="130" height="40" rx="6" />
+  <text class="gilower-r" x="261" y="81">the AST; templates</text><text class="gilower-r" x="261" y="96">instantiated here</text>
+  <rect class="gilower-llvm" x="482" y="64" width="110" height="40" rx="6" />
+  <text class="gilower-r" x="537" y="81">LLVM IR,</text><text class="gilower-r" x="537" y="96">concrete code</text>
+  <rect class="gilower-box" x="604" y="64" width="144" height="40" rx="6" />
+  <text class="gilower-r" x="676" y="81">CPU; CUDA and HIP</text><text class="gilower-r" x="676" y="96">for GPUs</text>
+  <line class="gilower-link" x1="184" y1="84" x2="193" y2="84" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="326" y1="84" x2="479" y2="84" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="592" y1="84" x2="601" y2="84" marker-end="url(#gilower-arrow)" />
+  <path class="gilower-opt" d="M326,96 L360,118 L440,118 L482,100" />
+  <text class="gilower-o" x="364" y="131">optional: ClangIR (MLIR), -fclangir</text>
+
+  
+  <text class="gilower-s" x="12" y="186" fill="#4f9d69">Rust</text>
+  <rect class="gilower-box" x="68" y="162" width="116" height="40" rx="6" />
+  <text class="gilower-r" x="126" y="179">rustc parses and</text><text class="gilower-r" x="126" y="194">expands macros</text>
+  <rect class="gilower-ir" x="196" y="162" width="62" height="40" rx="6" />
+  <text class="gilower-r" x="227" y="186">HIR</text>
+  <rect class="gilower-ir" x="266" y="162" width="122" height="40" rx="6" />
+  <text class="gilower-r" x="327" y="179">MIR; borrows</text><text class="gilower-r" x="327" y="194">checked here</text>
+  <rect class="gilower-llvm" x="482" y="162" width="110" height="40" rx="6" />
+  <text class="gilower-r" x="537" y="179">LLVM IR</text><text class="gilower-r" x="537" y="194">specialized code</text>
+  <rect class="gilower-box" x="604" y="162" width="144" height="40" rx="6" />
+  <text class="gilower-r" x="676" y="186">CPU</text>
+  <line class="gilower-link" x1="184" y1="182" x2="193" y2="182" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="258" y1="182" x2="263" y2="182" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="388" y1="182" x2="479" y2="182" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="592" y1="182" x2="601" y2="182" marker-end="url(#gilower-arrow)" />
+  <path class="gilower-opt" d="M388,194 L430,216 L604,216 L604,204" />
+  <text class="gilower-o" x="434" y="229">optional: Cranelift or GCC back ends</text>
+  <path class="gilower-opt" d="M327,202 L327,244 L492,244 L492,251" />
+  <rect class="gilower-box" x="420" y="252" width="150" height="34" rx="6" stroke-dasharray="5 4" />
+  <text class="gilower-r" x="495" y="264" style="font-size: 10.5px">pliron: an IR framework</text><text class="gilower-r" x="495" y="280">Rust, inspired by MLIR</text>
+  <path class="gilower-opt" d="M570,269 L604,269" />
+  <rect class="gilower-box" x="604" y="252" width="144" height="34" rx="6" stroke-dasharray="5 4" />
+  <text class="gilower-r" x="676" y="264">cuda-oxide (alpha)</text><text class="gilower-r" x="676" y="280">LLVM IR → PTX</text>
+
+  
+  <text class="gilower-s" x="12" y="410" fill="#8b6fc0">Mojo</text>
+  <rect class="gilower-box" x="68" y="386" width="116" height="40" rx="6" />
+  <text class="gilower-r" x="126" y="403">parsed into the</text><text class="gilower-r" x="126" y="418">lit dialect; no AST</text>
+  <rect class="gilower-ir" x="196" y="386" width="92" height="40" rx="6" />
+  <text class="gilower-r" x="242" y="403">kgen, pop,</text><text class="gilower-r" x="242" y="418">hlcf dialects</text>
+  <rect class="gilower-ir" x="296" y="386" width="92" height="40" rx="6" />
+  <text class="gilower-r" x="342" y="403" style="font-size: 10.5px">elaboration:</text><text class="gilower-r" x="342" y="418" style="font-size: 10.5px">specialize IR</text>
+  <rect class="gilower-ir" x="396" y="386" width="76" height="40" rx="6" />
+  <text class="gilower-r" x="434" y="403">llvm</text><text class="gilower-r" x="434" y="418">dialect</text>
+  <rect class="gilower-llvm" x="482" y="386" width="110" height="40" rx="6" />
+  <text class="gilower-r" x="537" y="403">LLVM IR, after</text><text class="gilower-r" x="537" y="418">elaboration</text>
+  <rect class="gilower-box" x="604" y="386" width="144" height="40" rx="6" />
+  <text class="gilower-r" x="676" y="403">CPU; PTX and AMD GPU</text><text class="gilower-r" x="676" y="418">code; Apple GPUs</text>
+  <line class="gilower-link" x1="184" y1="406" x2="193" y2="406" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="288" y1="406" x2="293" y2="406" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="388" y1="406" x2="393" y2="406" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="472" y1="406" x2="479" y2="406" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="592" y1="406" x2="601" y2="406" marker-end="url(#gilower-arrow)" />
+  <text class="gilower-o" x="300" y="444">MLIR dialects before LLVM IR; elaboration resolves parameters</text>
+
+  
+  <text class="gilower-s" x="12" y="496" fill="#c44a37">Lean</text>
+  <rect class="gilower-box" x="68" y="472" width="116" height="40" rx="6" />
+  <text class="gilower-r" x="126" y="489">elaborator; macros</text><text class="gilower-r" x="126" y="504">and tactics run here</text>
+  <rect class="gilower-kern" x="196" y="472" width="130" height="40" rx="6" />
+  <text class="gilower-r" x="261" y="489">terms; the kernel</text><text class="gilower-r" x="261" y="504">accepts or rejects</text>
+  <rect class="gilower-ir" x="196" y="526" width="130" height="40" rx="6" />
+  <text class="gilower-r" x="261" y="543">LCNF, the compiler's</text><text class="gilower-r" x="261" y="558">normal form</text>
+  <rect class="gilower-ir" x="338" y="526" width="100" height="40" rx="6" />
+  <text class="gilower-r" x="388" y="543">emitted C</text><text class="gilower-r" x="388" y="558">leanc / Clang</text>
+  <rect class="gilower-llvm" x="482" y="526" width="110" height="40" rx="6" />
+  <text class="gilower-r" x="537" y="543">LLVM IR, from</text><text class="gilower-r" x="537" y="558">the C</text>
+  <rect class="gilower-box" x="604" y="526" width="144" height="40" rx="6" />
+  <text class="gilower-r" x="676" y="550">CPU</text>
+  <line class="gilower-link" x1="184" y1="492" x2="193" y2="492" marker-end="url(#gilower-arrow)" />
+  <path class="gilower-link" d="M126,432 L126,466 L193,466" marker-end="url(#gilower-arrow)" transform="translate(0 80)" />
+  <line class="gilower-link" x1="326" y1="546" x2="335" y2="546" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="438" y1="546" x2="479" y2="546" marker-end="url(#gilower-arrow)" />
+  <line class="gilower-link" x1="592" y1="546" x2="601" y2="546" marker-end="url(#gilower-arrow)" />
+  <text class="gilower-o" x="338" y="500" style="font-size: 10.5px">Kernel checking does not prove native compilation correct.</text>
+  <text class="gilower-o" x="300" y="600">optional: compiler IR → interpreter; may call native code</text>
+  <text class="gilower-semt" x="68" y="448">Lean-MLIR research: selected SSA</text>
+  <text class="gilower-semt" x="68" y="461">semantics and rewrite proofs</text>
+
+  
+  <line class="gilower-link" x1="12" y1="626" x2="44" y2="626" marker-end="url(#gilower-arrow)" />
+  <text class="gilower-leg" x="50" y="630" style="font-size: 11px">illustrated native route</text>
+  <line class="gilower-opt" x1="190" y1="626" x2="222" y2="626" />
+  <text class="gilower-leg" x="228" y="630">optional or experimental route that exists</text>
+  <line class="gilower-sem" x1="12" y1="644" x2="44" y2="644" />
+  <text class="gilower-leg" x="50" y="648">Lean-MLIR research is separate from these compilation routes</text>
+<rect class="gilower-box" x="68" y="306" width="244" height="36" rx="6" stroke-dasharray="5 4" /><text class="gilower-r" x="190" y="321">cutile-rs (experimental)</text><text class="gilower-r" x="190" y="336">proc-macro kernel input; JIT compilation</text><rect class="gilower-box" x="420" y="306" width="150" height="36" rx="6" stroke-dasharray="5 4" /><text class="gilower-r" x="495" y="328">CUDA Tile IR</text><rect class="gilower-box" x="604" y="306" width="144" height="36" rx="6" stroke-dasharray="5 4" /><text class="gilower-r" x="676" y="321">cubin</text><text class="gilower-r" x="676" y="336">NVIDIA GPU</text><line class="gilower-opt" x1="312" y1="324" x2="417" y2="324" marker-end="url(#gilower-arrow)" /><line class="gilower-opt" x1="570" y1="324" x2="601" y2="324" marker-end="url(#gilower-arrow)" /></svg>
