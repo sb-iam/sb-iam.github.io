@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Compilers represent control flow, data dependencies and tensor computations as graphs. The software engineer meets these graphs in program analysis, the AI engineer behind a PyTorch model. This essay takes both points of view and asks what each graph records.">
-  <meta property="og:title" content="Everything is a graph">
+  <meta property="og:title" content="Programs as Graphs">
   <meta property="og:description" content="Compilers represent control flow, data dependencies and tensor computations as graphs. The software engineer meets these graphs in program analysis, the AI engineer behind a PyTorch model. This essay takes both points of view and asks what each graph records.">
   <meta property="og:type" content="article">
-  <title>Everything is a graph - Shakthi Bachala</title>
+  <title>Programs as Graphs - Shakthi Bachala</title>
   <script>
     (function () {
       try { var savedTheme = localStorage.getItem("sb-theme-v2"); document.documentElement.dataset.theme = savedTheme === "dark" ? "dark" : "light"; }
@@ -25,7 +25,7 @@
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
     </header>
     <main id="article"><article>
-      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Graphs, Graph Compilers and the Verification of High-Performance Kernels</span><span>Part 1</span><span>Nov 11, 2026</span></div><h1>Everything is a graph</h1><p class="dek">Compilers represent control flow, data dependencies and tensor computations as graphs. The software engineer meets these graphs in program analysis, the AI engineer behind a PyTorch model. This essay takes both points of view and asks what each graph records.</p></div></header>
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Graphs, Graph Compilers and the Verification of High-Performance Kernels</span><span>Part 1</span><span>Nov 11, 2026</span></div><h1>Programs as Graphs</h1><p class="dek">Compilers represent control flow, data dependencies and tensor computations as graphs. The software engineer meets these graphs in program analysis, the AI engineer behind a PyTorch model. This essay takes both points of view and asks what each graph records.</p></div></header>
       <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
         <li><a href="#1-program-analysis-a-program-as-a-graph">Program analysis: a program as a graph</a></li>
         <li><a href="#2-jitana-and-rehana-a-graph-that-is-agnostic-to-its-source">Jitana and ReHAna: a graph that is agnostic to its source</a></li>
