@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Compilers represent control flow, data dependencies and tensor computations as graphs. The software engineer meets these graphs in program analysis, the AI engineer behind a PyTorch model. This essay takes both points of view and asks what each graph records.">
+  <meta property="og:title" content="Programs as Graphs">
+  <meta property="og:description" content="Compilers represent control flow, data dependencies and tensor computations as graphs. The software engineer meets these graphs in program analysis, the AI engineer behind a PyTorch model. This essay takes both points of view and asks what each graph records.">
+  <meta property="og:type" content="article">
+  <title>Programs as Graphs - Shakthi Bachala</title>
+  <script>
+    (function () {
+      try { var savedTheme = localStorage.getItem("sb-theme-v2"); document.documentElement.dataset.theme = savedTheme === "dark" ? "dark" : "light"; }
+      catch (error) { document.documentElement.dataset.theme = "light"; }
+    })();
+  </script>
+  <link rel="stylesheet" href="../../../styles.css?v=20261011c">
+</head>
+<body>
+  <a class="skip-link" href="#article">Skip to article</a>
+  <div class="site-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Shakthi Bachala home"><span class="brand-mark">SB</span><span>Shakthi Bachala</span></a>
+      <nav class="site-nav" aria-label="Primary navigation"><a href="/#about">About</a><a href="/research-statement/">Research</a><a href="/blog/" aria-current="page">Blog</a></nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
+    </header>
+    <main id="article"><article>
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>Graphs, Graph Compilers and the Verification of High-Performance Kernels</span><span>Part 1</span><span>Nov 11, 2026</span></div><h1>Programs as Graphs</h1><p class="dek">Compilers represent control flow, data dependencies and tensor computations as graphs. The software engineer meets these graphs in program analysis, the AI engineer behind a PyTorch model. This essay takes both points of view and asks what each graph records.</p></div></header>
+      <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
+        <li><a href="#1-program-analysis-a-program-as-a-graph">Program analysis: a program as a graph</a></li>
+        <li><a href="#2-jitana-and-rehana-a-graph-that-is-agnostic-to-its-source">Jitana and ReHAna: a graph that is agnostic to its source</a></li>
+        <li><a href="#3-graph-compilers-from-the-ai-engineer-s-pov">Graph compilers from the AI engineer's PoV</a></li>
+        <li><a href="#4-rust-candle-burn-and-cutile-rs">Rust: Candle, Burn and cuTile-rs</a></li>
+        <li><a href="#5-formal-verification-of-kernels">Formal verification of kernels</a></li>
+        <li><a href="#6-next-in-the-series">Next in the series</a></li>
+        <li><a href="#references">References</a></li>
+      </ol><div class="article-rail-movers"><button type="button" data-rail-move="-1" title="Previous section" aria-label="Previous section">&uarr;</button><button type="button" data-rail-move="1" title="Next section" aria-label="Next section">&darr;</button></div></nav></aside><div class="article-body">
+<p class="lead"><strong>This is the introduction to a series on graph compilers.</strong> A background in compilers or in machine learning modeling helps. Sections 1 and 2 cover program analysis, Section 3 the AI engineer's graph, Section 4 Rust, and Section 5 verification.</p>
+<p>Modular recently <a href="https://www.modular.com/blog/max-license" target="_blank" rel="noreferrer">released the MAX graph compiler</a> with its source. That makes this a good time to go deeper into graph abstractions in AI, especially for inference and for kernel verification. <a href="/blog/gang-of-four-introduction/"><em>Gang of four: C++, Rust, Lean and Mojo</em></a> discussed the release at a high level, and this series reads it closely.</p>
+<h2 id="1-program-analysis-a-program-as-a-graph">1. Program analysis: a program as a graph</h2>
+<p>A control-flow graph makes the possible transfers of control explicit: an edge from one block of statements to another means that the second can run right after the first. Figure F1 draws three graphs of one small Python program. A function f adds one to its argument, branches, calls g on one branch, assigns a constant on the other and returns. Function g doubles its argument.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 600" role="img" aria-labelledby="f2-title f2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="f2-title">One program, three graphs: control flow, def-use pairs and the supergraph</title>
+<desc id="f2-desc">A ten-line Python program with a branch and a call is listed on top and drawn three times below. Left, its control-flow graph: four blocks joined by true and false edges that meet at the return. Middle, its static single assignment form: each variable is assigned once, a phi node merges the two definitions of y at the join, and every use is connected to its one definition by a green def-use edge. Right, the supergraph: the control-flow graph of f and the control-flow graph of g joined by a purple call edge from the call site into g's entry and a purple return edge from g's exit back to the return site.</desc>
+<defs>
+<marker id="f2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="f2-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="f2-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="f2-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="f2-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="f2-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.f2k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.f2h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.f2s { font-size: 12.5px; font-weight: 650; }
+.f2r { font-size: 12px; opacity: 0.84; }
+.f2c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.f2m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.f2mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.f2e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.f2ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.f2leg { font-size: 11.5px; opacity: 0.75; }
+.f2box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.f2sep { stroke-width: 1; opacity: 0.4; }
+.f2link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.f2thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.f2opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.f2red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.f2redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.f2gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.f2goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.f2green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.f2blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.f2bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.f2purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.f2node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.f2dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="f2k" x="410" y="22">ONE PROGRAM, THREE GRAPHS</text>
+<rect class="f2box" x="16" y="38" width="200" height="122" rx="5"/>
+<text class="f2m" x="28" y="58" xml:space="preserve">def f(a):</text>
+<text class="f2m" x="28" y="73" xml:space="preserve">  x = a + 1</text>
+<text class="f2m" x="28" y="88" xml:space="preserve">  if x &gt; 2:</text>
+<text class="f2m" x="28" y="103" xml:space="preserve">    y = g(x)</text>
+<text class="f2m" x="28" y="118" xml:space="preserve">  else:</text>
+<text class="f2m" x="28" y="133" xml:space="preserve">    y = 0</text>
+<text class="f2m" x="28" y="148" xml:space="preserve">  return y</text>
+<rect class="f2box" x="230" y="38" width="170" height="46" rx="5"/>
+<text class="f2m" x="242" y="58" xml:space="preserve">def g(v):</text>
+<text class="f2m" x="242" y="73" xml:space="preserve">  return v * 2</text>
+<text class="f2r" x="420" y="58">f adds one to its argument and branches.</text>
+<text class="f2r" x="420" y="75">One branch calls g, the other assigns a constant.</text>
+<text class="f2r" x="420" y="92">The three drawings below are this one program.</text>
+<g transform="translate(0,128)">
+<text class="f2ax" x="116" y="52" style="text-anchor:middle">CONTROL-FLOW GRAPH OF f</text>
+<text class="f2ax" x="372" y="52" style="text-anchor:middle">SSA: DEF-USE PAIRS AS EDGES</text>
+<text class="f2ax" x="669" y="52" style="text-anchor:middle">SUPERGRAPH: f AND g JOINED</text>
+<rect class="f2node" x="51.0" y="73.0" width="130.0" height="44" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="116" y="87.0">B0  x = a + 1</text>
+<text class="f2mc" x="116" y="102.0">      if x > 2</text>
+<rect class="f2node" x="20.0" y="170.5" width="92.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="66" y="184.5">B1  y = g(x)</text>
+<rect class="f2node" x="126.0" y="170.5" width="80.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="166" y="184.5">B2  y = 0</text>
+<rect class="f2node" x="66.0" y="260.5" width="100.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="116" y="274.5">B3  return y</text>
+<path class="f2link" d="M96,117 L66,170" marker-end="url(#f2-arrow)"/>
+<text class="f2e" x="66" y="148" style="text-anchor:end">true</text>
+<path class="f2link" d="M136,117 L166,170" marker-end="url(#f2-arrow)"/>
+<text class="f2e" x="166" y="148" style="text-anchor:start">false</text>
+<path class="f2link" d="M66,200 L98,259" marker-end="url(#f2-arrow)"/>
+<path class="f2link" d="M166,200 L134,259" marker-end="url(#f2-arrow)"/>
+<text class="f2c" x="116" y="330">nodes: blocks; edges: every jump</text>
+<text class="f2c" x="116" y="346">and fall-through</text>
+<rect class="f2node" x="312.0" y="75.5" width="120.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="372" y="89.5">x1 = a + 1</text>
+<rect class="f2node" x="312.0" y="120.5" width="120.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="372" y="134.5">if x1 > 2</text>
+<rect class="f2node" x="269.0" y="175.5" width="96.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="317" y="189.5">y1 = g(x1)</text>
+<rect class="f2node" x="387.0" y="175.5" width="80.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="427" y="189.5">y2 = 0</text>
+<rect class="f2node" x="307.0" y="235.5" width="130.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="372" y="249.5">y3 = φ(y1, y2)</text>
+<rect class="f2node" x="322.0" y="285.5" width="100.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="372" y="299.5">return y3</text>
+<path class="f2thin" d="M372,104 L372,120" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M347,149 L322,175" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M397,149 L422,175" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M322,205 L352,235" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M422,205 L392,235" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M372,264 L372,285" marker-end="url(#f2-arrow)"/>
+<path class="f2green" d="M432,90 C 482,100 472,125 434,133" marker-end="url(#f2-arrow-green)"/>
+<text class="f2e" x="476" y="116" style="text-anchor:start" fill="#4f9d69">x1 used</text>
+<path class="f2green" d="M312,92 C 252,120 252,170 267,186" marker-end="url(#f2-arrow-green)"/>
+<text class="f2e" x="256" y="138" style="text-anchor:end" fill="#4f9d69">x1 used</text>
+<path class="f2green" d="M302,204 C 282,240 292,250 306,250" marker-end="url(#f2-arrow-green)"/>
+<path class="f2green" d="M442,204 C 462,240 452,250 438,250" marker-end="url(#f2-arrow-green)"/>
+<path class="f2green" d="M438,254 C 472,270 462,300 424,300" marker-end="url(#f2-arrow-green)"/>
+<text class="f2e" x="470" y="286" style="text-anchor:start" fill="#4f9d69">y3 used</text>
+<text class="f2c" x="372" y="350">one definition per name; the</text>
+<text class="f2c" x="372" y="366">def-use pair is literally an edge</text>
+<text class="f2s" x="541" y="78" fill="#1fa8d6">f</text>
+<rect class="f2node" x="569.0" y="80.5" width="84.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="611" y="94.5">B0 branch</text>
+<rect class="f2node" x="535.0" y="135.5" width="68.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="569" y="149.5">B2 y=0</text>
+<rect class="f2node" x="611.0" y="135.5" width="72.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="647" y="149.5">B1 call</text>
+<rect class="f2node" x="597.0" y="190.5" width="100.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="647" y="204.5">B1' ret.site</text>
+<rect class="f2node" x="569.0" y="245.5" width="84.0" height="29" rx="5" stroke="#1fa8d6"/>
+<text class="f2mc" x="611" y="259.5">B3 return</text>
+<path class="f2thin" d="M596,109.5 L575,135" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M626,109.5 L643,135" marker-end="url(#f2-arrow)"/>
+<path class="f2opt" d="M647,164.5 L647,190" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M637,219.5 L619,245" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M569,164.5 C 569,215 581,232 595,245" marker-end="url(#f2-arrow)"/>
+<text class="f2s" x="725" y="78" fill="#8b6fc0">g</text>
+<rect class="f2node" x="718.0" y="95.5" width="86.0" height="29" rx="5" stroke="#8b6fc0"/>
+<text class="f2mc" x="761" y="109.5">enter g(v)</text>
+<rect class="f2node" x="718.0" y="150.5" width="86.0" height="29" rx="5" stroke="#8b6fc0"/>
+<text class="f2mc" x="761" y="164.5">r = v * 2</text>
+<rect class="f2node" x="718.0" y="205.5" width="86.0" height="29" rx="5" stroke="#8b6fc0"/>
+<text class="f2mc" x="761" y="219.5">exit g</text>
+<path class="f2thin" d="M761,124.5 L761,150" marker-end="url(#f2-arrow)"/>
+<path class="f2thin" d="M761,179.5 L761,205" marker-end="url(#f2-arrow)"/>
+<path class="f2purple" d="M683,148 C 701,148 699,110 717,110" marker-end="url(#f2-arrow-purple)"/>
+<text class="f2e" x="691" y="104" fill="#8b6fc0">call</text>
+<path class="f2purple" d="M718,222 C 707,222 709,207 699,207" marker-end="url(#f2-arrow-purple)"/>
+<text class="f2e" x="713" y="248" fill="#8b6fc0">return</text>
+<text class="f2c" x="669" y="350">two graphs become one; a path</text>
+<text class="f2c" x="669" y="366">that returns where it did not</text>
+<text class="f2c" x="669" y="382">call is not a real execution</text>
+</g>
+<line x1="16" y1="577" x2="38" y2="577" stroke="currentColor" stroke-width="1.6" opacity="0.9"/>
+<text class="f2leg" x="44" y="581">control flow</text>
+<line x1="145.6" y1="577" x2="167.6" y2="577" stroke="#4f9d69" stroke-width="1.6" opacity="0.9"/>
+<text class="f2leg" x="173.6" y="581">def-use pair</text>
+<line x1="275.2" y1="577" x2="297.2" y2="577" stroke="#8b6fc0" stroke-width="1.6" opacity="0.9"/>
+<text class="f2leg" x="303.2" y="581">call and return</text>
+<line x1="423.7" y1="577" x2="445.7" y2="577" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="f2leg" x="451.7" y="581">call-to-return, inside the caller</text>
+</svg>
+<figcaption><strong>F1</strong> One program, three graphs. In the control-flow graph an edge is a possible transfer of control. In static single assignment a green edge joins a definition to one of its uses. The supergraph joins f and g with a call edge and a return edge.</figcaption>
+</figure>
+<p>The left drawing is Allen's control-flow graph of 1970: four blocks and the two outcomes of the branch. The middle drawing is static single assignment (SSA). Each variable is assigned exactly once, and a phi node at the join picks y1 or y2 by the edge taken. Definitions and uses become edges, drawn in green, and constant propagation, dead-code elimination and register allocation walk them. The renaming has a second reading, from Appel's <a href="https://www.cs.princeton.edu/~appel/papers/ssafun.pdf" target="_blank" rel="noreferrer"><em>SSA is Functional Programming</em></a>: a variable assigned once is a let-binding, a block is a function, and a phi node is its parameter. The right drawing joins f and g into one supergraph with a call edge and a return edge. With several callers, a supergraph also contains paths that no execution takes: into g from one caller and out to another.</p>
+<p>In 1995 Reps, Horwitz and Sagiv published <a href="https://research.cs.wisc.edu/wpis/papers/popl95.pdf" target="_blank" rel="noreferrer"><em>Precise Interprocedural Dataflow Analysis via Graph Reachability</em></a>. Figure F2 draws their construction for one query: the argument a of f is tainted, and we want every place the taint reaches. A second function, h, also calls g.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 520" role="img" aria-labelledby="i2-title i2-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i2-title">The exploded supergraph of Reps, Horwitz and Sagiv: a fact at a point is a node, a derivation is a path</title>
+<desc id="i2-desc">The functions f and g of Figure F1, with a second caller h, exploded for a taint analysis in which the argument a of f is tainted. Only f's calling branch is drawn. Each program point is a row and each fact a column, so a node is a pair of a point and a fact, and an edge says what one statement does to one fact. The column headed by the Greek letter lambda is the zero fact, which holds at every point and from which new facts start. The taint flows from a to x at the assignment, into g's parameter v along f's call edge, to g's result r, and back to y along f's return edge; that path is highlighted in blue because its return matches its call. Call-to-return edges inside f carry a and x past the call. A gold dashed summary edge from x at the call to y at the return site records what leaves g for the fact that entered it, and the same summary would serve h if b were tainted. A red dashed route that enters g from h and returns into f is marked as not realizable and is excluded.</desc>
+<defs>
+<marker id="i2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i2-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i2-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i2-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i2-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i2-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i2k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i2h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i2s { font-size: 12.5px; font-weight: 650; }
+.i2r { font-size: 12px; opacity: 0.84; }
+.i2c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i2m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i2mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i2e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i2ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i2leg { font-size: 11.5px; opacity: 0.75; }
+.i2box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i2sep { stroke-width: 1; opacity: 0.4; }
+.i2link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i2thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i2opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i2red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i2redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i2gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i2goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i2green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i2blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i2bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i2purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i2node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i2dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i2k" x="410" y="22">DATAFLOW ANALYSIS AS GRAPH REACHABILITY (POPL 1995)</text>
+<text class="i2s" x="192" y="60" style="text-anchor:middle" fill="#1fa8d6">f(a), a tainted</text>
+<text class="i2s" x="465" y="60" style="text-anchor:middle" fill="#8b6fc0">g(v)</text>
+<text class="i2s" x="655" y="60" style="text-anchor:middle" fill="#4f9d69">h(b), a second caller</text>
+<text class="i2mc" x="110" y="82">Λ</text>
+<text class="i2mc" x="165" y="82">a</text>
+<text class="i2mc" x="220" y="82">x</text>
+<text class="i2mc" x="275" y="82">y</text>
+<text class="i2mc" x="410" y="82">Λ</text>
+<text class="i2mc" x="465" y="82">v</text>
+<text class="i2mc" x="520" y="82">r</text>
+<text class="i2mc" x="600" y="82">Λ</text>
+<text class="i2mc" x="655" y="82">b</text>
+<text class="i2mc" x="710" y="82">z</text>
+<text class="i2m" x="94" y="104" style="text-anchor:end">start</text>
+<text class="i2m" x="94" y="154" style="text-anchor:end">x = a+1</text>
+<text class="i2m" x="94" y="214" style="text-anchor:end">call g(x)</text>
+<text class="i2m" x="94" y="274" style="text-anchor:end">return site</text>
+<text class="i2m" x="94" y="334" style="text-anchor:end">return y</text>
+<text class="i2m" x="394" y="145" style="text-anchor:end">enter</text>
+<text class="i2m" x="394" y="205" style="text-anchor:end">r = v*2</text>
+<text class="i2m" x="394" y="265" style="text-anchor:end">exit</text>
+<text class="i2m" x="726" y="104">start</text>
+<text class="i2m" x="726" y="214">call g(b)</text>
+<text class="i2m" x="726" y="274">return site</text>
+<text class="i2m" x="726" y="334">return z</text>
+<line x1="102" y1="100" x2="718" y2="100" stroke="currentColor" opacity="0.07"/>
+<line x1="102" y1="150" x2="718" y2="150" stroke="currentColor" opacity="0.07"/>
+<line x1="102" y1="210" x2="718" y2="210" stroke="currentColor" opacity="0.07"/>
+<line x1="102" y1="270" x2="718" y2="270" stroke="currentColor" opacity="0.07"/>
+<line x1="102" y1="330" x2="718" y2="330" stroke="currentColor" opacity="0.07"/>
+<path class="i2bluefat" d="M165,100 L220,150 L220,210 C 280,200 405,160 465,150 L465,210 L520,270 C 420,290 365,280 275,270 L275,330"/>
+<path class="i2thin" d="M110,107 L110,143" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M110,157 L110,203" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M110,217 L110,263" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M110,277 L110,323" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M165,107 L165,143" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M165,157 L165,203" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M165,217 L165,263" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M165,277 L165,323" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M220,157 L220,203" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M220,217 L220,263" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M220,277 L220,323" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M275,277 L275,323" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M410,157 L410,203" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M410,217 L410,263" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M465,157 L465,203" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M465,217 L465,263" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M600,107 L600,203" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M600,217 L600,263" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M600,277 L600,323" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M655,107 L655,203" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M655,217 L655,263" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M655,277 L655,323" marker-end="url(#i2-arrow)"/>
+<path class="i2thin" d="M710,277 L710,323" marker-end="url(#i2-arrow)"/>
+<path class="i2blue" d="M170,105 L215,145" marker-end="url(#i2-arrow-blue)"/>
+<text class="i2e" x="250" y="122" fill="#1fa8d6">a → x</text>
+<path class="i2blue" d="M470,215 L515,265" marker-end="url(#i2-arrow-blue)"/>
+<text class="i2e" x="538" y="240" fill="#1fa8d6">v → r</text>
+<path class="i2purple" d="M227,207 C 290,190 395,165 458,153" marker-end="url(#i2-arrow-purple)"/>
+<text class="i2e" x="292" y="206" fill="#8b6fc0">call: x → v</text>
+<path class="i2green" d="M648,207 C 585,190 535,165 472,153" marker-end="url(#i2-arrow-green)"/>
+<text class="i2e" x="548" y="198" fill="#4f9d69">call: b → v</text>
+<path class="i2thin" d="M117,207 C 200,170 320,170 403,152" marker-end="url(#i2-arrow)"/>
+<path class="i2purple" d="M513,272 C 410,295 385,280 282,272" marker-end="url(#i2-arrow-purple)"/>
+<text class="i2e" x="320" y="260" fill="#8b6fc0">return: r → y</text>
+<path class="i2green" d="M527,272 C 610,295 620,280 703,272" marker-end="url(#i2-arrow-green)"/>
+<text class="i2e" x="628" y="304" fill="#4f9d69">return: r → z</text>
+<path class="i2gold" d="M226,214 C 260,240 245,240 269,265" marker-end="url(#i2-arrow-gold)"/>
+<text class="i2e" x="301" y="226" fill="#b8860b">summary</text>
+<text class="i2e" x="301" y="239" fill="#b8860b">edge</text>
+<path class="i2gold" d="M661,214 C 695,240 680,240 704,265" marker-end="url(#i2-arrow-gold)"/>
+<text class="i2e" x="726" y="238" style="text-anchor:start" fill="#b8860b">reused, if b</text>
+<text class="i2e" x="726" y="251" style="text-anchor:start" fill="#b8860b">is tainted</text>
+<path class="i2red" d="M649,216 C 555,300 465,370 283,280" marker-end="url(#i2-arrow-red)"/>
+<circle cx="499" cy="313" r="9" fill="none" stroke="#c44a37" stroke-width="1.5"/>
+<line x1="493" y1="307" x2="505" y2="319" stroke="#c44a37" stroke-width="1.5"/><line x1="505" y1="307" x2="493" y2="319" stroke="#c44a37" stroke-width="1.5"/>
+<text class="i2e" x="455" y="352" fill="#c44a37">not realizable: enters g from h, returns into f</text>
+<circle cx="110" cy="100" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="165" cy="100" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="220" cy="100" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="110" cy="150" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="165" cy="150" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="220" cy="150" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="110" cy="210" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="165" cy="210" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="220" cy="210" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="110" cy="270" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="165" cy="270" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="220" cy="270" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="275" cy="270" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="110" cy="330" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="165" cy="330" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="220" cy="330" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="275" cy="330" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="410" cy="150" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="465" cy="150" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="410" cy="210" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="465" cy="210" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="410" cy="270" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="465" cy="270" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="520" cy="270" r="6" fill="#1fa8d6" stroke="currentColor" stroke-width="1.1" opacity="1"/>
+<circle cx="600" cy="100" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="655" cy="100" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="600" cy="210" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="655" cy="210" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="600" cy="270" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="655" cy="270" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="710" cy="270" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="600" cy="330" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="655" cy="330" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<circle cx="710" cy="330" r="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-width="1.1" opacity="0.9"/>
+<rect class="i2box" x="16" y="384" width="788" height="84" rx="5" style="stroke:#b8860b;stroke-width:1.7;fill:rgba(184,134,11,0.05)"/>
+<text class="i2r" x="28" y="403">A fact holds at a point when its node is reachable from the start along a path whose returns match its calls.</text>
+<text class="i2r" x="28" y="420">Λ is the zero fact: it holds at every point, and new facts start from it. A summary edge records which facts leave</text>
+<text class="i2r" x="28" y="437">a call for one fact that enters it, and is reused wherever that fact arrives. Time: O(E·D³), E supergraph edges, D facts.</text>
+<text class="i2r" x="28" y="454">The drawing keeps f's calling branch and the facts on the taint's way; other nodes and edges are left out.</text>
+<line x1="16" y1="494" x2="38" y2="494" stroke="#1fa8d6" stroke-width="1.6" opacity="0.9"/>
+<text class="i2leg" x="44" y="498">tainted; realizable path</text>
+<line x1="221.2" y1="494" x2="243.2" y2="494" stroke="#8b6fc0" stroke-width="1.6" opacity="0.9"/>
+<text class="i2leg" x="249.2" y="498">f calls g</text>
+<line x1="331.9" y1="494" x2="353.9" y2="494" stroke="#4f9d69" stroke-width="1.6" opacity="0.9"/>
+<text class="i2leg" x="359.9" y="498">h calls g</text>
+<line x1="442.59999999999997" y1="494" x2="464.59999999999997" y2="494" stroke="#b8860b" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i2leg" x="470.59999999999997" y="498">summary edge</text>
+<line x1="572.1999999999999" y1="494" x2="594.1999999999999" y2="494" stroke="#c44a37" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i2leg" x="600.1999999999999" y="498">excluded route</text>
+</svg>
+<figcaption><strong>F2</strong> The exploded supergraph for a taint analysis. A node is a fact at a program point, and an edge is the effect of one statement on one fact. The realizable path is blue, the summary edge gold, the excluded route red.</figcaption>
+</figure>
+<p>The construction has three moves. First, explode the graph. A node becomes a pair of a program point and a fact, and an edge is one statement turning one fact into another, as x = a + 1 turns a into x. Second, if every statement's effect distributes over union, nothing is lost, and the dataflow fixpoint becomes plain reachability. Third, count only realizable paths, those whose returns match their calls.</p>
+<p>The blue path is realizable: the taint enters g on f's call edge and leaves on f's return edge. The red route enters from h and returns into f, which no execution does. A summary edge, drawn in gold, records which facts leave a call for one fact that enters it, and it is reused wherever that fact arrives. The cost is bounded by the supergraph's edges times the cube of the number of facts, for the class the paper names IFDS: interprocedural, finite, distributive, subset. A realizable path may still take a branch that no input takes.</p>
+<p>Once a program is a graph, a question of this class is a reachability question, and the algorithm is independent of the source language. Facts are nodes, derivations are paths, and precision is the choice of which paths are allowed. Figure F3 places the result among its neighbours.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 478" role="img" aria-labelledby="i3-title i3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i3-title">Five program analyses as separate choices: what each tells apart, and its bound</title>
+<desc id="i3-desc">A table drawn as a map. Five rows: Steensgaard's points-to analysis, Andersen's points-to analysis, classical dataflow inside one procedure, the IFDS analysis of Section 1, and symbolic execution. For each row the figure says how the analysis works, then marks with a filled or hollow dot whether it tells apart the order of statements (flow), the calling context, and the branch taken (path), and gives its bound with the variables of that bound. Steensgaard merges by unification and is almost linear in the program size; Andersen uses inclusion constraints and is cubic in the worst case; neither tells any of the three apart. Classical dataflow tells statement order apart inside one procedure. IFDS adds calling context at a bound of supergraph edges times the cube of the number of facts. Symbolic execution tells all three apart and its paths can double at each branch. A red note states the scope of the model: each row answers for the code its graph contains, and native code behind a foreign function interface needs an analyzed body or a summary.</desc>
+<defs>
+<marker id="i3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i3-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i3-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i3-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i3-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i3-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i3k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i3h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i3s { font-size: 12.5px; font-weight: 650; }
+.i3r { font-size: 12px; opacity: 0.84; }
+.i3c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i3m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i3mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i3e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i3ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i3leg { font-size: 11.5px; opacity: 0.75; }
+.i3box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i3sep { stroke-width: 1; opacity: 0.4; }
+.i3link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i3thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i3opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i3red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i3redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i3gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i3goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i3green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i3blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i3bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i3purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i3node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i3dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i3k" x="410" y="22">PROGRAM ANALYSES: SEPARATE CHOICES, EACH WITH ITS BOUND</text>
+<text class="i3ax" x="100" y="58" style="text-anchor:middle">ANALYSIS</text>
+<text class="i3ax" x="196" y="58">HOW IT WORKS</text>
+<text class="i3ax" x="452" y="50" style="text-anchor:middle">STATEMENT</text>
+<text class="i3ax" x="452" y="63" style="text-anchor:middle">ORDER</text>
+<text class="i3e" x="452" y="79">flow</text>
+<text class="i3ax" x="526" y="50" style="text-anchor:middle">CALLING</text>
+<text class="i3ax" x="526" y="63" style="text-anchor:middle">CONTEXT</text>
+<text class="i3e" x="526" y="79">context</text>
+<text class="i3ax" x="600" y="50" style="text-anchor:middle">BRANCH</text>
+<text class="i3ax" x="600" y="63" style="text-anchor:middle">TAKEN</text>
+<text class="i3e" x="600" y="79">path</text>
+<text class="i3ax" x="646" y="50">BOUND, WITH</text>
+<text class="i3ax" x="646" y="63">ITS VARIABLES</text>
+<rect x="16" y="253" width="788" height="50" rx="7" fill="rgba(184,134,11,0.07)" stroke="#b8860b" stroke-dasharray="6 4" stroke-width="1.4"/>
+<rect class="i3node" x="24.0" y="94.0" width="152.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i3c" x="100" y="108.0">Steensgaard 1996:</text>
+<text class="i3c" x="100" y="123.0">points-to</text>
+<text class="i3r" x="196" y="113">unification: pointers that may share</text>
+<text class="i3r" x="196" y="129">a target fall into one class</text>
+<circle cx="452" cy="116" r="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<circle cx="526" cy="116" r="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<circle cx="600" cy="116" r="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<text class="i3r" x="646" y="113">almost linear in n,</text>
+<text class="i3r" x="646" y="129">the size of the program</text>
+<line class="i3sep" x1="16" y1="143" x2="804" y2="143" stroke="currentColor"/>
+<rect class="i3node" x="24.0" y="148.0" width="152.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i3c" x="100" y="162.0">Andersen 1994:</text>
+<text class="i3c" x="100" y="177.0">points-to</text>
+<text class="i3r" x="196" y="167">inclusion: one subset constraint</text>
+<text class="i3r" x="196" y="183">per assignment, solved to a fixpoint</text>
+<circle cx="452" cy="170" r="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<circle cx="526" cy="170" r="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<circle cx="600" cy="170" r="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<text class="i3r" x="646" y="167">cubic in n</text>
+<text class="i3r" x="646" y="183">in the worst case</text>
+<line class="i3sep" x1="16" y1="197" x2="804" y2="197" stroke="currentColor"/>
+<rect class="i3node" x="24.0" y="202.0" width="152.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i3c" x="100" y="216.0">classical dataflow:</text>
+<text class="i3c" x="100" y="231.0">one procedure</text>
+<text class="i3r" x="196" y="221">a fixpoint over one control-flow</text>
+<text class="i3r" x="196" y="237">graph; facts merge at each join</text>
+<circle cx="452" cy="224" r="8" fill="#1fa8d6" stroke="#1fa8d6" stroke-width="1.5"/>
+<text class="i3e" x="526" y="228">one procedure</text>
+<circle cx="600" cy="224" r="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<text class="i3r" x="646" y="221">passes × edges; the passes</text>
+<text class="i3r" x="646" y="237">depend on the lattice</text>
+<rect class="i3node" x="24.0" y="256.0" width="152.0" height="44" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i3c" x="100" y="270.0">IFDS 1995:</text>
+<text class="i3c" x="100" y="285.0">Figure F2</text>
+<text class="i3r" x="196" y="275">reachability on the exploded</text>
+<text class="i3r" x="196" y="291">supergraph; returns match calls</text>
+<circle cx="452" cy="278" r="8" fill="#b8860b" stroke="#b8860b" stroke-width="1.5"/>
+<circle cx="526" cy="278" r="8" fill="#b8860b" stroke="#b8860b" stroke-width="1.5"/>
+<circle cx="600" cy="278" r="8" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<text class="i3r" x="646" y="275">E × D³: E supergraph</text>
+<text class="i3r" x="646" y="291">edges, D facts</text>
+<rect class="i3node" x="24.0" y="310.0" width="152.0" height="44" rx="5" style="stroke:#c44a37;stroke-width:1.7"/>
+<text class="i3c" x="100" y="324.0">symbolic execution:</text>
+<text class="i3c" x="100" y="339.0">Figure F4</text>
+<text class="i3r" x="196" y="329">one formula per path,</text>
+<text class="i3r" x="196" y="345">decided by a solver</text>
+<circle cx="452" cy="332" r="8" fill="#c44a37" stroke="#c44a37" stroke-width="1.5"/>
+<circle cx="526" cy="332" r="8" fill="#c44a37" stroke="#c44a37" stroke-width="1.5"/>
+<circle cx="600" cy="332" r="8" fill="#c44a37" stroke="#c44a37" stroke-width="1.5"/>
+<text class="i3r" x="646" y="329">paths can double at each</text>
+<text class="i3r" x="646" y="345">branch; loops need a bound</text>
+<rect x="16" y="368" width="788" height="62" rx="6" fill="rgba(196,74,55,0.06)" stroke="#c44a37" stroke-dasharray="5 4" stroke-width="1.3"/>
+<text class="i3ax" x="28" y="386" fill="#c44a37">SCOPE OF THE MODEL</text>
+<text class="i3r" x="28" y="404">Each row answers for the code its graph contains. Native code behind an FFI needs an analyzed body or an explicit summary;</text>
+<text class="i3r" x="28" y="421">code and effects that are not modelled limit what the result establishes. The rows are separate choices, not one ladder.</text>
+<circle cx="26" cy="454" r="6" fill="currentColor" opacity="0.7"/>
+<text class="i3leg" x="38" y="458">told apart</text>
+<circle cx="124" cy="454" r="6" fill="none" stroke="currentColor" stroke-width="1.3" opacity="0.55"/>
+<text class="i3leg" x="136" y="458">merged</text>
+<line x1="206" y1="455" x2="228" y2="455" stroke="#b8860b" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i3leg" x="234" y="459">calling context at a polynomial bound</text>
+<line x1="493.1" y1="455" x2="515.1" y2="455" stroke="#c44a37" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i3leg" x="521.1" y="459">what every row assumes</text>
+</svg>
+<figcaption><strong>F3</strong> Five analyses as separate choices: how each one works, whether it tells apart statement order, calling context and the branch taken, and its bound with the variables of that bound. The red note is the scope of the model.</figcaption>
+</figure>
+<p>An analysis makes several choices, and they are separate. Steensgaard's and Andersen's points-to analyses both ignore statement order and calling context. They differ in how they merge: Steensgaard unifies and is almost linear in program size, and Andersen keeps subset constraints and is cubic in the worst case. Classical dataflow follows statement order inside one procedure. IFDS adds calling context, at the bound above with its two variables. Symbolic execution also follows the branch taken and pays for it path by path.</p>
+<p>Figure F3's red note is the scope of the model. Each analysis answers only for the code its graph contains. Code behind a foreign function interface (FFI), such as native code under Java or a C++ kernel under Python, needs an analyzed body or a summary. One way to get that body, whole-program LLVM IR from link-time optimization (LTO) analyzed with <a href="https://github.com/secure-software-engineering/phasar" target="_blank" rel="noreferrer">PhASAR</a>, is out of scope.</p>
+<p>Figure F3's last row is where the series ends. Figure F4 asks one property of f, that it never returns a negative number, in four ways.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 540" role="img" aria-labelledby="i4-title i4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i4-title">From a test to a proof: the function f of Figure F1, asked about in four ways</title>
+<desc id="i4-desc">Four columns ask whether the function f of Figure F1, which computes x = a + 1 and returns twice x when x is greater than 2 and 0 otherwise, can return a negative number. Test: one input, a = 5, takes the true branch and returns 12; the other branch never runs. Symbolic execution: the input is a symbol, and each of the two paths carries its path condition and a formula for the result. Concolic execution: a concrete run with a = 5 also records the branch condition as a symbolic constraint; a solver is asked for an input that negates it and returns a = -1, one possible input, and the other branch is run. Verification: over the integers, the property y less than 0 is added to each of the two paths, and the solver answers unsat for both, which proves the property for every input of this loop-free model; a sat answer would return a counterexample, and a timeout or the answer unknown would leave the question open. Columns two to four share the same path formulas and differ in the question asked.</desc>
+<defs>
+<marker id="i4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i4-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i4-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i4-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i4-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i4-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i4k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i4h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i4s { font-size: 12.5px; font-weight: 650; }
+.i4r { font-size: 12px; opacity: 0.84; }
+.i4c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i4m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i4mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i4e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i4ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i4leg { font-size: 11.5px; opacity: 0.75; }
+.i4box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i4sep { stroke-width: 1; opacity: 0.4; }
+.i4link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i4thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i4opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i4red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i4redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i4gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i4goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i4green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i4blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i4bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i4purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i4node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i4dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i4k" x="410" y="22">FROM A TEST TO A PROOF: ONE FUNCTION, FOUR WAYS TO ASK</text>
+<text class="i4mc" x="270" y="46" xml:space="preserve">f(a):   x = a + 1;   y = 2x if x > 2 else 0;   return y</text>
+<text class="i4c" x="648" y="46">the property: f never returns a negative number</text>
+<text class="i4h" x="112" y="80" style="text-anchor:middle" fill="#1fa8d6">1. TEST</text>
+<text class="i4e" x="112" y="97">one input, one path</text>
+<text class="i4h" x="312" y="80" style="text-anchor:middle" fill="#8b6fc0">2. SYMBOLIC</text>
+<text class="i4e" x="312" y="97">the input is a symbol</text>
+<text class="i4h" x="512" y="80" style="text-anchor:middle" fill="#4f9d69">3. CONCOLIC</text>
+<text class="i4e" x="512" y="97">concrete run + symbolic constraints</text>
+<text class="i4h" x="712" y="80" style="text-anchor:middle" fill="#b8860b">4. VERIFICATION</text>
+<text class="i4e" x="712" y="97">ask the solver for a counterexample</text>
+<line class="i4sep" x1="212" y1="66" x2="212" y2="372" stroke="currentColor"/>
+<line class="i4sep" x1="412" y1="66" x2="412" y2="372" stroke="currentColor"/>
+<line class="i4sep" x1="612" y1="66" x2="612" y2="372" stroke="currentColor"/>
+<rect class="i4node" x="37.0" y="113.5" width="150.0" height="29" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i4mc" x="112" y="127.5">a = 5</text>
+<path class="i4link" d="M112,143 L112,163" marker-end="url(#i4-arrow)"/>
+<rect class="i4node" x="33.0" y="165.5" width="158.0" height="29" rx="5"/>
+<text class="i4mc" x="112" y="179.5">x = a + 1;  x > 2 ?</text>
+<path class="i4blue" d="M92,195 C 82,222 64,228 64,252" marker-end="url(#i4-arrow-blue)"/>
+<path class="i4opt" d="M132,195 C 142,222 160,228 160,252" marker-end="url(#i4-arrow)"/>
+<text class="i4e" x="56" y="226" style="text-anchor:end">yes</text>
+<text class="i4e" x="168" y="226" style="text-anchor:start">no</text>
+<rect class="i4node" x="19.0" y="253.5" width="90.0" height="29" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i4mc" x="64" y="267.5">y = 2x</text>
+<rect x="115.0" y="253.5" width="90" height="29" rx="5" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 4" opacity="0.38"/>
+<text class="i4c" x="160" y="272" opacity="0.5">not run</text>
+<rect class="i4node" x="237.0" y="113.5" width="150.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i4mc" x="312" y="127.5">a = α</text>
+<path class="i4link" d="M312,143 L312,163" marker-end="url(#i4-arrow)"/>
+<rect class="i4node" x="233.0" y="165.5" width="158.0" height="29" rx="5"/>
+<text class="i4mc" x="312" y="179.5">x = a + 1;  x > 2 ?</text>
+<path class="i4purple" d="M292,195 C 282,222 264,228 264,252" marker-end="url(#i4-arrow-purple)"/>
+<path class="i4purple" d="M332,195 C 342,222 360,228 360,252" marker-end="url(#i4-arrow-purple)"/>
+<text class="i4e" x="250" y="226">α+1 > 2</text>
+<text class="i4e" x="374" y="226">α+1 ≤ 2</text>
+<rect class="i4node" x="219.0" y="253.5" width="90.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i4mc" x="264" y="267.5">y = 2(α+1)</text>
+<rect class="i4node" x="315.0" y="253.5" width="90.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i4mc" x="360" y="267.5">y = 0</text>
+<rect class="i4node" x="437.0" y="113.5" width="150.0" height="29" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="i4mc" x="512" y="127.5">a = 5, then a = -1</text>
+<path class="i4link" d="M512,143 L512,163" marker-end="url(#i4-arrow)"/>
+<rect class="i4node" x="433.0" y="165.5" width="158.0" height="29" rx="5"/>
+<text class="i4mc" x="512" y="179.5">x = a + 1;  x > 2 ?</text>
+<path class="i4blue" d="M492,195 C 482,222 464,228 464,252" marker-end="url(#i4-arrow-blue)"/>
+<path class="i4green" d="M532,195 C 542,222 560,228 560,252" marker-end="url(#i4-arrow-green)"/>
+<text class="i4e" x="456" y="226" style="text-anchor:end">yes</text>
+<text class="i4e" x="568" y="226" style="text-anchor:start">no</text>
+<rect class="i4node" x="419.0" y="253.5" width="90.0" height="29" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i4mc" x="464" y="267.5">y = 2x</text>
+<rect class="i4node" x="515.0" y="253.5" width="90.0" height="29" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="i4mc" x="560" y="267.5">y = 0</text>
+<rect class="i4node" x="637.0" y="113.5" width="150.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i4mc" x="712" y="127.5">a = α, an integer</text>
+<path class="i4link" d="M712,143 L712,163" marker-end="url(#i4-arrow)"/>
+<rect class="i4node" x="633.0" y="165.5" width="158.0" height="29" rx="5"/>
+<text class="i4mc" x="712" y="179.5">x = a + 1;  x > 2 ?</text>
+<path class="i4goldsolid" d="M692,195 C 682,222 664,228 664,252" marker-end="url(#i4-arrow-gold)"/>
+<path class="i4goldsolid" d="M732,195 C 742,222 760,228 760,252" marker-end="url(#i4-arrow-gold)"/>
+<text class="i4e" x="650" y="226">α+1 > 2</text>
+<text class="i4e" x="774" y="226">α+1 ≤ 2</text>
+<rect class="i4node" x="619.0" y="253.5" width="90.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i4mc" x="664" y="267.5">y = 2(α+1)</text>
+<rect class="i4node" x="715.0" y="253.5" width="90.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i4mc" x="760" y="267.5">y = 0</text>
+<text class="i4mc" x="64" y="302">y = 12</text>
+<text class="i4c" x="112" y="332">holds for a = 5;</text>
+<text class="i4c" x="112" y="349">the other branch never ran</text>
+<text class="i4c" x="312" y="332">every path, with its condition</text>
+<text class="i4c" x="312" y="349">and a formula for the result</text>
+<text class="i4mc" x="464" y="302">run 1: 12</text>
+<text class="i4mc" x="560" y="302">run 2: 0</text>
+<path class="i4red" d="M464,202 C 500,214 524,214 552,204" marker-end="url(#i4-arrow-red)"/>
+<text class="i4c" x="512" y="332" fill="#c44a37">negate x > 2 and solve:</text>
+<text class="i4c" x="512" y="349">a = -1 is one possible input</text>
+<text class="i4mc" x="664" y="302" fill="#b8860b">y &lt; 0: unsat</text>
+<text class="i4mc" x="760" y="302" fill="#b8860b">y &lt; 0: unsat</text>
+<text class="i4c" x="712" y="332" fill="#b8860b">unsat on both paths: proved</text>
+<text class="i4c" x="712" y="349">for every integer input</text>
+<path class="i4link" d="M30,392 L796,392" marker-end="url(#i4-arrow)"/>
+<text class="i4ax" x="30" y="412">ONE INPUT, ONE RUN</text>
+<text class="i4ax" x="796" y="412" style="text-anchor:end">EVERY INPUT OF THE MODEL</text>
+<text class="i4e" x="400" y="412">columns 2 to 4 share the path formulas; the question differs</text>
+<text class="i4c" x="112" y="440">cost: one run</text>
+<text class="i4c" x="112" y="457"></text>
+<text class="i4e" x="112" y="482">unit tests, fuzzing</text>
+<text class="i4c" x="312" y="440">a solver call per path;</text>
+<text class="i4c" x="312" y="457">paths multiply at branches</text>
+<text class="i4e" x="312" y="482">King 1976, KLEE 2008</text>
+<text class="i4c" x="512" y="440">a run and a solver call</text>
+<text class="i4c" x="512" y="457">for each new branch</text>
+<text class="i4e" x="512" y="482">DART 2005, SAGE</text>
+<text class="i4c" x="712" y="440">sat returns a counterexample;</text>
+<text class="i4c" x="712" y="457">unknown or a timeout: still open</text>
+<text class="i4e" x="712" y="482">our run: Z3 answers unsat for both</text>
+<line x1="40" y1="517" x2="62" y2="517" stroke="#1fa8d6" stroke-width="1.6" opacity="0.9"/>
+<text class="i4leg" x="68" y="521">a concrete run</text>
+<line x1="182.2" y1="517" x2="204.2" y2="517" stroke="#8b6fc0" stroke-width="1.6" opacity="0.9"/>
+<text class="i4leg" x="210.2" y="521">a symbolic path</text>
+<line x1="330.7" y1="517" x2="352.7" y2="517" stroke="#4f9d69" stroke-width="1.6" opacity="0.9"/>
+<text class="i4leg" x="358.7" y="521">a run the solver chose</text>
+<line x1="523.3" y1="517" x2="545.3" y2="517" stroke="#b8860b" stroke-width="1.6" opacity="0.9"/>
+<text class="i4leg" x="551.3" y="521">a solver verdict</text>
+<line x1="678.0999999999999" y1="517" x2="700.0999999999999" y2="517" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i4leg" x="706.0999999999999" y="521">never executed</text>
+</svg>
+<figcaption><strong>F4</strong> From a test to a proof on f of Figure F1. A test runs one input. Symbolic execution carries a formula per path. Concolic execution adds constraints to a concrete run. Verification asks a solver for a counterexample and gets unsat on both paths.</figcaption>
+</figure>
+<p>A test runs one input. With a = 5 the true branch returns 12 and the false branch never runs. Symbolic execution replaces the input with a symbol: each path carries its condition and a formula for its result, but paths multiply at every branch. Concolic execution is a concrete run that also collects symbolic constraints. It records the branch condition of the a = 5 run as a formula, negates it, asks an SMT solver for an input, gets a = -1, one possible answer, and runs the other branch.</p>
+<p>Verification states the property and asks the solver for a counterexample. We ran the two paths of f in the Z3 solver, over the integers. On both, y &lt; 0 is unsatisfiable, which proves the property for every input of this loop-free model. A timeout or the answer unknown would have left the question open.</p>
+<h2 id="2-jitana-and-rehana-a-graph-that-is-agnostic-to-its-source">2. Jitana and ReHAna: a graph that is agnostic to its source</h2>
+<p>Our earlier research, summarized on the <a href="/research-statement/">research page</a>, belongs to this line of work. Jitana (2019) and ReHAna, which extends it, are not a row of Figure F3. They are the engineering under such analyses, turning the Dalvik bytecode of an Android application into graphs. Figure F5 draws those graphs for one small application.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 612" role="img" aria-labelledby="i5-title i5-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i5-title">Jitana and ReHAna: VM graphs from the loader, analysis graphs from the analyses</title>
+<desc id="i5-desc">Two class-loader boxes. On the left the system loader, in gold, holds platform classes such as Activity, Object and URL, and the method openConnection. On the right an application loader, in purple, holds Net with its field and its method fetch, and MainActivity, whose method onCreate opens into its instruction graph of three instructions. Blue edges belong to the VM graphs that the loader builds by decoding DEX: a parent_loader edge from the application loader to the system loader, an extends edge from MainActivity to Activity, and an ancestor edge from Activity to Object, which stands for the classes between them. Red edges belong to analysis graphs, which the analyses build after reading the decoded instructions: a call edge from an invoke instruction to Net.fetch, a call edge from fetch to URL.openConnection in the system loader, and a points-to edge from the field Net.client to the allocation new Net. Below, a dashed box shows a plugin DEX file that the running application loaded through a DexClassLoader; ReHAna admits it into a child loader with its own parent_loader edge, and a reflective call from Method.invoke is resolved to Plugin.run. Results that depend on the graph being complete are computed again after such a load.</desc>
+<defs>
+<marker id="i5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i5-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i5-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i5-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i5-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i5-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i5k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i5h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i5s { font-size: 12.5px; font-weight: 650; }
+.i5r { font-size: 12px; opacity: 0.84; }
+.i5c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i5m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i5mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i5e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i5ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i5leg { font-size: 11.5px; opacity: 0.75; }
+.i5box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i5sep { stroke-width: 1; opacity: 0.4; }
+.i5link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i5thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i5opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i5red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i5redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i5gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i5goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i5green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i5blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i5bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i5purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i5node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i5dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i5k" x="410" y="22">JITANA: BYTECODE IN, GRAPHS OUT; REHANA: LATE CODE JOINS ITS LOADER</text>
+<rect class="i5box" x="16" y="60" width="250" height="270" rx="5" style="stroke:#b8860b;stroke-width:1.7;fill:rgba(184,134,11,0.06)"/>
+<text class="i5r" x="30" y="84" opacity="0.5" font-weight="750">0</text>
+<text class="i5h" x="48" y="84" fill="#b8860b">SYSTEM CLASS LOADER</text>
+<line class="i5sep" x1="30" y1="94" x2="252" y2="94" stroke="#b8860b"/>
+<rect class="i5node" x="28.0" y="110.5" width="152.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i5mc" x="104" y="124.5">android.app.Activity</text>
+<rect class="i5node" x="127.0" y="167.5" width="126.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i5mc" x="190" y="181.5">java.lang.Object</text>
+<rect class="i5node" x="34.0" y="219.5" width="100.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i5mc" x="84" y="233.5">java.net.URL</text>
+<rect class="i5node" x="84.0" y="275.5" width="132.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i5mc" x="150" y="289.5">openConnection()</text>
+<path class="i5thin" d="M84,248.5 L116,275.5"/>
+<path class="i5blue" d="M150,139.5 L178,166" marker-end="url(#i5-arrow-blue)"/>
+<text class="i5e" x="120" y="158" fill="#1fa8d6">ancestor</text>
+<rect class="i5box" x="470" y="60" width="334" height="270" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5r" x="486" y="84" opacity="0.5" font-weight="750">1</text>
+<text class="i5h" x="504" y="84" fill="#8b6fc0">APP LOADER: com.example.app</text>
+<line class="i5sep" x1="486" y1="94" x2="788" y2="94" stroke="#8b6fc0"/>
+<rect class="i5node" x="510.0" y="135.5" width="70.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5mc" x="545" y="149.5">Net</text>
+<rect class="i5node" x="497.0" y="184.0" width="96.0" height="44" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5mc" x="545" y="198.0">Net.client</text>
+<text class="i5mc" x="545" y="213.0">(field)</text>
+<rect class="i5node" x="505.0" y="257.5" width="80.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5mc" x="545" y="271.5">fetch()</text>
+<path class="i5thin" d="M545,164.5 L545,184"/>
+<path class="i5thin" d="M545,228 L545,257.5"/>
+<rect class="i5node" x="660.0" y="107.5" width="112.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5mc" x="716" y="121.5">MainActivity</text>
+<rect class="i5node" x="668.0" y="159.5" width="96.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5mc" x="716" y="173.5">onCreate()</text>
+<path class="i5thin" d="M716,136.5 L716,159.5"/>
+<path class="i5thin" d="M716,188.5 L716,214" marker-end="url(#i5-arrow)"/>
+<rect class="i5node" x="660.0" y="215.5" width="112.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5mc" x="716" y="229.5">new Net</text>
+<rect class="i5node" x="660.0" y="255.5" width="112.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5mc" x="716" y="269.5">invoke fetch</text>
+<path class="i5thin" d="M716,244.5 L716,254.5" marker-end="url(#i5-arrow)"/>
+<rect class="i5node" x="660.0" y="295.5" width="112.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i5mc" x="716" y="309.5">Method.invoke</text>
+<path class="i5thin" d="M716,284.5 L716,294.5" marker-end="url(#i5-arrow)"/>
+<path class="i5thin" d="M782,216 L782,324"/>
+<text class="i5e" x="796" y="270" transform="rotate(-90 796 270)">instruction graph</text>
+<path class="i5blue" d="M470,78 C 400,78 330,82 268,94" marker-end="url(#i5-arrow-blue)"/>
+<text class="i5e" x="368" y="68" fill="#1fa8d6">parent_loader</text>
+<path class="i5blue" d="M660,120 C 520,116 340,114 182,123" marker-end="url(#i5-arrow-blue)"/>
+<text class="i5e" x="330" y="108" fill="#1fa8d6">extends</text>
+<path class="i5redsolid" d="M660,270 L587,272" marker-end="url(#i5-arrow-red)"/>
+<text class="i5e" x="624" y="263" fill="#c44a37">call</text>
+<path class="i5red" d="M593,206 C 620,206 636,224 658,228" marker-end="url(#i5-arrow-red)"/>
+<text class="i5e" x="628" y="198" fill="#c44a37">points-to</text>
+<path class="i5redsolid" d="M505,274 C 420,274 300,302 218,292" marker-end="url(#i5-arrow-red)"/>
+<text class="i5e" x="366" y="266" fill="#c44a37">call (context-sensitive call graph)</text>
+<rect class="i5box" x="470" y="370" width="334" height="110" rx="5" stroke-dasharray="5 4" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="i5r" x="486" y="394" opacity="0.5" font-weight="750">2</text>
+<text class="i5h" x="504" y="394" fill="#4f9d69">CHILD LOADER: DexClassLoader</text>
+<line class="i5sep" x1="486" y1="404" x2="700" y2="404" stroke="#4f9d69"/>
+<rect class="i5node" x="497.0" y="420.0" width="150.0" height="44" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="i5c" x="572" y="434.0">admitted when the</text>
+<text class="i5c" x="572" y="449.0">running app loaded it</text>
+<rect class="i5node" x="686.0" y="420.0" width="108.0" height="44" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="i5mc" x="740" y="434.0">plugin.dex</text>
+<text class="i5mc" x="740" y="449.0">Plugin.run()</text>
+<path class="i5blue" d="M470,392 C 440,392 440,346 468,334" marker-end="url(#i5-arrow-blue)"/>
+<text class="i5e" x="436" y="368" style="text-anchor:end" fill="#1fa8d6">parent_loader</text>
+<path class="i5red" d="M764,324.5 L764,418" marker-end="url(#i5-arrow-red)"/>
+<text class="i5e" x="756" y="354" style="text-anchor:end" fill="#c44a37">call resolved by reflection</text>
+<rect class="i5box" x="16" y="435" width="280" height="50" rx="5" stroke-dasharray="5 4" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i5r" x="28" y="455">observed at run time: a file the static</text>
+<text class="i5r" x="28" y="472">scope did not contain; pulled, loaded, analyzed</text>
+<path class="i5gold" d="M298,460 C 360,460 410,452 468,452" marker-end="url(#i5-arrow-gold)"/>
+<rect class="i5box" x="16" y="500" width="788" height="66" rx="5" style="fill:rgba(128,128,128,0.05)"/>
+<text class="i5r" x="28" y="520">The loader decodes DEX into VM graphs: loaders, classes, methods, fields and instructions (blue edges).</text>
+<text class="i5r" x="28" y="537">Analyses read the decoded instructions, annotate those graphs, and build analysis graphs of their own (red edges).</text>
+<text class="i5r" x="28" y="554">After a late load, paths already found remain; results that need the complete graph are computed again.</text>
+<line x1="16" y1="589" x2="38" y2="589" stroke="#1fa8d6" stroke-width="1.6" opacity="0.9"/>
+<text class="i5leg" x="44" y="593">VM graphs: the loader</text>
+<line x1="202.29999999999998" y1="589" x2="224.29999999999998" y2="589" stroke="#c44a37" stroke-width="1.6" opacity="0.9"/>
+<text class="i5leg" x="230.29999999999998" y="593">analysis graphs: the analyses</text>
+<line x1="439.0" y1="589" x2="461.0" y2="589" stroke="#4f9d69" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i5leg" x="467.0" y="593">ReHAna: code admitted late</text>
+<line x1="656.8" y1="589" x2="678.8" y2="589" stroke="#b8860b" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i5leg" x="684.8" y="593">the run-time observation</text>
+</svg>
+<figcaption><strong>F5</strong> Jitana&#x27;s graphs for one application. The loader builds the VM graphs, with blue edges, by decoding DEX. Analyses read the decoded instructions and build analysis graphs, with red edges. Below, ReHAna admits a DEX file loaded at run time through a child loader.</figcaption>
+</figure>
+<p>Jitana's virtual class loader admits a class when reachability finds it, by the Android virtual machine's own algorithm. It decodes the class's DEX file into the graphs of the virtual machine: class loaders, classes, methods, fields and instructions. A method's instruction graph is the control-flow graph of Figure F1. Analyses read the decoded instructions, annotate these graphs and build analysis graphs of their own: a pointer assignment graph, a context-sensitive call graph and a graph of communication between applications. The call graph and the instruction graphs give the supergraph of Section 1.</p>
+<p>The graphs can take in code that arrives late. Android applications load code at run time through reflection and dynamic class loading. ReHAna admits such a file through a child loader with its own parent edge and extends the analysis in place. Nodes and paths already found remain. Conclusions that depend on the graph being complete, such as the set of targets of a call, are computed again.</p>
+<p>In Jitana's Facebook case study the analyzed classes grew from 3,918 to 23,621 after three DEX files loaded at run time were captured. In ReHAna's 2018 sample of 60 popular applications, static analysis found reflection or dynamic loading in 34. Native code behind the Java Native Interface is not analyzed, which is the FFI limit of Section 1 in practice.</p>
+<p>The series takes one property from this work: the graph is agnostic to its source. Figure F6 draws the two routes.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 400" role="img" aria-labelledby="i6-title i6-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i6-title">Two routes to a graph: an Android application and a PyTorch model</title>
+<desc id="i6-desc">Two lanes under the column heads source, builder, the graph, rules, output and where it goes. Top, the software engineer's route: an APK and its DEX files, Jitana's virtual class loader, the VM graphs of classes, methods and instructions, analyses that also build analysis graphs, facts such as calls, points-to sets and flows, and a report or a detector. Bottom, the AI engineer's route: a Python function, a tracer such as TorchDynamo, an FX graph of tensor operations, passes that may build new graphs, kernels and a plan to run them, and a runtime on a device. A red dotted line after the builder marks where a representation is handed over in each lane. A note says how the two builders differ: the loader follows the loading rules of the virtual machine, and a tracer follows the frame it was given.</desc>
+<defs>
+<marker id="i6-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i6-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i6-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i6-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i6-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i6-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i6k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i6h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i6s { font-size: 12.5px; font-weight: 650; }
+.i6r { font-size: 12px; opacity: 0.84; }
+.i6c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i6m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i6mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i6e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i6ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i6leg { font-size: 11.5px; opacity: 0.75; }
+.i6box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i6sep { stroke-width: 1; opacity: 0.4; }
+.i6link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i6thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i6opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i6red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i6redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i6gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i6goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i6green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i6blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i6bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i6purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i6node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i6dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i6k" x="410" y="22">TWO ROUTES TO A GRAPH</text>
+<text class="i6ax" x="64" y="50" style="text-anchor:middle">SOURCE</text>
+<text class="i6ax" x="190" y="50" style="text-anchor:middle">BUILDER</text>
+<text class="i6ax" x="330" y="50" style="text-anchor:middle">THE GRAPH</text>
+<text class="i6ax" x="480" y="50" style="text-anchor:middle">RULES</text>
+<text class="i6ax" x="620" y="50" style="text-anchor:middle">OUTPUT</text>
+<text class="i6ax" x="748" y="50" style="text-anchor:middle">WHERE IT GOES</text>
+<text class="i6s" x="14" y="70" fill="#1fa8d6">Android app</text>
+<rect class="i6node" x="18.0" y="88" width="92" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i6c" x="64" y="99">an APK:</text>
+<text class="i6c" x="64" y="114">DEX files</text>
+<rect class="i6node" x="136.0" y="88" width="108" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i6c" x="190" y="99">virtual class</text>
+<text class="i6c" x="190" y="114">loader</text>
+<rect class="i6node" x="260.0" y="88" width="140" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i6c" x="330" y="99">VM graphs: classes,</text>
+<text class="i6c" x="330" y="114">methods, instructions</text>
+<rect class="i6node" x="412.0" y="88" width="136" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i6c" x="480" y="99">analyses, which also</text>
+<text class="i6c" x="480" y="114">build analysis graphs</text>
+<rect class="i6node" x="564.0" y="88" width="112" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i6c" x="620" y="99">facts: calls,</text>
+<text class="i6c" x="620" y="114">points-to, flows</text>
+<rect class="i6node" x="696.0" y="88" width="104" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i6c" x="748" y="99">a report;</text>
+<text class="i6c" x="748" y="114">a detector</text>
+<path class="i6link" d="M112.0,110 L134.0,110" marker-end="url(#i6-arrow)"/>
+<path class="i6link" d="M246.0,110 L258.0,110" marker-end="url(#i6-arrow)"/>
+<path class="i6link" d="M402.0,110 L410.0,110" marker-end="url(#i6-arrow)"/>
+<path class="i6link" d="M550.0,110 L562.0,110" marker-end="url(#i6-arrow)"/>
+<path class="i6link" d="M678.0,110 L694.0,110" marker-end="url(#i6-arrow)"/>
+<text class="i6s" x="14" y="210" fill="#8b6fc0">PyTorch model</text>
+<rect class="i6node" x="18.0" y="228" width="92" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i6c" x="64" y="239">a Python</text>
+<text class="i6c" x="64" y="254">function</text>
+<rect class="i6node" x="136.0" y="228" width="108" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i6c" x="190" y="239">a tracer, here</text>
+<text class="i6c" x="190" y="254">TorchDynamo</text>
+<rect class="i6node" x="260.0" y="228" width="140" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i6c" x="330" y="239">an FX graph of</text>
+<text class="i6c" x="330" y="254">tensor operations</text>
+<rect class="i6node" x="412.0" y="228" width="136" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i6c" x="480" y="239">passes, which may</text>
+<text class="i6c" x="480" y="254">build new graphs</text>
+<rect class="i6node" x="564.0" y="228" width="112" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i6c" x="620" y="239">kernels and a</text>
+<text class="i6c" x="620" y="254">plan to run them</text>
+<rect class="i6node" x="696.0" y="228" width="104" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i6c" x="748" y="239">a runtime</text>
+<text class="i6c" x="748" y="254">on a device</text>
+<path class="i6link" d="M112.0,250 L134.0,250" marker-end="url(#i6-arrow)"/>
+<path class="i6link" d="M246.0,250 L258.0,250" marker-end="url(#i6-arrow)"/>
+<path class="i6link" d="M402.0,250 L410.0,250" marker-end="url(#i6-arrow)"/>
+<path class="i6link" d="M550.0,250 L562.0,250" marker-end="url(#i6-arrow)"/>
+<path class="i6link" d="M678.0,250 L694.0,250" marker-end="url(#i6-arrow)"/>
+<path class="i6red" d="M252,60 L252,300"/>
+<text class="i6e" x="252" y="318" fill="#c44a37">a representation is handed over here</text>
+<text class="i6e" x="590" y="318">the builders differ: the loader follows the VM's loading rules,</text>
+<text class="i6e" x="590" y="332">and a tracer follows the frame it was given</text>
+<rect x="16" y="376" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#1fa8d6" stroke-width="1.3"/>
+<text class="i6leg" x="44" y="386">program analysis</text>
+<rect x="170.8" y="376" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#8b6fc0" stroke-width="1.3"/>
+<text class="i6leg" x="198.8" y="386">machine learning</text>
+<line x1="325.6" y1="382" x2="347.6" y2="382" stroke="#c44a37" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i6leg" x="353.6" y="386">the hand-over</text>
+</svg>
+<figcaption><strong>F6</strong> Two routes to a graph: APK to loader to VM graphs to analyses to facts, and Python to tracer to graph to passes to kernels. The red line marks where a representation is handed over.</figcaption>
+</figure>
+<p>Both lanes have one architecture: a builder makes a graph, rules run on it, and results come out. The rules may build further graphs, as Jitana's analyses and a compiler's passes both do. The lanes differ in what the builder establishes about its graph. Jitana's loader follows the virtual machine's loading algorithm, so the graph holds the classes that the virtual machine would load. A tracer follows the frame it was given, and what its graph covers depends on whether it traced abstract values or recorded one run.</p>
+<h2 id="3-graph-compilers-from-the-ai-engineer-s-pov">3. Graph compilers from the AI engineer's PoV</h2>
+<p>An AI engineer seldom builds a graph by hand, because the framework records one. <a href="https://sebastianraschka.com/teaching/pytorch-1h/#3-seeing-models-as-computation-graphs" target="_blank" rel="noreferrer">Raschka's one-hour introduction to PyTorch</a> draws a model as a computation graph, a directed graph of the operations in a mathematical expression. His example is a logistic regression: x1 times w1, plus b, through a sigmoid, into a loss. Figure F7 redraws his diagram with its values and gradients.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 356" role="img" aria-labelledby="j7-title j7-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="j7-title">The computation graph of a logistic regression: values forward, gradients backward</title>
+<desc id="j7-desc">The mathematical graph of a logistic regression, with eight nodes. Leaves x1 = 1.1, w1 = 2.2, b = 0.0 and the label y = 1.0; a multiply node producing u = x1 times w1, an add node producing z = u + b, a sigmoid producing a = 0.9183, and a binary cross-entropy loss of 0.0852 on the right. Solid edges carry values forward. Dashed red edges run backward from the loss, each labelled with its local derivative: from the loss to a, through the sigmoid with a(1 - a), from the add to b with 1 and from the add to the multiply with 1, and from the multiply to w1 with x1. The backward path is connected from the loss to both leaves that ask for gradients, w1 and b, drawn with purple outlines; after backward they carry -0.0898 and -0.0817. A side note says what PyTorch itself records when gradients are tracked: backward functions and the values they need. The drawing is the mathematics, not that record.</desc>
+<defs>
+<marker id="j7-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="j7-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="j7-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="j7-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="j7-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="j7-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.j7k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.j7h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.j7s { font-size: 12.5px; font-weight: 650; }
+.j7r { font-size: 12px; opacity: 0.84; }
+.j7c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.j7m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.j7mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.j7e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.j7ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.j7leg { font-size: 11.5px; opacity: 0.75; }
+.j7box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.j7sep { stroke-width: 1; opacity: 0.4; }
+.j7link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.j7thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.j7opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.j7red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.j7redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j7gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.j7goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.j7green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j7blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j7bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.j7purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j7node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.j7dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="j7k" x="410" y="22">A COMPUTATION GRAPH: VALUES FORWARD, GRADIENTS BACKWARD</text>
+<rect class="j7node" x="22.0" y="56.0" width="96.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j7mc" x="70" y="70.0">x1 = 1.1</text>
+<text class="j7mc" x="70" y="85.0">input</text>
+<rect class="j7node" x="22.0" y="144.0" width="96.0" height="44" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j7mc" x="70" y="158.0">w1 = 2.2</text>
+<text class="j7mc" x="70" y="173.0">requires_grad</text>
+<rect class="j7node" x="282.0" y="200.0" width="96.0" height="44" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j7mc" x="330" y="214.0">b = 0.0</text>
+<text class="j7mc" x="330" y="229.0">requires_grad</text>
+<rect class="j7node" x="564.0" y="194.0" width="96.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j7mc" x="612" y="208.0">y = 1.0</text>
+<text class="j7mc" x="612" y="223.0">label</text>
+<circle cx="190" cy="120" r="22" class="j7node"/>
+<text class="j7c" x="190" y="125" font-size="18">×</text>
+<circle cx="330" cy="120" r="22" class="j7node"/>
+<text class="j7c" x="330" y="125" font-size="18">+</text>
+<rect class="j7node" x="406.0" y="98.0" width="100.0" height="44" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="j7mc" x="456" y="112.0">a = σ(z)</text>
+<text class="j7mc" x="456" y="127.0">= 0.9183</text>
+<rect class="j7node" x="535.0" y="98.0" width="130.0" height="44" rx="5" style="stroke:#c44a37;stroke-width:1.7"/>
+<text class="j7mc" x="600" y="112.0">loss = BCE(a, y)</text>
+<text class="j7mc" x="600" y="127.0">= 0.0852</text>
+<text class="j7e" x="260" y="108">u = x1·w1</text>
+<text class="j7e" x="378" y="108">z = u + b</text>
+<path class="j7link" d="M118,84 C 150,88 160,108 167,113" marker-end="url(#j7-arrow)"/>
+<path class="j7link" d="M118,160 C 150,156 160,134 167,127" marker-end="url(#j7-arrow)"/>
+<path class="j7link" d="M212,120 L307,120" marker-end="url(#j7-arrow)"/>
+<path class="j7link" d="M322,200 L322,143" marker-end="url(#j7-arrow)"/>
+<path class="j7link" d="M352,120 L405,120" marker-end="url(#j7-arrow)"/>
+<path class="j7link" d="M506,120 L534,120" marker-end="url(#j7-arrow)"/>
+<path class="j7link" d="M612,194 C 612,176 606,160 604,143" marker-end="url(#j7-arrow)"/>
+<path class="j7red" d="M546,142 C 520,168 482,164 462,143" marker-end="url(#j7-arrow-red)"/>
+<text class="j7e" x="500" y="184" fill="#c44a37">dloss/da = (a − y) / (a(1 − a))</text>
+<path class="j7red" d="M412,142 C 394,160 366,156 349,134" marker-end="url(#j7-arrow-red)"/>
+<text class="j7e" x="410" y="166" fill="#c44a37">da/dz = a(1 − a)</text>
+<path class="j7red" d="M338,142 L338,199" marker-end="url(#j7-arrow-red)"/>
+<text class="j7e" x="346" y="180" style="text-anchor:start" fill="#c44a37">dz/db = 1</text>
+<path class="j7red" d="M311,133 C 290,152 232,152 209,134" marker-end="url(#j7-arrow-red)"/>
+<text class="j7e" x="262" y="164" fill="#c44a37">dz/du = 1</text>
+<path class="j7red" d="M176,138 C 152,168 132,166 120,166" marker-end="url(#j7-arrow-red)"/>
+<text class="j7e" x="178" y="184" fill="#c44a37">du/dw1 = x1</text>
+<text class="j7mc" x="70" y="204" fill="#c44a37">w1.grad = −0.0898</text>
+<text class="j7mc" x="330" y="260" fill="#c44a37">b.grad = −0.0817</text>
+<rect class="j7box" x="686" y="56" width="120" height="164" rx="5" style="fill:rgba(128,128,128,0.05)"/>
+<text class="j7r" x="696" y="76">PyTorch records,</text>
+<text class="j7r" x="696" y="92">when gradients</text>
+<text class="j7r" x="696" y="108">are tracked,</text>
+<text class="j7r" x="696" y="124">backward functions</text>
+<text class="j7r" x="696" y="140">(grad_fn) and the</text>
+<text class="j7r" x="696" y="156">values they need.</text>
+<text class="j7r" x="696" y="186">This drawing is</text>
+<text class="j7r" x="696" y="202">the mathematics.</text>
+<rect class="j7box" x="16" y="276" width="788" height="40" rx="5" style="fill:rgba(128,128,128,0.05)"/>
+<text class="j7r" x="28" y="301" style="font-size:11.5px">the forward computation, with each local derivative on its edge; backward applies the chain rule and adds up what reaches a leaf</text>
+<line x1="16" y1="341" x2="38" y2="341" stroke="currentColor" stroke-width="1.6" opacity="0.9"/>
+<text class="j7leg" x="44" y="345">forward: computed values</text>
+<line x1="221.2" y1="341" x2="243.2" y2="341" stroke="#c44a37" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="j7leg" x="249.2" y="345">backward: chain rule, local derivative on the edge</text>
+<rect x="590.2" y="335" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#8b6fc0" stroke-width="1.3"/>
+<text class="j7leg" x="618.2" y="345">leaf that asks for a gradient</text>
+</svg>
+<figcaption><strong>F7</strong> The computation graph of a logistic regression. Solid edges carry values forward from the leaves. Dashed red edges carry the chain rule backward, each with its local derivative, to the two leaves that asked for gradients. Redrawn from the diagram in Raschka&#x27;s Section 3.</figcaption>
+</figure>
+<p>The forward computation has definitions and uses, as SSA does: a tensor is a definition, and each edge into an operation is a use. When gradients are tracked, PyTorch also records a backward function for each operation, with the values that function needs. Backward walks these functions in reverse from the loss, applies the chain rule and adds the contributions reaching each leaf.</p>
+<p>This graph exists for gradients and does not make the model faster. A CUDA graph can. Take a minimal model, <code>relu(x @ w + b)</code>: a matrix product, an add and an activation. In PyTorch's default mode each operation makes its own trip to the GPU, drawn in Figure F8. Python runs the line. A dispatcher picks the kernel for the device and data type. ATen, the C++ tensor library inside libtorch, checks shapes, allocates the output and sets up arguments. The CUDA driver launches the kernel. The next line repeats all of it, and for a small model this friction can cost more than the arithmetic.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 500" role="img" aria-labelledby="i8-title i8-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i8-title">Why a graph: one step of a small model, with and without a CUDA graph</title>
+<desc id="i8-desc">Two lanes for the model relu(x @ w + b). Top, without a CUDA graph: each of the three operations makes its own trip from the Python line through the dispatcher, the ATen C++ library and the CUDA driver to a kernel on the GPU, so one step is three trips through four layers. Three kernels for three operations is an illustration; one operation may launch several. Bottom, with a CUDA graph: the kernel launches and their arguments were recorded once; each later step is one replay call and one graph launch, and the dispatcher and ATen layers are skipped. The kernels are the same in both lanes. The simple capture route shown needs static shapes, static control flow and buffers at fixed addresses.</desc>
+<defs>
+<marker id="i8-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i8-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i8-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i8-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i8-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i8-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i8k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i8h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i8s { font-size: 12.5px; font-weight: 650; }
+.i8r { font-size: 12px; opacity: 0.84; }
+.i8c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i8m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i8mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i8e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i8ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i8leg { font-size: 11.5px; opacity: 0.75; }
+.i8box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i8sep { stroke-width: 1; opacity: 0.4; }
+.i8link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i8thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i8opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i8red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i8redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i8gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i8goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i8green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i8blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i8bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i8purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i8node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i8dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i8k" x="410" y="22">WHY A GRAPH: ONE STEP, WITH AND WITHOUT A CUDA GRAPH</text>
+<text class="i8h" x="14" y="56" fill="#1fa8d6">WITHOUT A GRAPH</text>
+<text class="i8r" x="160" y="56">eager PyTorch: every operation makes its own trip, on every step</text>
+<text class="i8ax" x="78" y="84" style="text-anchor:middle">PYTHON</text>
+<text class="i8ax" x="232" y="84" style="text-anchor:middle">DISPATCHER</text>
+<text class="i8ax" x="410" y="84" style="text-anchor:middle">ATEN C++ (LIBTORCH)</text>
+<text class="i8ax" x="590" y="84" style="text-anchor:middle">CUDA DRIVER</text>
+<text class="i8ax" x="735" y="84" style="text-anchor:middle">GPU</text>
+<rect class="i8node" x="26.0" y="97.5" width="104.0" height="29" rx="5"/>
+<text class="i8mc" x="78" y="111.5">x @ w</text>
+<rect class="i8node" x="168.0" y="97.5" width="128.0" height="29" rx="5"/>
+<text class="i8c" x="232" y="111.5">pick the kernel</text>
+<rect class="i8node" x="328.0" y="97.5" width="164.0" height="29" rx="5"/>
+<text class="i8c" x="410" y="111.5">check, allocate, set up</text>
+<rect class="i8node" x="538.0" y="97.5" width="104.0" height="29" rx="5"/>
+<text class="i8c" x="590" y="111.5">launch</text>
+<rect class="i8node" x="676.0" y="97.5" width="118.0" height="29" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i8c" x="735" y="111.5">matmul kernel</text>
+<path class="i8link" d="M130,112 L168,112" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M296,112 L328,112" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M492,112 L538,112" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M642,112 L676,112" marker-end="url(#i8-arrow)"/>
+<rect class="i8node" x="26.0" y="137.5" width="104.0" height="29" rx="5"/>
+<text class="i8mc" x="78" y="151.5">+ b</text>
+<rect class="i8node" x="168.0" y="137.5" width="128.0" height="29" rx="5"/>
+<text class="i8c" x="232" y="151.5">pick the kernel</text>
+<rect class="i8node" x="328.0" y="137.5" width="164.0" height="29" rx="5"/>
+<text class="i8c" x="410" y="151.5">check, allocate, set up</text>
+<rect class="i8node" x="538.0" y="137.5" width="104.0" height="29" rx="5"/>
+<text class="i8c" x="590" y="151.5">launch</text>
+<rect class="i8node" x="676.0" y="137.5" width="118.0" height="29" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i8c" x="735" y="151.5">add kernel</text>
+<path class="i8link" d="M130,152 L168,152" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M296,152 L328,152" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M492,152 L538,152" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M642,152 L676,152" marker-end="url(#i8-arrow)"/>
+<rect class="i8node" x="26.0" y="177.5" width="104.0" height="29" rx="5"/>
+<text class="i8mc" x="78" y="191.5">relu( )</text>
+<rect class="i8node" x="168.0" y="177.5" width="128.0" height="29" rx="5"/>
+<text class="i8c" x="232" y="191.5">pick the kernel</text>
+<rect class="i8node" x="328.0" y="177.5" width="164.0" height="29" rx="5"/>
+<text class="i8c" x="410" y="191.5">check, allocate, set up</text>
+<rect class="i8node" x="538.0" y="177.5" width="104.0" height="29" rx="5"/>
+<text class="i8c" x="590" y="191.5">launch</text>
+<rect class="i8node" x="676.0" y="177.5" width="118.0" height="29" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i8c" x="735" y="191.5">relu kernel</text>
+<path class="i8link" d="M130,192 L168,192" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M296,192 L328,192" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M492,192 L538,192" marker-end="url(#i8-arrow)"/>
+<path class="i8link" d="M642,192 L676,192" marker-end="url(#i8-arrow)"/>
+<text class="i8e" x="806" y="232" style="text-anchor:end">3 operations, 3 trips through 4 layers on every step (an illustration: one operation may launch several kernels)</text>
+<line class="i8sep" x1="14" y1="252" x2="806" y2="252" stroke="currentColor"/>
+<text class="i8h" x="14" y="282" fill="#b8860b">WITH A CUDA GRAPH</text>
+<text class="i8r" x="176" y="282">the launches were recorded once; every later step replays the record</text>
+<rect class="i8node" x="26.0" y="341.5" width="104.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i8mc" x="78" y="355.5">g.replay()</text>
+<rect x="168.0" y="341.5" width="128" height="29" rx="5" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 4" opacity="0.38"/>
+<text class="i8c" x="232" y="360" opacity="0.5">skipped</text>
+<rect x="328.0" y="341.5" width="164" height="29" rx="5" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 4" opacity="0.38"/>
+<text class="i8c" x="410" y="360" opacity="0.5">skipped</text>
+<rect class="i8node" x="530.0" y="341.5" width="120.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i8c" x="590" y="355.5">one graph launch</text>
+<path class="i8goldsolid" d="M112,341 C 220,294 470,294 556,340" marker-end="url(#i8-arrow-gold)"/>
+<text class="i8e" x="330" y="300" fill="#b8860b">one call per step</text>
+<path class="i8goldsolid" d="M650,356 L668,356" marker-end="url(#i8-arrow-gold)"/>
+<rect x="670" y="300" width="132" height="112" rx="7" fill="rgba(184,134,11,0.07)" stroke="#b8860b" stroke-dasharray="6 4" stroke-width="1.5"/>
+<rect class="i8node" x="690.0" y="305.5" width="92.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i8c" x="736" y="319.5">matmul</text>
+<path class="i8goldsolid" d="M736,335 L736,341" marker-end="url(#i8-arrow-gold)"/>
+<rect class="i8node" x="690.0" y="341.5" width="92.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i8c" x="736" y="355.5">add</text>
+<path class="i8goldsolid" d="M736,371 L736,377" marker-end="url(#i8-arrow-gold)"/>
+<rect class="i8node" x="690.0" y="377.5" width="92.0" height="29" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i8c" x="736" y="391.5">relu</text>
+<text class="i8e" x="736" y="428" fill="#b8860b">the recorded graph</text>
+<text class="i8r" x="14" y="408">capture, once: run the step while the stream records;</text>
+<text class="i8r" x="14" y="425">the launches and their arguments become the graph</text>
+<text class="i8r" x="330" y="408" fill="#c44a37">this simple capture needs static shapes, static</text>
+<text class="i8r" x="330" y="425" fill="#c44a37">control flow, and buffers at fixed addresses</text>
+<text class="i8c" x="410" y="462">The kernels are the same in both lanes. A CUDA graph can reduce launch overhead; a graph compiler also rewrites the graph.</text>
+<rect x="60" y="479" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#1fa8d6" stroke-width="1.3"/>
+<text class="i8leg" x="88" y="489">one trip per operation</text>
+<rect x="252.6" y="479" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#b8860b" stroke-width="1.3"/>
+<text class="i8leg" x="280.6" y="489">recorded once, replayed</text>
+<line x1="451.5" y1="485" x2="473.5" y2="485" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i8leg" x="479.5" y="489">layer skipped on replay</text>
+<line x1="650.4" y1="485" x2="672.4" y2="485" stroke="#c44a37" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i8leg" x="678.4" y="489">what the replay assumes</text>
+</svg>
+<figcaption><strong>F8</strong> One step of relu(x @ w + b). Without a graph, each operation makes its own trip through Python, the dispatcher, ATen and the CUDA driver. With a CUDA graph, one call replays the recorded launches, under static shapes, static control flow and fixed buffers.</figcaption>
+</figure>
+<p>A CUDA graph removes the friction. PyTorch runs the step once with the CUDA stream capturing, so the kernel launches and their arguments are recorded, not executed. Every later step replays the record with one call, which skips argument setup and kernel dispatch in Python, C++ and the driver. An edge of this graph only orders two launches. The simple capture shown needs static shapes, static control flow and buffers at fixed addresses, since the record holds the branch taken and the pointers passed.</p>
+<p>A CUDA graph only replays: the kernels stay the same. A graph compiler rewrites a graph of operations, for example by fusing the add and the activation into one kernel, and lowers it to kernels and a plan to run them. To rewrite operations it must hold several of them before they run. There are three ways to get them: build the graph explicitly, trace the program, or defer execution. Figure F9 draws the third beside eager execution.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 486" role="img" aria-labelledby="i9-title i9-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i9-title">Eager and lazy execution: the same three operations, run three times</title>
+<desc id="i9-desc">Two timelines of relu(x @ w + b), a matmul, an add and a relu, run three times. Top, eager: each operation is submitted when its Python line executes, drawn as three launches per run. Bottom, one lazy strategy, with three separate choices labelled. First, record: on the first run each line only records its operation, and no kernel has run. Second, compile: when a value is demanded, a compiler that holds the whole record may rewrite it; fusing the add and the relu into one kernel is an illustration. Third, reuse: runs two and three use the compiled result, which is allowed only while a condition on the inputs holds; Figure F10 shows such a condition. Recording, compiling and reusing are separate choices, and a system may make one without the others.</desc>
+<defs>
+<marker id="i9-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i9-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i9-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i9-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i9-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i9-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i9k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i9h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i9s { font-size: 12.5px; font-weight: 650; }
+.i9r { font-size: 12px; opacity: 0.84; }
+.i9c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i9m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i9mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i9e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i9ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i9leg { font-size: 11.5px; opacity: 0.75; }
+.i9box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i9sep { stroke-width: 1; opacity: 0.4; }
+.i9link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i9thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i9opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i9red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i9redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i9gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i9goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i9green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i9blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i9bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i9purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i9node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i9dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i9k" x="410" y="22">EAGER AND LAZY: THE SAME THREE OPERATIONS, RUN THREE TIMES</text>
+<text class="i9h" x="14" y="58" fill="#1fa8d6">EAGER</text>
+<text class="i9r" x="76" y="58">each operation is submitted when its Python line runs</text>
+<path class="i9thin" d="M60,96 L800,96" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="165" y="86">run 1</text>
+<rect class="i9node" x="70" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="100" y="125" style="font-size:11px">matmul</text>
+<path class="i9thin" d="M100,136 L100,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="100" y="166">launch</text>
+<rect class="i9node" x="140" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="170" y="125" style="font-size:11px">add</text>
+<path class="i9thin" d="M170,136 L170,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="170" y="166">launch</text>
+<rect class="i9node" x="210" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="240" y="125" style="font-size:11px">relu</text>
+<path class="i9thin" d="M240,136 L240,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="240" y="166">launch</text>
+<text class="i9e" x="410" y="86">run 2</text>
+<rect class="i9node" x="315" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="345" y="125" style="font-size:11px">matmul</text>
+<path class="i9thin" d="M345,136 L345,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="345" y="166">launch</text>
+<rect class="i9node" x="385" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="415" y="125" style="font-size:11px">add</text>
+<path class="i9thin" d="M415,136 L415,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="415" y="166">launch</text>
+<rect class="i9node" x="455" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="485" y="125" style="font-size:11px">relu</text>
+<path class="i9thin" d="M485,136 L485,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="485" y="166">launch</text>
+<text class="i9e" x="655" y="86">run 3</text>
+<rect class="i9node" x="560" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="590" y="125" style="font-size:11px">matmul</text>
+<path class="i9thin" d="M590,136 L590,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="590" y="166">launch</text>
+<rect class="i9node" x="630" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="660" y="125" style="font-size:11px">add</text>
+<path class="i9thin" d="M660,136 L660,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="660" y="166">launch</text>
+<rect class="i9node" x="700" y="106" width="60" height="30" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i9c" x="730" y="125" style="font-size:11px">relu</text>
+<path class="i9thin" d="M730,136 L730,154" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="730" y="166">launch</text>
+<text class="i9r" x="14" y="194">3 launches per run in this drawing, each after the trip of Figure F8. A shape may change on any line, and nothing is recorded again.</text>
+<line class="i9sep" x1="14" y1="212" x2="806" y2="212" stroke="currentColor"/>
+<text class="i9h" x="14" y="242" fill="#8b6fc0">LAZY</text>
+<text class="i9r" x="66" y="242">one strategy: each line records its operation and returns a handle; work starts when a value is demanded</text>
+<path class="i9thin" d="M60,280 L800,280" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="170" y="270">run 1</text>
+<rect class="i9node" x="70" y="290" width="60" height="30" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i9c" x="100" y="309" style="font-size:11px">matmul</text>
+<path class="i9purple" d="M130,305 L140,305" marker-end="url(#i9-arrow-purple)"/>
+<rect class="i9node" x="140" y="290" width="60" height="30" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i9c" x="170" y="309" style="font-size:11px">add</text>
+<path class="i9purple" d="M200,305 L210,305" marker-end="url(#i9-arrow-purple)"/>
+<rect class="i9node" x="210" y="290" width="60" height="30" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i9c" x="240" y="309" style="font-size:11px">relu</text>
+<rect x="62" y="282" width="216" height="46" rx="7" fill="none" stroke="#8b6fc0" stroke-dasharray="5 4"/>
+<text class="i9e" x="170" y="344" fill="#8b6fc0">1. RECORD: no kernel has run yet</text>
+<path class="i9purple" d="M170,350 L170,366" marker-end="url(#i9-arrow-purple)"/>
+<text class="i9e" x="170" y="382" fill="#8b6fc0">2. COMPILE: a value is demanded; a compiler</text>
+<text class="i9e" x="170" y="396" fill="#8b6fc0">may rewrite the record (here, add and relu fused)</text>
+<text class="i9e" x="425" y="270">run 2</text>
+<rect class="i9node" x="330" y="290" width="60" height="30" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i9c" x="360" y="309" style="font-size:11px">matmul</text>
+<rect class="i9node" x="400" y="290" width="120" height="30" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i9c" x="460" y="309" style="font-size:11px">add ∘ relu (fused)</text>
+<path class="i9thin" d="M360,320 L360,338" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="360" y="350">launch</text>
+<path class="i9thin" d="M460,320 L460,338" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="460" y="350">launch</text>
+<circle cx="320" cy="305" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="320" cy="305" r="1.7" fill="#c44a37"/>
+<text class="i9e" x="655" y="270">run 3</text>
+<rect class="i9node" x="560" y="290" width="60" height="30" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i9c" x="590" y="309" style="font-size:11px">matmul</text>
+<rect class="i9node" x="630" y="290" width="120" height="30" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i9c" x="690" y="309" style="font-size:11px">add ∘ relu (fused)</text>
+<path class="i9thin" d="M590,320 L590,338" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="590" y="350">launch</text>
+<path class="i9thin" d="M690,320 L690,338" marker-end="url(#i9-arrow)"/>
+<text class="i9e" x="690" y="350">launch</text>
+<circle cx="550" cy="305" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="550" cy="305" r="1.7" fill="#c44a37"/>
+<text class="i9e" x="540" y="382" fill="#c44a37">3. REUSE: the compiled result is kept for later runs,</text>
+<text class="i9e" x="540" y="396" fill="#c44a37">and may be used only while a condition holds (Figure F10)</text>
+<text class="i9r" x="14" y="426">Three separate choices: run later (lazy), rewrite the record (compile), keep the result (reuse). A system may make one without</text>
+<text class="i9r" x="14" y="443">the others. The gain comes from the second: a compiler held all three operations before any of them ran.</text>
+<rect x="16" y="463" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#1fa8d6" stroke-width="1.3"/>
+<text class="i9leg" x="44" y="473">eager: runs now</text>
+<rect x="164.5" y="463" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#8b6fc0" stroke-width="1.3"/>
+<text class="i9leg" x="192.5" y="473">recorded, not yet run</text>
+<rect x="350.79999999999995" y="463" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#b8860b" stroke-width="1.3"/>
+<text class="i9leg" x="378.79999999999995" y="473">compiled and reused</text>
+<line x1="524.5" y1="469" x2="546.5" y2="469" stroke="#c44a37" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i9leg" x="552.5" y="473">the condition for reuse</text>
+</svg>
+<figcaption><strong>F9</strong> Eager and lazy execution of the same three operations. Eager submits each operation as its line runs. The lazy lane separates three choices: record the operations, let a compiler rewrite the record, and reuse the result while a condition holds.</figcaption>
+</figure>
+<p>Eager execution submits each operation when its Python line runs. It is PyTorch's default, which is why a model can branch on a tensor's value or change a shape on any line. Lazy execution splits the two events: the line records the operation and returns a handle, and work starts when a value is demanded.</p>
+<p>Laziness alone is not faster, because delayed work is the same work. The gain comes when a compiler holds the record before it runs, so it can fuse the add into the activation and specialize both to the shapes it saw. Keeping the compiled result for later calls is a further choice, and it needs a condition, because the compiler saw one set of inputs. Figure F10 shows such a condition in torch.compile, which traces a function when it is called and is not a lazy tensor system.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 432" role="img" aria-labelledby="i10-title i10-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i10-title">A call under torch.compile: look up a stored entry, or trace and compile a new one</title>
+<desc id="i10-desc">A state graph. When a compiled Python frame is called, the guards of each stored entry are run. If an entry's guards pass, its compiled code runs, and the next call starts at the lookup again. If no stored entry accepts the call, TorchDynamo traces the frame into an FX graph with new guards, the backend, TorchInductor by default, compiles the graph into kernels, and Dynamo rewrites the frame's bytecode and stores the new entry, which later calls can match. Recompilation has limits, two of them with different scopes; when a limit is reached Dynamo stops adding entries, a call that matches a stored entry still runs it, and a call that matches none runs uncompiled.</desc>
+<defs>
+<marker id="i10-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i10-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i10-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i10-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i10-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i10-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i10k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i10h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i10s { font-size: 12.5px; font-weight: 650; }
+.i10r { font-size: 12px; opacity: 0.84; }
+.i10c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i10m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i10mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i10e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i10ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i10leg { font-size: 11.5px; opacity: 0.75; }
+.i10box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i10sep { stroke-width: 1; opacity: 0.4; }
+.i10link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i10thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i10opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i10red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i10redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i10gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i10goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i10green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i10blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i10bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i10purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i10node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i10dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i10k" x="410" y="22">TORCH.COMPILE: LOOK UP, OR TRACE AND COMPILE</text>
+<rect class="i10node" x="18.0" y="90.0" width="124.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i10c" x="80" y="104.0">a Python frame</text>
+<text class="i10c" x="80" y="119.0">is called</text>
+<rect class="i10node" x="177.0" y="90.0" width="170.0" height="44" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="i10c" x="262" y="104.0">look up: run the guards</text>
+<text class="i10c" x="262" y="119.0">of each stored entry</text>
+<rect class="i10node" x="401.0" y="90.0" width="190.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i10c" x="496" y="104.0">TorchDynamo traces the frame:</text>
+<text class="i10c" x="496" y="119.0">an FX graph and new guards</text>
+<rect class="i10node" x="628.0" y="90.0" width="176.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i10c" x="716" y="104.0">the backend compiles it</text>
+<text class="i10c" x="716" y="119.0">(TorchInductor: kernels)</text>
+<rect class="i10node" x="215.0" y="240.0" width="170.0" height="44" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="i10c" x="300" y="254.0">an entry's guards pass:</text>
+<text class="i10c" x="300" y="269.0">run its compiled code</text>
+<rect class="i10node" x="628.0" y="240.0" width="176.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i10c" x="716" y="254.0">Dynamo rewrites the bytecode</text>
+<text class="i10c" x="716" y="269.0">and stores the new entry</text>
+<rect class="i10node" x="16.0" y="232.5" width="152.0" height="59" rx="5" style="stroke:#c44a37;stroke-width:1.7"/>
+<text class="i10c" x="92" y="246.5">no entry accepts and</text>
+<text class="i10c" x="92" y="261.5">a limit is reached: this</text>
+<text class="i10c" x="92" y="276.5">call runs uncompiled</text>
+<path class="i10link" d="M142,112 L175,112" marker-end="url(#i10-arrow)"/>
+<path class="i10red" d="M347,112 L399,112" marker-end="url(#i10-arrow-red)"/>
+<text class="i10e" x="373" y="64" fill="#c44a37">no stored entry</text>
+<text class="i10e" x="373" y="77" fill="#c44a37">accepts the call</text>
+<path class="i10link" d="M591,112 L626,112" marker-end="url(#i10-arrow)"/>
+<path class="i10link" d="M716,134 L716,238" marker-end="url(#i10-arrow)"/>
+<path class="i10green" d="M290,134 L290,238" marker-end="url(#i10-arrow-green)"/>
+<text class="i10e" x="282" y="196" style="text-anchor:end" fill="#4f9d69">an entry accepts</text>
+<path class="i10red" d="M196,134 C 160,170 112,190 98,230" marker-end="url(#i10-arrow-red)"/>
+<text class="i10e" x="112" y="178" style="text-anchor:end" fill="#c44a37">at a limit</text>
+<path class="i10green" d="M628,266 C 520,300 410,230 334,136" marker-end="url(#i10-arrow-green)"/>
+<text class="i10e" x="530" y="300" fill="#4f9d69">later calls can match the new entry</text>
+<text class="i10e" x="300" y="302">the next call starts at the lookup</text>
+<rect class="i10box" x="16" y="322" width="788" height="62" rx="5" style="fill:rgba(128,128,128,0.05)"/>
+<text class="i10r" x="28" y="341">A guard is a condition the trace relied on: a shape, a data type, a Python value. Passing guards are sufficient for reuse;</text>
+<text class="i10r" x="28" y="358">a failed guard may reject a call the entry would still have computed correctly. Two limits, with different scopes,</text>
+<text class="i10r" x="28" y="375">bound how many entries a frame collects; stored entries stay usable after a limit is reached.</text>
+<rect x="16" y="403" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#1fa8d6" stroke-width="1.3"/>
+<text class="i10leg" x="44" y="413">trace, compile, store</text>
+<rect x="202.29999999999998" y="403" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#b8860b" stroke-width="1.3"/>
+<text class="i10leg" x="230.29999999999998" y="413">the lookup</text>
+<rect x="319.29999999999995" y="403" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#4f9d69" stroke-width="1.3"/>
+<text class="i10leg" x="347.29999999999995" y="413">reuse</text>
+<rect x="404.79999999999995" y="403" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#c44a37" stroke-width="1.3"/>
+<text class="i10leg" x="432.79999999999995" y="413">no entry and a limit</text>
+</svg>
+<figcaption><strong>F10</strong> A call under torch.compile. The guards of each stored entry are run. If one entry accepts, its compiled code runs. If none does, TorchDynamo traces the frame, the backend compiles it, and the new entry is stored, up to a limit.</figcaption>
+</figure>
+<p>TorchDynamo hooks the interpreter's frame evaluation. On the first call it traces the Python frame into an FX graph and writes guards. A guard is a condition the trace relied on: a tensor's shape, its data type, or a Python integer that chose a branch. TorchInductor compiles the graph into Triton or C++ kernels, and Dynamo stores the result as an entry for that frame.</p>
+<p>On each later call Dynamo runs the guards of the stored entries. If an entry accepts the call, its compiled code runs. If none does, Dynamo traces and compiles again and stores another entry. Limits bound the number of entries a frame collects. Past a limit, stored entries still serve the calls they accept, and other calls run uncompiled.</p>
+<p>Figure F11 draws torch.compile beside two other routes.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 580" role="img" aria-labelledby="j11-title j11-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="j11-title">Three routes from a Python function to a kernel: torch.compile, JAX and MAX</title>
+<desc id="j11-desc">Three lanes read left to right under the column heads Python, capture, graph, compiler, artifact and device. torch.compile: a function is called, TorchDynamo captures one frame and writes guards, the result is an FX graph of tensor operations, TorchInductor lowers and fuses it, the artifact is Triton or C++ kernels with rewritten bytecode, and it runs on a GPU or CPU. JAX jit: a function under jit is traced on abstract values into a jaxpr, lowered to StableHLO, compiled by XLA into an executable for the target device. MAX: a max.graph program stages a graph before any run, the graph is lowered from RMO to MO and through MAP, MOGG and MGP with the Mojo compiler, and the artifact is a MEF that the runtime loads. A red ring in each lane marks where the lane's reuse condition is checked: the guards of a stored entry at each call for torch.compile; at each call for JAX, whether the call matches a stored specialization, which covers the array shapes and types and the values of static arguments; and for MAX a cache key, looked up when a graph is compiled, after the graph is built and before it is lowered. MAX's shape checks run with the model. Dashed boxes are optional routes and are joined to the stage they belong to by a dashed line: torch.export at capture, Pallas kernels and custom Mojo operations at the compiler.</desc>
+<defs>
+<marker id="j11-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="j11-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="j11-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="j11-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="j11-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="j11-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.j11k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.j11h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.j11s { font-size: 12.5px; font-weight: 650; }
+.j11r { font-size: 12px; opacity: 0.84; }
+.j11c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.j11m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.j11mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.j11e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.j11ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.j11leg { font-size: 11.5px; opacity: 0.75; }
+.j11box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.j11sep { stroke-width: 1; opacity: 0.4; }
+.j11link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.j11thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.j11opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.j11red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.j11redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j11gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.j11goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.j11green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j11blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j11bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.j11purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j11node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.j11dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="j11k" x="410" y="22">THREE ROUTES FROM PYTHON TO A KERNEL</text>
+<text class="j11ax" x="60" y="50" style="text-anchor:middle">PYTHON</text>
+<text class="j11ax" x="186" y="50" style="text-anchor:middle">CAPTURE</text>
+<text class="j11ax" x="320" y="50" style="text-anchor:middle">GRAPH</text>
+<text class="j11ax" x="458" y="50" style="text-anchor:middle">COMPILER</text>
+<text class="j11ax" x="600" y="50" style="text-anchor:middle">ARTIFACT</text>
+<text class="j11ax" x="742" y="50" style="text-anchor:middle">DEVICE</text>
+<text class="j11s" x="14" y="72" fill="#1fa8d6">torch.compile</text>
+<circle cx="128" cy="68" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="128" cy="68" r="1.7" fill="#c44a37"/>
+<text class="j11e" x="140" y="72" style="text-anchor:start" fill="#c44a37">reuse: the guards of a stored entry pass; checked at each call</text>
+<rect class="j11node" x="14.0" y="90" width="92" height="44" rx="6"/>
+<text class="j11c" x="60" y="101">a function</text>
+<text class="j11c" x="60" y="116">is called</text>
+<rect class="j11node" x="125.0" y="90" width="122" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j11c" x="186" y="101">TorchDynamo: one</text>
+<text class="j11c" x="186" y="116">frame, with guards</text>
+<rect class="j11node" x="261.0" y="90" width="118" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j11c" x="320" y="101">FX graph of</text>
+<text class="j11c" x="320" y="116">tensor operations</text>
+<rect class="j11node" x="394.0" y="90" width="128" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j11c" x="458" y="101">TorchInductor:</text>
+<text class="j11c" x="458" y="116">lowers and fuses</text>
+<rect class="j11node" x="534.0" y="90" width="132" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j11c" x="600" y="101">Triton, C++ kernels</text>
+<text class="j11c" x="600" y="116">+ rewritten bytecode</text>
+<rect class="j11node" x="690.0" y="90" width="104" height="44" rx="6" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j11c" x="742" y="113">GPU, CPU</text>
+<path class="j11link" d="M107.0,112 L123.0,112" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M248.0,112 L259.0,112" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M380.0,112 L392.0,112" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M523.0,112 L532.0,112" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M667.0,112 L688.0,112" marker-end="url(#j11-arrow)"/>
+<rect x="76" y="150" width="220" height="36" rx="6" fill="rgba(128,128,128,0.05)" stroke="currentColor" stroke-width="1.1" stroke-dasharray="5 4" opacity="0.75"/>
+<text class="j11c" x="186" y="165" style="font-size:11px">optional: torch.export captures</text>
+<text class="j11c" x="186" y="178" style="font-size:11px">a graph ahead of time</text>
+<path class="j11opt" d="M186,134 L186,150"/>
+<circle cx="246.0" cy="91" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="246.0" cy="91" r="1.7" fill="#c44a37"/>
+<text class="j11s" x="14" y="212" fill="#4f9d69">JAX jit</text>
+<circle cx="128" cy="208" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="128" cy="208" r="1.7" fill="#c44a37"/>
+<text class="j11e" x="140" y="212" style="text-anchor:start" fill="#c44a37">reuse: the call matches a stored specialization; checked at each call</text>
+<rect class="j11node" x="14.0" y="230" width="92" height="44" rx="6"/>
+<text class="j11c" x="60" y="241">a function</text>
+<text class="j11c" x="60" y="256">under jit</text>
+<rect class="j11node" x="125.0" y="230" width="122" height="44" rx="6" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="j11c" x="186" y="241">tracing on</text>
+<text class="j11c" x="186" y="256">abstract values</text>
+<rect class="j11node" x="261.0" y="230" width="118" height="44" rx="6" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="j11c" x="320" y="241">jaxpr, then</text>
+<text class="j11c" x="320" y="256">StableHLO</text>
+<rect class="j11node" x="394.0" y="230" width="128" height="44" rx="6" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="j11c" x="458" y="241">XLA: fusion,</text>
+<text class="j11c" x="458" y="256">buffer assignment</text>
+<rect class="j11node" x="534.0" y="230" width="132" height="44" rx="6" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="j11c" x="600" y="241">an executable for</text>
+<text class="j11c" x="600" y="256">the target device</text>
+<rect class="j11node" x="690.0" y="230" width="104" height="44" rx="6" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="j11c" x="742" y="253">GPU, TPU, CPU</text>
+<path class="j11link" d="M107.0,252 L123.0,252" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M248.0,252 L259.0,252" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M380.0,252 L392.0,252" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M523.0,252 L532.0,252" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M667.0,252 L688.0,252" marker-end="url(#j11-arrow)"/>
+<rect x="348" y="290" width="220" height="36" rx="6" fill="rgba(128,128,128,0.05)" stroke="currentColor" stroke-width="1.1" stroke-dasharray="5 4" opacity="0.75"/>
+<text class="j11c" x="458" y="305" style="font-size:11px">optional: Pallas, kernels written</text>
+<text class="j11c" x="458" y="318" style="font-size:11px">by hand inside the traced program</text>
+<path class="j11opt" d="M458,274 L458,290"/>
+<circle cx="246.0" cy="231" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="246.0" cy="231" r="1.7" fill="#c44a37"/>
+<text class="j11s" x="14" y="352" fill="#8b6fc0">MAX</text>
+<circle cx="128" cy="348" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="128" cy="348" r="1.7" fill="#c44a37"/>
+<text class="j11e" x="140" y="352" style="text-anchor:start" fill="#c44a37">reuse: a cache key over the graph and its options; looked up before the graph is lowered</text>
+<rect class="j11node" x="14.0" y="370" width="92" height="44" rx="6"/>
+<text class="j11c" x="60" y="381">a max.graph</text>
+<text class="j11c" x="60" y="396">program</text>
+<rect class="j11node" x="125.0" y="370" width="122" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j11c" x="186" y="381">staged: the graph</text>
+<text class="j11c" x="186" y="396">exists before a run</text>
+<rect class="j11node" x="261.0" y="370" width="118" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j11c" x="320" y="381">RMO, then MO:</text>
+<text class="j11c" x="320" y="396">shapes and types</text>
+<rect class="j11node" x="394.0" y="370" width="128" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j11c" x="458" y="381">MAP, MOGG, MGP;</text>
+<text class="j11c" x="458" y="396">the Mojo compiler</text>
+<rect class="j11node" x="534.0" y="370" width="132" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j11c" x="600" y="381">a MEF artifact, which</text>
+<text class="j11c" x="600" y="396">the runtime loads</text>
+<rect class="j11node" x="690.0" y="370" width="104" height="44" rx="6" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j11c" x="742" y="393">GPU, CPU</text>
+<path class="j11link" d="M107.0,392 L123.0,392" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M248.0,392 L259.0,392" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M380.0,392 L392.0,392" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M523.0,392 L532.0,392" marker-end="url(#j11-arrow)"/>
+<path class="j11link" d="M667.0,392 L688.0,392" marker-end="url(#j11-arrow)"/>
+<rect x="348" y="430" width="220" height="36" rx="6" fill="rgba(128,128,128,0.05)" stroke="currentColor" stroke-width="1.1" stroke-dasharray="5 4" opacity="0.75"/>
+<text class="j11c" x="458" y="445" style="font-size:11px">optional: custom operations</text>
+<text class="j11c" x="458" y="458" style="font-size:11px">written in Mojo</text>
+<path class="j11opt" d="M458,414 L458,430"/>
+<circle cx="262.0" cy="371" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="262.0" cy="371" r="1.7" fill="#c44a37"/>
+<rect class="j11box" x="16" y="492" width="788" height="48" rx="5" style="stroke:#b8860b;stroke-width:1.7;fill:rgba(184,134,11,0.05)"/>
+<text class="j11r" x="28" y="511">Each route defines when its graph or compiled artifact can be reused. The checks and what follows a miss come at different</text>
+<text class="j11r" x="28" y="528">stages: a new trace in torch.compile and JAX, a new compilation in MAX, whose shape checks run with the model.</text>
+<line x1="16" y1="563" x2="38" y2="563" stroke="currentColor" stroke-width="1.6" opacity="0.9"/>
+<text class="j11leg" x="44" y="567">the documented route</text>
+<line x1="196.0" y1="563" x2="218.0" y2="563" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="j11leg" x="224.0" y="567">optional route</text>
+<circle cx="356" cy="562" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="356" cy="562" r="1.7" fill="#c44a37"/>
+<text class="j11leg" x="370" y="567">where the reuse condition is checked</text>
+</svg>
+<figcaption><strong>F11</strong> Three routes from Python to a kernel. torch.compile captures a frame into an FX graph for TorchInductor. JAX traces to a jaxpr for XLA. MAX stages a graph that dialects lower to a MEF artifact. A red ring marks each route&#x27;s check for reuse.</figcaption>
+</figure>
+<p>In the middle lane, JAX's jit traces a function on abstract values into a jaxpr, a functional program of let-bindings in Appel's sense, specialized to array shapes, types and any static argument values. The jaxpr is lowered to StableHLO and handed to XLA, which fuses operations and emits an executable for the device. A call matching no stored specialization is traced again.</p>
+<p>In the bottom lane the graph is built before anything runs: Python stages operations into a MAX graph, and a pipeline of dialects lowers it to a compiled model. Each route has a reuse condition, a rule for when a stored graph or compiled artifact may serve a call, and the three are checked at different stages. Dynamo runs guards at every call. JAX matches each call against stored specializations. MAX looks up a key when a graph is compiled, and its shape checks run with the model.</p>
+<p>MLIR, LLVM's framework for defining intermediate representations through dialects, enters these stacks at different levels. JAX lowers a jaxpr to StableHLO, an MLIR dialect. MAX's graph compiler uses MLIR dialects throughout. In PyTorch's usual compilation path, TorchDynamo captures an FX graph, and TorchInductor generates GPU kernels in Triton. MLIR enters this path <a href="https://triton-lang.org/main/dialects/dialects.html" target="_blank" rel="noreferrer">inside the Triton compiler</a>.</p>
+<p><a href="https://github.com/llvm/torch-mlir" target="_blank" rel="noreferrer">torch-mlir</a> provides a different route: it imports PyTorch programs into MLIR for downstream compilers. It is a separate LLVM incubator project, not a stage in the TorchInductor-to-Triton pipeline.</p>
+<p>Figure F12 draws the MAX route in three phases, as we read it in the source and its design document. For further viewing, Modular has two talks: <a href="https://www.youtube.com/watch?v=gD9HsSwPIeM&amp;t=283s" target="_blank" rel="noreferrer"><em>MAX's Graph Compiler Internals with Feras Boulala</em></a> and <a href="https://www.youtube.com/watch?v=MEoGt_cxNSs&amp;t=916s" target="_blank" rel="noreferrer"><em>MAX Graph Compilation to Execution</em></a>.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 506" role="img" aria-labelledby="j12-title j12-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="j12-title">MAX in three phases: compile, load, execute</title>
+<desc id="j12-desc">Three phases. Compile, once per graph and options: the Python API builds the graph; a cache key over the graph and its options is looked up; on a miss the graph is lowered through the dialects RMO, relaxed operations from the Python API, MO, typed operations with shape checks inserted, MAP, loops and kernels where fusion is decided, MOGG, the routine that becomes Mojo, and MGP, the model as a program with buffers and an order. Two products follow: kernels, printed as Mojo text and compiled, and the model, serialized. Both go into the MEF artifact, the bytes that are the contract between compiler and runtime. On a cache hit the stored bytes are returned, and lowering and code generation are skipped. Load: the runtime reads the bytes and initializes a model. A session can load an artifact more than once, and each load initializes its own model. Execute, on every call: GraphRT and AsyncRT schedule the model's steps on the host, and kernels run on the CPU or GPU. The shape checks inserted at MO run during execution.</desc>
+<defs>
+<marker id="j12-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="j12-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="j12-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="j12-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="j12-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="j12-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.j12k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.j12h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.j12s { font-size: 12.5px; font-weight: 650; }
+.j12r { font-size: 12px; opacity: 0.84; }
+.j12c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.j12m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.j12mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.j12e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.j12ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.j12leg { font-size: 11.5px; opacity: 0.75; }
+.j12box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.j12sep { stroke-width: 1; opacity: 0.4; }
+.j12link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.j12thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.j12opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.j12red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.j12redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j12gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.j12goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.j12green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j12blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j12bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.j12purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.j12node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.j12dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="j12k" x="410" y="22">MAX: COMPILE, LOAD, EXECUTE</text>
+<text class="j12h" x="14" y="56" fill="#8b6fc0">1. COMPILE</text>
+<text class="j12r" x="112" y="56">once per graph and options: look up a key; on a miss, lower the graph through five dialects</text>
+<rect class="j12node" x="10.0" y="84.5" width="104.0" height="59" rx="5"/>
+<text class="j12c" x="62" y="98.5">Python API</text>
+<text class="j12c" x="62" y="113.5">builds the</text>
+<text class="j12c" x="62" y="128.5">graph</text>
+<path class="j12link" d="M114,114 L125,114" marker-end="url(#j12-arrow)"/>
+<rect class="j12node" x="126.0" y="84.5" width="104.0" height="59" rx="5" style="stroke:#b8860b;stroke-width:1.7"/>
+<text class="j12c" x="178" y="98.5">cache key</text>
+<text class="j12c" x="178" y="113.5">over graph</text>
+<text class="j12c" x="178" y="128.5">and options</text>
+<path class="j12purple" d="M230,114 L241,114" marker-end="url(#j12-arrow-purple)"/>
+<rect class="j12node" x="242.0" y="84.5" width="104.0" height="59" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j12c" x="294" y="98.5">RMO</text>
+<text class="j12c" x="294" y="113.5">relaxed ops from</text>
+<text class="j12c" x="294" y="128.5">the Python API</text>
+<path class="j12purple" d="M346,114 L357,114" marker-end="url(#j12-arrow-purple)"/>
+<rect class="j12node" x="358.0" y="84.5" width="104.0" height="59" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j12c" x="410" y="98.5">MO</text>
+<text class="j12c" x="410" y="113.5">typed ops,</text>
+<text class="j12c" x="410" y="128.5">checks inserted</text>
+<path class="j12purple" d="M462,114 L473,114" marker-end="url(#j12-arrow-purple)"/>
+<rect class="j12node" x="474.0" y="84.5" width="104.0" height="59" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j12c" x="526" y="98.5">MAP</text>
+<text class="j12c" x="526" y="113.5">loops and</text>
+<text class="j12c" x="526" y="128.5">kernels; fusion</text>
+<path class="j12purple" d="M578,114 L589,114" marker-end="url(#j12-arrow-purple)"/>
+<rect class="j12node" x="590.0" y="84.5" width="104.0" height="59" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j12c" x="642" y="98.5">MOGG</text>
+<text class="j12c" x="642" y="113.5">the routine that</text>
+<text class="j12c" x="642" y="128.5">becomes Mojo</text>
+<path class="j12purple" d="M694,114 L705,114" marker-end="url(#j12-arrow-purple)"/>
+<rect class="j12node" x="706.0" y="84.5" width="104.0" height="59" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j12c" x="758" y="98.5">MGP</text>
+<text class="j12c" x="758" y="113.5">the model as</text>
+<text class="j12c" x="758" y="128.5">a program</text>
+<text class="j12e" x="236.0" y="78" fill="#8b6fc0">miss</text>
+<circle cx="410" cy="154" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="410" cy="154" r="1.7" fill="#c44a37"/>
+<text class="j12e" x="422" y="158" style="text-anchor:start" fill="#c44a37">shape checks are inserted here</text>
+<rect class="j12node" x="466.0" y="181.5" width="200.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j12c" x="566" y="195.5">kernels: Mojo text, compiled</text>
+<rect class="j12node" x="676.0" y="181.5" width="128.0" height="29" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="j12c" x="740" y="195.5">the model, serialized</text>
+<path class="j12purple" d="M738,144 C 718,170 640,164 620,180" marker-end="url(#j12-arrow-purple)"/>
+<path class="j12purple" d="M758,144 L746,180" marker-end="url(#j12-arrow-purple)"/>
+<path class="j12purple" d="M566,211 L566,232" marker-end="url(#j12-arrow-purple)"/>
+<path class="j12purple" d="M740,211 L740,232" marker-end="url(#j12-arrow-purple)"/>
+<path class="j12goldsolid" d="M178,144 L178,232" marker-end="url(#j12-arrow-gold)"/>
+<text class="j12e" x="188" y="186" style="text-anchor:start" fill="#b8860b">hit: the stored bytes;</text>
+<text class="j12e" x="188" y="199" style="text-anchor:start" fill="#b8860b">lowering and code generation are skipped</text>
+<rect x="20" y="234" width="780" height="44" rx="6" fill="rgba(196,74,55,0.06)" stroke="#c44a37" stroke-dasharray="6 4" stroke-width="1.5"/>
+<text class="j12c" x="410" y="252">MEF artifact: the compiled kernels and the serialized model, as bytes</text>
+<text class="j12e" x="410" y="269">the contract between compiler and runtime: the runtime is handed these bytes and not the compiler's module</text>
+<text class="j12h" x="110" y="312" fill="#4f9d69">2. LOAD</text>
+<text class="j12r" x="182" y="312">each load initializes a model</text>
+<text class="j12h" x="396" y="312" fill="#1fa8d6">3. EXECUTE</text>
+<text class="j12r" x="494" y="312">on every call</text>
+<path class="j12green" d="M60,278 L60,339" marker-end="url(#j12-arrow-green)"/>
+<rect class="j12node" x="18.0" y="340.0" width="140.0" height="44" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="j12c" x="88" y="354.0">the runtime reads</text>
+<text class="j12c" x="88" y="369.0">the MEF bytes</text>
+<rect class="j12node" x="187.0" y="340.0" width="150.0" height="44" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="j12c" x="262" y="354.0">and initializes</text>
+<text class="j12c" x="262" y="369.0">the model</text>
+<rect class="j12node" x="398.0" y="340.0" width="204.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j12c" x="500" y="354.0">GraphRT and AsyncRT schedule</text>
+<text class="j12c" x="500" y="369.0">the model's steps on the host</text>
+<rect class="j12node" x="641.0" y="340.0" width="150.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="j12c" x="716" y="354.0">kernels run on</text>
+<text class="j12c" x="716" y="369.0">the CPU or GPU</text>
+<path class="j12green" d="M158,362 L185,362" marker-end="url(#j12-arrow-green)"/>
+<path class="j12blue" d="M337,362 L396,362" marker-end="url(#j12-arrow-blue)"/>
+<path class="j12blue" d="M602,362 L639,362" marker-end="url(#j12-arrow-blue)"/>
+<line class="j12sep" x1="368" y1="298" x2="368" y2="422" stroke="currentColor"/>
+<path class="j12blue" d="M716,385 C 716,418 540,418 540,387" marker-end="url(#j12-arrow-blue)"/>
+<text class="j12e" x="628" y="424" fill="#1fa8d6">again on the next call</text>
+<circle cx="412" cy="384" r="5.5" fill="none" stroke="#c44a37" stroke-width="1.5"/><circle cx="412" cy="384" r="1.7" fill="#c44a37"/>
+<text class="j12e" x="400" y="408" style="text-anchor:start" fill="#c44a37">the shape checks</text>
+<text class="j12e" x="400" y="421" style="text-anchor:start" fill="#c44a37">of MO run here</text>
+<text class="j12c" x="410" y="464">Compile or reuse an artifact, initialize a model, then execute it repeatedly.</text>
+<rect x="60" y="481" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#8b6fc0" stroke-width="1.3"/>
+<text class="j12leg" x="88" y="491">compile</text>
+<rect x="158.1" y="481" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#b8860b" stroke-width="1.3"/>
+<text class="j12leg" x="186.1" y="491">cache lookup</text>
+<rect x="287.7" y="481" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#4f9d69" stroke-width="1.3"/>
+<text class="j12leg" x="315.7" y="491">load</text>
+<rect x="366.9" y="481" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#1fa8d6" stroke-width="1.3"/>
+<text class="j12leg" x="394.9" y="491">execute</text>
+<line x1="465.0" y1="487" x2="487.0" y2="487" stroke="#c44a37" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="j12leg" x="493.0" y="491">the artifact, and the run-time checks</text>
+</svg>
+<figcaption><strong>F12</strong> MAX in three phases. Compile: a cache key is looked up, and on a miss the graph is lowered through five dialects into compiled kernels and a serialized model, the MEF artifact. Load: the runtime reads the bytes. Execute: the host schedules, and kernels run.</figcaption>
+</figure>
+<p>Compile comes first. Python builds the graph in RMO, the relaxed dialect, whose operators have no verifiers based on shape. The compiler computes a key over the graph and its options and looks it up. A hit returns stored bytes and skips lowering and code generation. On a miss, lowering to MO makes every operator strongly typed and inserts rebinds, shape checks that run with the model. MAP turns operations into loops and kernels, and fusion is decided there. MOGG holds the routine that becomes Mojo, and MGP holds the model as a program with buffers and an order. The kernels are compiled, the model is serialized, and the two form the MEF artifact, the bytes the runtime is given.</p>
+<p>Load is the second phase: the runtime reads the bytes and initializes a model. Execute is the third and repeats on every call: the runtime schedules the model's steps on the host and launches kernels on the CPU or GPU.</p>
+<h2 id="4-rust-candle-burn-and-cutile-rs">4. Rust: Candle, Burn and cuTile-rs</h2>
+<p>All three routes start in Python. Figure F13 shows the same route in Rust.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 478" role="img" aria-labelledby="i13-title i13-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+<title id="i13-title">The Rust road: Candle, Burn and cuTile-rs from a Rust call to a kernel</title>
+<desc id="i13-desc">Three lanes from a Rust call to a kernel, aligned on four columns: the Rust source, the tensor graph held by a framework, who compiles and when, and the kernel. Candle: a tensor method runs when it is called, through storage to a backend; there is no graph for the forward pass, though a call may record what backward needs; the CUDA kernels are built to PTX when the crate is built, and the Metal kernels are compiled from source on first use. Burn with Fusion: a tensor method is recorded in a stream of operations, and a read is one of the events that runs it; at run time plans are stored, supported groups are fused, and CubeCL, a compiler for kernels written in Rust, compiles each kernel under an id; in the run of Part 4 the block model was two launches. cuTile-rs: the programmer writes the kernel as a Rust module, so there is no tensor graph from a framework; rustc type-checks the module and builds its launcher at build time, and on a cache miss a second compiler lowers the stored source to CUDA Tile IR and to GPU code. In Part 4 this third route was read and not run.</desc>
+<defs>
+<marker id="i13-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
+<marker id="i13-arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c44a37"/></marker>
+<marker id="i13-arrow-gold" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#b8860b"/></marker>
+<marker id="i13-arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f9d69"/></marker>
+<marker id="i13-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+<marker id="i13-arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#8b6fc0"/></marker>
+<style>
+.i13k { font-size: 11.5px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+.i13h { font-size: 14px; font-weight: 750; letter-spacing: 0.03em; }
+.i13s { font-size: 12.5px; font-weight: 650; }
+.i13r { font-size: 12px; opacity: 0.84; }
+.i13c { font-size: 12px; opacity: 0.84; text-anchor: middle; }
+.i13m { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; }
+.i13mc { font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; opacity: 0.85; text-anchor: middle; }
+.i13e { font-size: 11px; opacity: 0.66; text-anchor: middle; font-style: italic; }
+.i13ax { font-size: 11px; font-weight: 650; letter-spacing: 0.06em; opacity: 0.7; }
+.i13leg { font-size: 11.5px; opacity: 0.75; }
+.i13box { fill: rgba(128,128,128,0.07); stroke-width: 1.3; stroke: currentColor; }
+.i13sep { stroke-width: 1; opacity: 0.4; }
+.i13link { stroke: currentColor; stroke-width: 1.4; opacity: 0.62; fill: none; }
+.i13thin { stroke: currentColor; stroke-width: 1; opacity: 0.35; fill: none; }
+.i13opt { stroke: currentColor; stroke-width: 1.2; opacity: 0.5; stroke-dasharray: 5 4; fill: none; }
+.i13red { stroke: #c44a37; stroke-width: 1.5; stroke-dasharray: 5 4; fill: none; opacity: 0.9; }
+.i13redsolid { stroke: #c44a37; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i13gold { stroke: #b8860b; stroke-width: 1.6; stroke-dasharray: 6 4; fill: none; }
+.i13goldsolid { stroke: #b8860b; stroke-width: 1.8; fill: none; }
+.i13green { stroke: #4f9d69; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i13blue { stroke: #1fa8d6; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i13bluefat { stroke: #1fa8d6; stroke-width: 5; fill: none; opacity: 0.28; stroke-linecap: round; }
+.i13purple { stroke: #8b6fc0; stroke-width: 1.5; fill: none; opacity: 0.9; }
+.i13node { fill: rgba(128,128,128,0.10); stroke: currentColor; stroke-width: 1.2; }
+.i13dot { fill: currentColor; opacity: 0.75; }
+
+</style>
+</defs>
+<text class="i13k" x="410" y="22">THE RUST ROAD: THREE WAYS FROM A RUST CALL TO A KERNEL</text>
+<text class="i13ax" x="100" y="52" style="text-anchor:middle">RUST SOURCE</text>
+<text class="i13ax" x="304" y="52" style="text-anchor:middle">TENSOR GRAPH HELD BY A FRAMEWORK</text>
+<text class="i13ax" x="530" y="52" style="text-anchor:middle">WHO COMPILES, AND WHEN</text>
+<text class="i13ax" x="734" y="52" style="text-anchor:middle">KERNEL</text>
+<text class="i13h" x="14" y="76" fill="#1fa8d6">CANDLE</text>
+<text class="i13r" x="88" y="76">eager: each call runs when it is made</text>
+<rect class="i13node" x="10.0" y="90.0" width="180.0" height="44" rx="5"/>
+<text xml:space="preserve" class="i13mc" x="100" y="104.0">x.matmul(w)?</text>
+<text xml:space="preserve" class="i13mc" x="100" y="119.0"> .broadcast_add(b)?.relu()</text>
+<rect x="204" y="90.0" width="200" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 4" opacity="0.4"/>
+<text class="i13c" x="304" y="104.0">none for the forward pass; a</text>
+<text class="i13c" x="304" y="119.0">call may record for backward</text>
+<rect class="i13node" x="418.0" y="90.0" width="224.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i13c" x="530" y="104.0">CUDA: PTX built with the crate;</text>
+<text class="i13c" x="530" y="119.0">Metal: source compiled on first use</text>
+<rect class="i13node" x="658.0" y="90.0" width="152.0" height="44" rx="5" style="stroke:#1fa8d6;stroke-width:1.7"/>
+<text class="i13c" x="734" y="104.0">a backend kernel</text>
+<text class="i13c" x="734" y="119.0">for each operation</text>
+<path class="i13blue" d="M190,112 L202,112" marker-end="url(#i13-arrow-blue)"/>
+<path class="i13blue" d="M404,112 L416,112" marker-end="url(#i13-arrow-blue)"/>
+<path class="i13blue" d="M642,112 L656,112" marker-end="url(#i13-arrow-blue)"/>
+<text class="i13h" x="14" y="202" fill="#8b6fc0">BURN, WITH FUSION</text>
+<text class="i13r" x="198" y="202">a stream of operations that exists only at run time</text>
+<rect class="i13node" x="10.0" y="216.0" width="180.0" height="44" rx="5"/>
+<text xml:space="preserve" class="i13mc" x="100" y="230.0">relu(x.matmul(w)</text>
+<text xml:space="preserve" class="i13mc" x="100" y="245.0">     + b.unsqueeze())</text>
+<rect class="i13node" x="204.0" y="216.0" width="200.0" height="44" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i13c" x="304" y="230.0">Fusion records operations in a</text>
+<text class="i13c" x="304" y="245.0">stream; a read is one trigger</text>
+<rect class="i13node" x="418.0" y="216.0" width="224.0" height="44" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i13c" x="530" y="230.0">at run time: plans are stored;</text>
+<text class="i13c" x="530" y="245.0">CubeCL compiles kernels by id</text>
+<rect class="i13node" x="658.0" y="216.0" width="152.0" height="44" rx="5" style="stroke:#8b6fc0;stroke-width:1.7"/>
+<text class="i13c" x="734" y="230.0">backend kernels, with</text>
+<text class="i13c" x="734" y="245.0">supported groups fused</text>
+<path class="i13purple" d="M190,238 L202,238" marker-end="url(#i13-arrow-purple)"/>
+<path class="i13purple" d="M404,238 L416,238" marker-end="url(#i13-arrow-purple)"/>
+<path class="i13purple" d="M642,238 L656,238" marker-end="url(#i13-arrow-purple)"/>
+<text class="i13e" x="806" y="280" style="text-anchor:end">in the run of Part 4, block was two launches on CubeCL's CPU runtime</text>
+<text class="i13h" x="14" y="328" fill="#4f9d69">CUTILE-RS</text>
+<text class="i13r" x="118" y="328">no tensor graph from a framework: the programmer writes the kernel</text>
+<rect class="i13node" x="10.0" y="342.0" width="180.0" height="44" rx="5"/>
+<text xml:space="preserve" class="i13mc" x="100" y="356.0">#[cutile::module]</text>
+<text xml:space="preserve" class="i13mc" x="100" y="371.0">mod kernel { ... }</text>
+<rect x="204" y="342.0" width="200" height="44" rx="5" fill="none" stroke="currentColor" stroke-width="1.1" stroke-dasharray="4 4" opacity="0.4"/>
+<text class="i13c" x="304" y="356.0">none: the kernel body</text>
+<text class="i13c" x="304" y="371.0">is the program</text>
+<rect class="i13node" x="418.0" y="342.0" width="224.0" height="44" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="i13c" x="530" y="356.0">rustc at build (types, launcher);</text>
+<text class="i13c" x="530" y="371.0">on a cache miss, Tile IR to GPU code</text>
+<rect class="i13node" x="658.0" y="342.0" width="152.0" height="44" rx="5" style="stroke:#4f9d69;stroke-width:1.7"/>
+<text class="i13c" x="734" y="356.0">a tile kernel,</text>
+<text class="i13c" x="734" y="371.0">specialized at launch</text>
+<path class="i13green" d="M190,364 L202,364" marker-end="url(#i13-arrow-green)"/>
+<path class="i13green" d="M404,364 L416,364" marker-end="url(#i13-arrow-green)"/>
+<path class="i13green" d="M642,364 L656,364" marker-end="url(#i13-arrow-green)"/>
+<text class="i13e" x="806" y="406" style="text-anchor:end">a reading: Part 4 read this route and did not run it</text>
+<line class="i13sep" x1="14" y1="166" x2="806" y2="166" stroke="currentColor"/>
+<line class="i13sep" x1="14" y1="292" x2="806" y2="292" stroke="currentColor"/>
+<text class="i13c" x="410" y="432">Python is gone in all three lanes. What stays is the question of Section 3: who holds a graph of operations, and when is it compiled?</text>
+<rect x="150" y="453" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#1fa8d6" stroke-width="1.3"/>
+<text class="i13leg" x="178" y="463">Candle</text>
+<rect x="241.8" y="453" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#8b6fc0" stroke-width="1.3"/>
+<text class="i13leg" x="269.8" y="463">Burn</text>
+<rect x="321.0" y="453" width="18" height="12" rx="3" fill="rgba(128,128,128,0.07)" stroke="#4f9d69" stroke-width="1.3"/>
+<text class="i13leg" x="349.0" y="463">cuTile-rs</text>
+<line x1="431.7" y1="459" x2="453.7" y2="459" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.9"/>
+<text class="i13leg" x="459.7" y="463">no framework graph</text>
+</svg>
+<figcaption><strong>F13</strong> The Rust road. Candle runs each call when it is made, on kernels built with the crate or compiled on first use. Burn with Fusion records operations in a stream and fuses supported groups through CubeCL. In cuTile-rs the programmer writes the kernel.</figcaption>
+</figure>
+<p>Candle, from Hugging Face, is eager. A tensor method goes through storage to a backend (CPU, CUDA or Metal) and runs a kernel. When that kernel is compiled depends on the backend: we read that the CUDA kernels are built when the crate is built, and that the Metal backend compiles its kernel source on first use. When gradients are wanted, a forward call also records what backward will need, and nothing rewrites the forward operations. Burn puts a graph back at run time when its Fusion layer is on and the backend supports it. Fusion queues tensor operations in a stream, stores plans for the sequences it has seen, and joins supported groups of operations into kernels. The kernels come from CubeCL, a compiler for kernels written in Rust that targets CUDA, Metal, Vulkan and WebGPU.</p>
+<p>cuTile-rs, in NVIDIA's cuda-rust repository, has no tensor graph from a framework. The programmer writes the kernel as a Rust module over tiles of an array. The Rust compiler type-checks it and builds its launcher. When a launch finds no compiled kernel in its cache, a second compiler lowers the same source to CUDA Tile IR and then to GPU code. Rust removes Python, not the question of who holds a graph of operations: in Candle no component does for the forward pass, in Burn a stream at run time, in cuTile-rs the programmer.</p>
+<h2 id="5-formal-verification-of-kernels">5. Formal verification of kernels</h2>
+<p>Kernels are increasingly generated, by compilers such as TorchInductor and now by AI agents. Gimlet Labs show what can go wrong in <a href="https://gimletlabs.ai/blog/formally-verifying-ai-generated-kernels" target="_blank" rel="noreferrer"><em>Formally Verifying AI-Generated GPU Kernels</em></a>. Their talk <a href="https://www.youtube.com/watch?v=IxyeS8WvX-E&amp;t=42s" target="_blank" rel="noreferrer"><em>GPU Kernel Formal Verification</em></a> is further viewing.</p>
+<p>In their example an agent rewrites an attention kernel and drops a clamp the reference applies before the softmax. Random inputs rarely reach the clamp, so the faster kernel passes its tests and is wrong. Their checker is the last column of Figure F4 applied to tensors. It recovers one graph of expressions from the PyTorch reference and one from the Triton kernel, makes the inputs symbolic, and asks the Z3 solver for an input where they differ. On 26 Triton kernels from KernelBench the authors report 16 proved equivalent, 2 that passed numeric tests and were proved different, and 8 undecided.</p>
+<p>The proofs treat numbers as exact reals and expand reductions up to a bound, at fixed shapes, so they do not establish that the deployed kernels agree in floating point. A proof about recovered graphs also leaves memory safety, data races and the compiler below it open. The check is a graph question: a kernel can be verified against its graph only when someone can say what that graph is.</p>
+<h2 id="6-next-in-the-series">6. Next in the series</h2>
+<p>The series follows two small Python programs from Python to a kernel. The first is the model of Figure F8: three operations, fixed shapes and an answer that can be checked by hand.</p>
+<div class="essay-code"><pre><code class="language-python">def block(x, w, b):
+    return relu(x @ w + b)
+</code></pre></div>
+<p>The second adds one step of attention over keys and values that grow by a row per token, so its shapes change on every call.</p>
+<div class="essay-code"><pre><code class="language-python">def step(x, w, b, k, v, mask):
+    h = relu(x @ w + b)
+    return softmax((h @ k.T) * 2**-0.5 + mask) @ v + h
+</code></pre></div>
+<p>Here <code>h</code> has shape (1, 2), and <code>k</code> and <code>v</code> have one row per stored token and width 2, the width that the scale <code>2**-0.5</code> belongs to. The softmax runs over the stored tokens, and the caller appends a row to <code>k</code> and <code>v</code> between steps.</p>
+<p>The remaining essays are tentatively planned as follows:</p>
+<ul>
+<li><strong>Part 2: PyTorch and JAX: Tracing, Guards and Kernels.</strong></li>
+<li><strong>Part 3: MAX: Dialects, Kernels and the Runtime.</strong></li>
+<li><strong>Part 4: Rust: Candle, Burn and cuTile-rs.</strong></li>
+<li><strong>Part 5: Performance and Formal Verification of Kernels.</strong></li>
+</ul>
+<section class="references">
+<h2 id="references">References</h2>
+<ol start="1">
+<li>Thomas Reps, Susan Horwitz and Mooly Sagiv, <em>Precise Interprocedural Dataflow Analysis via Graph Reachability</em>, POPL 1995. <a href="https://research.cs.wisc.edu/wpis/papers/popl95.pdf" target="_blank" rel="noreferrer">research.cs.wisc.edu/wpis/papers/popl95.pdf</a></li>
+<li>Frances E. Allen, <em>Control Flow Analysis</em>, SIGPLAN Notices 5(7), 1970.</li>
+<li>Ron Cytron et al., <em>Efficiently Computing Static Single Assignment Form and the Control Dependence Graph</em>, TOPLAS 13(4), 1991.</li>
+<li>Andrew W. Appel, <em>SSA is Functional Programming</em>, Functional Programming column (editor Philip Wadler), ACM SIGPLAN Notices 33(4), April 1998. <a href="https://www.cs.princeton.edu/~appel/papers/ssafun.pdf" target="_blank" rel="noreferrer">cs.princeton.edu/~appel/papers/ssafun.pdf</a></li>
+<li>Bjarne Steensgaard, <em>Points-to Analysis in Almost Linear Time</em>, POPL 1996; Lars Ole Andersen, <em>Program Analysis and Specialization for the C Programming Language</em>, PhD thesis, 1994.</li>
+<li>James C. King, <em>Symbolic Execution and Program Testing</em>, Communications of the ACM 19(7), 1976; Patrice Godefroid, Nils Klarlund and Koushik Sen, <em>DART: Directed Automated Random Testing</em>, PLDI 2005.</li>
+<li>Yutaka Tsutano, Shakthi Bachala, Witawas Srisa-an, Gregg Rothermel and Jackson Dinh, <em>Jitana: A Modern Hybrid Program Analysis Framework for Android Platforms</em>, Journal of Computer Languages 52 (2019), pp. 55-71. <a href="https://doi.org/10.1016/j.cola.2018.12.004" target="_blank" rel="noreferrer">doi.org/10.1016/j.cola.2018.12.004</a>; author copy, <a href="https://digitalcommons.unl.edu/csearticles/231/" target="_blank" rel="noreferrer">digitalcommons.unl.edu/csearticles/231</a></li>
+<li>Shakthi Bachala, Yutaka Tsutano, Witawas Srisa-an, Gregg Rothermel, Jackson Dinh and Yuanjiu Hu, <em>ReHAna: An Efficient Program Analysis Framework To Uncover Reflective Code in Android</em>, MobiQuitous 2021. <a href="https://sb-iam.github.io/docs/rehana.pdf" target="_blank" rel="noreferrer">sb-iam.github.io/docs/rehana.pdf</a></li>
+<li>Sebastian Raschka, <em>PyTorch in One Hour: From Tensors to Training Neural Networks on Multiple GPUs</em>, 1 July 2025, Section 3, "Seeing models as computation graphs". <a href="https://sebastianraschka.com/teaching/pytorch-1h/" target="_blank" rel="noreferrer">sebastianraschka.com/teaching/pytorch-1h</a></li>
+<li>PyTorch, <em>CUDA semantics</em>, section "CUDA Graphs", <a href="https://docs.pytorch.org/docs/stable/notes/cuda.html" target="_blank" rel="noreferrer">docs.pytorch.org/docs/stable/notes/cuda.html</a>; the <em>torch.compile</em> documentation, <a href="https://docs.pytorch.org/docs/stable/torch.compiler.html" target="_blank" rel="noreferrer">docs.pytorch.org/docs/stable/torch.compiler.html</a>; the stored entries and their limits at the revision read, <a href="https://github.com/pytorch/pytorch/blob/4d2bd99cd03cda454d98ff8c060c1353743c266f/torch/_dynamo/cache_size.py#L16-L106" target="_blank" rel="noreferrer">torch/_dynamo/cache_size.py</a></li>
+<li>JAX, <em>Just-in-time compilation</em>, <a href="https://docs.jax.dev/en/latest/jit-compilation.html" target="_blank" rel="noreferrer">docs.jax.dev/en/latest/jit-compilation.html</a>, and <em>Ahead-of-time lowering and compilation</em>, <a href="https://docs.jax.dev/en/latest/aot.html" target="_blank" rel="noreferrer">docs.jax.dev/en/latest/aot.html</a></li>
+<li>Modular, <em>MAX is now source available and open to everyone</em>, <a href="https://www.modular.com/blog/max-license" target="_blank" rel="noreferrer">modular.com/blog/max-license</a>; at the revision read, the design document <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/GraphCompiler/docs/GraphCompiler.md" target="_blank" rel="noreferrer">GraphCompiler.md</a> and the cache lookup in <a href="https://github.com/modular/modular/blob/b2d6b83ba7e17ddaf1c31acdf926c25194e44b2a/GraphCompiler/lib/FrameworkFrontend/FrameworkFrontend.cpp#L377-L440" target="_blank" rel="noreferrer">FrameworkFrontend.cpp</a>; further viewing, <a href="https://www.youtube.com/watch?v=gD9HsSwPIeM&amp;t=283s" target="_blank" rel="noreferrer"><em>MAX's Graph Compiler Internals with Feras Boulala</em></a> and <a href="https://www.youtube.com/watch?v=MEoGt_cxNSs&amp;t=916s" target="_blank" rel="noreferrer"><em>MAX Graph Compilation to Execution</em></a></li>
+<li>Jubi Taneja, Tom St John and Natalie Serrino, <em>Formally Verifying AI-Generated GPU Kernels</em>, Gimlet Labs, 8 July 2026. <a href="https://gimletlabs.ai/blog/formally-verifying-ai-generated-kernels" target="_blank" rel="noreferrer">gimletlabs.ai/blog/formally-verifying-ai-generated-kernels</a>; further viewing, <em>GPU Kernel Formal Verification</em>, <a href="https://www.youtube.com/watch?v=IxyeS8WvX-E&amp;t=42s" target="_blank" rel="noreferrer">youtube.com/watch?v=IxyeS8WvX-E</a></li>
+<li>Hugging Face, <em>Candle</em>, a minimalist ML framework for Rust, <a href="https://github.com/huggingface/candle" target="_blank" rel="noreferrer">github.com/huggingface/candle</a>; at the revision read, the Metal kernels compiled on first use, <a href="https://github.com/huggingface/candle/blob/12bb5d1f6350f4ea9827d9086f213feec1f0af6a/candle-metal-kernels/src/kernel.rs#L109-L132" target="_blank" rel="noreferrer">kernel.rs</a>, and the CUDA kernels built with the crate, <a href="https://github.com/huggingface/candle/blob/12bb5d1f6350f4ea9827d9086f213feec1f0af6a/candle-kernels/build.rs#L14-L25" target="_blank" rel="noreferrer">build.rs</a>; Tracel AI, <em>Burn</em>, a tensor library and deep learning framework in Rust, with CubeCL, <a href="https://github.com/tracel-ai/burn" target="_blank" rel="noreferrer">github.com/tracel-ai/burn</a></li>
+<li>NVIDIA, <em>cuda-rust</em>, which contains cuTile-rs. <a href="https://github.com/NVIDIA/cuda-rust" target="_blank" rel="noreferrer">github.com/NVIDIA/cuda-rust</a></li>
+<li>Philipp Dominik Schubert, Ben Hermann and Eric Bodden, <em>PhASAR: An Inter-procedural Static Analysis Framework for C/C++</em>, TACAS 2019, pp. 393-410. <a href="https://doi.org/10.1007/978-3-030-17465-1_22" target="_blank" rel="noreferrer">doi.org/10.1007/978-3-030-17465-1_22</a>; the source, <a href="https://github.com/secure-software-engineering/phasar" target="_blank" rel="noreferrer">github.com/secure-software-engineering/phasar</a></li>
+</ol>
+</section>
+      </div></div>
+    </article></main>
+    <footer class="site-footer"><span>Shakthi Bachala</span><span>Graphs, Graph Compilers and the Verification of High-Performance Kernels · Part 1</span><span>2026</span></footer>
+  </div>
+  <script>
+    (function () {
+      var heads = [].slice.call(document.querySelectorAll(".article-body h2[id]"));
+      var links = [].slice.call(document.querySelectorAll(".article-rail ol a"));
+      if (!heads.length) { return; }
+      function current() {
+        var y = window.scrollY + 140, i = -1;
+        heads.forEach(function (h, k) { if (h.getBoundingClientRect().top + window.scrollY <= y) { i = k; } });
+        return i;
+      }
+      function mark() {
+        var i = current();
+        links.forEach(function (a, k) { if (k === i) { a.setAttribute("aria-current", "true"); } else { a.removeAttribute("aria-current"); } });
+      }
+      [].slice.call(document.querySelectorAll("[data-rail-move]")).forEach(function (button) {
+        button.addEventListener("click", function () {
+          var i = current() + parseInt(button.getAttribute("data-rail-move"), 10);
+          if (i < 0) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+          if (i >= heads.length) { i = heads.length - 1; }
+          heads[i].scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+      window.addEventListener("scroll", mark, { passive: true });
+      mark();
+    })();
+  </script>
+  <script src="/theme.js?v=20260828a" defer></script>
+</body>
+</html>
