@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.">
-  <meta property="og:title" content="Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open-Weights Letter">
-  <meta property="og:description" content="Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.">
+  <meta name="description" content="Open and closed systems will coexist. The question is which layers must be open for software written by agents to be safe.">
+  <meta property="og:title" content="Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open Weights Letter">
+  <meta property="og:description" content="Open and closed systems will coexist. The question is which layers must be open for software written by agents to be safe.">
   <meta property="og:type" content="article">
-  <title>Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open-Weights Letter - Shakthi Bachala</title>
+  <title>Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open Weights Letter - Shakthi Bachala</title>
   <script>
     (function () {
       try { var savedTheme = localStorage.getItem("sb-theme-v2"); document.documentElement.dataset.theme = savedTheme === "dark" ? "dark" : "light"; }
       catch (error) { document.documentElement.dataset.theme = "light"; }
     })();
   </script>
-  <link rel="stylesheet" href="../../styles.css?v=20260827h">
+  <link rel="stylesheet" href="../../styles.css?v=20261011c">
 </head>
 <body>
   <a class="skip-link" href="#article">Skip to article</a>
@@ -25,29 +25,31 @@
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true"><span class="theme-swatch" aria-hidden="true"></span><span data-theme-label>Dark</span></button>
     </header>
     <main id="article"><article>
-      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>The Goldilocks Zone of the Open Software Ecosystem</span><span>Part 1 of 10</span><span>Aug 21, 2026</span></div><h1>Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open-Weights Letter</h1><p class="dek">Open and closed systems will coexist. The question is which layers must be open for software written by agents to be trusted.</p></div></header>
+      <header class="hero article-hero writing-article-hero"><div class="signal-grid" aria-hidden="true"></div><div class="hero-copy"><div class="article-meta"><span>The Goldilocks Zone of the Open Software Ecosystem</span><span>Part 1</span><span>Aug 21, 2026</span></div><h1>Summer 2026: Mojo 1.0, DeepSeek Harness, Lean FRO, and the Open Weights Letter</h1><p class="dek">Open and closed systems will coexist. The question is which layers must be open for software written by agents to be safe.</p></div></header>
       <div class="article-layout"><aside class="article-rail"><nav aria-label="On this page"><p>On this page</p><ol>
         <li><a href="#1-the-open-ai-layer-cake">The Open AI Layer Cake</a></li>
         <li><a href="#2-what-this-series-covers">What this series covers</a></li>
-        <li><a href="#3-ai-assisted-software-development-made-verifiable">AI-assisted software development, made verifiable</a></li>
+        <li><a href="#3-software-development-assisted-by-ai-made-verifiable">Software development assisted by AI, made verifiable</a></li>
         <li><a href="#4-summer-2026-layer-by-layer">Summer 2026, layer by layer</a></li>
-        <li><a href="#5-why-open-three-incentives-one-boundary">Why open? Three incentives, one boundary</a></li>
+        <li><a href="#5-why-open-three-incentives-one-boundary">Why open? Four incentives, one boundary</a></li>
         <li><a href="#6-the-ecosystem-is-its-tooling">The ecosystem is its tooling</a></li>
         <li><a href="#references">References</a></li>
-      </ol></nav></aside><div class="article-body">
-<p class="lead"><strong>Software is heterogeneous by construction:</strong> it spans languages, type systems, intermediate representations, runtimes, protocols, and deployment targets. AI coding agents do not simplify that landscape; they move across it at machine speed, turning compositional correctness into a systems problem. An AI-native software stack therefore has to return to foundations: type theory for explicit contracts and invariants, category theory for composing tools and effects, and an open ecosystem in which critical interfaces can be inspected, extended, and independently checked.</p>
-<p>Four developments in summer 2026 made the emerging architecture concrete. Together, they point to four pillars: open models, typed agent harnesses, open compilers, and independently checkable proof infrastructure.</p>
+      </ol><div class="article-rail-movers"><button type="button" data-rail-move="-1" title="Previous section" aria-label="Previous section">&uarr;</button><button type="button" data-rail-move="1" title="Next section" aria-label="Next section">&darr;</button></div></nav></aside><div class="article-body">
+<p class="lead"><strong>Software is heterogeneous by construction:</strong> it spans languages, type systems, intermediate representations, runtimes, protocols, and deployment targets. AI coding agents do not simplify that landscape; instead, they move across it at machine speed, and compositional correctness therefore becomes a systems problem. As such, a software stack native to AI has to return to foundations: type theory for explicit contracts and invariants, category theory for composing tools and effects, and an open ecosystem in which critical interfaces can be inspected, extended, and independently checked.</p>
+<p>Four developments in the summer of 2026 made the emerging architecture concrete, because each of them concerns one layer of that stack. Together, they point to four pillars: open models, typed agent harnesses, open compilers, and proof infrastructure that can be checked independently. The four developments were the following:</p>
 <ul>
 <li>an industry coalition published an open letter on open weights;</li>
-<li>DeepSeek shipped an MIT-licensed agent harness;</li>
-<li>Modular open-sourced the Mojo compiler;</li>
-<li>Amazon made the largest gift in the Lean FRO's history.</li>
+<li>DeepSeek formalized the agent harness;</li>
+<li>Modular open sourced the compiler of Mojo, the first general purpose systems language built natively on MLIR;</li>
+<li>Amazon made the largest gift in the Lean FRO's history, to focus on CSLib, the Mathlib of computer science theory.</li>
 </ul>
-<p>My stance is neutral on open versus closed and exact about layers. Tan and colleagues argued at ICML 2026, in <em>If open source is to win, it must go public</em>, that "open source weights alone are inert" without the layers that activate them, the paper's "activation gap," and conceded that public AI "is not about replacing private labs." Their question is which layers must be public; mine is which must be open for an agent's work to be checked from outside the vendor.</p>
+<p>Four names in this list recur throughout the essay, and we define them here. An agent harness is the program that runs a model in a loop, gives it tools under stated permissions, and records what it did. MLIR is the Multi-Level Intermediate Representation, the compiler infrastructure of the LLVM project on which Mojo is built. The Lean FRO is the Lean Focused Research Organization, which develops the Lean proof assistant, and CSLib is the Lean Computer Science Library.</p>
+<p>Our attitude is optimism about open and closed work alike, and we are exact about layers. Tan and colleagues argued at ICML 2026, in <a href="https://arxiv.org/abs/2507.09296" target="_blank" rel="noreferrer"><em>If open source is to win, it must go public</em></a>, that "open source weights alone are inert" without the layers that activate them, and they conceded that public AI "is not about replacing private labs." The paper uses the phrase "activation gap" once, in its discussion of one project, the National Deep Inference Fabric (NDIF); we borrow the phrase in this essay for the general distance between published weights and a system that can use them. Their question is which layers must be public, whereas ours is which layers must be open for the work of an agent to be checked from outside the vendor.</p>
+<p>Figure F0 places the four developments at the end of a sequence of four steps, which we describe below it.</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 506" role="img" aria-labelledby="f0-title f0-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f0-title">Four steps to an open ecosystem for AI</title>
-  <desc id="f0-desc">A rising staircase of four steps from bottom-left to top-right: ChatGPT (Nov 2022, unit of work an answer); reasoning models and the DeepSeek moment (winter 2024–25, a chain of reasoning); coding agents everywhere and the start of OpenClaw (fall 2025, a repository action); an open ecosystem for AI (summer 2026, a trusted change). A thin arrow along the staircase is labelled “what the model is trusted to do”.</desc>
+  <desc id="f0-desc">A rising staircase of four steps from bottom left to top right: ChatGPT (Nov 2022, unit of work an answer); reasoning models and the DeepSeek moment (winter 2024 to 2025, a chain of reasoning); coding agents everywhere and the start of OpenClaw (fall 2025, a repository action); an open ecosystem for AI (summer 2026, a safe change). A thin arrow along the staircase is labelled “what the model can safely do”.</desc>
   <defs>
     <marker id="f0-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
@@ -66,7 +68,7 @@
 
   <!-- rising arrow along the staircase, bottom-left to top-right -->
   <line class="link" x1="472" y1="490" x2="748" y2="175" marker-end="url(#f0-arrow)"/>
-  <text class="g" transform="rotate(-48.8 625 346)" x="625" y="346">what the model is trusted to do</text>
+  <text class="g" transform="rotate(-48.8 625 346)" x="625" y="346">what the model can safely do</text>
 
   <!-- STEP 1: Nov 2022 (x=12, y=414) -->
   <text class="s" x="24" y="406">Nov 2022</text>
@@ -74,11 +76,11 @@
   <text class="n" x="24" y="447">ChatGPT</text>
   <text class="r" x="24" y="469">the unit of work: an answer</text>
 
-  <!-- STEP 2: Winter 2024–25 (x=112, y=300) -->
-  <text class="s" x="124" y="292">Winter 2024–25</text>
+  <!-- STEP 2: Winter 2024 to 2025 (x=112, y=300) -->
+  <text class="s" x="124" y="292">Winter 2024 to 2025</text>
   <rect class="band" x="112" y="300" width="436" height="80" rx="6"/>
   <text class="n" x="124" y="325">Reasoning models + the DeepSeek moment</text>
-  <text class="r" x="124" y="347">o1 → o3 previews; DeepSeek V3 and R1 open-weight ·</text>
+  <text class="r" x="124" y="347">o1 → o3 previews; DeepSeek V3 and R1, open weights ·</text>
   <text class="r" x="124" y="364">unit of work: a chain of reasoning</text>
 
   <!-- STEP 3: Fall 2025 (x=212, y=186) -->
@@ -93,112 +95,98 @@
   <rect class="band" x="312" y="72" width="436" height="80" rx="6"/>
   <text class="n" x="324" y="97">An open ecosystem for AI</text>
   <text class="r" x="324" y="119">open compiler, open harness, open proofs,</text>
-  <text class="r" x="324" y="136">open-weights letter · unit of work: a trusted change</text>
+  <text class="r" x="324" y="136">letter on open weights · unit of work: a safe change</text>
 </svg>
-<figcaption><strong>F0</strong> What the model is trusted to do, step by step: an answer, a chain of reasoning, a repository action, a trusted change.</figcaption>
+<figcaption><strong>F0</strong> What the model can safely do, step by step: an answer, a chain of reasoning, a repository action, a safe change.</figcaption>
 </figure>
-<p>Four steps got us here.</p>
+<p>Four steps led to this point, and each of them changed the unit of work that a model produces.</p>
 <ul>
-<li><strong>November 2022 — ChatGPT.</strong> The unit of work became an answer.</li>
-<li><strong>Winter 2024–25 — reasoning models and the DeepSeek moment.</strong> o1 and the o3 previews, with DeepSeek's open-weight V3 and R1 landing in the same weeks: the unit of work became a chain of reasoning, and the weights could come from anywhere.</li>
-<li><strong>Fall 2025 — coding agents everywhere; OpenClaw begins.</strong> Claude Code, Codex CLI, and Cursor, and Peter Steinberger's open personal agent: the unit of work became a repository action.</li>
-<li><strong>Summer 2026 — an open ecosystem for AI.</strong> An ecosystem opening around the agent, so that the unit of work can be a change someone else can trust.</li>
+<li><strong>November 2022: ChatGPT.</strong> The unit of work became an answer.</li>
+<li><strong>Winter 2024 to 2025: reasoning models and the DeepSeek moment.</strong> OpenAI's o1 and the previews of o3 arrived in the same weeks as DeepSeek's V3 and R1, both of which have open weights; the unit of work became a chain of reasoning, and the weights could come from any laboratory.</li>
+<li><strong>Fall 2025: coding agents everywhere, and OpenClaw begins.</strong> Claude Code, Codex CLI and Cursor, together with the open personal agent of Peter Steinberger, made the unit of work an action on a repository.</li>
+<li><strong>Summer 2026: an open ecosystem for AI.</strong> An ecosystem began to open around the agent, so that the unit of work can be a change that someone else can check to be safe.</li>
 </ul>
-<p>The cake comes first; the scope of the series follows from it.</p>
+<p>The rest of this essay is organized as follows. Section 1 describes the layers of the industry and the finer layers that matter for agents, and Section 2 states the scope of the series. Section 3 gives the principles under which development by agents becomes verifiable, and Section 4 describes the events of the summer layer by layer. Finally, Section 5 explains why private firms open a layer, and Section 6 describes the tooling on which the ecosystem depends.</p>
 <h2 id="1-the-open-ai-layer-cake">1. The Open AI Layer Cake</h2>
-<p>Jensen Huang's cake comes first, because it is the real one. "Industrially, AI is actually essentially a five-layer cake," he wrote in March: energy, chips, infrastructure, models, applications, bottom to top, and "every successful application pulls on every layer beneath it, all the way down to the power plant that keeps it alive." The bottom three layers decide the cost floor. This series lives in the top two, where the code gets written, and it cuts those two into six.</p>
+<p>This section describes the layers of the AI industry as Jensen Huang presents them, and then the finer layers into which the top of that stack divides for coding agents. We begin with Huang's description because it describes the industry as it is built. "Industrially, AI is actually essentially a five-layer cake," he said at Davos on 21 January 2026. His post of 10 March 2026, "AI Is a 5-Layer Cake", names the layers from bottom to top as energy, chips, infrastructure, models and applications, and it adds that "every successful application pulls on every layer beneath it, all the way down to the power plant that keeps it alive."</p>
+<p>The two bottom layers, energy and chips, decide the lowest cost at which the layers above them can be offered. This series covers the top three layers, applications, models and infrastructure, because the code is written in the first two and the agent runs in the third; the runtime and sandbox of an agent, such as OpenShell, are infrastructure. Chips and energy, custom chips included, are therefore out of scope. Figure F8 marks this boundary on Huang's cake, and Figure F3 shows how, for agents, the three layers in scope divide further.</p>
 <figure class="article-figure">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 508" role="img" aria-labelledby="f8-title f8-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
-  <title id="f8-title">Jensen Huang's five-layer cake, and where this series lives</title>
-  <desc id="f8-desc">Jensen Huang's five layers stacked bottom to top: energy, chips, infrastructure, models, applications. The bottom three are hatched and marked as below this series' boundary, deciding the cost floor rather than trust. A cyan bracket spans models and applications and points to a miniature of this series' six-layer cake: human intent, formal intent and policy, agent harness, compiler and language, executable system, evidence and witness. A Huang quote closes the figure.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 548" role="img" aria-labelledby="f8b-title f8b-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f8b-title">Jensen Huang's cake of five layers, and where this series lives</title>
+  <desc id="f8b-desc">Jensen Huang's five layers stacked bottom to top: energy, chips, infrastructure, models, applications. Applications, models and infrastructure are drawn solid and bracketed as the scope of this series; for agents, these three layers split into human intent, formal intent and policy, the agent harness, compiler and language, the executable system and its runtime, and evidence and witness. OpenShell, an agent sandbox, is infrastructure. Chips and energy are hatched and marked out of scope, custom chips included: they decide the cost floor, not safety. A quotation from Huang closes the figure.</desc>
   <defs>
-    <marker id="f8-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
-    <marker id="f8-arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
-    <pattern id="f8-hatch" patternUnits="userSpaceOnUse" width="8" height="8"><path d="M-2,2 L2,-2 M0,8 L8,0 M6,10 L10,6" stroke="currentColor" stroke-opacity="0.14" stroke-width="1"/></pattern>
+    <marker id="f8b-arrow-cyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1fa8d6"/></marker>
+    <pattern id="f8b-hatch" patternUnits="userSpaceOnUse" width="8" height="8"><path d="M-2,2 L2,-2 M0,8 L8,0 M6,10 L10,6" stroke="currentColor" stroke-opacity="0.14" stroke-width="1"/></pattern>
     <style>
-      .t  { font-size: 18px; font-weight: 600; }
-      .h  { font-size: 14px; font-weight: 600; opacity: 0.78; letter-spacing: 0.08em; }
-      .n  { font-size: 16px; font-weight: 600; }
-      .m  { font-size: 14px; }
-      .r  { font-size: 14px; opacity: 0.78; }
-      .k  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
-      .b  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
-      .band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
-      .dim  { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.45; stroke-width: 1.2; stroke-dasharray: 4 3; }
-      .hatch{ fill: url(#f8-hatch); }
-      .frame{ fill: none; stroke: #1fa8d6; stroke-width: 1.2; }
-      .mini { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
-      .brk  { fill: none; stroke: #1fa8d6; stroke-width: 1.2; }
-      .rule { stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
+      .f8b-t  { font-size: 18px; font-weight: 600; }
+      .f8b-h  { font-size: 14px; font-weight: 600; opacity: 0.78; letter-spacing: 0.08em; }
+      .f8b-n  { font-size: 16px; font-weight: 600; }
+      .f8b-m  { font-size: 14px; }
+      .f8b-r  { font-size: 14px; opacity: 0.78; }
+      .f8b-k  { font-size: 14px; font-weight: 600; fill: #1fa8d6; }
+      .f8b-b  { font-size: 14px; opacity: 0.78; text-anchor: middle; }
+      .f8b-band { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .f8b-dim  { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.45; stroke-width: 1.2; stroke-dasharray: 4 3; }
+      .f8b-hatch{ fill: url(#f8b-hatch); }
+      .f8b-frame{ fill: none; stroke: #1fa8d6; stroke-width: 1.2; }
+      .f8b-mini { fill: rgba(128,128,128,0.12); stroke: currentColor; stroke-opacity: 0.35; stroke-width: 1.2; }
+      .f8b-brk  { fill: none; stroke: #1fa8d6; stroke-width: 1.2; }
+      .f8b-rule { stroke: currentColor; stroke-opacity: 0.25; stroke-width: 1; }
     </style>
   </defs>
 
-  <!-- title -->
-  <text class="t" x="12" y="25">Jensen Huang's five-layer cake, and where this series lives</text>
+  <text class="f8b-t" x="12" y="25">Jensen Huang's cake of five layers, and where this series lives</text>
 
-  <!-- column headers -->
-  <text class="h" x="12" y="78">HUANG'S FIVE LAYERS</text>
-  <text class="k" x="428" y="60">this series: the six-layer cake</text>
-  <text class="k" x="428" y="78">for agentic software sits here</text>
+  <text class="f8b-h" x="12" y="78">HUANG'S FIVE LAYERS</text>
+  <text class="f8b-k" x="458" y="60">this series: for agents, these three</text>
+  <text class="f8b-k" x="458" y="78">layers split into</text>
 
-  <!-- Huang's five bands, top to bottom (x=12..420, h=64, gap 6) -->
-  <!-- Applications: y=92 -->
-  <rect class="band" x="12" y="92" width="408" height="64" rx="6"/>
-  <text class="n" x="24" y="129.5">Applications</text>
+  <!-- in scope: applications, models, infrastructure -->
+  <rect class="f8b-band" x="12" y="92" width="408" height="64" rx="6"/>
+  <text class="f8b-n" x="24" y="129.5">Applications</text>
+  <rect class="f8b-band" x="12" y="162" width="408" height="64" rx="6"/>
+  <text class="f8b-n" x="24" y="199.5">Models</text>
+  <rect class="f8b-band" x="12" y="232" width="408" height="64" rx="6"/>
+  <text class="f8b-n" x="24" y="260">Infrastructure</text>
+  <text class="f8b-r" x="24" y="281">agent runtimes and sandboxes, such as OpenShell</text>
 
-  <!-- Models: y=162 -->
-  <rect class="band" x="12" y="162" width="408" height="64" rx="6"/>
-  <text class="n" x="24" y="199.5">Models</text>
+  <!-- out of scope: chips, energy -->
+  <rect class="f8b-dim" x="12" y="316" width="408" height="64" rx="6"/>
+  <rect class="f8b-hatch" x="12" y="316" width="408" height="64" rx="6"/>
+  <text class="f8b-n" x="24" y="353.5">Chips</text>
+  <rect class="f8b-dim" x="12" y="386" width="408" height="64" rx="6"/>
+  <rect class="f8b-hatch" x="12" y="386" width="408" height="64" rx="6"/>
+  <text class="f8b-n" x="24" y="423.5">Energy</text>
+  <text class="f8b-r" x="436" y="400">out of scope, custom chips included:</text>
+  <text class="f8b-r" x="436" y="418">they decide the cost floor, not safety</text>
 
-  <!-- Infrastructure: y=232 (below boundary) -->
-  <rect class="dim" x="12" y="232" width="408" height="64" rx="6"/>
-  <rect class="hatch" x="12" y="232" width="408" height="64" rx="6"/>
-  <text class="n" x="24" y="269.5">Infrastructure</text>
+  <!-- bracket over the three layers in scope, and the split for agents -->
+  <path class="f8b-brk" d="M428,92 h6 v204 h-6"/>
+  <line class="f8b-brk" x1="434" y1="194" x2="456" y2="194" marker-end="url(#f8b-arrow-cyan)"/>
+  <rect class="f8b-frame" x="458" y="92" width="290" height="204" rx="6"/>
+  <rect class="f8b-mini" x="468" y="102" width="270" height="26" rx="4"/>
+  <text class="f8b-m" x="478" y="120">Human intent</text>
+  <rect class="f8b-mini" x="468" y="134" width="270" height="26" rx="4"/>
+  <text class="f8b-m" x="478" y="152">Formal intent and policy</text>
+  <rect class="f8b-mini" x="468" y="166" width="270" height="26" rx="4"/>
+  <text class="f8b-m" x="478" y="184">Agent harness</text>
+  <rect class="f8b-mini" x="468" y="198" width="270" height="26" rx="4"/>
+  <text class="f8b-m" x="478" y="216">Compiler and language</text>
+  <rect class="f8b-mini" x="468" y="230" width="270" height="26" rx="4"/>
+  <text class="f8b-m" x="478" y="248">Executable system and runtime</text>
+  <rect class="f8b-mini" x="468" y="262" width="270" height="26" rx="4"/>
+  <text class="f8b-m" x="478" y="280">Evidence and witness</text>
 
-  <!-- Chips: y=302 (below boundary) -->
-  <rect class="dim" x="12" y="302" width="408" height="64" rx="6"/>
-  <rect class="hatch" x="12" y="302" width="408" height="64" rx="6"/>
-  <text class="n" x="24" y="339.5">Chips</text>
-
-  <!-- Energy: y=372 (below boundary) -->
-  <rect class="dim" x="12" y="372" width="408" height="64" rx="6"/>
-  <rect class="hatch" x="12" y="372" width="408" height="64" rx="6"/>
-  <text class="n" x="24" y="409.5">Energy</text>
-
-  <!-- note beside the dimmed group -->
-  <text class="r" x="428" y="329">below this series' boundary:</text>
-  <text class="r" x="428" y="347">decides the cost floor, not trust</text>
-
-  <!-- bracket spanning Models + Applications, and connector to the mini cake -->
-  <path class="brk" d="M428,92 h6 v134 h-6"/>
-  <line class="brk" x1="434" y1="159" x2="546" y2="159" marker-end="url(#f8-arrow-cyan)"/>
-
-  <!-- miniature six-layer cake, level with Models + Applications (x=548..748, y=92..226) -->
-  <rect class="frame" x="548" y="92" width="200" height="134" rx="6"/>
-  <rect class="mini" x="556" y="100" width="184" height="18" rx="4"/>
-  <text class="m" x="562" y="114">Human intent</text>
-  <rect class="mini" x="556" y="120" width="184" height="18" rx="4"/>
-  <text class="m" x="562" y="134">Formal intent &amp; policy</text>
-  <rect class="mini" x="556" y="140" width="184" height="18" rx="4"/>
-  <text class="m" x="562" y="154">Agent harness</text>
-  <rect class="mini" x="556" y="160" width="184" height="18" rx="4"/>
-  <text class="m" x="562" y="174">Compiler &amp; language</text>
-  <rect class="mini" x="556" y="180" width="184" height="18" rx="4"/>
-  <text class="m" x="562" y="194">Executable system</text>
-  <rect class="mini" x="556" y="200" width="184" height="18" rx="4"/>
-  <text class="m" x="562" y="214">Evidence · witness</text>
-
-  <!-- quote -->
-  <line class="rule" x1="12" y1="456" x2="748" y2="456"/>
-  <text class="b" x="380" y="480">“Every successful application pulls on every layer beneath it, all the way down to the power</text>
-  <text class="b" x="380" y="498">plant that keeps it alive.” — Jensen Huang, AI Is a 5-Layer Cake (2026)</text>
+  <line class="f8b-rule" x1="12" y1="490" x2="748" y2="490"/>
+  <text class="f8b-b" x="380" y="514">“Every successful application pulls on every layer beneath it, all the way down to the power</text>
+  <text class="f8b-b" x="380" y="532">plant that keeps it alive.” Jensen Huang, AI Is a 5-Layer Cake (2026)</text>
 </svg>
-<figcaption><strong>F8</strong> Energy, chips, and infrastructure sit below this series&#x27; boundary; the six-layer cake for agentic software is a cut through models and applications.</figcaption>
+<figcaption><strong>F8</strong> Applications, models and infrastructure are the scope of this series, and for agents they split into the layers of F3; chips and energy, custom chips included, are out of scope.</figcaption>
 </figure>
-<figure class="article-figure hero-figure">
+<figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 648" role="img" aria-labelledby="f3-title f3-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
-  <title id="f3-title">The AI layer cake for agentic software</title>
-  <desc id="f3-desc">Six layers from human intent down to evidence, each stating what it commits, its open reference, and the appropriate openness boundary; a vertical arrow marks progressive commitment; a shaded band below marks cloud, chips and energy as out of scope.</desc>
+  <title id="f3-title">Applications, models and infrastructure, split for agents</title>
+  <desc id="f3-desc">Huang's top three layers, applications, models and infrastructure, split for agents into human intent, formal intent and policy, the agent harness, compiler and language, the executable system and its runtime, and evidence. Each row states what it commits, its open reference in 2026, and whether it must be open; a vertical arrow marks progressive commitment; a shaded band below marks chips and energy, custom chips included, as out of scope.</desc>
   <defs>
     <marker id="f3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
@@ -218,7 +206,7 @@
   </defs>
 
   <!-- title -->
-  <text class="t" x="42" y="25">The AI layer cake for agentic software</text>
+  <text class="t" x="42" y="25">Applications, models and infrastructure, split for agents</text>
 
   <!-- column headers -->
   <text class="h" x="54"  y="56">LAYER</text>
@@ -236,7 +224,7 @@
   <text class="n" x="54" y="119.5">Human intent</text>
   <text class="c" x="178" y="110">what was asked;</text>
   <text class="c" x="178" y="128">who accepts risk</text>
-  <text class="r" x="372" y="119">—</text>
+  <text class="r" x="372" y="119">any client, open or closed</text>
   <rect class="either" x="670" y="103" width="68" height="22" rx="11"/>
   <text class="p" x="704" y="118.8">either</text>
 
@@ -257,7 +245,7 @@
   <text class="n" x="54" y="301">(runtime)</text>
   <text class="c" x="178" y="273">effects recorded</text>
   <text class="c" x="178" y="291">with inverses;</text>
-  <text class="c" x="178" y="309">model-visible logged</text>
+  <text class="c" x="178" y="309">model input logged</text>
   <text class="r" x="372" y="282">DeepSeek Harness</text>
   <text class="r" x="372" y="300">(Aug 2026) · Cordis · ACP</text>
   <rect class="open" x="612" y="254" width="126" height="22" rx="11"/>
@@ -283,18 +271,20 @@
 
   <!-- L5 Executable system: y=418 -->
   <rect class="band" x="42" y="418" width="708" height="80" rx="6"/>
-  <text class="n" x="54" y="454">Executable</text>
-  <text class="n" x="54" y="473">system</text>
+  <text class="n" x="54" y="445">Executable</text>
+  <text class="n" x="54" y="464">system and</text>
+  <text class="n" x="54" y="483">runtime</text>
   <text class="c" x="178" y="454">behaviour observed;</text>
   <text class="c" x="178" y="472">traces produced</text>
-  <text class="r" x="372" y="454">Zed · CLI · DGX Spark-class</text>
-  <text class="r" x="372" y="472">local models</text>
+  <text class="r" x="372" y="445">OpenShell (agent sandbox,</text>
+  <text class="r" x="372" y="463">infrastructure) · Zed · CLI ·</text>
+  <text class="r" x="372" y="481">local models on a DGX Spark</text>
   <rect class="either" x="670" y="447" width="68" height="22" rx="11"/>
   <text class="p" x="704" y="462.8">either</text>
 
   <!-- L6 Evidence / witness: y=504 -->
   <rect class="band" x="42" y="504" width="708" height="80" rx="6"/>
-  <text class="n" x="54" y="540">Evidence /</text>
+  <text class="n" x="54" y="540">Evidence and</text>
   <text class="n" x="54" y="559">witness</text>
   <text class="c" x="178" y="531">proved, tested,</text>
   <text class="c" x="178" y="549">observed, judged,</text>
@@ -306,32 +296,29 @@
 
   <!-- below the boundary -->
   <rect x="42" y="598" width="708" height="38" rx="6" fill="rgba(128,128,128,0.12)" stroke="currentColor" stroke-opacity="0.45" stroke-dasharray="4 3"/>
-  <text class="b" x="396" y="622">cloud, chips, energy - below this series' boundary</text>
+  <text class="b" x="396" y="622">chips and energy, custom chips included: out of scope for this series</text>
 </svg>
-<figcaption><strong>F3</strong> Each layer: what it commits, its 2026 open reference, and its boundary verdict.</figcaption>
+<figcaption><strong>F3</strong> Each layer for agents: what it commits, its open reference in 2026, and whether it must be open.</figcaption>
 </figure>
-<p><strong>The cake is the activation gap, drawn for one domain.</strong> Six layers sit above a line: each commits what the layer above left informal, in a form the layer below can check, and each commitment is either open to inspection or sealed inside one vendor.</p>
+<p><strong>The division of Figure F3 is the activation gap, drawn for one domain.</strong> That domain is the writing of software by agents. Each layer commits what the layer above left informal, in a form that the layer below can check, and each commitment is either open to inspection or held inside one vendor. The six layers are the following:</p>
 <ul>
-<li><strong>Human intent</strong> commits a goal and a person who accepts the risk. It arrives through whichever client that person types into, open or closed.</li>
-<li><strong>Formal intent and policy</strong> commits the task boundary: what the agent may touch, what it must preserve, what counts as done. Cedar is the open reference for authority; Lean and CSLib are where obligations land. This layer must be open: a policy semantics only one product understands is configuration, and a proof only one vendor can check is a claim.</li>
-<li><strong>The agent harness</strong> commits execution: which tool ran, under which capability, with what result, and whether the run can be replayed. Its interface must be open: the protocol the editor speaks to the agent (ACP) and the log of what the model saw. The implementation can be anyone's, and DeepSeek Harness opened this layer in August.</li>
-<li><strong>Compiler and language</strong> commits meaning: typed structure, an IR that analyzers can attach to, and hooks for checks before lowering erases what they need. The IR and its analyzers must be open; the compiler that produces them can be either. Modular open-sourced Mojo's compiler at ModCon.</li>
-<li><strong>The executable system</strong> commits behavior: what runs, where, and the traces it throws off. It sits on either side.</li>
-<li><strong>Evidence and witness</strong> commits the record: what was proved, refuted, tested, observed, judged, assumed, or never checked, in a format a second tool can read. It must be portable. Evidence legible only in one vendor's dashboard is a screenshot.</li>
+<li><strong>Human intent</strong> commits a goal and a person who accepts the risk. It arrives through whichever client that person uses, and that client may be open or closed.</li>
+<li><strong>Formal intent and policy</strong> commits the task boundary: what the agent may touch, what it must preserve, and what counts as done. Cedar, an open language for authorization policies, is the open reference for authority, and Lean and CSLib are where proof obligations are stated and discharged. This layer must be open, because a policy whose semantics only one product implements cannot be checked by a second tool, and a proof that only one vendor can check remains, for everyone else, an unverified claim.</li>
+<li><strong>The agent harness</strong> commits execution: which tool ran, under which capability, with what result, and whether the run can be replayed. Its interface must be open, that is, the Agent Client Protocol (ACP) through which the editor communicates with the agent, and the log of what the model saw. The implementation can be anyone's, and DeepSeek Harness opened this layer in August.</li>
+<li><strong>Compiler and language</strong> commits meaning: typed structure, an intermediate representation (IR) to which analyzers can attach, and hooks for checks that run before lowering erases the information they need. The IR and its analyzers must be open, whereas the compiler that produces them can be open or closed. Modular open sourced the compiler of Mojo at ModCon.</li>
+<li><strong>The executable system and its runtime</strong> commit behavior: what runs, where it runs, and the traces that it produces. The runtime, for example the OpenShell sandbox, is infrastructure. This layer may be open or closed.</li>
+<li><strong>Evidence and witness</strong> commits the record: what was proved, refuted, tested, observed, judged, assumed, or never checked, in a format that a second tool can read. It must be portable, because evidence that can be read only in the dashboard of one vendor cannot be checked again by anyone else.</li>
 </ul>
-<p>The weights are what the cake activates, and they sit on either side of the line. Below the cake sit cloud, chips, and energy, outside this series.</p>
-<blockquote>
-<p>An open flagship lowers the cost floor. It says nothing about whether the agent's software can be trusted.</p>
-</blockquote>
-<p>Goldilocks is a calibration on two axes.</p>
+<p>The weights are what these layers activate, and they may be open or closed. Below them are chips and energy, which are outside this series. As such, a flagship model with open weights lowers the cost at which the layers above it can run, but it establishes nothing about whether the software that an agent writes is safe.</p>
+<p>We refer to the position that this thread argues for as the Goldilocks zone. It is a calibration on two axes, which Figure F4 draws.</p>
 <ul>
-<li><strong>Rigor</strong> runs from prompt-only intent with ambient permissions to a proof for every edit; the zone scales evidence to risk.</li>
-<li><strong>Openness</strong> runs from one vendor owning every layer to a scatter of source that never composes; the zone opens the connective layers while the leaves, the layers nothing else speaks through, go either way.</li>
+<li><strong>Rigor</strong> runs from intent that is stated only in a prompt, with ambient permissions, to a proof for every edit; the zone scales the evidence that is required to the risk of the change.</li>
+<li><strong>Openness</strong> runs from one vendor that owns every layer to scattered source code that never composes; the zone opens the connective layers, whereas a leaf, by which we mean a layer through which no other layer communicates, may be open or closed.</li>
 </ul>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 510" role="img" aria-labelledby="f4-title f4-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" fill="currentColor" width="100%">
   <title id="f4-title">The Goldilocks zone</title>
-  <desc id="f4-desc">A two-axis chart. The horizontal axis is rigor, from prompt-only on the left to proof for every edit on the right. The vertical axis is openness, from closed vertical at the bottom to fragmented at the top. A cyan zone in the centre is labelled Goldilocks zone: typed intent, open connective layers, evidence scales with risk. The four corners are labelled supervising a demo (bottom-left), locked-in ceremony (bottom-right), nothing composes nothing checks (top-left), and formal islands (top-right). Below the chart a gold gradient bar shows evidence scaling with risk, from a docs edit through a parser refactor to auth and payments.</desc>
+  <desc id="f4-desc">A chart on two axes. The horizontal axis is rigor, from prompt only on the left to proof for every edit on the right. The vertical axis is openness, from closed vertical at the bottom to fragmented at the top. A cyan zone in the centre is labelled Goldilocks zone: typed intent, open connective layers, evidence scales with risk. The four corners are labelled supervising a demo (bottom left), locked in ceremony (bottom right), nothing composes nothing checks (top left), and formal islands (top right). Below the chart a gold gradient bar shows evidence scaling with risk, from a docs edit through a parser refactor to auth and payments.</desc>
   <defs>
     <marker id="f4-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <linearGradient id="f4-risk" x1="0" y1="0" x2="1" y2="0">
@@ -352,7 +339,7 @@
   <text transform="translate(20 213) rotate(-90)" text-anchor="middle" fill="currentColor" font-weight="600">openness</text>
 
   <!-- x axis labels -->
-  <text x="128" y="421" fill="currentColor" fill-opacity="0.78">prompt-only</text>
+  <text x="128" y="421" fill="currentColor" fill-opacity="0.78">prompt only</text>
   <text x="430" y="421" text-anchor="middle" fill="currentColor" font-weight="600">rigor</text>
   <text x="732" y="421" text-anchor="end" fill="currentColor" fill-opacity="0.78">proof for every edit</text>
 
@@ -375,7 +362,7 @@
   <text x="225" y="381.3" text-anchor="middle" fill="currentColor">supervising a demo</text>
 
   <rect x="550" y="363" width="170" height="26" rx="13" fill="rgba(116,88,166,0.16)" stroke="#7458a6" stroke-width="1.2"/>
-  <text x="635" y="381.3" text-anchor="middle" fill="currentColor">locked-in ceremony</text>
+  <text x="635" y="381.3" text-anchor="middle" fill="currentColor">locked in ceremony</text>
 
   <!-- evidence-scales-with-risk gradient bar along the rigor axis -->
   <text x="128" y="455" fill="#c78307" font-weight="600">evidence scales with risk</text>
@@ -386,53 +373,33 @@
 </svg>
 <figcaption><strong>F4</strong> Rigor by openness, with the zone bounded on all four sides.</figcaption>
 </figure>
+<p>Next, Section 2 states which of these layers the series covers.</p>
 <h2 id="2-what-this-series-covers">2. What this series covers</h2>
+<p>This section states the scope of the series, first what it covers and then what it leaves out.</p>
 <p><strong>In scope: coding.</strong></p>
 <ul>
-<li>The six layers of the cake and the software engineering that runs through them.</li>
+<li>The layers of Figure F3 and the software engineering that runs through them.</li>
 <li>Typed intent and policy.</li>
-<li>Agent harnesses, and the protocols between editor, agent, and tool.</li>
-<li>Compilers, languages, and the IRs that analyzers attach to.</li>
-<li>The executable system and its traces.</li>
-<li>Evidence, and the formats it travels in.</li>
-<li>The agentic software development loop, as the subject being made trustworthy.</li>
-<li>Open models, weights, and RL environments, exactly where they touch those layers: what runs locally, what a reward can verify, what a license allows.</li>
+<li>Agent harnesses, and the protocols between editor, agent, and tool. We covered the three dimensions of these protocols, ACP, the Model Context Protocol (MCP) and the Agent2Agent protocol (A2A), in <a href="https://sb-iam.github.io/blog/testing-compositional-mcp-zero-trust/">an earlier talk</a>.</li>
+<li>Compilers, languages, and the IRs to which analyzers attach.</li>
+<li>The executable system, its runtime, and its traces.</li>
+<li>Evidence, and the formats in which it travels.</li>
+<li>The agentic software development loop, as the subject that is being made safe.</li>
+<li>Open models, weights, and reinforcement learning (RL) environments, exactly where they touch those layers: what runs locally, what a reward can verify, and what a license allows.</li>
 </ul>
 <p><strong>Out of scope.</strong></p>
 <ul>
 <li>The ethics of open versus closed. The series takes coexistence as given and argues only about layers.</li>
-<li>Everything below the ABI: chips, cloud, energy, physical hardware, and robotics. They decide the cost floor and nothing about trust.</li>
+<li>Chips, custom chips included, energy, physical hardware, and robotics. They decide the cost floor. For the safety of software, the series takes correct hardware as given, which is also an assumption of the proof of seL4.</li>
 <li>Anything outside software engineering.</li>
-<li>Auto-research, the loop that produces papers rather than software.</li>
 </ul>
-<p>Three evolving threads.</p>
-<div class="table-wrap"><table>
-<thead>
-<tr>
-<th>Thread</th>
-<th>Parts</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>The Goldilocks Zone of the Open Software Ecosystem</td>
-<td>10, tentative and evolving: this essay · from leaky to type-safe abstractions · language and SDK design for the agent era: Mojo, Rust, and modern C++ · compiler infrastructure: MLIR, LLVM, and a pattern book for composable DSLs and libraries · agent harnesses, sandboxes, and the safe deployment pipeline · formal verification with the Rust toolchain: the ecosystem Mojo needs to build on · open weights, models, and environments: the letter and RL on your own hardware · open protocols and portable evidence · incentives, licensing, and the open social contract · conclusion</td>
-</tr>
-<tr>
-<td>Hybrid Analysis</td>
-<td>5: static + dynamic analysis · verification + validation · program synthesis + LLMs · mechanistic interpretability + influence functions; fixed models vs. continual learning · a shared analysis and evidence substrate</td>
-</tr>
-<tr>
-<td>Future of Software Engineering</td>
-<td>5: the agentic development stack: IDEs, CLIs, agent harnesses, and LLMs · high-performance, safe languages for coding agents · protocol proliferation: LSP, ACP, MCP, A2A, and what comes next · engineering personas: software, AI, platform, security, and DevOps · composable tooling across engineering roles</td>
-</tr>
-</tbody>
-</table></div>
-<h2 id="3-ai-assisted-software-development-made-verifiable">3. AI-assisted software development, made verifiable</h2>
+<p>Several threads are evolving alongside this one, and we will cover them across the essays of the series: the Goldilocks zone of the open software ecosystem, hybrid analysis, and the future of software engineering, among others. Next, Section 3 describes the development loop that the layers in scope are meant to make verifiable.</p>
+<h2 id="3-software-development-assisted-by-ai-made-verifiable">3. Software development assisted by AI, made verifiable</h2>
+<p>This section describes the development loop that agents now run and the three principles under which its output can be verified. Figure F6 shows the loop with the layers of Section 1 placed around it.</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 612" role="img" aria-labelledby="f6-title f6-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f6-title">Agentic SDLC inside a verifiable ecosystem</title>
-  <desc id="f6-desc">A clockwise racetrack loop of eight stages: intent, plan, edit, build, test, review, merge, operate, with operate feeding back into intent. Four coloured bands hug the outside of the loop naming what the verifiable ecosystem contributes at each arc: typed intent and policy over intent to plan; an open harness with effects logged and revertible over plan, edit and build; compiler and analyzers checking structure before lowering over build to test; and evidence that is proved, tested, observed or judged over review, merge and operate. A note marks auto-research as out of scope, and a legend names the imported discipline: from functional programming, make illegal states unrepresentable and property-based tests; from hardware, the formal spec as the contract (RISC-V Sail) and verification as sign-off.</desc>
+  <desc id="f6-desc">A clockwise racetrack loop of eight stages: intent, plan, edit, build, test, review, merge, operate, with operate feeding back into intent. Four coloured bands hug the outside of the loop naming what the verifiable ecosystem contributes at each arc: typed intent and policy over intent to plan; an open harness with effects logged and revertible over plan, edit and build; compiler and analyzers checking structure before lowering over build to test; and evidence that is proved, tested, observed or judged over review, merge and operate. A legend names the imported discipline: from functional programming, make illegal states unrepresentable and property based tests; from hardware, the formal spec as the contract (RISC-V Sail) and verification as the sign off.</desc>
   <defs>
     <marker id="f6-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
@@ -459,8 +426,6 @@
 
   <!-- title + scope note -->
   <text class="t" x="12" y="26">Agentic SDLC inside a verifiable ecosystem</text>
-  <rect class="pill" x="524" y="10" width="224" height="24" rx="12"/>
-  <text class="note" x="636" y="26.5">auto-research: out of scope</text>
 
   <!-- bands (outside the loop) -->
   <line class="band cyan" x1="58"  y1="90" x2="208" y2="90"/>
@@ -516,27 +481,26 @@
   <!-- legend -->
   <line class="rule" x1="12" y1="524" x2="748" y2="524"/>
   <text class="h" x="12" y="548">IMPORTED DISCIPLINE</text>
-  <text x="12" y="572"><tspan class="lk">FP</tspan><tspan class="lv" dx="6">— make illegal states unrepresentable; property-based tests</tspan></text>
-  <text x="12" y="596"><tspan class="lk">hardware</tspan><tspan class="lv" dx="6">— formal spec as the contract (RISC-V Sail); verification as sign-off</tspan></text>
+  <text x="12" y="572"><tspan class="lk">FP</tspan><tspan class="lv" dx="6">: make illegal states unrepresentable; property based tests</tspan></text>
+  <text x="12" y="596"><tspan class="lk">hardware</tspan><tspan class="lv" dx="6">: formal spec as the contract (RISC-V Sail); verification as the sign off</tspan></text>
 </svg>
-<figcaption><strong>F6</strong> The agentic SDLC loop with the cake wrapped around it: spec before the first edit, harness around execution, analyzers at build, evidence at merge.</figcaption>
+<figcaption><strong>F6</strong> The agentic SDLC loop with the layers wrapped around it: spec before the first edit, harness around execution, analyzers at build, evidence at merge.</figcaption>
 </figure>
-<p>The loop has not changed, and everything in it moves faster. SWE-agent and OpenHands run it at repository scale, and the literature calls the result the agentic SDLC. A systematic review of 92 studies found the deciding factor: "output verifiability is the primary enabler of agentic adoption."</p>
-<p><strong>A verifiable ecosystem lets agents build verified large-scale software on three principles the functional-programming and hardware communities already live by.</strong></p>
+<p>The loop itself has not changed, but every step in it now runs faster. SWE-agent and OpenHands run it at the scale of a repository, and the literature refers to the result as the agentic software development life cycle (SDLC). A systematic review of 92 studies identified the factor that decides adoption: "output verifiability is the primary enabler of agentic adoption." As such, the question for this section is how the output of the loop becomes verifiable.</p>
+<p><strong>A verifiable ecosystem lets agents build verified software at large scale on three principles that the functional programming and hardware communities already apply.</strong></p>
 <ul>
-<li><strong>The formal spec is the contract.</strong> RISC-V specifies its architecture twice: the ISA manual is the official prose, and the Sail model is the official formal specification. The Architectural Certification Tests compute expected results from Sail and gate the "RISC-V Compatible" mark. The agentic analogue: intent lands in a spec that tools can execute, and the prose stays prose.</li>
-<li><strong>Make illegal states unrepresentable.</strong> Yaron Minsky's maxim is typed functional programming's working rule, and the verified canon runs on it: CompCert is written in Coq and extracted to OCaml; seL4's 8,700 lines of C were derived from a Haskell prototype and proved in 200,000 lines of Isabelle; QuickCheck made properties executable tests. An agent that cannot express a forbidden state cannot reach it.</li>
-<li><strong>Verification is sign-off, not afterthought.</strong> Verification consumes 60 to 70 percent of engineering effort on a chip project; simulation still dominates and formal grows every year. Csmith spent about six CPU-years failing to find a wrong-code bug in CompCert's verified middle-end and still concluded that "verification does not obviate testing, but rather complements it." Proofs and tests travel together, and neither merges on its own word.</li>
+<li><strong>The formal spec is the contract.</strong> RISC-V specifies its architecture twice: the manual of the instruction set architecture (ISA) is the official prose, and the Sail model is the official formal specification. The Architectural Certification Tests compute expected results from Sail and gate the "RISC-V Compatible" mark. The analogue for agents is that intent is written in a specification that tools can execute, while the prose remains a description for people.</li>
+<li><strong>Make illegal states unrepresentable.</strong> The maxim of Yaron Minsky is the working rule of typed functional programming, and the best known verified systems follow it: CompCert is written in the Rocq proof assistant (formerly Coq) and extracted to OCaml; the 8,700 lines of C in seL4 were derived from a Haskell prototype and proved correct in 200,000 lines of Isabelle; and QuickCheck turned properties into executable tests. As such, an agent that cannot express a forbidden state cannot reach it.</li>
+<li><strong>Verification is the sign off, not an afterthought.</strong> Verification consumes 60 to 70 percent of the engineering effort on a chip project; simulation still accounts for most of that effort, and the use of formal methods grows every year. The authors of Csmith, a random generator of C programs, spent about six CPU years without finding a bug that produced wrong code in the verified middle end of CompCert, and they still concluded that "verification does not obviate testing, but rather complements it." Proofs and tests are therefore used together, and neither is sufficient alone for a change to be merged.</li>
 </ul>
-<blockquote>
-<p>Hardware ships when verification signs off. Software written by agents should ship the same way.</p>
-</blockquote>
-<p>Auto-research is out of scope; this is the loop that ships software.</p>
+<p>Before AI, these principles were learned by hand. <a href="https://softwarefoundations.cis.upenn.edu/" target="_blank" rel="noreferrer"><em>Software Foundations</em></a>, the series of textbooks edited by Benjamin C. Pierce in which every definition and proof is checked by the Rocq proof assistant (formerly Coq), taught programmers to state a specification and to prove a program against it. Agents now need the same discipline at machine speed.</p>
+<p>Hardware is released only when its verification has signed off, and we argue that software written by agents should be released on the same condition. Next, Section 4 describes the events of the summer that gave these layers open references.</p>
 <h2 id="4-summer-2026-layer-by-layer">4. Summer 2026, layer by layer</h2>
+<p>This section describes the four events of the summer and the layers that they concern. Figure F7 places each event on its layer and states its contribution.</p>
 <figure class="article-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 650" role="img" aria-labelledby="f7-title f7-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
   <title id="f7-title">Summer 2026: four layers opened</title>
-  <desc id="f7-desc">A sequence of four summer-2026 events, each connected to a card naming its layer and first principle: the open-weights letter (weights), Amazon funding the Lean FRO (proofs), DeepSeek Harness (agent harness), and Mojo 1.0 followed by the open compiler at ModCon (compiler and language).</desc>
+  <desc id="f7-desc">A sequence of four events of summer 2026, each connected to a card naming its layer and its contribution: the letter on open weights (weights), Amazon funding the Lean FRO (proofs), DeepSeek Harness (agent harness), and Mojo 1.0 followed by the open compiler at ModCon (compiler and language).</desc>
   <defs>
     <marker id="f7-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="currentColor"/></marker>
     <style>
@@ -576,8 +540,8 @@
 
   <!-- CARD 1: open-weights letter (x=12) -->
   <rect class="band" x="12" y="150" width="175" height="466" rx="6"/>
-  <text class="n" x="21" y="174">Open-weights</text>
-  <text class="n" x="21" y="194">letter</text>
+  <text class="n" x="21" y="174">Letter on</text>
+  <text class="n" x="21" y="194">open weights</text>
   <line class="rule" x1="21" y1="224" x2="178" y2="224"/>
   <text class="r" x="21" y="242">“Open Weights and</text>
   <text class="r" x="21" y="259">American AI</text>
@@ -589,13 +553,13 @@
   <text class="r" x="21" y="361">Amazon joined ·</text>
   <text class="r" x="21" y="378">235 signatories</text>
   <rect class="open" x="21" y="408" width="157" height="36" rx="8"/>
-  <text class="p" x="99.5" y="423.2">weights —</text>
+  <text class="p" x="99.5" y="423.2">weights:</text>
   <text class="p" x="99.5" y="438.2">a leaf, either</text>
-  <text class="k" x="21" y="483">first principle:</text>
-  <text class="f" x="21" y="500">weights are the</text>
-  <text class="f" x="21" y="517">finished artifact;</text>
-  <text class="f" x="21" y="534">the cake activates</text>
-  <text class="f" x="21" y="551">them</text>
+  <text class="k" x="21" y="483">contribution:</text>
+  <text class="f" x="21" y="500">puts the industry</text>
+  <text class="f" x="21" y="517">on record for open</text>
+  <text class="f" x="21" y="534">weights, the artifact</text>
+  <text class="f" x="21" y="551">the stack activates</text>
 
   <!-- CARD 2: Amazon funds the Lean FRO (x=199) -->
   <rect class="band" x="199" y="150" width="175" height="466" rx="6"/>
@@ -605,22 +569,22 @@
   <text class="r" x="208" y="242">largest gift in the</text>
   <text class="r" x="208" y="259">FRO's history,</text>
   <text class="r" x="208" y="276">outside Amazon ·</text>
-  <text class="r" x="208" y="293">“easier to trust a</text>
-  <text class="r" x="208" y="310">proof when you can</text>
-  <text class="r" x="208" y="327">evaluate the tools</text>
-  <text class="r" x="208" y="344">behind it yourself”</text>
-  <text class="r" x="208" y="361">· CSLib</text>
-  <text class="r" x="208" y="378">builds the CS</text>
-  <text class="r" x="208" y="395">library</text>
+  <text class="r" x="208" y="293">a proof is easier to</text>
+  <text class="r" x="208" y="310">accept when its tools</text>
+  <text class="r" x="208" y="327">can be evaluated by</text>
+  <text class="r" x="208" y="344">its reader</text>
+  <text class="r" x="208" y="361">· focus: CSLib, the</text>
+  <text class="r" x="208" y="378">Mathlib of computer</text>
+  <text class="r" x="208" y="395">science theory</text>
   <rect class="open" x="208" y="408" width="157" height="51" rx="8"/>
-  <text class="p" x="286.5" y="423.2">proofs —</text>
+  <text class="p" x="286.5" y="423.2">proofs:</text>
   <text class="p" x="286.5" y="438.2">the checker</text>
   <text class="p" x="286.5" y="453.2">must be open</text>
-  <text class="k" x="208" y="483">first principle:</text>
-  <text class="f" x="208" y="500">dependent type</text>
-  <text class="f" x="208" y="517">theory: propositions</text>
-  <text class="f" x="208" y="534">as types, proofs</text>
-  <text class="f" x="208" y="551">as programs</text>
+  <text class="k" x="208" y="483">contribution:</text>
+  <text class="f" x="208" y="500">funds the proof</text>
+  <text class="f" x="208" y="517">checker at an</text>
+  <text class="f" x="208" y="534">independent</text>
+  <text class="f" x="208" y="551">organization</text>
 
   <!-- CARD 3: DeepSeek Harness (x=386) -->
   <rect class="band" x="386" y="150" width="175" height="466" rx="6"/>
@@ -631,19 +595,19 @@
   <text class="r" x="395" y="259">preview · built on</text>
   <text class="r" x="395" y="276">Cordis · everything</text>
   <text class="r" x="395" y="293">is a plugin ·</text>
-  <text class="r" x="395" y="310">model-visible</text>
-  <text class="r" x="395" y="327">means logged</text>
+  <text class="r" x="395" y="310">what the model sees</text>
+  <text class="r" x="395" y="327">is logged</text>
   <rect class="open" x="395" y="408" width="157" height="36" rx="8"/>
-  <text class="p" x="473.5" y="423.2">agent harness —</text>
+  <text class="p" x="473.5" y="423.2">agent harness:</text>
   <text class="p" x="473.5" y="438.2">interface open</text>
-  <text class="k" x="395" y="483">first principle:</text>
-  <text class="f" x="395" y="500">type theory +</text>
-  <text class="f" x="395" y="517">category theory:</text>
-  <text class="f" x="395" y="534">effects as monads,</text>
-  <text class="f" x="395" y="551">coeffects as</text>
-  <text class="f" x="395" y="568">comonads, every</text>
-  <text class="f" x="395" y="585">effect with a</text>
-  <text class="f" x="395" y="602">tracked inverse</text>
+  <text class="k" x="395" y="483">contribution:</text>
+  <text class="f" x="395" y="500">formalizes the agent</text>
+  <text class="f" x="395" y="517">harness: every effect</text>
+  <text class="f" x="395" y="534">carries its inverse,</text>
+  <text class="f" x="395" y="551">every dependency is</text>
+  <text class="f" x="395" y="568">a reactive coeffect</text>
+  <text class="f" x="395" y="585">(Cordis, Shi, Zhang</text>
+  <text class="f" x="395" y="602">and Cui)</text>
 
   <!-- CARD 4: Mojo 1.0 -> open compiler (x=573) -->
   <rect class="band" x="573" y="150" width="175" height="466" rx="6"/>
@@ -654,140 +618,240 @@
   <text class="r" x="582" y="242">1.0 first (source</text>
   <text class="r" x="582" y="259">stability) · then the</text>
   <text class="r" x="582" y="276">compiler + toolchain,</text>
-  <text class="r" x="582" y="293">Apache-2.0 with</text>
+  <text class="r" x="582" y="293">Apache 2.0 with</text>
   <text class="r" x="582" y="310">LLVM exceptions ·</text>
   <text class="r" x="582" y="327">built purely on</text>
   <text class="r" x="582" y="344">MLIR Core</text>
   <rect class="open" x="582" y="408" width="157" height="51" rx="8"/>
   <text class="p" x="660.5" y="423.2">compiler &amp;</text>
-  <text class="p" x="660.5" y="438.2">language — IR and</text>
+  <text class="p" x="660.5" y="438.2">language: IR and</text>
   <text class="p" x="660.5" y="453.2">analyzers open</text>
-  <text class="k" x="582" y="483">first principle:</text>
-  <text class="f" x="582" y="500">progressive lowering</text>
-  <text class="f" x="582" y="517">through typed IR:</text>
-  <text class="f" x="582" y="534">each pass commits</text>
-  <text class="f" x="582" y="551">what the last</text>
-  <text class="f" x="582" y="568">left open</text>
+  <text class="k" x="582" y="483">contribution:</text>
+  <text class="f" x="582" y="500">compiler of the first</text>
+  <text class="f" x="582" y="517">general purpose</text>
+  <text class="f" x="582" y="534">systems language</text>
+  <text class="f" x="582" y="551">built natively on</text>
+  <text class="f" x="582" y="568">MLIR, now open source</text>
 
   <!-- footer -->
-  <text class="b" x="380" y="640">each event opens one layer of the cake; none of them opens the weights' trust problem on its own</text>
+  <text class="b" x="380" y="640">each event opens one layer of the cake; none of them on its own makes the weights safe to use</text>
 </svg>
-<figcaption><strong>F7</strong> The open-weights letter, the Lean FRO gift, DeepSeek Harness, and Mojo&#x27;s open compiler, each placed on its layer with the first principle it rests on.</figcaption>
+<figcaption><strong>F7</strong> The letter on open weights, the Lean FRO gift, DeepSeek Harness, and Mojo&#x27;s open compiler, each placed on its layer with its contribution.</figcaption>
 </figure>
-<p>Four weeks, four layers, and each event rests on a first principle older than the product:</p>
+<p>The four events fell within four weeks, from 24 July to 18 August 2026. They concern four layers, and each event made one contribution:</p>
 <ul>
-<li>the letter, on the economics of a finished artifact;</li>
-<li>the FRO, on dependent type theory;</li>
-<li>the harness, on type theory and category theory by way of Cordis;</li>
-<li>the compiler, on progressive lowering through typed IR.</li>
+<li>the letter put the industry on record for open weights;</li>
+<li>the gift from Amazon funds the proof checker at an independent organization, the Lean FRO;</li>
+<li>DeepSeek Harness gives the agent harness a formal basis, by way of Cordis;</li>
+<li>the compiler of Mojo, the first general purpose systems language built natively on MLIR, is now open source.</li>
 </ul>
-<p>Five layers acquired open references this year, on both sides of the must-open line.</p>
+<p>The subsections below take five layers in turn: the four layers of these events and a fifth, models and environments, which also acquired open references this year. The five layers lie on both sides of the line between what must be open and what may be closed.</p>
 <h3>Compiler: Mojo goes open at ModCon</h3>
 <ul>
-<li><strong>Mojo 1.0</strong> shipped on August 11 as a stability milestone: source-stable, 1.x changes "primarily additive," the ABI still unstable.</li>
-<li><strong>A week later at ModCon</strong>, Modular open-sourced the entire compiler and toolchain under Apache 2.0 with LLVM exceptions.</li>
-<li><strong>MAX</strong> stays source-available, and Modular is now a Qualcomm company.</li>
+<li><strong>Mojo 1.0</strong> was released on August 11 as a stability milestone: most core features of the language are stable at the source level, the standard library begins with a small set of stable APIs, the 1.x series follows the rule that "changes should primarily be additive," although breaking changes remain possible, and the application binary interface (ABI) is not yet stable.</li>
+<li><strong>A week later at ModCon</strong>, Modular open sourced the entire compiler and toolchain under Apache 2.0 with LLVM exceptions.</li>
+<li><strong>The runtime of MAX</strong> is planned to be open source by the end of the year, and Modular is now a Qualcomm company.</li>
 </ul>
-<p>Modular's earlier docs called Mojo "the first major language designed expressly for MLIR"; the current vision doc says "built purely on top of MLIR Core," aiming at "a unified language for kernel development." My argument, which Modular does not make: an open, general-purpose compiler built directly on MLIR is the pattern book for MLIR DSLs and for verification hooks that run before lowering. For the language itself, read the Mojo 1.0 post.</p>
-<p>Modular's own framing is the systems language for the AI era, and I will add the part it does not say.</p>
+<p>Modular's earlier documentation called Mojo "the first major language designed expressly for MLIR", and its current vision document says that Mojo is "built purely on top of MLIR Core" and aims at "a unified language for kernel development." Our argument, which Modular does not make, is that an open compiler for a general purpose language built directly on MLIR is a worked reference for two kinds of later work: domain specific languages (DSLs) built on MLIR, and verification hooks that run before lowering. For the language itself, we refer the reader to Modular's post on Mojo 1.0.</p>
+<p>Modular describes Mojo as the systems language for the AI era, and we add to that description the part that Modular does not state:</p>
 <ul>
-<li><strong>First on MLIR, first for the AI era.</strong> Mojo is the first major language designed for MLIR and the first mainstream language built for the AI era, with the data plane, training and inference both, as its target.</li>
-<li><strong>The data plane is split down the middle.</strong> Training lives in PyTorch, a decade old, JAX, and TensorFlow; production inference has moved to purpose-built engines, vLLM, SGLang, TensorRT-LLM, and every model crosses a language boundary on the way from one to the other.</li>
-<li><strong>MAX</strong>, Modular's graph compiler and serving runtime, sits on the inference side; its Python API and GPU kernels are Apache-2.0, the runtime is source-available.</li>
-<li><strong>Training in Mojo is arriving from the community.</strong> llm.mojo, Evan Owen's port of Karpathy's llm.c to Mojo 1.0, reports bf16 parity with llm.c on a GB10; Nabla is a JAX-style autodiff framework on Mojo and MAX, Apache-2.0 and alpha.</li>
-<li><strong>nabla-mojo</strong> is mine, on that line: open source soon, for training coding models only, not a replacement for PyTorch.</li>
+<li><strong>First on MLIR, first for the AI era.</strong> Mojo is the first general purpose systems language built natively on MLIR and the first mainstream language built for the AI era, and its target is the data plane, that is, both training and inference. The first of these two descriptions is our own statement, and it follows the earlier wording of Modular quoted above.</li>
+<li><strong>Heterogeneous kernels.</strong> Mojo compiles one kernel source for heterogeneous hardware, that is, for CPUs and for GPUs from more than one vendor. The GPU kernels of MAX, the graph compiler and serving runtime of Modular, are written in Mojo; they and the Python API of MAX are licensed under Apache 2.0, and its runtime is planned to be open source by the end of the year.</li>
+<li><strong>One stack for inference and training is planned.</strong> At present a model is trained in PyTorch or JAX and is served by a separate engine such as vLLM or SGLang, so that it crosses a language boundary on the way. MAX serves inference only; training in MAX is <a href="https://forum.modular.com/t/first-class-autodiff-training-in-max-timeline-and-supersede-or-compose-with-community-autograd-libraries/3152">planned</a>, and until then training in Mojo is a community effort (llm.mojo, Nabla, and our own nabla-mojo).</li>
 </ul>
-<p><strong>The point is that fifty years of program analysis applies to one platform when training and inference share it, because there is no cross-language seam for the analysis to fall through. Performance is the bonus: a systems language with Rust- and C++-class speed and zero-cost abstractions comes with the platform.</strong></p>
-<p>Modular is not taking compiler contributions yet, "particularly in today's era of AI coding," and aims to by year end: open in source, closed in governance. No analyzer needs that queue; the IR is must-open, the gate is can-close.</p>
+<p><strong>We can leverage fifty years of program analysis on one platform when training and inference share it, because no boundary between languages remains at which an analysis loses the program. Performance is an additional benefit: the platform brings a systems language with speed in the class of Rust and C++ and with abstractions at zero cost.</strong></p>
+<p>Modular does not yet accept contributions to the compiler, "particularly in today's era of AI coding," and it aims to accept them by the end of the year; the compiler is therefore open in its source and closed in its governance. This limit does not hinder an analyzer, because an analyzer needs the IR to be open and does not need access to the queue of contributions, which may stay closed. Next, we describe the harness.</p>
 <h3>Harness: DeepSeek Harness on Cordis</h3>
-<p>DeepSeek Harness, binary <code>dsh</code>, arrived on August 13 as an MIT-licensed developer preview and had 179,486 GitHub stars by August 21. It is built on Cordis, a 2022 plugin framework it credits as its foundation, with two invariants:</p>
+<p>DeepSeek Harness, whose binary is named <code>dsh</code>, was released in August as a developer preview under the MIT license. It is built on <a href="https://github.com/cordiverse/cordis" target="_blank" rel="noreferrer">Cordis</a>, a plugin framework from 2022 that it credits as its foundation, and it maintains two invariants:</p>
 <ul>
 <li><strong>Everything is a plugin</strong>, the agent loop included, with no privileged core.</li>
-<li><strong>Model-visible means logged</strong>: anything that reaches a model request must be reconstructable from the append-only session log.</li>
+<li><strong>What the model sees is logged</strong>: anything that reaches a model request must be reconstructable from the session log, to which entries are only ever appended.</li>
 </ul>
-<p>pi, Mario Zechner's coding agent, is the opposite answer to the same problem:</p>
+<p>The coding agent pi, by Mario Zechner, gives the opposite answer to the same problem:</p>
 <ul>
-<li>pi keeps a four-tool core and refuses sub-agents, plan mode, and MCP;</li>
-<li><code>dsh</code> ships sub-agents, planning, skills, sandboxing, and approval policy;</li>
-<li>only <code>dsh</code>'s Minimal preset, a two-tool loop for benchmarking, is pi-shaped, and pi's only footprint in <code>dsh</code> is one npm package behind one model-adapter plugin.</li>
+<li>pi keeps a core of four tools and declines subagents, a plan mode, and the Model Context Protocol (MCP);</li>
+<li><code>dsh</code> provides subagents, planning, skills, sandboxing, and an approval policy;</li>
+<li>only the Minimal preset of <code>dsh</code>, which at release was a loop of two tools for benchmarking, resembles pi, and the only trace of pi in <code>dsh</code> is one npm package behind one model adapter plugin.</li>
 </ul>
-<p>This is the layer Tan and colleagues say stays private, the harness that "captures the user's exact process of software development." The log and the plugin interface are must-open, the harness can be anyone's, and a model lab has opened it.</p>
+<p><strong>The main contribution is a formalization of the agent harness.</strong> The formal treatment is in the paper on Cordis by Shi, Zhang and Cui, which names the agent harness that evolves itself as a motivating case and formalizes two properties of dynamic composition. The first property is that of revertible effects: every change that a component makes to the shared context carries an inverse that the runtime holds, so that removing the component undoes the changes that it made through that context. The second property is that of reactive coeffects: every change to the context is checked against the declared dependencies of each component, and the component is activated or deactivated accordingly. A calculus of components then carries both properties from one component to a whole system.</p>
+<p>Note that the paper does not name DeepSeek Harness, and its case study is Koishi, another system built on Cordis. The statement that the agent harness is formalized is therefore our reading, and it rests on one fact: DeepSeek Harness is built on Cordis, so the two properties formalized for the framework are the ones on which the composition of the harness relies. The result covers the plugin composition of the harness, that is, the changes made through the tracked context. It does not cover an effect outside that context, such as a file written by a subprocess, nor the reconstruction of a model request from the log, nor the correctness of the agent loop. The paper appeared in late August, after this essay was first published, and it was added in revision. Figure F9 redraws Table 2 of the paper, which pairs each construct of the theory with the code of Cordis that implements it.</p>
+<figure class="article-figure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 802" role="img" aria-labelledby="f9-title f9-desc" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" fill="currentColor" width="100%">
+  <title id="f9-title">The correspondence between the calculus of Cordis and its implementation, redrawn from Table 2 of Shi, Zhang and Cui</title>
+  <desc id="f9-desc">A table of two columns, theory and implementation, in three groups. The first group pairs the context of the calculus and its operations, effects, stores, get and set, isolate and intercept, with ctx and its methods. The second pairs the tuple that describes a component instance and its fields with the fiber of Cordis and its fields: uid, inject, provide, apply, parent, ctx, state, dispose, committed, target and inertia. The third pairs the rules of the calculus, O-Insert, O-Retire and O-Remove, and L-Begin, L-Iter, L-Finish, L-Divert, L-Leave and L-Unload, with the operations of the runtime that realize them: ctx.use, execute, guard, reload, refresh and unload.</desc>
+  <defs>
+    <style>
+      .f9-k  { font-size: 12px; font-weight: 750; letter-spacing: 0.09em; fill: #b8860b; text-anchor: middle; }
+      .f9-th { font-size: 13px; font-weight: 700; }
+      .f9-t  { font-family: 'STIX Two Text', 'Cambria Math', Cambria, 'Times New Roman', serif; font-size: 14.5px; }
+      .f9-i  { font-size: 12.5px; opacity: 0.9; }
+      .f9-c  { font-family: Menlo, Consolas, 'Liberation Mono', monospace; font-size: 11.5px; }
+      .f9-v  { font-style: italic; }
+      .f9-s  { font-size: 10.5px; }
+      .f9-rule { stroke: currentColor; fill: none; }
+    </style>
+  </defs>
+
+  <text class="f9-k" x="380" y="20">CORDIS: FROM THEORY TO IMPLEMENTATION</text>
+
+  <line class="f9-rule" x1="16" y1="40" x2="744" y2="40" stroke-width="1.4" opacity="0.75"/>
+  <text class="f9-th" x="24" y="61">Theory (Section 3, Section 4)</text>
+  <text class="f9-th" x="292" y="61">Implementation</text>
+  <line class="f9-rule" x1="16" y1="72" x2="744" y2="72" stroke-width="0.9" opacity="0.6"/>
+  <line class="f9-rule" x1="16" y1="263.0" x2="744" y2="263.0" stroke-width="0.9" opacity="0.6"/>
+  <line class="f9-rule" x1="16" y1="602.5" x2="744" y2="602.5" stroke-width="0.9" opacity="0.6"/>
+  <text class="f9-t" x="24" y="98.0"><tspan>Γ</tspan><tspan class="f9-s" dy="4">∞</tspan><tspan dy="-4"></tspan></text>
+  <text class="f9-i" x="292" y="98.0"><tspan class="f9-c">ctx</tspan><tspan>, the first class context</tspan></text>
+  <text class="f9-t" x="24" y="117.5"><tspan class="f9-v">γ</tspan><tspan> ∈ Γ</tspan></text>
+  <text class="f9-i" x="292" y="117.5"><tspan>the context tree together with everything the running system</tspan></text>
+  <text class="f9-i" x="292" y="137.0"><tspan>has touched</tspan></text>
+  <text class="f9-t" x="24" y="156.5"><tspan>𝔈</tspan><tspan class="f9-s" dy="4">Γ</tspan><tspan dy="-4">, ℑ</tspan><tspan class="f9-s" dy="4">Γ</tspan><tspan dy="-4"></tspan></text>
+  <text class="f9-i" x="292" y="156.5"><tspan>Effect callback returning / yielding inverses</tspan></text>
+  <text class="f9-t" x="24" y="176.0"><tspan>effect</tspan><tspan class="f9-s" dy="4">Γ</tspan><tspan dy="-4">(</tspan><tspan class="f9-v">e</tspan><tspan>)</tspan></text>
+  <text class="f9-i" x="292" y="176.0"><tspan class="f9-c">ctx.effect(callback)</tspan></text>
+  <text class="f9-t" x="24" y="195.5"><tspan>Σ, Σ</tspan><tspan class="f9-s" dy="-6">iso</tspan><tspan dy="6">, Σ</tspan><tspan class="f9-s" dy="-6">inter</tspan><tspan dy="6"></tspan></text>
+  <text class="f9-i" x="292" y="195.5"><tspan class="f9-c">ctx[@@store], ctx[@@isolate], ctx[@@intercept]</tspan></text>
+  <text class="f9-t" x="24" y="215.0"><tspan>get(</tspan><tspan class="f9-v">k</tspan><tspan>), set(</tspan><tspan class="f9-v">k</tspan><tspan>, </tspan><tspan class="f9-v">v</tspan><tspan>)</tspan></text>
+  <text class="f9-i" x="292" y="215.0"><tspan class="f9-c">ctx.get(key), ctx.set(key, value)</tspan></text>
+  <text class="f9-t" x="24" y="234.5"><tspan>isolate(</tspan><tspan class="f9-v">k</tspan><tspan>, </tspan><tspan class="f9-v">r</tspan><tspan>)</tspan></text>
+  <text class="f9-i" x="292" y="234.5"><tspan class="f9-c">ctx.isolate(key, realm)</tspan></text>
+  <text class="f9-t" x="24" y="254.0"><tspan>intercept(</tspan><tspan class="f9-v">k</tspan><tspan>, </tspan><tspan class="f9-v">ν</tspan><tspan>)</tspan></text>
+  <text class="f9-i" x="292" y="254.0"><tspan class="f9-c">ctx.intercept(key, metadata)</tspan></text>
+  <text class="f9-t" x="24" y="281.5"><tspan>⟨</tspan><tspan class="f9-v">d</tspan><tspan>, </tspan><tspan class="f9-v">p</tspan><tspan>, </tspan><tspan class="f9-v">e</tspan><tspan>, </tspan><tspan class="f9-v">π</tspan><tspan>, </tspan><tspan class="f9-v">σ</tspan><tspan>, </tspan><tspan class="f9-v">τ</tspan><tspan>, </tspan><tspan class="f9-v">θ</tspan><tspan>⟩</tspan></text>
+  <text class="f9-i" x="292" y="281.5"><tspan class="f9-c">fiber</tspan><tspan>, the instantiation of a component in ℭ</tspan><tspan class="f9-s" dy="4">Γ</tspan><tspan dy="-4"></tspan></text>
+  <text class="f9-t" x="24" y="301.0"><tspan>dom(</tspan><tspan class="f9-v">F</tspan><tspan class="f9-s f9-v" dy="4">γ</tspan><tspan dy="-4">)</tspan></text>
+  <text class="f9-i" x="292" y="301.0"><tspan>enumerated through </tspan><tspan class="f9-c">ctx.registry</tspan></text>
+  <text class="f9-t" x="24" y="320.5"><tspan class="f9-v">n</tspan><tspan> : 𝔑</tspan></text>
+  <text class="f9-i" x="292" y="320.5"><tspan class="f9-c">fiber.uid</tspan></text>
+  <text class="f9-t" x="24" y="340.0"><tspan class="f9-v">d</tspan><tspan> : 𝔇</tspan><tspan class="f9-s" dy="4">Γ</tspan><tspan dy="-4"></tspan></text>
+  <text class="f9-i" x="292" y="340.0"><tspan class="f9-c">fiber.inject</tspan></text>
+  <text class="f9-t" x="24" y="359.5"><tspan class="f9-v">p</tspan><tspan> : 𝔓</tspan><tspan class="f9-s" dy="4">Γ</tspan><tspan dy="-4"></tspan></text>
+  <text class="f9-i" x="292" y="359.5"><tspan>the component’s </tspan><tspan class="f9-c">provide</tspan></text>
+  <text class="f9-t" x="24" y="379.0"><tspan class="f9-v">e</tspan><tspan> : ℑ</tspan><tspan class="f9-s" dy="4">Γ</tspan><tspan class="f9-s f9-v" dy="-10">d∪p</tspan><tspan dy="6"></tspan></text>
+  <text class="f9-i" x="292" y="379.0"><tspan class="f9-c">fiber.apply</tspan></text>
+  <text class="f9-t" x="24" y="398.5"><tspan class="f9-v">π</tspan><tspan> : 𝔑</tspan></text>
+  <text class="f9-i" x="292" y="398.5"><tspan class="f9-c">fiber.parent.fiber.uid</tspan><tspan>, the fiber owning the context it was</tspan></text>
+  <text class="f9-i" x="292" y="418.0"><tspan>instantiated on</tspan></text>
+  <text class="f9-t" x="24" y="437.5"><tspan>derived realization (Definition 23)</tspan></text>
+  <text class="f9-i" x="292" y="437.5"><tspan class="f9-c">fiber.ctx</tspan><tspan>, the child context the fiber runs in</tspan></text>
+  <text class="f9-t" x="24" y="457.0"><tspan class="f9-v">θ</tspan><tspan> (Definition 49)</tspan></text>
+  <text class="f9-i" x="292" y="457.0"><tspan class="f9-c">fiber.state</tspan><tspan>, the lifecycle state, whose </tspan><tspan class="f9-c">LOADING</tspan><tspan> is Reloading and</tspan></text>
+  <text class="f9-i" x="292" y="476.5"><tspan>whose </tspan><tspan class="f9-c">FAILED</tspan><tspan> carries the error outcome of Section 4.4</tspan></text>
+  <text class="f9-t" x="24" y="496.0"><tspan>recover, accumulator </tspan><tspan class="f9-v">g</tspan></text>
+  <text class="f9-i" x="292" y="496.0"><tspan class="f9-c">fiber.dispose</tspan><tspan>, the accumulator</tspan></text>
+  <text class="f9-t" x="24" y="515.5"><tspan class="f9-v">ω</tspan><tspan> (Definition 49)</tspan></text>
+  <text class="f9-i" x="292" y="515.5"><tspan class="f9-c">fiber.committed</tspan><tspan>, the committed view</tspan></text>
+  <text class="f9-t" x="24" y="535.0"><tspan>provider</tspan><tspan class="f9-s f9-v" dy="4">k</tspan><tspan dy="-4">(</tspan><tspan class="f9-v">γ</tspan><tspan>)</tspan></text>
+  <text class="f9-i" x="292" y="535.0"><tspan>an </tspan><tspan class="f9-c">Impl</tspan><tspan> whose provider fiber is </tspan><tspan class="f9-c">ACTIVE</tspan></text>
+  <text class="f9-t" x="24" y="554.5"><tspan>target(</tspan><tspan class="f9-v">γ</tspan><tspan>, </tspan><tspan class="f9-v">n</tspan><tspan>)</tspan></text>
+  <text class="f9-i" x="292" y="554.5"><tspan class="f9-c">fiber.target</tspan><tspan>, recomputed by </tspan><tspan class="f9-c">refresh</tspan><tspan> (Algorithm 5), where</tspan></text>
+  <text class="f9-i" x="292" y="574.0"><tspan>⊥ is </tspan><tspan class="f9-c">INACTIVE</tspan></text>
+  <text class="f9-t" x="24" y="593.5"><tspan>Future, inertia (Section 4.4)</tspan></text>
+  <text class="f9-i" x="292" y="593.5"><tspan class="f9-c">fiber.inertia</tspan><tspan>, the handle of the transition in flight</tspan></text>
+  <text class="f9-t" x="24" y="621.0"><tspan>O-Insert, O-Retire (Definition 52)</tspan></text>
+  <text class="f9-i" x="292" y="621.0"><tspan class="f9-c">ctx.use</tspan><tspan> and the inverse of its </tspan><tspan class="f9-c">callback</tspan><tspan> (Algorithm 4)</tspan></text>
+  <text class="f9-t" x="24" y="640.5"><tspan>O-Remove</tspan></text>
+  <text class="f9-i" x="292" y="640.5"><tspan>the fiber dropped from its runtime, with </tspan><tspan class="f9-c">uid</tspan><tspan> cleared</tspan></text>
+  <text class="f9-t" x="24" y="660.0"><tspan>L-Begin, L-Iter, L-Finish</tspan></text>
+  <text class="f9-i" x="292" y="660.0"><tspan class="f9-c">execute</tspan><tspan>’s iteration loop (Algorithm 1)</tspan></text>
+  <text class="f9-t" x="24" y="679.5"><tspan>L-Divert</tspan></text>
+  <text class="f9-i" x="292" y="679.5"><tspan>the </tspan><tspan class="f9-c">guard</tspan><tspan> failing at an iteration boundary (Algorithm 1), or</tspan></text>
+  <text class="f9-i" x="292" y="699.0"><tspan class="f9-c">reload</tspan><tspan> chaining into </tspan><tspan class="f9-c">unload</tspan></text>
+  <text class="f9-t" x="24" y="718.5"><tspan>L-Leave</tspan></text>
+  <text class="f9-i" x="292" y="718.5"><tspan class="f9-c">refresh</tspan><tspan> marking the fiber </tspan><tspan class="f9-c">UNLOADING</tspan><tspan> (Line 10)</tspan></text>
+  <text class="f9-t" x="24" y="738.0"><tspan>L-Unload</tspan></text>
+  <text class="f9-i" x="292" y="738.0"><tspan class="f9-c">unload</tspan><tspan> and its inertial chaining (Algorithm 5)</tspan></text>
+  <text class="f9-t" x="24" y="757.5"><tspan>guard on L-Unload</tspan></text>
+  <text class="f9-i" x="292" y="757.5"><tspan class="f9-c">unload</tspan><tspan> awaiting the notified dependents (Line 25)</tspan></text>
+  <text class="f9-t" x="24" y="777.0"><tspan>failure (Section 4.4)</tspan></text>
+  <text class="f9-i" x="292" y="777.0"><tspan>the error recorded on the fiber, with its </tspan><tspan class="f9-c">target</tspan><tspan> set to ⊥</tspan></text>
+
+  <line class="f9-rule" x1="16" y1="788.0" x2="744" y2="788.0" stroke-width="1.4" opacity="0.75"/>
+</svg>
+<figcaption><strong>F9</strong> Cordis from theory to implementation: each construct of the calculus (left) and the code that realizes it (right), in three groups: the context and its operations, the component instance (fiber), and the rules of the calculus. Redrawn from Table 2 (page 58) of Y. Shi, W. Zhang and T. Cui, A Programming Paradigm for Spatiotemporal Composability.</figcaption>
+</figure>
+<p>Tan and colleagues describe this layer as the one in which a proprietary harness "captures the user's exact process of software development," and they also note that open harnesses exist at a higher price. Our rule for the layer is that the log and the plugin interface must be open, while the harness itself can be anyone's; in this case a model laboratory has opened all three. Next, we describe the proof layer.</p>
 <h3>Proofs: Amazon funds Lean outside Amazon; CSLib builds the library</h3>
-<p>On July 26 Amazon's Automated Reasoning organization made what the Lean FRO calls the single largest donation in its history, amount undisclosed, to a body outside Amazon. Its reason is the argument for open proof tools: "it's easier to trust a proof when you can evaluate the tools behind it yourself."</p>
-<p>CSLib is separate:</p>
+<p>On July 26 the Automated Reasoning organization of Amazon made what the Lean FRO calls the single largest donation in its history, to a body outside Amazon; the amount was not disclosed. Amazon gave the argument for open proof tools as its reason: a proof is easier to accept when its reader can evaluate the tools behind it.</p>
+<p>CSLib is the place where we expect the gift to matter most for computer science, although it is a separate initiative. Note that the post by Amazon does not name CSLib; we connect the two because Amazon is among the institutions that steer the library and because the library is written in Lean, whose development the gift funds. CSLib has the following characteristics:</p>
 <ul>
-<li>announced in August 2025 with a white paper this February: Mathlib for computer science plus Boole, a Boogie-style intermediate language that discharges into Lean verification conditions;</li>
-<li>steered by Amazon, Google DeepMind, Stanford, UT Austin, Southern Denmark, and the Lean FRO, and funded through a Renaissance Philanthropy program;</li>
-<li>explicit about the constraint, "AI-based provers are bottlenecked by the abstractions available in the underlying proof assistant," and right about governance: AI advisory only, every commit through manual review.</li>
+<li>it was announced in August 2025 and described in a white paper in February 2026: it is a counterpart of Mathlib for computer science, together with Boole, an intermediate language in the style of Boogie whose verification conditions are discharged in Lean;</li>
+<li>it is steered by Amazon, Google DeepMind, Stanford, UT Austin, Southern Denmark, and the Lean FRO, and it is funded through a program of Renaissance Philanthropy;</li>
+<li>it is explicit about the constraint that it addresses, "AI-based provers are bottlenecked by the abstractions available in the underlying proof assistant," and, in our judgment, it is right about governance: AI has an advisory role only, and every commit passes through manual review.</li>
 </ul>
-<p>My judgment: an independently governed checker plus a shared library of abstractions is the biggest step AI-aided formal verification has taken toward agents writing proofs that humans can check. The checker is where trust bottoms out, so its governance is must-open.</p>
+<p>In our judgment, a checker that is governed independently, together with a shared library of abstractions, is the largest step that formal verification aided by AI has taken toward agents that write proofs which humans can check. The safety of every proof rests on the checker, and its governance must therefore be open. Next, we describe the letter on open weights.</p>
 <h3>Weights: the coalition letter</h3>
-<p>On July 24 NVIDIA hosted "Open Weights and American AI Leadership," an open letter to U.S. policymakers.</p>
+<p>On July 24 NVIDIA hosted "Open Weights and American AI Leadership," an open letter to policymakers in the United States. Three facts about the letter matter for our argument:</p>
 <ul>
-<li>It grew from 25 launch signatories led by NVIDIA, Microsoft, and Meta to 235 in its July 29 revision; Google, OpenAI, and Amazon joined within the week, and most signatories are startups, infrastructure vendors, and nonprofits.</li>
-<li>It is advocacy, not commitment, on five arguments: access, competition, control, adaptability, and security.</li>
-<li>The last is inverted from the usual framing: "Relying solely on closed models is not inherently safe."</li>
+<li>It grew from 25 signatories at launch, led by NVIDIA, Microsoft, and Meta, to 235 in its revision of July 29; Google, OpenAI, and Amazon joined within the week, and most signatories are startups, infrastructure vendors, and nonprofits.</li>
+<li>It is advocacy and not a commitment, and it rests on five arguments: access, competition, control, adaptability, and security.</li>
+<li>The last argument reverses the usual position on security: "Relying solely on closed models is not inherently safe."</li>
 </ul>
-<p>The letter argues for the artifact; Tan and colleagues call it inert. Both are right: weights set the cost floor, a leaf either way, and the cake decides whether the output can be trusted.</p>
-<h3>Models and environments: Prime Intellect, GLM, Kimi, and a desk-sized box</h3>
-<p>Prime Intellect's stack separates the trainer from the task.</p>
+<p>The letter argues for the artifact, that is, the weights, whereas Tan and colleagues describe the same artifact as inert without the layers around it. We consider both positions correct: weights set the cost floor and are a leaf whether they are open or closed, and the layers above them decide whether the output is safe. Next, we describe the models and the environments in which they are trained and scored.</p>
+<h3>Models and environments: Prime Intellect, GLM, Kimi, and a box on the desk</h3>
+<p>The stack of Prime Intellect separates the trainer from the task, in the following parts:</p>
 <ul>
-<li><strong>prime-rl</strong> (Apache-2.0) runs the asynchronous RL loop.</li>
-<li><strong>verifiers</strong> (MIT) packages a task as an environment: a dataset plus a harness plus reward functions.</li>
-<li><strong>The Environments Hub</strong> versions more than 2,500 of them.</li>
-<li>The reward is a deterministic check or an LLM judge "where deterministic evaluation is impractical." The mapping is mine, not Prime Intellect's: a deterministic reward is verification, a judged reward is validation, and one environment scores training and evaluation alike.</li>
+<li><strong>prime-rl</strong> (Apache 2.0) runs the asynchronous RL loop.</li>
+<li><strong>verifiers</strong> (MIT) packages a task as an environment: a dataset, a harness and reward functions.</li>
+<li><strong>The Environments Hub</strong> holds more than 2,500 environments under version control.</li>
+<li>The reward is a deterministic check, or the judgment of a large language model (LLM) "where deterministic evaluation is impractical." The following mapping is ours and not Prime Intellect's: a deterministic reward is a form of verification, a judged reward is a form of validation, and one environment scores both training and evaluation.</li>
 </ul>
-<p>The open models and the desk-sized box:</p>
+<p>The open models, and the desktop system on which some of them run, are as follows:</p>
 <ul>
-<li>Z.ai's GLM-5.2 (753B parameters, MIT) and Moonshot's Kimi K3 (2.8T, Kimi K3 License) approach frontier models on the labs' own benchmarks; Moonshot itself says K3 "still trails the most powerful proprietary models."</li>
-<li>Neither runs on a DGX Spark. NVIDIA rates the $4,699, 128 GB box for inference to 200B parameters and fine-tuning to 70B.</li>
-<li>What fits is GLM-4.7-Flash (30B-A3B, MIT) and its 30-to-70B peers. NVIDIA documents LoRA fine-tuning on the box; running prime-rl's RL loop there is undocumented.</li>
+<li>GLM-5.2 by Z.ai (753B parameters, MIT) and Kimi K3 by Moonshot (2.8T parameters, Kimi K3 License) approach the frontier models on the benchmarks of their own laboratories; Moonshot itself says that K3 "still trails the most powerful proprietary models."</li>
+<li>Neither model runs on a DGX Spark. NVIDIA rates that system, which costs $4,699 and has 128 GB of memory, for inference on models of up to 200B parameters and for fine tuning of models of up to 70B.</li>
+<li>The models that fit are GLM-4.7-Flash (30B-A3B, MIT) and its peers of 30B to 70B parameters. NVIDIA documents fine tuning with LoRA on the system, whereas running the RL loop of prime-rl on it is not documented.</li>
 </ul>
-<p>Models are leaves. Environments are evidence, and a reward nobody else can run is not a benchmark, so environments must be open.</p>
-<h2 id="5-why-open-three-incentives-one-boundary">5. Why open? Three incentives, one boundary</h2>
-<p>The five stories share a mechanism, and it is not that open source is good. Private actors open a layer for one of three reasons, and the reasons are not exclusive.</p>
+<p>In the terms of Section 1, models are leaves and environments are evidence. A reward that nobody else can run cannot serve as a benchmark, and environments must therefore be open. Next, Section 5 explains why private firms open a layer at all.</p>
+<h2 id="5-why-open-three-incentives-one-boundary">5. Why open? Four incentives, one boundary</h2>
+<p>This section explains why private firms open a layer, and it then states the rule that we use to decide which layers must be open. The five layers of Section 4 share one mechanism, and that mechanism is not a belief that open source is good in itself. Private actors open a layer for one of four reasons, and the reasons are not mutually exclusive.</p>
 <ul>
-<li><strong>Common infrastructure.</strong> "This should be something everyone can build on." Internet standards, Linux, LLVM: a foundational layer becomes more valuable as shared ground than as a private island.</li>
-<li><strong>Strategic collaboration.</strong> "We benefit more by sharing this layer than by competing over it." Shared cost, catching up to an incumbent, commoditizing a non-core layer, competing somewhere else. A company opens the layer where ecosystem growth beats exclusivity and captures value next to it.</li>
-<li><strong>Network effects.</strong> "The technology becomes more valuable when everyone can participate." Programming languages, compilers and IRs, protocols, package ecosystems, agent interfaces, policy languages: each is worth more with every implementation that speaks it, and closing one destroys the externality that made it valuable.</li>
+<li><strong>Common infrastructure.</strong> "This should be something everyone can build on." Internet standards, Linux and LLVM show that a foundational layer is worth more when it is shared than when one firm holds it.</li>
+<li><strong>Strategic collaboration.</strong> "We benefit more by sharing this layer than by competing over it." The motive may be shared cost, catching up to an incumbent, commoditizing a layer that is not core, or competing somewhere else. A company opens the layer in which the growth of the ecosystem is worth more to it than exclusivity, and it captures value in a layer next to it.</li>
+<li><strong>Network effects.</strong> "The technology becomes more valuable when everyone can participate." Programming languages, compilers and IRs, protocols, package ecosystems, agent interfaces and policy languages are each worth more with every implementation that supports them, and closing one removes the externality that made it valuable.</li>
+<li><strong>Community for the challenger.</strong> "We are not at the leading edge, so we open our work and let a community grow around it." A company that is behind a closed leader opens its work so that developers and customers gather around it and not around the closed product; the Llama series of models from Meta is the example.</li>
 </ul>
-<p>LLVM is all three at once, which is why Chris Lattner's <em>Democratizing AI Compute</em> series is the closest precedent for this one:</p>
+<p>LLVM is an example of the first three at once, which is why the series <a href="https://www.modular.com/democratizing-ai-compute"><em>Democratizing AI Compute</em></a> by Chris Lattner is the closest precedent for this one:</p>
 <ul>
-<li>as <strong>common infrastructure</strong>, a permissively licensed compiler substrate;</li>
-<li>as <strong>collaboration</strong>, Apple, Google, NVIDIA, AMD, and Intel sharing an enormous body of compiler engineering rather than rebuilding it five times;</li>
-<li>as a <strong>network</strong>, worth more with every language, target, and tool that plugs in.</li>
+<li>as <strong>common infrastructure</strong>, it is a compiler substrate under a permissive license;</li>
+<li>as <strong>collaboration</strong>, it lets Apple, Google, NVIDIA, AMD, and Intel share a large body of compiler engineering rather than build it five times;</li>
+<li>as a <strong>network</strong>, it is worth more with every language, target, and tool that connects to it.</li>
 </ul>
-<blockquote>
 <p>Open ecosystems emerge when private actors find more value in sharing a foundational layer than in owning it.</p>
-</blockquote>
-<p>Sometimes that begins as a public good, sometimes as strategic necessity, sometimes because the technology cannot reach its value without a network; usually all three end up reinforcing one another. That sentence recurs through the ten parts, and it sharpens the question the series is really asking: <strong>which layers of the AI software stack become common infrastructure, which stay competitive, and what economic or technical force draws the line?</strong> It leaves room to read Linux, LLVM and MLIR, Mojo, Rust, Cedar, ACP and MCP, agent harnesses, models, and inference runtimes each on its own terms, without assuming they are open for the same reason.</p>
-<p>Where Tan and colleagues answer with institutions, I answer with a rule.</p>
+<p>In some cases the opening begins as a public good, in others as a strategic necessity, and in others because the technology cannot reach its value without a network; in most cases all three come to reinforce one another. The sentence above recurs through the thread, and it sharpens the question that the series asks: <strong>which layers of the AI software stack become common infrastructure, which stay competitive, and what economic or technical force draws the line?</strong> The question leaves room to read Linux, LLVM and MLIR, Mojo, Rust, Cedar, ACP and MCP, agent harnesses, models, and inference runtimes each on its own terms, without the assumption that they are open for the same reason.</p>
+<p>Tan and colleagues answer this question with institutions, whereas we answer it with a rule in two parts.</p>
 <ul>
 <li><strong>A layer that exists to connect independent systems must be open:</strong> policy semantics, agent protocols, effect logs, compiler IR and its analyzers, evidence formats, the proof checker.</li>
 <li><strong>A leaf can be closed</strong>, as long as the layers around it emit portable evidence: weights, hosted inference, the best client, a compiler's contribution queue.</li>
 </ul>
-<p>The reader's test: does a layer's value come from connecting things that do not share an owner? Zed, a GPL-3.0 editor speaking an Apache-2.0 protocol to closed agents behind it, passes; a harness whose session log only its vendor can parse does not.</p>
+<p>The test that a reader can apply is whether the value of a layer comes from connecting things that do not share an owner. For example, Zed passes the test, because it is an editor under GPL 3.0 that uses a protocol under Apache 2.0 to communicate with closed agents. A harness whose session log only its vendor can parse, on the other hand, does not pass it. Next, Section 6 applies the same rule to the tools that an AI engineer uses today.</p>
 <h2 id="6-the-ecosystem-is-its-tooling">6. The ecosystem is its tooling</h2>
-<p><strong>An ecosystem is as good as its developer tooling.</strong> Weights without a harness are a download; proofs without an open checker are a vendor's assurance. Trust arrives through the compiler that checks, the harness that logs, the prover that admits, and the evidence format that survives a vendor change.</p>
-<p>The AI engineer's toolbox already shows the boundary, plane by plane:</p>
+<p>This section describes the tooling on which an open ecosystem depends, and it shows where the boundary between open and closed lies in the tools of today.</p>
+<p><strong>An ecosystem is as good as its developer tooling.</strong> Weights without a harness cannot act on a repository, and a proof without an open checker rests on the assurance of one vendor. As such, safety comes from the compiler that checks, the harness that logs, the prover that admits a proof, and the evidence format that survives a change of vendor.</p>
+<p>The table below lists the AI stack layer by layer, from the models up to policy and proofs, and it already shows the boundary:</p>
 <div class="table-wrap"><table>
 <thead>
 <tr>
-<th>Plane</th>
+<th>Layer</th>
 <th>Open</th>
 <th>Closed, hosted</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Training</td>
-<td>PyTorch (2016, BSD-3, PyTorch Foundation) · JAX (Apache-2.0)</td>
-<td>—</td>
+<td>Models</td>
+<td>GLM-5.2 (MIT) · Kimi K3 (Kimi K3 License) · Llama (Meta)</td>
+<td>GPT (OpenAI) · Claude (Anthropic) · Gemini (Google)</td>
 </tr>
 <tr>
-<td>RL post-training</td>
-<td>prime-rl · verl (ByteDance) · TRL (Hugging Face) · OpenRLHF</td>
-<td>Fireworks reinforcement fine-tuning</td>
+<td>Training</td>
+<td>PyTorch (2016, BSD 3-Clause, PyTorch Foundation) · JAX (Apache 2.0)</td>
+<td>none</td>
+</tr>
+<tr>
+<td>RL post training and environments</td>
+<td>prime-rl · verifiers (Prime Intellect) · verl (ByteDance) · TRL (Hugging Face) · OpenRLHF</td>
+<td>Fireworks reinforcement fine tuning</td>
 </tr>
 <tr>
 <td>Inference</td>
@@ -795,15 +859,34 @@
 <td>Fireworks · every frontier API</td>
 </tr>
 <tr>
-<td>Orchestration and agents</td>
+<td>Compiler and language</td>
+<td>Mojo (Apache 2.0 with LLVM exceptions) · LLVM and MLIR</td>
+<td>the runtime of MAX (planned to be open source by the end of the year)</td>
+</tr>
+<tr>
+<td>Runtime and sandbox</td>
+<td>OpenShell</td>
+<td>the hosted sandbox of each vendor</td>
+</tr>
+<tr>
+<td>Agent harness and orchestration</td>
 <td>LangChain / LangGraph · OpenAI Agents SDK · DeepSeek Harness</td>
-<td>Claude Code · Cursor</td>
+<td>Claude Code (public repository; its license reserves all rights) · Cursor</td>
+</tr>
+<tr>
+<td>Agent protocols</td>
+<td>ACP (Apache 2.0) · MCP</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Policy and proofs</td>
+<td>Cedar · Lean · CSLib</td>
+<td>none</td>
 </tr>
 </tbody>
 </table></div>
-<p>The open column is where the connective layers are; the closed column is leaves. A team can run the whole loop on the open column today, and the closed column competes on being better, not on being the only way in.</p>
-<p>The series goes deep on each layer from here; the holy wars of programming languages and their SDKs, and where each language sits in the cake, come in Part 3. Next: Part 2, From Leaky Abstractions to Type-Safe Abstractions in the Era of the Open Ecosystem.</p>
-<p>This essay is the culmination of conversations with hundreds of researchers across three 2026 events:</p>
+<p>The open column holds every connective layer of the table, and the closed column holds only leaves. Our reading is that a team can therefore run the whole loop with the tools of the open column today, and that the tools of the closed column compete by being better and not by being the only way in.</p>
+<p>This essay is the culmination of conversations with more than a hundred researchers at three events in 2026:</p>
 <ul>
 <li>ICSE 2026 in Rio de Janeiro, from the Doctoral Symposium (April 14) to the IDE 2026 workshop organized by JetBrains Research (April 18);</li>
 <li>The Verification Summit by Pramaana Labs, San Francisco (June 10);</li>
@@ -812,15 +895,15 @@
 <section class="references">
 <h2 id="references">References</h2>
 <h3>Stance</h3>
-<ol start="1">
+<ul>
 <li>J. Tan, N. Vincent, K. Elkins, M. Sahlgren, J. Low, D. Pham, S. Pyysalo, J. Jitsev, "Position: If open source is to win, it must go public," ICML 2026 (Spotlight), arXiv:2507.09296v3: <a href="https://arxiv.org/abs/2507.09296" target="_blank" rel="noreferrer">https://arxiv.org/abs/2507.09296</a></li>
-</ol>
-<h3>Agentic SDLC and verified-software principles</h3>
-<ol start="2">
-<li>H. Bhati, "Agentic AI in the Software Development Lifecycle," arXiv:2604.26275 (2026-04-29): <a href="https://arxiv.org/abs/2604.26275" target="_blank" rel="noreferrer">https://arxiv.org/abs/2604.26275</a></li>
+</ul>
+<h3>Agentic SDLC and verified software principles</h3>
+<ul>
+<li>H. Bhati, "Agentic AI in the Software Development Lifecycle," arXiv:2604.26275 (29 April 2026): <a href="https://arxiv.org/abs/2604.26275" target="_blank" rel="noreferrer">https://arxiv.org/abs/2604.26275</a></li>
 <li>J. Yang et al., "SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering," NeurIPS 2024, arXiv:2405.15793: <a href="https://arxiv.org/abs/2405.15793" target="_blank" rel="noreferrer">https://arxiv.org/abs/2405.15793</a></li>
 <li>X. Wang et al., "OpenHands: An Open Platform for AI Software Developers as Generalist Agents," ICLR 2025, arXiv:2407.16741: <a href="https://arxiv.org/abs/2407.16741" target="_blank" rel="noreferrer">https://arxiv.org/abs/2407.16741</a></li>
-<li>S. A. Apostolou, J. Bosch, H. Holmström Olsson, "Assistance to Autonomy: A Systematic Literature Review of Agentic AI across the Software Development Life Cycle," arXiv:2605.15245 (2026-05-14): <a href="https://arxiv.org/abs/2605.15245" target="_blank" rel="noreferrer">https://arxiv.org/abs/2605.15245</a></li>
+<li>S. A. Apostolou, J. Bosch, H. Holmström Olsson, "Assistance to Autonomy: A Systematic Literature Review of Agentic AI across the Software Development Life Cycle," arXiv:2605.15245 (14 May 2026): <a href="https://arxiv.org/abs/2605.15245" target="_blank" rel="noreferrer">https://arxiv.org/abs/2605.15245</a></li>
 <li>riscv/sail-riscv, formal specification of the RISC-V ISA: <a href="https://github.com/riscv/sail-riscv" target="_blank" rel="noreferrer">https://github.com/riscv/sail-riscv</a></li>
 <li>RISC-V ISA Formal Spec Public Review (2019; Sail selected over Forvis, GRIFT, riscv-plv, Kami): <a href="https://github.com/riscvarchive/ISA_Formal_Spec_Public_Review" target="_blank" rel="noreferrer">https://github.com/riscvarchive/ISA_Formal_Spec_Public_Review</a></li>
 <li>riscv/riscv-arch-test, Architectural Certification Tests (Sail as reference model; "not verification tests"): <a href="https://github.com/riscv/riscv-arch-test" target="_blank" rel="noreferrer">https://github.com/riscv/riscv-arch-test</a></li>
@@ -828,108 +911,136 @@
 <li>X. Leroy, "Formal verification of a realistic compiler," CACM 52(7), 2009: <a href="https://xavierleroy.org/publi/compcert-CACM.pdf" target="_blank" rel="noreferrer">https://xavierleroy.org/publi/compcert-CACM.pdf</a></li>
 <li>X. Yang, Y. Chen, E. Eide, J. Regehr, "Finding and Understanding Bugs in C Compilers," PLDI 2011: <a href="https://users.cs.utah.edu/~regehr/papers/pldi11-preprint.pdf" target="_blank" rel="noreferrer">https://users.cs.utah.edu/~regehr/papers/pldi11-preprint.pdf</a></li>
 <li>G. Klein et al., "seL4: Formal Verification of an OS Kernel," SOSP 2009: <a href="https://dl.acm.org/doi/10.1145/1629575.1629596" target="_blank" rel="noreferrer">https://dl.acm.org/doi/10.1145/1629575.1629596</a></li>
-<li>Y. Minsky, "Effective ML Revisited," Jane Street (2011-03-09): <a href="https://blog.janestreet.com/effective-ml-revisited/" target="_blank" rel="noreferrer">https://blog.janestreet.com/effective-ml-revisited/</a></li>
+<li>Y. Minsky, "Effective ML Revisited," Jane Street (9 March 2011): <a href="https://blog.janestreet.com/effective-ml-revisited/" target="_blank" rel="noreferrer">https://blog.janestreet.com/effective-ml-revisited/</a></li>
+<li>B. C. Pierce et al., <em>Software Foundations</em> (textbooks checked in the Rocq proof assistant, formerly Coq), University of Pennsylvania: <a href="https://softwarefoundations.cis.upenn.edu/" target="_blank" rel="noreferrer">https://softwarefoundations.cis.upenn.edu/</a></li>
 <li>K. Claessen, J. Hughes, "QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs," ICFP 2000: <a href="https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/quick.pdf" target="_blank" rel="noreferrer">https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/quick.pdf</a></li>
-</ol>
+</ul>
 <h3>Compiler</h3>
-<ol start="15">
-<li>Modular, "Modular 26.5: Mojo 1.0 is here!" (2026-08-11): <a href="https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here" target="_blank" rel="noreferrer">https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here</a></li>
-<li>Mojo documentation, "Mojo stability guarantees" (source-level; ABI not stable): <a href="https://mojolang.org/docs/api-docs/stability/" target="_blank" rel="noreferrer">https://mojolang.org/docs/api-docs/stability/</a></li>
-<li>Modular, "Mojo is now open source!" (2026-08-18; Apache 2.0 with LLVM exceptions; compiler contributions not yet accepted): <a href="https://www.modular.com/blog/mojo-open-source" target="_blank" rel="noreferrer">https://www.modular.com/blog/mojo-open-source</a></li>
-<li>Modular, "ModCon 2026: Open source, open cloud, open silicon" (2026-08-18): <a href="https://www.modular.com/blog/modcon-announcements" target="_blank" rel="noreferrer">https://www.modular.com/blog/modcon-announcements</a></li>
-<li>Qualcomm / Modular, "Qualcomm Completes Acquisition of Modular" (2026-07-29): <a href="https://www.modular.com/blog/qualcomm-completes-acquisition-of-modular" target="_blank" rel="noreferrer">https://www.modular.com/blog/qualcomm-completes-acquisition-of-modular</a></li>
-<li>Modular, "Why Mojo" (archived 2024-06-05; "the first major language designed expressly for MLIR"; page since redirected): <a href="https://web.archive.org/web/20240605012702/https://docs.modular.com/mojo/why-mojo" target="_blank" rel="noreferrer">https://web.archive.org/web/20240605012702/https://docs.modular.com/mojo/why-mojo</a></li>
+<ul>
+<li>Modular, "Modular 26.5: Mojo 1.0 is here!" (11 August 2026): <a href="https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here" target="_blank" rel="noreferrer">https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here</a></li>
+<li>Mojo documentation, "Mojo stability guarantees" (stable at the source level; ABI not stable): <a href="https://mojolang.org/docs/api-docs/stability/" target="_blank" rel="noreferrer">https://mojolang.org/docs/api-docs/stability/</a></li>
+<li>Modular, "Mojo is now open source!" (18 August 2026; Apache 2.0 with LLVM exceptions; compiler contributions not yet accepted): <a href="https://www.modular.com/blog/mojo-open-source" target="_blank" rel="noreferrer">https://www.modular.com/blog/mojo-open-source</a></li>
+<li>Modular, "ModCon 2026: Open source, open cloud, open silicon" (18 August 2026): <a href="https://www.modular.com/blog/modcon-announcements" target="_blank" rel="noreferrer">https://www.modular.com/blog/modcon-announcements</a></li>
+<li>Qualcomm / Modular, "Qualcomm Completes Acquisition of Modular" (29 July 2026): <a href="https://www.modular.com/blog/qualcomm-completes-acquisition-of-modular" target="_blank" rel="noreferrer">https://www.modular.com/blog/qualcomm-completes-acquisition-of-modular</a></li>
+<li>Modular, "Why Mojo" (archived 5 June 2024; "the first major language designed expressly for MLIR"; page since redirected): <a href="https://web.archive.org/web/20240605012702/https://docs.modular.com/mojo/why-mojo" target="_blank" rel="noreferrer">https://web.archive.org/web/20240605012702/https://docs.modular.com/mojo/why-mojo</a></li>
 <li>Mojo documentation, "Mojo vision" ("built purely on top of MLIR Core"; "a unified language for kernel development"): <a href="https://mojolang.org/docs/vision/" target="_blank" rel="noreferrer">https://mojolang.org/docs/vision/</a></li>
-</ol>
+</ul>
 <h3>Harness</h3>
-<ol start="22">
-<li>DeepSeek AI, DeepSeek Harness (MIT, developer preview; repo created 2026-08-13; 179,486 stars on 2026-08-21): <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noreferrer">https://github.com/deepseek-ai/deepseek-harness</a></li>
-<li>DeepSeek AI, "DeepSeek Harness Architecture" (everything is a plugin; model-visible means logged): <a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md" target="_blank" rel="noreferrer">https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md</a></li>
+<ul>
+<li>DeepSeek AI, DeepSeek Harness (MIT, developer preview; repo created 13 August 2026): <a href="https://github.com/deepseek-ai/deepseek-harness" target="_blank" rel="noreferrer">https://github.com/deepseek-ai/deepseek-harness</a></li>
+<li>DeepSeek AI, "DeepSeek Harness Architecture" (everything is a plugin; what the model sees is logged): <a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md" target="_blank" rel="noreferrer">https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md</a></li>
 <li>DeepSeek AI, DeepSeek Harness product site (Standard, Code, Minimal, Creator modes): <a href="https://deepseek.com/harness/en/" target="_blank" rel="noreferrer">https://deepseek.com/harness/en/</a></li>
-<li>cordiverse/cordis, meta-framework of spatiotemporal composability (MIT, 2022): <a href="https://github.com/cordiverse/cordis" target="_blank" rel="noreferrer">https://github.com/cordiverse/cordis</a></li>
-<li>Y. Shi, W. Zhang, T. Cui, "A Programming Paradigm for Spatiotemporal Composability" (Cordis paper): <a href="https://github.com/cordiverse/paper" target="_blank" rel="noreferrer">https://github.com/cordiverse/paper</a></li>
-<li>M. Zechner et al., pi coding agent, philosophy (four tools; no sub-agents, plan mode, or MCP): <a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md" target="_blank" rel="noreferrer">https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md</a></li>
-<li>Agent Client Protocol (Apache-2.0): <a href="https://agentclientprotocol.com" target="_blank" rel="noreferrer">https://agentclientprotocol.com</a></li>
-<li>Zed (GPL-3.0-or-later): <a href="https://github.com/zed-industries/zed" target="_blank" rel="noreferrer">https://github.com/zed-industries/zed</a></li>
-</ol>
+<li>cordiverse/cordis, metaframework of spatiotemporal composability (MIT, 2022): <a href="https://github.com/cordiverse/cordis" target="_blank" rel="noreferrer">https://github.com/cordiverse/cordis</a></li>
+<li>Y. Shi, W. Zhang, T. Cui, "A Programming Paradigm for Spatiotemporal Composability" (Cordis paper, arXiv:2608.25512, submitted 26 August 2026; F9 redraws its Table 2, page 58): <a href="https://github.com/cordiverse/paper" target="_blank" rel="noreferrer">https://github.com/cordiverse/paper</a></li>
+<li>M. Zechner et al., pi coding agent, philosophy (four tools; no subagents, plan mode, or MCP): <a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md" target="_blank" rel="noreferrer">https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md</a></li>
+<li>Agent Client Protocol (Apache 2.0): <a href="https://agentclientprotocol.com" target="_blank" rel="noreferrer">https://agentclientprotocol.com</a></li>
+<li>Zed (GPL 3.0 or later): <a href="https://github.com/zed-industries/zed" target="_blank" rel="noreferrer">https://github.com/zed-industries/zed</a></li>
+</ul>
 <h3>Proofs and policy</h3>
-<ol start="30">
-<li>B. Cook, S. Bice, "Amazon is investing in the Lean Focused Research Organization," Amazon Science (2026-07-26): <a href="https://www.amazon.science/news/amazon-is-investing-in-the-lean-focused-research-organization" target="_blank" rel="noreferrer">https://www.amazon.science/news/amazon-is-investing-in-the-lean-focused-research-organization</a></li>
+<ul>
+<li>B. Cook, S. Bice, "Amazon is investing in the Lean Focused Research Organization," Amazon Science (26 July 2026): <a href="https://www.amazon.science/news/amazon-is-investing-in-the-lean-focused-research-organization" target="_blank" rel="noreferrer">https://www.amazon.science/news/amazon-is-investing-in-the-lean-focused-research-organization</a></li>
 <li>Lean FRO, "About the Lean FRO" (timeline; Amazon Automated Reasoning donation): <a href="https://lean-lang.org/fro/about/" target="_blank" rel="noreferrer">https://lean-lang.org/fro/about/</a></li>
-<li>C. Barrett, S. Chaudhuri, F. Montesi, J. Grundy, P. Kohli, L. de Moura, A. Rademaker, S. Yingchareonthawornchai, "CSLib: The Lean Computer Science Library," arXiv:2602.04846 (2026-02-04): <a href="https://arxiv.org/abs/2602.04846" target="_blank" rel="noreferrer">https://arxiv.org/abs/2602.04846</a></li>
+<li>C. Barrett, S. Chaudhuri, F. Montesi, J. Grundy, P. Kohli, L. de Moura, A. Rademaker, S. Yingchareonthawornchai, "CSLib: The Lean Computer Science Library," arXiv:2602.04846 (4 February 2026): <a href="https://arxiv.org/abs/2602.04846" target="_blank" rel="noreferrer">https://arxiv.org/abs/2602.04846</a></li>
 <li>CSLib Initiative (Renaissance Philanthropy), "About": <a href="https://www.cslib.io/initiative/about" target="_blank" rel="noreferrer">https://www.cslib.io/initiative/about</a></li>
 <li>cedar-spec, Lean formalization and differential testing of Cedar: <a href="https://github.com/cedar-policy/cedar-spec" target="_blank" rel="noreferrer">https://github.com/cedar-policy/cedar-spec</a></li>
-</ol>
+</ul>
 <h3>Weights</h3>
-<ol start="35">
-<li>NVIDIA et al., "Open Weights and American AI Leadership," open letter (2026-07-24; PDF revised 2026-07-29, 235 signatories): <a href="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf" target="_blank" rel="noreferrer">https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf</a></li>
-<li>Microsoft, live signatory page (270+ organizations as of 2026-08-03): <a href="https://www.microsoft.com/en-us/corporate-responsibility/topics/open-weight/" target="_blank" rel="noreferrer">https://www.microsoft.com/en-us/corporate-responsibility/topics/open-weight/</a></li>
+<ul>
+<li>NVIDIA et al., "Open Weights and American AI Leadership," open letter (24 July 2026; PDF revised 29 July 2026, 235 signatories): <a href="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf" target="_blank" rel="noreferrer">https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf</a></li>
+<li>Microsoft, live signatory page (270+ organizations as of 3 August 2026): <a href="https://www.microsoft.com/en-us/corporate-responsibility/topics/open-weight/" target="_blank" rel="noreferrer">https://www.microsoft.com/en-us/corporate-responsibility/topics/open-weight/</a></li>
 <li>Security Boulevard, "Nvidia Rallied the Industry Behind Open Weights. Then OpenAI Joined Anyway." (August 2026): <a href="https://securityboulevard.com/2026/08/nvidia-rallied-the-industry-behind-open-weights-then-openai-joined-anyway/" target="_blank" rel="noreferrer">https://securityboulevard.com/2026/08/nvidia-rallied-the-industry-behind-open-weights-then-openai-joined-anyway/</a></li>
-</ol>
+</ul>
 <h3>Models and environments</h3>
-<ol start="38">
-<li>Prime Intellect, prime-rl (Apache-2.0; vLLM inference, orchestrator, FSDP2 trainer): <a href="https://github.com/PrimeIntellect-ai/prime-rl" target="_blank" rel="noreferrer">https://github.com/PrimeIntellect-ai/prime-rl</a></li>
+<ul>
+<li>Prime Intellect, prime-rl (Apache 2.0; vLLM inference, orchestrator, FSDP2 trainer): <a href="https://github.com/PrimeIntellect-ai/prime-rl" target="_blank" rel="noreferrer">https://github.com/PrimeIntellect-ai/prime-rl</a></li>
 <li>Prime Intellect / W. Brown, verifiers (MIT; environments, rubrics, LLM judges): <a href="https://github.com/PrimeIntellect-ai/verifiers" target="_blank" rel="noreferrer">https://github.com/PrimeIntellect-ai/verifiers</a></li>
-<li>Prime Intellect, "Environments Hub" (2025-08-27): <a href="https://www.primeintellect.ai/blog/environments" target="_blank" rel="noreferrer">https://www.primeintellect.ai/blog/environments</a></li>
-<li>Z.ai, GLM-5.2 model card (753B, MIT, 2026-06-16): <a href="https://huggingface.co/zai-org/GLM-5.2" target="_blank" rel="noreferrer">https://huggingface.co/zai-org/GLM-5.2</a></li>
+<li>Prime Intellect, "Environments Hub" (27 August 2025): <a href="https://www.primeintellect.ai/blog/environments" target="_blank" rel="noreferrer">https://www.primeintellect.ai/blog/environments</a></li>
+<li>Z.ai, GLM-5.2 model card (753B, MIT, 16 June 2026): <a href="https://huggingface.co/zai-org/GLM-5.2" target="_blank" rel="noreferrer">https://huggingface.co/zai-org/GLM-5.2</a></li>
 <li>Z.ai, GLM-4.7-Flash model card (30B-A3B, MIT): <a href="https://huggingface.co/zai-org/GLM-4.7-Flash" target="_blank" rel="noreferrer">https://huggingface.co/zai-org/GLM-4.7-Flash</a></li>
 <li>Moonshot AI, "Kimi K3: Open Frontier Intelligence" ("still trails the most powerful proprietary models"): <a href="https://www.kimi.com/blog/kimi-k3" target="_blank" rel="noreferrer">https://www.kimi.com/blog/kimi-k3</a></li>
 <li>Moonshot AI, Kimi K3 model card and license (2.8T, Kimi K3 License): <a href="https://huggingface.co/moonshotai/Kimi-K3" target="_blank" rel="noreferrer">https://huggingface.co/moonshotai/Kimi-K3</a></li>
-<li>NVIDIA, DGX Spark product page (128 GB unified memory; 200B inference; 70B fine-tuning): <a href="https://www.nvidia.com/en-us/products/workstations/dgx-spark/" target="_blank" rel="noreferrer">https://www.nvidia.com/en-us/products/workstations/dgx-spark/</a></li>
-<li>NVIDIA Developer Forums, DGX Spark price change to $4,699 (2026-02-23): <a href="https://forums.developer.nvidia.com/t/2-23-2026-price-change-announcement/361713" target="_blank" rel="noreferrer">https://forums.developer.nvidia.com/t/2-23-2026-price-change-announcement/361713</a></li>
-<li>NVIDIA, DGX Spark "Fine-tune with PyTorch" playbook (1–70B; SFT, LoRA, QLoRA): <a href="https://build.nvidia.com/spark/pytorch-fine-tune" target="_blank" rel="noreferrer">https://build.nvidia.com/spark/pytorch-fine-tune</a></li>
-</ol>
+<li>NVIDIA, DGX Spark product page (128 GB unified memory; 200B inference; 70B fine tuning): <a href="https://www.nvidia.com/en-us/products/workstations/dgx-spark/" target="_blank" rel="noreferrer">https://www.nvidia.com/en-us/products/workstations/dgx-spark/</a></li>
+<li>NVIDIA Developer Forums, DGX Spark price change to $4,699 (23 February 2026): <a href="https://forums.developer.nvidia.com/t/2-23-2026-price-change-announcement/361713" target="_blank" rel="noreferrer">https://forums.developer.nvidia.com/t/2-23-2026-price-change-announcement/361713</a></li>
+<li>NVIDIA, DGX Spark "Fine-tune with PyTorch" playbook (1B to 70B; SFT, LoRA, QLoRA): <a href="https://build.nvidia.com/spark/pytorch-fine-tune" target="_blank" rel="noreferrer">https://build.nvidia.com/spark/pytorch-fine-tune</a></li>
+</ul>
 <h3>Conferences</h3>
-<ol start="48">
-<li>ICSE 2026, Rio de Janeiro (April 12–18): <a href="https://conf.researchr.org/home/icse-2026" target="_blank" rel="noreferrer">https://conf.researchr.org/home/icse-2026</a></li>
+<ul>
+<li>ICSE 2026, Rio de Janeiro (April 12 to 18): <a href="https://conf.researchr.org/home/icse-2026" target="_blank" rel="noreferrer">https://conf.researchr.org/home/icse-2026</a></li>
 <li>ICSE 2026 Doctoral Symposium (April 14): <a href="https://conf.researchr.org/track/icse-2026/icse-2026-doctoral-symposium" target="_blank" rel="noreferrer">https://conf.researchr.org/track/icse-2026/icse-2026-doctoral-symposium</a></li>
-<li>IDE 2026, 3rd International Workshop on Integrated Development Environments, co-located with ICSE 2026 (April 18; general chair Y. Golubev, JetBrains Research): <a href="https://ide-workshop.github.io/" target="_blank" rel="noreferrer">https://ide-workshop.github.io/</a></li>
-<li>The Verification Summit, Launch Edition, Pramaana Labs, San Francisco (2026-06-10): <a href="https://verificationsummit.ai/" target="_blank" rel="noreferrer">https://verificationsummit.ai/</a></li>
-<li>ModCon 2026: Compute Unlocked, Grand Hyatt San Francisco (2026-08-18): <a href="https://www.modular.com/modcon" target="_blank" rel="noreferrer">https://www.modular.com/modcon</a></li>
-</ol>
+<li>IDE 2026, 3rd International Workshop on Integrated Development Environments, colocated with ICSE 2026 (April 18; general chair Y. Golubev, JetBrains Research): <a href="https://ide-workshop.github.io/" target="_blank" rel="noreferrer">https://ide-workshop.github.io/</a></li>
+<li>The Verification Summit, Launch Edition, Pramaana Labs, San Francisco (10 June 2026): <a href="https://verificationsummit.ai/" target="_blank" rel="noreferrer">https://verificationsummit.ai/</a></li>
+<li>ModCon 2026: Compute Unlocked, Grand Hyatt San Francisco (18 August 2026): <a href="https://www.modular.com/modcon" target="_blank" rel="noreferrer">https://www.modular.com/modcon</a></li>
+</ul>
 <h3>AI evolution</h3>
-<ol start="53">
-<li>OpenAI, "Introducing ChatGPT" (2022-11-30): <a href="https://openai.com/index/chatgpt/" target="_blank" rel="noreferrer">https://openai.com/index/chatgpt/</a></li>
-<li>OpenAI, "Introducing OpenAI o1-preview" (2024-09-12): <a href="https://openai.com/index/introducing-openai-o1-preview/" target="_blank" rel="noreferrer">https://openai.com/index/introducing-openai-o1-preview/</a></li>
-<li>DeepSeek, DeepSeek-R1 (MIT, 2025-01-20): <a href="https://github.com/deepseek-ai/DeepSeek-R1" target="_blank" rel="noreferrer">https://github.com/deepseek-ai/DeepSeek-R1</a></li>
-<li>Anthropic, "Claude Code is now generally available" (2025-05-22): <a href="https://www.anthropic.com/news/claude-4" target="_blank" rel="noreferrer">https://www.anthropic.com/news/claude-4</a></li>
-<li>OpenAI, Codex CLI (Apache-2.0, 2025-04-16): <a href="https://github.com/openai/codex" target="_blank" rel="noreferrer">https://github.com/openai/codex</a></li>
-<li>OpenClaw, Peter Steinberger's open-source personal agent (MIT; begun Nov 2025 as Clawdbot, renamed 2026-01-30): <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">https://github.com/openclaw/openclaw</a></li>
-</ol>
-<h3>The five-layer cake</h3>
-<ol start="59">
-<li>J. Huang, "AI Is a 5-Layer Cake," NVIDIA Blog (2026-03-10): <a href="https://blogs.nvidia.com/blog/ai-5-layer-cake/" target="_blank" rel="noreferrer">https://blogs.nvidia.com/blog/ai-5-layer-cake/</a></li>
-</ol>
+<ul>
+<li>OpenAI, "Introducing ChatGPT" (30 November 2022): <a href="https://openai.com/index/chatgpt/" target="_blank" rel="noreferrer">https://openai.com/index/chatgpt/</a></li>
+<li>OpenAI, "Introducing OpenAI o1-preview" (12 September 2024): <a href="https://openai.com/index/introducing-openai-o1-preview/" target="_blank" rel="noreferrer">https://openai.com/index/introducing-openai-o1-preview/</a></li>
+<li>DeepSeek, DeepSeek-R1 (MIT, 20 January 2025): <a href="https://github.com/deepseek-ai/DeepSeek-R1" target="_blank" rel="noreferrer">https://github.com/deepseek-ai/DeepSeek-R1</a></li>
+<li>Anthropic, "Claude Code is now generally available" (22 May 2025): <a href="https://www.anthropic.com/news/claude-4" target="_blank" rel="noreferrer">https://www.anthropic.com/news/claude-4</a></li>
+<li>OpenAI, Codex CLI (Apache 2.0, 16 April 2025): <a href="https://github.com/openai/codex" target="_blank" rel="noreferrer">https://github.com/openai/codex</a></li>
+<li>OpenClaw, Peter Steinberger's open source personal agent (MIT; begun Nov 2025 as Clawdbot, renamed 30 January 2026): <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">https://github.com/openclaw/openclaw</a></li>
+</ul>
+<h3>The cake of five layers</h3>
+<ul>
+<li>J. Huang, conversation with L. Fink at the World Economic Forum Annual Meeting, Davos (21 January 2026), the source of the words "Industrially, AI is actually essentially a five-layer cake": <a href="https://www.weforum.org/videos/ai-five-layer-cake-jensen-huang/" target="_blank" rel="noreferrer">https://www.weforum.org/videos/ai-five-layer-cake-jensen-huang/</a>; NVIDIA's account of the session: <a href="https://blogs.nvidia.com/blog/davos-wef-blackrock-ceo-larry-fink-jensen-huang/" target="_blank" rel="noreferrer">https://blogs.nvidia.com/blog/davos-wef-blackrock-ceo-larry-fink-jensen-huang/</a></li>
+<li>J. Huang, "AI Is a 5-Layer Cake," NVIDIA Blog (10 March 2026): <a href="https://blogs.nvidia.com/blog/ai-5-layer-cake/" target="_blank" rel="noreferrer">https://blogs.nvidia.com/blog/ai-5-layer-cake/</a></li>
+</ul>
 <h3>Mojo, MAX, and training in Mojo</h3>
-<ol start="60">
-<li>Modular, MAX framework (graph compiler and serving runtime; Modular Community License; Python API and kernels Apache-2.0): <a href="https://docs.modular.com/max/" target="_blank" rel="noreferrer">https://docs.modular.com/max/</a></li>
-<li>E. Owen, llm.mojo — Karpathy's llm.c ported to Mojo 1.0 (MIT): <a href="https://github.com/ulmentflam/llm.mojo" target="_blank" rel="noreferrer">https://github.com/ulmentflam/llm.mojo</a></li>
-<li>T. Fehrenbach, Nabla — JAX-style autodiff on Mojo and MAX (Apache-2.0, alpha): <a href="https://github.com/nabla-ml/nabla" target="_blank" rel="noreferrer">https://github.com/nabla-ml/nabla</a></li>
-<li>vLLM (Apache-2.0; PyTorch Foundation project): <a href="https://github.com/vllm-project/vllm" target="_blank" rel="noreferrer">https://github.com/vllm-project/vllm</a></li>
-<li>SGLang (Apache-2.0; LMSYS): <a href="https://github.com/sgl-project/sglang" target="_blank" rel="noreferrer">https://github.com/sgl-project/sglang</a></li>
+<ul>
+<li>Modular, MAX framework (graph compiler and serving runtime; Modular Community License; Python API and kernels Apache 2.0): <a href="https://docs.modular.com/max/" target="_blank" rel="noreferrer">https://docs.modular.com/max/</a></li>
+<li>E. Owen, llm.mojo, Karpathy's llm.c ported to Mojo 1.0 (MIT): <a href="https://github.com/ulmentflam/llm.mojo" target="_blank" rel="noreferrer">https://github.com/ulmentflam/llm.mojo</a></li>
+<li>T. Fehrenbach, Nabla, autodiff in the style of JAX on Mojo and MAX (Apache 2.0, alpha): <a href="https://github.com/nabla-ml/nabla" target="_blank" rel="noreferrer">https://github.com/nabla-ml/nabla</a></li>
+<li>vLLM (Apache 2.0; PyTorch Foundation project): <a href="https://github.com/vllm-project/vllm" target="_blank" rel="noreferrer">https://github.com/vllm-project/vllm</a></li>
+<li>SGLang (Apache 2.0; LMSYS): <a href="https://github.com/sgl-project/sglang" target="_blank" rel="noreferrer">https://github.com/sgl-project/sglang</a></li>
 <li>NVIDIA, TensorRT-LLM: <a href="https://github.com/NVIDIA/TensorRT-LLM" target="_blank" rel="noreferrer">https://github.com/NVIDIA/TensorRT-LLM</a></li>
-</ol>
+</ul>
 <h3>The AI engineer's toolbox</h3>
-<ol start="66">
-<li>PyTorch (BSD-3-Clause; PyTorch Foundation): <a href="https://pytorch.org" target="_blank" rel="noreferrer">https://pytorch.org</a></li>
-<li>JAX (Apache-2.0): <a href="https://github.com/jax-ml/jax" target="_blank" rel="noreferrer">https://github.com/jax-ml/jax</a></li>
-<li>verl (ByteDance Seed; Apache-2.0): <a href="https://github.com/verl-project/verl" target="_blank" rel="noreferrer">https://github.com/verl-project/verl</a></li>
-<li>TRL (Hugging Face; Apache-2.0): <a href="https://github.com/huggingface/trl" target="_blank" rel="noreferrer">https://github.com/huggingface/trl</a></li>
-<li>OpenRLHF (Apache-2.0): <a href="https://github.com/OpenRLHF/OpenRLHF" target="_blank" rel="noreferrer">https://github.com/OpenRLHF/OpenRLHF</a></li>
-<li>Fireworks AI, reinforcement fine-tuning (hosted): <a href="https://fireworks.ai/reinforcement-fine-tuning" target="_blank" rel="noreferrer">https://fireworks.ai/reinforcement-fine-tuning</a></li>
+<ul>
+<li>PyTorch (BSD 3-Clause; PyTorch Foundation): <a href="https://pytorch.org" target="_blank" rel="noreferrer">https://pytorch.org</a></li>
+<li>JAX (Apache 2.0): <a href="https://github.com/jax-ml/jax" target="_blank" rel="noreferrer">https://github.com/jax-ml/jax</a></li>
+<li>verl (ByteDance Seed; Apache 2.0): <a href="https://github.com/verl-project/verl" target="_blank" rel="noreferrer">https://github.com/verl-project/verl</a></li>
+<li>TRL (Hugging Face; Apache 2.0): <a href="https://github.com/huggingface/trl" target="_blank" rel="noreferrer">https://github.com/huggingface/trl</a></li>
+<li>OpenRLHF (Apache 2.0): <a href="https://github.com/OpenRLHF/OpenRLHF" target="_blank" rel="noreferrer">https://github.com/OpenRLHF/OpenRLHF</a></li>
+<li>Fireworks AI, reinforcement fine tuning (hosted): <a href="https://fireworks.ai/reinforcement-fine-tuning" target="_blank" rel="noreferrer">https://fireworks.ai/reinforcement-fine-tuning</a></li>
 <li>LangGraph (MIT): <a href="https://github.com/langchain-ai/langgraph" target="_blank" rel="noreferrer">https://github.com/langchain-ai/langgraph</a></li>
 <li>OpenAI Agents SDK (MIT): <a href="https://github.com/openai/openai-agents-python" target="_blank" rel="noreferrer">https://github.com/openai/openai-agents-python</a></li>
-</ol>
+</ul>
 <h3>Why open</h3>
-<ol start="74">
-<li>C. Lattner, "DeepSeek's Impact on AI (Democratizing AI Compute, Part 1)," Modular (2025-01): <a href="https://www.modular.com/blog/democratizing-compute-part-1-deepseeks-impact-on-ai" target="_blank" rel="noreferrer">https://www.modular.com/blog/democratizing-compute-part-1-deepseeks-impact-on-ai</a></li>
-<li>LLVM Project, Developer Policy — permissive, non-copyleft licensing "fosters the widest adoption of LLVM": <a href="https://llvm.org/docs/DeveloperPolicy.html" target="_blank" rel="noreferrer">https://llvm.org/docs/DeveloperPolicy.html</a></li>
-</ol>
+<ul>
+<li>C. Lattner, "DeepSeek's Impact on AI (Democratizing AI Compute, Part 1)," Modular (January 2025): <a href="https://www.modular.com/blog/democratizing-compute-part-1-deepseeks-impact-on-ai" target="_blank" rel="noreferrer">https://www.modular.com/blog/democratizing-compute-part-1-deepseeks-impact-on-ai</a></li>
+<li>LLVM Project, Developer Policy: permissive licensing without copyleft "fosters the widest adoption of LLVM": <a href="https://llvm.org/docs/DeveloperPolicy.html" target="_blank" rel="noreferrer">https://llvm.org/docs/DeveloperPolicy.html</a></li>
+</ul>
 </section>
       </div></div>
     </article></main>
-    <footer class="site-footer"><span>Shakthi Bachala</span><span>The Goldilocks Zone of the Open Software Ecosystem · Part 1 of 10</span><span>2026</span></footer>
+    <footer class="site-footer"><span>Shakthi Bachala</span><span>The Goldilocks Zone of the Open Software Ecosystem · Part 1</span><span>2026</span></footer>
   </div>
+  <script>
+    (function () {
+      var heads = [].slice.call(document.querySelectorAll(".article-body h2[id]"));
+      var links = [].slice.call(document.querySelectorAll(".article-rail ol a"));
+      if (!heads.length) { return; }
+      function current() {
+        var y = window.scrollY + 140, i = -1;
+        heads.forEach(function (h, k) { if (h.getBoundingClientRect().top + window.scrollY <= y) { i = k; } });
+        return i;
+      }
+      function mark() {
+        var i = current();
+        links.forEach(function (a, k) { if (k === i) { a.setAttribute("aria-current", "true"); } else { a.removeAttribute("aria-current"); } });
+      }
+      [].slice.call(document.querySelectorAll("[data-rail-move]")).forEach(function (button) {
+        button.addEventListener("click", function () {
+          var i = current() + parseInt(button.getAttribute("data-rail-move"), 10);
+          if (i < 0) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+          if (i >= heads.length) { i = heads.length - 1; }
+          heads[i].scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+      window.addEventListener("scroll", mark, { passive: true });
+      mark();
+    })();
+  </script>
   <script src="/theme.js?v=20260828a" defer></script>
 </body>
 </html>
